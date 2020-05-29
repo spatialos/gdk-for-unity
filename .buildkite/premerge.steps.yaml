@@ -30,7 +30,7 @@ windows: &windows
         # Workaround for flaky Git clones, likely due to - https://github.com/PowerShell/Win32-OpenSSH/issues/1322
       - exit_status: 128
         limit: 3
-  env: *windows-env
+  env: &windows-env
     ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
 linux: &linux
@@ -61,7 +61,7 @@ macos: &macos
         # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
       - exit_status: -1
         limit: 3
-  env: *mac-env
+  env: &mac-env
     ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
