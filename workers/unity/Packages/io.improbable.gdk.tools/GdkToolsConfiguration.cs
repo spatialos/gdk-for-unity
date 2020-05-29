@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Tools
         public bool VerboseLogging;
         public string CodegenLogOutputDir;
         public string CodegenOutputDir;
+        public string CodegenEditorOutputDir;
         public string DescriptorOutputDir;
         public List<string> SerializationOverrides = new List<string>();
 
@@ -27,6 +28,8 @@ namespace Improbable.Gdk.Tools
         public int DevAuthTokenLifetimeHours => TimeSpan.FromDays(DevAuthTokenLifetimeDays).Hours;
 
         public string FullCodegenOutputPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", CodegenOutputDir));
+
+        public string FullCodegenEditorOutputPath => Path.GetFullPath(Path.Combine(Application.dataPath, "..", CodegenEditorOutputDir));
         public string DefaultCodegenLogPath => Path.GetFullPath(Path.Combine(CodegenLogOutputDir, "codegen-output.log"));
 
         public string RuntimeVersion => string.IsNullOrEmpty(RuntimeVersionOverride)
@@ -60,7 +63,7 @@ namespace Improbable.Gdk.Tools
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrEmpty(CodegenOutputDir))
+            if (string.IsNullOrEmpty(CodegenLogOutputDir))
             {
                 errors.Add($"{GdkToolsConfigurationWindow.CodegenLogOutputDirLabel} cannot be empty.");
             }
@@ -68,6 +71,11 @@ namespace Improbable.Gdk.Tools
             if (string.IsNullOrEmpty(CodegenOutputDir))
             {
                 errors.Add($"{GdkToolsConfigurationWindow.CodegenOutputDirLabel} cannot be empty.");
+            }
+
+            if (string.IsNullOrEmpty(CodegenEditorOutputDir))
+            {
+                errors.Add($"{GdkToolsConfigurationWindow.CodegenEditorOutputDirLabel} cannot be empty");
             }
 
             if (string.IsNullOrEmpty(DescriptorOutputDir))
@@ -124,6 +132,7 @@ namespace Improbable.Gdk.Tools
             VerboseLogging = DefaultValues.VerboseLogging;
             CodegenLogOutputDir = DefaultValues.CodegenLogOutputDir;
             CodegenOutputDir = DefaultValues.CodegenOutputDir;
+            CodegenEditorOutputDir = DefaultValues.CodegenEditorOutputDir;
             DescriptorOutputDir = DefaultValues.DescriptorOutputDir;
             SerializationOverrides.Clear();
 
@@ -159,6 +168,7 @@ namespace Improbable.Gdk.Tools
             public const bool VerboseLogging = false;
             public const string CodegenLogOutputDir = "logs/";
             public const string CodegenOutputDir = "Assets/Generated/Source";
+            public const string CodegenEditorOutputDir = "Assets/Generated/Editor";
             public const string DescriptorOutputDir = "../../build/assembly/schema";
             public const string SchemaSourceDir = "../../schema";
             public const string DevAuthTokenDir = "Resources";

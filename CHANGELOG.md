@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- Added a "C# Editor Output Directory" field to the GDK Tools Configuration. [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376)
+    - This specifies where Editor-only code is generated to.
+    - This defaults to `Assets/Generated/Editor`.
+
 ## `0.3.6` - 2020-05-26
 
 ### Breaking Changes

@@ -92,9 +92,15 @@ namespace Improbable.Gdk.Tools
             File.Delete(StartupCodegenMarkerFile);
 
             var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
+
             if (Directory.Exists(toolsConfig.CodegenOutputDir))
             {
                 Directory.Delete(toolsConfig.CodegenOutputDir, recursive: true);
+            }
+
+            if (Directory.Exists(toolsConfig.CodegenEditorOutputDir))
+            {
+                Directory.Delete(toolsConfig.CodegenEditorOutputDir, recursive: true);
             }
 
             SetupProject();
@@ -485,7 +491,8 @@ namespace Improbable.Gdk.Tools
                 $"--worker-json-dir=\"{WorkerJsonPath}\"",
                 $"--log-file=\"{logfilePath}\"",
                 $"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"",
-                $"--native-output-dir=\"{toolsConfig.FullCodegenOutputPath}\""
+                $"--output-dir=\"{toolsConfig.FullCodegenOutputPath}\"",
+                $"--editor-output-dir=\"{toolsConfig.FullCodegenEditorOutputPath}\""
             };
 
             if (toolsConfig.VerboseLogging)

@@ -13,7 +13,9 @@ namespace Improbable.Gdk.CodeGenerator
         public string WorkerJsonDirectory { get; private set; }
         public string JsonDirectory { get; private set; }
         public string DescriptorDirectory { get; private set; }
-        public string NativeOutputDirectory { get; private set; }
+        public string OutputDirectory { get; private set; }
+
+        public string EditorOutputDirectory { get; private set; }
         public bool ShouldShowHelp { get; private set; }
         public bool Verbose { get; private set; } = false;
         public bool EnableLoggingToStdout { get; private set; } = true;
@@ -42,8 +44,12 @@ namespace Improbable.Gdk.CodeGenerator
                     j => options.DescriptorDirectory = j
                 },
                 {
-                    "native-output-dir=", "REQUIRED: the directory to output generated components and structs to",
-                    u => options.NativeOutputDirectory = u
+                    "output-dir=", "REQUIRED: the directory to output generated components and structs to",
+                    u => options.OutputDirectory = u
+                },
+                {
+                    "editor-output-dir=", "REQUIRED: the directory to output generated editor code to",
+                    u => options.EditorOutputDirectory = u
                 },
                 {
                     "schema-path=", "REQUIRED: a comma-separated list of directories that contain schema files",
@@ -94,9 +100,14 @@ namespace Improbable.Gdk.CodeGenerator
 
         public IEnumerable<string> GetValidationErrors()
         {
-            if (string.IsNullOrEmpty(NativeOutputDirectory))
+            if (string.IsNullOrEmpty(OutputDirectory))
             {
-                yield return "Native output directory not specified";
+                yield return "Output directory not specified";
+            }
+
+            if (string.IsNullOrEmpty(EditorOutputDirectory))
+            {
+                yield return "Editor output directory not specified";
             }
 
             if (SchemaInputDirs == null || SchemaInputDirs.Count == 0)

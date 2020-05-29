@@ -7,8 +7,8 @@ namespace Improbable.Gdk.CodeGenerator.Core
 {
     public class CoreCodegenJob : CodegenJob
     {
-        public CoreCodegenJob(string outputDir, IFileSystem fileSystem, DetailsStore store, bool force)
-            : base(outputDir, fileSystem, store, force)
+        public CoreCodegenJob(CodegenJobOptions options, IFileSystem fileSystem, DetailsStore store)
+            : base(options, fileSystem, store)
         {
             const string jobName = nameof(CoreCodegenJob);
             Logger.Trace($"Initialising {jobName}.");

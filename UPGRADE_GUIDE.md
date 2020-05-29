@@ -1,5 +1,27 @@
 # Upgrade Guide
 
+## From `0.3.6` to `0.3.7`
+
+### Update your `.gitignore`
+
+In [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376), some generated code has changed locations in your project. If you are ignoring these files in your `.gitignore`, you will want to add two new entries:
+
+Before: 
+
+```
+Assets/Generated/Source.meta
+Assets/Generated/Source/**/*.*
+```
+
+Now:
+
+```
+Assets/Generated/Source.meta
+Assets/Generated/Source/**/*.*
+Assets/Generated/Editor.meta
+Assets/Generated/Editor/**/*.*
+```
+
 ## From `0.3.5` to `0.3.6`
 
 ### Command Request ID's are now typed
