@@ -27,8 +27,8 @@
             "column": 1
           },
           "annotations": [],
-          "qualifiedName": "improbable.gdk.test.IllegalComponent",
-          "name": "IllegalComponent",
+          "qualifiedName": "improbable.gdk.test.IllegalComponentEvent",
+          "name": "IllegalComponentEvent",
           "componentId": 12599,
           "dataDefinition": "",
           "fields": [],
@@ -39,7 +39,7 @@
                 "column": 5
               },
               "annotations": [],
-              "name": "invalid_component_event",
+              "name": "illegal_component_event",
               "type": "improbable.gdk.core.Empty",
               "eventIndex": 1
             }

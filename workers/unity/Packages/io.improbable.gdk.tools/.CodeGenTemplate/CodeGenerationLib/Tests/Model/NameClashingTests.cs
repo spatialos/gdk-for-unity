@@ -14,26 +14,24 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
         public void Clashing_command_in_component()
         {
             var bundleName = "clash_command_in_component";
-            var qualifiedName = "improbable.gdk.test.IllegalComponent";
+            var qualifiedName = "improbable.gdk.test.IllegalComponentCommand";
 
             var store = GetDetailsFromBundle(bundleName);
 
-            Assert.AreEqual(store.Components.Count, 1);
             Assert.IsTrue(store.Components.ContainsKey(qualifiedName));
-            Assert.IsFalse(store.Components[qualifiedName].CommandDetails.Count == 0);
+            Assert.AreEqual(0, store.Components[qualifiedName].CommandDetails.Count);
         }
 
         [Test]
         public void Clashing_event_in_component()
         {
             var bundleName = "clash_event_in_component";
-            var qualifiedName = "improbable.gdk.test.IllegalComponent";
+            var qualifiedName = "improbable.gdk.test.IllegalComponentEvent";
 
             var store = GetDetailsFromBundle(bundleName);
 
-            Assert.AreEqual(store.Components.Count, 1);
             Assert.IsTrue(store.Components.ContainsKey(qualifiedName));
-            Assert.IsFalse(store.Components[qualifiedName].EventDetails.Count == 0);
+            Assert.AreEqual(0, store.Components[qualifiedName].EventDetails.Count);
         }
 
         [Test]
@@ -44,10 +42,10 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
 
             var store = GetDetailsFromBundle(bundleName);
 
-            Assert.AreEqual(store.Types.Count, 1);
             Assert.IsTrue(store.Types.ContainsKey(qualifiedName));
-            Assert.IsTrue(store.Types[qualifiedName].ChildEnums.Count == 1);
-            Assert.IsTrue(store.Types[qualifiedName].FieldDetails.Count == 0);
+            Assert.IsTrue(store.Enums.ContainsKey($"{qualifiedName}.NestedEnum"));
+            Assert.AreEqual(1, store.Types[qualifiedName].ChildEnums.Count);
+            Assert.AreEqual(0, store.Types[qualifiedName].FieldDetails.Count);
         }
 
         [Test]
@@ -58,11 +56,10 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
 
             var store = GetDetailsFromBundle(bundleName);
 
-            Assert.AreEqual(store.Types.Count, 2);
             Assert.IsTrue(store.Types.ContainsKey(qualifiedName));
             Assert.IsTrue(store.Types.ContainsKey($"{qualifiedName}.NestedType"));
-            Assert.IsTrue(store.Types[qualifiedName].ChildTypes.Count == 1);
-            Assert.IsTrue(store.Types[qualifiedName].FieldDetails.Count == 0);
+            Assert.AreEqual(1, store.Types[qualifiedName].ChildTypes.Count);
+            Assert.AreEqual(0, store.Types[qualifiedName].FieldDetails.Count);
         }
 
         private static DetailsStore GetDetailsFromBundle(string bundleName)
