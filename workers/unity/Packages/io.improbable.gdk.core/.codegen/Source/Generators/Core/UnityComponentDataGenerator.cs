@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -49,8 +50,8 @@ namespace Improbable.Gdk.CodeGenerator
             var fieldDetailsList = componentDetails.FieldDetails;
 
             var dirtyType = typeof(uint);
-            var dirtyBytesPerEntry = Marshal.SizeOf(dirtyType);
-            var dirtyBitsPerEntry = dirtyBytesPerEntry * 8;
+            var dirtyBitsPerEntry = Marshal.SizeOf(dirtyType) * 8;
+            var dirtyBitsShift = (int) Math.Log(dirtyBitsPerEntry, 2);
             var dirtyBitCount = (fieldDetailsList.Count / dirtyBitsPerEntry) + 1;
 
             return Scope.Type(
@@ -143,7 +144,7 @@ This method throws an InvalidOperationException in case your component doesn't c
                             m.Line(new[]
                             {
                                 "// Retrieve the dirtyBits[0-n] field that tracks this property.",
-                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBitsShift};",
                                 $"return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}))) != 0x0;"
                             });
                         }
@@ -166,7 +167,7 @@ public void MarkDataDirty(int propertyIndex)", m =>
                             m.Line(new[]
                             {
                                 "// Retrieve the dirtyBits[0-n] field that tracks this property.",
-                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBytesPerEntry};",
+                                $"var dirtyBitsByteIndex = propertyIndex >> {dirtyBitsShift};",
                                 $"dirtyBits[dirtyBitsByteIndex] |= ({dirtyType.Name}) (0x1 << (propertyIndex & {dirtyBitsPerEntry - 1}));"
                             });
                         }
