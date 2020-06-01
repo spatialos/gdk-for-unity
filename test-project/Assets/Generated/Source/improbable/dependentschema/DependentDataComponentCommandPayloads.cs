@@ -98,7 +98,7 @@ namespace Improbable.DependentSchema
                 public readonly global::Improbable.TestSchema.SomeType? ResponsePayload;
                 public readonly global::Improbable.TestSchema.SomeType RequestPayload;
                 public readonly global::System.Object Context;
-                public readonly long RequestId;
+                public readonly CommandRequestId RequestId;
 
                 public ReceivedResponse(
                     Unity.Entities.Entity sendingEntity,
@@ -108,7 +108,7 @@ namespace Improbable.DependentSchema
                     global::Improbable.TestSchema.SomeType? response,
                     global::Improbable.TestSchema.SomeType request,
                     global::System.Object context,
-                    long requestId)
+                    CommandRequestId requestId)
                 {
                     SendingEntity = sendingEntity;
                     EntityId = entityId;
@@ -120,7 +120,7 @@ namespace Improbable.DependentSchema
                     RequestId = requestId;
                 }
 
-                long IReceivedCommandResponse.RequestId => RequestId;
+                CommandRequestId IReceivedCommandResponse.RequestId => RequestId;
             }
 
             public readonly struct RawReceivedResponse : IRawReceivedCommandResponse
