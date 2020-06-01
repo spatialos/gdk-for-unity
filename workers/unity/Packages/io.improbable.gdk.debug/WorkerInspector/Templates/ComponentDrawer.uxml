@@ -1,0 +1,5 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Foldout class="component-foldout">
+        <Toggle class="is-auth-toggle" label="Is Authoritative?"/>
+    </Foldout>
+</UXML>
