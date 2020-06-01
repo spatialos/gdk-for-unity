@@ -8,6 +8,10 @@
     - This specifies where Editor-only code is generated to.
     - This defaults to `Assets/Generated/Editor`.
 
+### Fixed
+
+- Fixed memory corruption in SpatialOS Components using more then 16 fields. [#1378](https://github.com/spatialos/gdk-for-unity/pull/1378)
+
 ## `0.3.6` - 2020-05-26
 
 ### Breaking Changes
