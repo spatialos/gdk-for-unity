@@ -8,9 +8,9 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector
 {
-    public class EntityList : VisualElement
+    internal class EntityList : VisualElement
     {
-        public delegate void EntitySelected(EntityId entityId);
+        public delegate void EntitySelected(EntityData entityId);
 
         public EntitySelected OnEntitySelected;
 
@@ -97,7 +97,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
             if (!selectedEntity.HasValue || selectedEntity.Value != entityData)
             {
-                OnEntitySelected?.Invoke(entityData.EntityId);
+                OnEntitySelected?.Invoke(entityData);
                 selectedEntity = entityData;
             }
         }
