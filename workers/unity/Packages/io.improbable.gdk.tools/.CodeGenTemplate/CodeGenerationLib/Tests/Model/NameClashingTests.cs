@@ -3,6 +3,10 @@ using System.IO;
 using System.Reflection;
 using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
+using NLog;
+using NLog.Config;
+using NLog.Fluent;
+using NLog.Targets;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.CodeGeneration.Tests.Model
@@ -10,6 +14,20 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
     [TestFixture]
     public class NameClashingTests
     {
+        private MemoryTarget memoryTarget;
+
+        [SetUp]
+        public void Setup()
+        {
+            memoryTarget = new MemoryTarget("MemoryTarget");
+
+            var configuration = new LoggingConfiguration();
+            configuration.AddTarget(memoryTarget);
+            configuration.LoggingRules.Add(new LoggingRule("*", LogLevel.Error, memoryTarget));
+
+            LogManager.Configuration = configuration;
+        }
+
         [Test]
         public void Clashing_command_in_component()
         {
@@ -20,6 +38,8 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
 
             Assert.IsTrue(store.Components.ContainsKey(qualifiedName));
             Assert.AreEqual(0, store.Components[qualifiedName].CommandDetails.Count);
+
+            Assert.AreEqual(1, memoryTarget.Logs.Count);
         }
 
         [Test]
@@ -32,6 +52,8 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
 
             Assert.IsTrue(store.Components.ContainsKey(qualifiedName));
             Assert.AreEqual(0, store.Components[qualifiedName].EventDetails.Count);
+
+            Assert.AreEqual(1, memoryTarget.Logs.Count);
         }
 
         [Test]
@@ -46,6 +68,8 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
             Assert.IsTrue(store.Enums.ContainsKey($"{qualifiedName}.NestedEnum"));
             Assert.AreEqual(1, store.Types[qualifiedName].ChildEnums.Count);
             Assert.AreEqual(0, store.Types[qualifiedName].FieldDetails.Count);
+
+            Assert.AreEqual(1, memoryTarget.Logs.Count);
         }
 
         [Test]
@@ -60,6 +84,8 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
             Assert.IsTrue(store.Types.ContainsKey($"{qualifiedName}.NestedType"));
             Assert.AreEqual(1, store.Types[qualifiedName].ChildTypes.Count);
             Assert.AreEqual(0, store.Types[qualifiedName].FieldDetails.Count);
+
+            Assert.AreEqual(1, memoryTarget.Logs.Count);
         }
 
         private static DetailsStore GetDetailsFromBundle(string bundleName)
