@@ -4,7 +4,7 @@
       "canonicalPath": "clash_enum_in_type.schema",
       "package": {
         "sourceReference": {
-          "line": 3,
+          "line": 1,
           "column": 1
         },
         "name": "improbable.gdk.test"
@@ -13,17 +13,17 @@
       "enums": [
         {
           "sourceReference": {
-            "line": 6,
+            "line": 4,
             "column": 5
           },
           "annotations": [],
-          "qualifiedName": "improbable.gdk.test.IllegalType.NestedEnum",
+          "qualifiedName": "improbable.gdk.test.IllegalEnumField.NestedEnum",
           "name": "NestedEnum",
-          "outerType": "improbable.gdk.test.IllegalType",
+          "outerType": "improbable.gdk.test.IllegalEnumField",
           "values": [
             {
               "sourceReference": {
-                "line": 7,
+                "line": 5,
                 "column": 9
               },
               "annotations": [],
@@ -32,7 +32,7 @@
             },
             {
               "sourceReference": {
-                "line": 8,
+                "line": 6,
                 "column": 9
               },
               "annotations": [],
@@ -45,17 +45,17 @@
       "types": [
         {
           "sourceReference": {
-            "line": 5,
+            "line": 3,
             "column": 1
           },
           "annotations": [],
-          "qualifiedName": "improbable.gdk.test.IllegalType",
-          "name": "IllegalType",
+          "qualifiedName": "improbable.gdk.test.IllegalEnumField",
+          "name": "IllegalEnumField",
           "outerType": "",
           "fields": [
             {
               "sourceReference": {
-                "line": 10,
+                "line": 8,
                 "column": 5
               },
               "annotations": [],
@@ -64,7 +64,7 @@
               "transient": false,
               "singularType": {
                 "type": {
-                  "enum": "improbable.gdk.test.IllegalType.NestedEnum"
+                  "enum": "improbable.gdk.test.IllegalEnumField.NestedEnum"
                 }
               }
             }

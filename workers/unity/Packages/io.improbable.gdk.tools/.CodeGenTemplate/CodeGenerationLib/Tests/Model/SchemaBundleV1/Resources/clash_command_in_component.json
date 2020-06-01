@@ -4,7 +4,7 @@
       "canonicalPath": "clash_command_in_component.schema",
       "package": {
         "sourceReference": {
-          "line": 3,
+          "line": 1,
           "column": 1
         },
         "name": "improbable.gdk.test"
@@ -12,7 +12,7 @@
       "imports": [
         {
           "sourceReference": {
-            "line": 4,
+            "line": 3,
             "column": 1
           },
           "path": "improbable/gdk/core/common.schema"
@@ -23,7 +23,7 @@
       "components": [
         {
           "sourceReference": {
-            "line": 6,
+            "line": 5,
             "column": 1
           },
           "annotations": [],
@@ -36,7 +36,7 @@
           "commands": [
             {
               "sourceReference": {
-                "line": 6,
+                "line": 5,
                 "column": 1
               },
               "annotations": [],

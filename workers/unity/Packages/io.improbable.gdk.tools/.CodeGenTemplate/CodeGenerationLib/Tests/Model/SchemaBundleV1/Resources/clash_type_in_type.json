@@ -4,7 +4,7 @@
       "canonicalPath": "clash_type_in_type.schema",
       "package": {
         "sourceReference": {
-          "line": 3,
+          "line": 1,
           "column": 1
         },
         "name": "improbable.gdk.test"
@@ -14,17 +14,17 @@
       "types": [
         {
           "sourceReference": {
-            "line": 5,
+            "line": 3,
             "column": 1
           },
           "annotations": [],
-          "qualifiedName": "improbable.gdk.test.IllegalType",
-          "name": "IllegalType",
+          "qualifiedName": "improbable.gdk.test.IllegalTypeField",
+          "name": "IllegalTypeField",
           "outerType": "",
           "fields": [
             {
               "sourceReference": {
-                "line": 7,
+                "line": 5,
                 "column": 5
               },
               "annotations": [],
@@ -33,7 +33,7 @@
               "transient": false,
               "singularType": {
                 "type": {
-                  "type": "improbable.gdk.test.IllegalType.NestedType"
+                  "type": "improbable.gdk.test.IllegalTypeField.NestedType"
                 }
               }
             }
@@ -41,13 +41,13 @@
         },
         {
           "sourceReference": {
-            "line": 6,
+            "line": 4,
             "column": 5
           },
           "annotations": [],
-          "qualifiedName": "improbable.gdk.test.IllegalType.NestedType",
+          "qualifiedName": "improbable.gdk.test.IllegalTypeField.NestedType",
           "name": "NestedType",
-          "outerType": "improbable.gdk.test.IllegalType",
+          "outerType": "improbable.gdk.test.IllegalTypeField",
           "fields": []
         }
       ],

@@ -60,7 +60,7 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
         public void Clashing_enum_in_type()
         {
             var bundleName = "clash_enum_in_type";
-            var qualifiedName = "improbable.gdk.test.IllegalType";
+            var qualifiedName = "improbable.gdk.test.IllegalEnumField";
 
             var store = GetDetailsFromBundle(bundleName);
 
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
         public void Clashing_type_in_type()
         {
             var bundleName = "clash_type_in_type";
-            var qualifiedName = "improbable.gdk.test.IllegalType";
+            var qualifiedName = "improbable.gdk.test.IllegalTypeField";
 
             var store = GetDetailsFromBundle(bundleName);
 
