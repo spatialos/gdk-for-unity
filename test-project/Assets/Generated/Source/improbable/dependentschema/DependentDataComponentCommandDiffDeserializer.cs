@@ -3,6 +3,7 @@
 // =====================================================
 
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.DependentSchema
@@ -33,8 +34,9 @@ namespace Improbable.DependentSchema
                     rawResponse = global::Improbable.TestSchema.SomeType.Serialization.Deserialize(op.Response.SchemaData.Value.GetObject());
                 }
 
-                var commandContext = commandMetaData.GetContext<global::Improbable.TestSchema.SomeType>(ComponentId, 1, op.RequestId);
-                commandMetaData.RemoveRequest(ComponentId, 1, op.RequestId);
+                var internalRequestId = new InternalCommandRequestId(op.RequestId);
+                var commandContext = commandMetaData.GetContext<global::Improbable.TestSchema.SomeType>(ComponentId, 1, internalRequestId);
+                commandMetaData.RemoveRequest(ComponentId, 1, internalRequestId);
 
                 var response = new BarCommand.ReceivedResponse(
                     commandContext.SendingEntity,

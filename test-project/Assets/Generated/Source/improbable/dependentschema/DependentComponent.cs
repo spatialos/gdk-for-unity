@@ -107,7 +107,7 @@ namespace Improbable.DependentSchema
                 ValidateFieldIndex(propertyIndex);
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex >> 4;
+                var dirtyBitsByteIndex = propertyIndex >> 5;
                 return (dirtyBits[dirtyBitsByteIndex] & (0x1 << (propertyIndex & 31))) != 0x0;
             }
 
@@ -118,7 +118,7 @@ namespace Improbable.DependentSchema
                 ValidateFieldIndex(propertyIndex);
 
                 // Retrieve the dirtyBits[0-n] field that tracks this property.
-                var dirtyBitsByteIndex = propertyIndex >> 4;
+                var dirtyBitsByteIndex = propertyIndex >> 5;
                 dirtyBits[dirtyBitsByteIndex] |= (UInt32) (0x1 << (propertyIndex & 31));
             }
 

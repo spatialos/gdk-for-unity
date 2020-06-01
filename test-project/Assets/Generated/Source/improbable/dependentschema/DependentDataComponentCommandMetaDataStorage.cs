@@ -3,6 +3,7 @@
 // =====================================================
 
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 
 namespace Improbable.DependentSchema
 {
