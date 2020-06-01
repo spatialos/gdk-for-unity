@@ -33,6 +33,16 @@ namespace Improbable.Gdk.Core
             return id;
         }
 
+        public static uint GetComponentId(Type type)
+        {
+            if (!ComponentsToIds.TryGetValue(type, out var id))
+            {
+                throw new ArgumentException($"Can not find ID for unregistered SpatialOS component {type.Name}.");
+            }
+
+            return id;
+        }
+
         public static uint GetSnapshotComponentId<T>() where T : ISpatialComponentSnapshot
         {
             if (!SnapshotsToIds.TryGetValue(typeof(T), out var id))
