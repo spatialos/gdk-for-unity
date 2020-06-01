@@ -1,0 +1,77 @@
+{
+  "schemaFiles": [
+    {
+      "canonicalPath": "clash_enum_in_type.schema",
+      "package": {
+        "sourceReference": {
+          "line": 3,
+          "column": 1
+        },
+        "name": "improbable.gdk.test"
+      },
+      "imports": [],
+      "enums": [
+        {
+          "sourceReference": {
+            "line": 6,
+            "column": 5
+          },
+          "annotations": [],
+          "qualifiedName": "improbable.gdk.test.IllegalType.NestedEnum",
+          "name": "NestedEnum",
+          "outerType": "improbable.gdk.test.IllegalType",
+          "values": [
+            {
+              "sourceReference": {
+                "line": 7,
+                "column": 9
+              },
+              "annotations": [],
+              "name": "SUCCESS",
+              "value": 0
+            },
+            {
+              "sourceReference": {
+                "line": 8,
+                "column": 9
+              },
+              "annotations": [],
+              "name": "FAILURE",
+              "value": 1
+            }
+          ]
+        }
+      ],
+      "types": [
+        {
+          "sourceReference": {
+            "line": 5,
+            "column": 1
+          },
+          "annotations": [],
+          "qualifiedName": "improbable.gdk.test.IllegalType",
+          "name": "IllegalType",
+          "outerType": "",
+          "fields": [
+            {
+              "sourceReference": {
+                "line": 10,
+                "column": 5
+              },
+              "annotations": [],
+              "name": "nested_enum",
+              "fieldId": 1,
+              "transient": false,
+              "singularType": {
+                "type": {
+                  "enum": "improbable.gdk.test.IllegalType.NestedEnum"
+                }
+              }
+            }
+          ]
+        }
+      ],
+      "components": []
+    }
+  ]
+}

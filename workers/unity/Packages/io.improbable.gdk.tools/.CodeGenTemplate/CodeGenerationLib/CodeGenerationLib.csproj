@@ -16,7 +16,15 @@
 
     <ItemGroup>
       <None Remove="Tests\Model\SchemaBundleV1\Resources\exhaustive_bundle.json" />
+      <None Remove="Tests\Model\SchemaBundleV1\Resources\clash_command_in_component.json" />
+      <None Remove="Tests\Model\SchemaBundleV1\Resources\clash_event_in_component.json" />
+      <None Remove="Tests\Model\SchemaBundleV1\Resources\clash_enum_in_type.json" />
+      <None Remove="Tests\Model\SchemaBundleV1\Resources\clash_type_in_type.json" />
       <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\exhaustive_bundle.json" />
+      <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\clash_command_in_component.json" />
+      <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\clash_event_in_component.json" />
+      <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\clash_enum_in_type.json" />
+      <EmbeddedResource Include="Tests\Model\SchemaBundleV1\Resources\clash_type_in_type.json" />
     </ItemGroup>
 
 </Project>
