@@ -1,0 +1,8 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <VisualElement name="entity-info">
+        <Label name="entity-name"/>
+        <Label name="entity-id"/>
+    </VisualElement>
+
+    <ScrollView />
+</UXML>
