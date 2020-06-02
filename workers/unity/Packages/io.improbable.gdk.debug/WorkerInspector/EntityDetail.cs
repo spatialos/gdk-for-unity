@@ -96,15 +96,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private static bool AreSameComponents(IEnumerable<ComponentType> componentTypes,
             IReadOnlyList<ComponentVisualElement> componentVisualElements)
         {
+            if (componentTypes.Count() != componentVisualElements.Count)
+            {
+                return false;
+            }
+
             var i = 0;
 
             foreach (var componentType in componentTypes)
             {
-                if (i >= componentVisualElements.Count)
-                {
-                    return false;
-                }
-
                 if (componentType != componentVisualElements[i].ComponentType)
                 {
                     return false;
