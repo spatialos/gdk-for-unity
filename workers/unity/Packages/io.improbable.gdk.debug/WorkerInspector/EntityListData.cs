@@ -86,7 +86,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
                         for (var i = 0; i < entities.Length; i++)
                         {
-                            var data = new EntityData(entityIdArray[i].EntityId, metadataArray?[i].EntityType);
+                            var data = new EntityData(entities[i], entityIdArray[i].EntityId, metadataArray?[i].EntityType);
                             fullData.Add(data);
                         }
                     }
@@ -101,11 +101,13 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
     internal readonly struct EntityData : IComparable<EntityData>, IComparable, IEquatable<EntityData>
     {
+        public readonly Entity Entity;
         public readonly EntityId EntityId;
         public readonly string Metadata;
 
-        public EntityData(EntityId entityId, string metadata)
+        public EntityData(Entity entity, EntityId entityId, string metadata)
         {
+            Entity = entity;
             EntityId = entityId;
             Metadata = metadata;
         }
@@ -149,7 +151,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
         public bool Equals(EntityData other)
         {
-            return EntityId.Equals(other.EntityId) && Metadata == other.Metadata;
+            return Entity.Equals(other.Entity) && EntityId.Equals(other.EntityId) && Metadata == other.Metadata;
         }
 
         public override bool Equals(object obj)
@@ -171,7 +173,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             unchecked
             {
-                return (EntityId.GetHashCode() * 397) ^ (Metadata != null ? Metadata.GetHashCode() : 0);
+                var hashCode = Entity.GetHashCode();
+                hashCode = (hashCode * 397) ^ EntityId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Metadata != null ? Metadata.GetHashCode() : 0);
+                return hashCode;
             }
         }
     }
