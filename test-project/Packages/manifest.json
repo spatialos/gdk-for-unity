@@ -5,7 +5,6 @@
     "com.unity.ugui": "1.0.0",
     "io.improbable.gdk.buildsystem": "file:../../workers/unity/Packages/io.improbable.gdk.buildsystem",
     "io.improbable.gdk.core": "file:../../workers/unity/Packages/io.improbable.gdk.core",
-    "io.improbable.gdk.dependencytest": "file:io.improbable.gdk.dependencytest",
     "io.improbable.gdk.gameobjectcreation": "file:../../workers/unity/Packages/io.improbable.gdk.gameobjectcreation",
     "io.improbable.gdk.playerlifecycle": "file:../../workers/unity/Packages/io.improbable.gdk.playerlifecycle",
     "io.improbable.gdk.querybasedinteresthelper": "file:../../workers/unity/Packages/io.improbable.gdk.querybasedinteresthelper",
