@@ -1,8 +1,0 @@
-package improbable.gdk.test;
-import "improbable/gdk/core/common.schema";
-
-component TestCommands {
-    id = 12699;
-
-    command improbable.gdk.core.Empty test(improbable.gdk.core.Empty);
-}
