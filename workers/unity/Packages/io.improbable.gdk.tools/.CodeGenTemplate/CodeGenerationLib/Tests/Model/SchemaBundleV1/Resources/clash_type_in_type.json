@@ -1,0 +1,57 @@
+{
+  "schemaFiles": [
+    {
+      "canonicalPath": "clash_type_in_type.schema",
+      "package": {
+        "sourceReference": {
+          "line": 1,
+          "column": 1
+        },
+        "name": "improbable.gdk.test"
+      },
+      "imports": [],
+      "enums": [],
+      "types": [
+        {
+          "sourceReference": {
+            "line": 3,
+            "column": 1
+          },
+          "annotations": [],
+          "qualifiedName": "improbable.gdk.test.IllegalTypeField",
+          "name": "IllegalTypeField",
+          "outerType": "",
+          "fields": [
+            {
+              "sourceReference": {
+                "line": 5,
+                "column": 5
+              },
+              "annotations": [],
+              "name": "nested_type",
+              "fieldId": 1,
+              "transient": false,
+              "singularType": {
+                "type": {
+                  "type": "improbable.gdk.test.IllegalTypeField.NestedType"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "sourceReference": {
+            "line": 4,
+            "column": 5
+          },
+          "annotations": [],
+          "qualifiedName": "improbable.gdk.test.IllegalTypeField.NestedType",
+          "name": "NestedType",
+          "outerType": "improbable.gdk.test.IllegalTypeField",
+          "fields": []
+        }
+      ],
+      "components": []
+    }
+  ]
+}

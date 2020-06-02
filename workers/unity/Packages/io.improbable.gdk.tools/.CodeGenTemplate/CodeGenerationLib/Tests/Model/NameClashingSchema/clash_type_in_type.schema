@@ -1,0 +1,6 @@
+package improbable.gdk.test;
+
+type IllegalTypeField {
+    type NestedType {}
+    NestedType nested_type = 1;
+}
