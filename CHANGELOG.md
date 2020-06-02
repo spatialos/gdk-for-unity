@@ -12,6 +12,11 @@
 
 - Fixed memory corruption in SpatialOS components with more than 16 fields. [#1378](https://github.com/spatialos/gdk-for-unity/pull/1378)
 
+### Internal
+
+- Added tests in code generator for name clashes. [#1380](https://github.com/spatialos/gdk-for-unity/pull/1380)
+    - The `test-project` no longer contains illegal schema.
+
 ## `0.3.6` - 2020-05-26
 
 ### Breaking Changes

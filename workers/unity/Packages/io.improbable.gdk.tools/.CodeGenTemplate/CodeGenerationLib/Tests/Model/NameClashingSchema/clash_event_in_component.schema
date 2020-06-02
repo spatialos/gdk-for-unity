@@ -1,0 +1,9 @@
+package improbable.gdk.test;
+
+import "improbable/gdk/core/common.schema";
+
+component IllegalComponentEvent
+{
+    id=12599;
+    event improbable.gdk.core.Empty illegal_component_event;
+}

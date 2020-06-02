@@ -1,0 +1,9 @@
+package improbable.gdk.test;
+
+type IllegalEnumField {
+    enum NestedEnum {
+        SUCCESS = 0;
+        FAILURE = 1;
+    }
+    NestedEnum nested_enum = 1;
+}
