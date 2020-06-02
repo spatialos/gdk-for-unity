@@ -14,7 +14,6 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1
             return new StreamReader(assembly.GetManifestResourceStream(BundleResourceName)).ReadToEnd();
         }
 
-
         private const string BundleResourceName =
             "CodeGenerationLib.Tests.Model.SchemaBundleV1.Resources.exhaustive_bundle.json";
 
