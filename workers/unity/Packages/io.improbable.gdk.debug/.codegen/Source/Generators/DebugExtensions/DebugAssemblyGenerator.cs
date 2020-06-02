@@ -18,7 +18,7 @@ namespace Improbable.Gdk.CodeGenerator
     ""allowUnsafeCode"": false,
     ""overrideReferences"": false,
     ""precompiledReferences"": [],
-    ""autoReferenced"": true,
+    ""autoReferenced"": false,
     ""defineConstraints"": [],
     ""versionDefines"": []
 }

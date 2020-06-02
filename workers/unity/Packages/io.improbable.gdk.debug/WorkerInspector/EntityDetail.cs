@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Debug.WorkerInspector.Codegen;
+using Unity.Collections;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine.UIElements;
@@ -68,23 +69,26 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
         private void UpdateComponentSet()
         {
-            var components = world.EntityManager.GetComponentTypes(selected.Value.Entity)
-                .Where(type => typeof(ISpatialComponentData).IsAssignableFrom(type.GetManagedType()))
-                .OrderBy(type => ComponentDatabase.GetComponentId(type.GetManagedType()));
-
-            if (AreSameComponents(components, visualElements))
+            using (var components = world.EntityManager.GetComponentTypes(selected.Value.Entity, allocator: Allocator.Temp))
             {
-                return;
-            }
+                var spatialComponents = components
+                    .Where(type => typeof(ISpatialComponentData).IsAssignableFrom(type.GetManagedType()))
+                    .OrderBy(type => ComponentDatabase.GetComponentId(type.GetManagedType()));
 
-            componentContainer.Clear();
-            visualElements.Clear();
+                if (AreSameComponents(spatialComponents, visualElements))
+                {
+                    return;
+                }
 
-            foreach (var componentType in components)
-            {
-                var componentElement = Cache.Get(componentType);
-                componentContainer.Add(componentElement);
-                visualElements.Add(componentElement);
+                componentContainer.Clear();
+                visualElements.Clear();
+
+                foreach (var componentType in spatialComponents)
+                {
+                    var componentElement = Cache.Get(componentType);
+                    componentContainer.Add(componentElement);
+                    visualElements.Add(componentElement);
+                }
             }
         }
 
