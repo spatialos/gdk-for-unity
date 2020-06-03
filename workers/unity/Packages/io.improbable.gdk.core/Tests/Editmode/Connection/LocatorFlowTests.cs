@@ -54,6 +54,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             Assert.IsInstanceOf<AuthenticationFailedException>(aggregateException.InnerExceptions[0]);
         }
 
+#if !UNITY_EDITOR_OSX
         [Test]
         public void LocatorFlow_dev_auth_fails_if_depl_isnt_tagged()
         {
@@ -80,6 +81,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 Assert.AreEqual(ConnectionStatusCode.Success, connection.GetConnectionStatusCode());
             }
         }
+#endif
 
         private static LocatorFlow GetLocatorFlow()
         {
