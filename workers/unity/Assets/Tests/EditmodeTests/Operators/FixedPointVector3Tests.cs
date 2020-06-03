@@ -34,7 +34,8 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             Assert.IsTrue(f1 != f2);
         }
 
-        [Test] public void Not_equals_operator_false_for_identical_FixedPointVector3()
+        [Test]
+        public void Not_equals_operator_false_for_identical_FixedPointVector3()
         {
             var f1 = new Vector3(10f, 20f, 30f).ToFixedPointVector3();
             var f2 = new Vector3(10f, 20f, 30f).ToFixedPointVector3();

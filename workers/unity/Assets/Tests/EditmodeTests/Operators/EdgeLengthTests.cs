@@ -33,7 +33,8 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             Assert.IsTrue(e1 != e2);
         }
 
-        [Test] public void Not_equals_operator_false_for_identical_EdgeLength()
+        [Test]
+        public void Not_equals_operator_false_for_identical_EdgeLength()
         {
             var e1 = new EdgeLength(10d, 20d, 30d);
             var e2 = new EdgeLength(10d, 20d, 30d);

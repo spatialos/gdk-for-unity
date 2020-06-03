@@ -33,7 +33,8 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             Assert.IsTrue(c1 != c2);
         }
 
-        [Test] public void Not_equals_operator_false_for_identical_Coordinates()
+        [Test]
+        public void Not_equals_operator_false_for_identical_Coordinates()
         {
             var c1 = new Coordinates(10d, 20d, 30d);
             var c2 = new Coordinates(10d, 20d, 30d);

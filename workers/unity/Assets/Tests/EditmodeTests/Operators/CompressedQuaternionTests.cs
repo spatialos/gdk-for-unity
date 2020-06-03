@@ -33,7 +33,8 @@ namespace Improbable.Gdk.EditmodeTests.Operators
             Assert.IsTrue(q1 != q2);
         }
 
-        [Test] public void Not_equals_operator_false_for_identical_CompressedQuaternion()
+        [Test]
+        public void Not_equals_operator_false_for_identical_CompressedQuaternion()
         {
             var q1 = Quaternion.Euler(10f, 20f, 30f).ToCompressedQuaternion();
             var q2 = Quaternion.Euler(10f, 20f, 30f).ToCompressedQuaternion();

@@ -52,23 +52,23 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void AddQueries_can_be_called_multiple_times_on_same_component_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery})
-                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery}));
+                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery })
+                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery }));
         }
 
         [Test]
         public void AddQueries_can_be_called_multiple_times_on_different_components_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery, BasicQuery})
-                .AddQueries<Metadata.Component>(new List<InterestQuery>{BasicQuery, BasicQuery}));
+                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery })
+                .AddQueries<Metadata.Component>(new List<InterestQuery> { BasicQuery, BasicQuery }));
         }
 
         [Test]
         public void AddQueries_can_be_called_with_a_single_query_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery>{BasicQuery}));
+                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery }));
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
 
             var interest = EmptyInterest
                 .AddQueries<Position.Component>(initialQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery>{differentBasicQuery});
+                .ReplaceQueries<Position.Component>(new List<InterestQuery> { differentBasicQuery });
 
             var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
             var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
@@ -153,7 +153,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         {
             var interest = EmptyInterest
                 .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery>{DifferentBasicQuery});
+                .ReplaceQueries<Position.Component>(new List<InterestQuery> { DifferentBasicQuery });
 
             var queryExists = interest.AsComponentInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
 
