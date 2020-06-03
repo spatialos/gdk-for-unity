@@ -2,7 +2,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.Test;
 using Improbable.Gdk.TestUtils;
-using Improbable.Tests;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
@@ -79,7 +78,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 })
                 .Step(world =>
                 {
-                    var (_, readerBehaviour) = world.CreateGameObject<MultipleComponentBehaviour>(EntityId);
+                    var (_, readerBehaviour) = world.CreateGameObject<MultipleReaderBehaviour>(EntityId);
                     return readerBehaviour;
                 })
                 .Step(world =>
@@ -94,8 +93,8 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 {
                     var readerBehaviour = context;
 
-                    Assert.IsNotNull(readerBehaviour.DependencyTestReader);
-                    Assert.IsTrue(readerBehaviour.DependencyTestReader.IsValid);
+                    Assert.IsNotNull(readerBehaviour.TestCommandsReader);
+                    Assert.IsTrue(readerBehaviour.TestCommandsReader.IsValid);
                 });
         }
 
@@ -209,7 +208,6 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new DependencyTest.Snapshot(), "worker");
             template.AddComponent(new TestCommands.Snapshot(), "worker");
             return template;
         }
@@ -241,14 +239,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
             [Require] public PositionReader PositionReader;
             [Require] public TestCommandsReader TestCommandsReader;
         }
-        
-        private class MultipleComponentBehaviour : MonoBehaviour
-        {
-            [Require] public PositionReader PositionReader;
-            [Require] public DependencyTestReader DependencyTestReader;
-        }
 
 #pragma warning restore 649
-
     }
 }

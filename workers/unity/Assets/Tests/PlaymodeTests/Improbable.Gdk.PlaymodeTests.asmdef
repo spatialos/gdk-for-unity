@@ -1,5 +1,5 @@
 {
-    "name": "Improbable.Gdk.EditModeTests",
+    "name": "Improbable.Gdk.PlaymodeTests",
     "references": [
         "Improbable.Gdk.QueryBasedInterestHelper",
         "Improbable.Gdk.Generated",
@@ -7,16 +7,13 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.TransformSynchronization",
+        "Improbable.Gdk.GameObjectCreation",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Improbable.Gdk.TestBases",
-        "Improbable.Gdk.TestUtils",
-        "Improbable.Gdk.GameObjectCreation"
+        "Improbable.Gdk.TransformSynchronization",
+        "Improbable.Gdk.TestUtils"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": true,
