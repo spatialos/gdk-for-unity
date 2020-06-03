@@ -1,6 +1,6 @@
 #entities {
     flex-direction: row;
-    flex-grow: 14;
+    flex-grow: 1;
 }
 
 #entity-list-view {
@@ -78,9 +78,7 @@
     padding: 8px 4px;
     border-top-color: rgba(0, 0, 0, 0.20);
     border-top-width: 1px;
-    max-height: 15%;
-    flex-shrink: 1;
-    flex-grow: 1;
+    height: 15%;
 }
 
 #worker-details-label {

@@ -39,11 +39,22 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             const string windowUxmlPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uxml";
             const string windowUssPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uss";
 
+            const string darkModeUssPath =
+                "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow_Dark.uss";
+            const string lightModeUssPath =
+                "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow_Light.uss";
+
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(windowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
 
             var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(windowUssPath);
             rootVisualElement.styleSheets.Add(stylesheet);
+
+            var themedSheet =
+                AssetDatabase.LoadAssetAtPath<StyleSheet>(EditorGUIUtility.isProSkin
+                    ? darkModeUssPath
+                    : lightModeUssPath);
+            rootVisualElement.styleSheets.Add(themedSheet);
 
             worldSelector = rootVisualElement.Q<WorldSelector>();
             worldSelector.OnWorldChanged += OnWorldChanged;
