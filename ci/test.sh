@@ -37,7 +37,7 @@ pushd "workers/unity"
         -coverageOptions "${COVERAGE_OPTIONS}" \
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -runEditorTests \
-        -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
+        -logfile "${PROJECT_DIR}/logs/editmode-test-run.log" \
         -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
         "${ACCELERATOR_ARGS}"
 popd
