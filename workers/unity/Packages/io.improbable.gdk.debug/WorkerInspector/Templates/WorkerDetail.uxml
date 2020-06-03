@@ -1,0 +1,13 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <VisualElement style="flex-direction: row; flex-grow: 1">
+        <VisualElement name="worker-info">
+            <TextField name="worker-type" label="Worker Type"/>
+            <TextField name="worker-id" label="Worker ID"/>
+        </VisualElement>
+        <VisualElement name="worker-flags">
+            <Label text="Worker Flags"/>
+            <ListView name="worker-flags-list">
+            </ListView>
+        </VisualElement>
+    </VisualElement>
+</UXML>
