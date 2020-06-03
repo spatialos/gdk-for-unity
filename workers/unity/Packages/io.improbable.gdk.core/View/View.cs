@@ -8,6 +8,8 @@ namespace Improbable.Gdk.Core
 {
     public class View
     {
+        public IReadOnlyDictionary<string, string> WorkerFlags => workerFlags;
+
         private readonly Dictionary<Type, IViewStorage> typeToViewStorage = new Dictionary<Type, IViewStorage>();
         private readonly Dictionary<uint, IViewStorage> componentIdToViewStorage = new Dictionary<uint, IViewStorage>();
         private readonly List<IViewStorage> viewStorages = new List<IViewStorage>();
