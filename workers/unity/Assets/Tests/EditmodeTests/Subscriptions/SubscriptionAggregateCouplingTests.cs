@@ -80,8 +80,10 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         {
             public abstract class Base<T> : MonoBehaviour
             {
+#pragma warning disable 649
                 [Require] public T Requireable;
                 [Require] public PositionReader Reader;
+#pragma warning restore 649
             }
 
             public class EntityId : Base<Improbable.Gdk.Core.EntityId>
