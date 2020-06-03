@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private WorldSelector worldSelector;
         private EntityList entityList;
         private EntityDetail entityDetail;
+        private WorkerDetail workerDetail;
 
         [MenuItem("SpatialOS/Window/Worker Inspector", false)]
         public static void ShowWindow()
@@ -30,6 +31,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             worldSelector.UpdateWorldSelection();
             entityList.Update();
             entityDetail.Update();
+            workerDetail.Update();
         }
 
         private void SetupUI()
@@ -50,12 +52,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityList.OnEntitySelected += OnEntitySelected;
 
             entityDetail = rootVisualElement.Q<EntityDetail>();
+
+            workerDetail = rootVisualElement.Q<WorkerDetail>();
         }
 
         private void OnWorldChanged(World world)
         {
             entityList.SetWorld(world);
             entityDetail.SetWorld(world);
+            workerDetail.SetWorld(world);
         }
 
         private void OnEntitySelected(EntityData entityData)
