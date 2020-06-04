@@ -1,8 +1,8 @@
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TransformSynchronization;
 using UnityEngine;
-using SpatialQuaternion = Improbable.Gdk.TransformSynchronization.CompressedQuaternion;
 using Quaternion = UnityEngine.Quaternion;
+using SpatialQuaternion = Improbable.Gdk.TransformSynchronization.CompressedQuaternion;
 
 public class RotationBehaviour : MonoBehaviour
 {
