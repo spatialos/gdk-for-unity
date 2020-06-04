@@ -37,40 +37,25 @@ pushd "workers/unity"
         -coverageOptions "${COVERAGE_OPTIONS}" \
         -projectPath "${PROJECT_DIR}/workers/unity" \
         -runEditorTests \
-        -logfile "${PROJECT_DIR}/logs/unity-editmode-test-run.log" \
+        -logfile "${PROJECT_DIR}/logs/editmode-test-run.log" \
         -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
         "${ACCELERATOR_ARGS}"
 popd
 
-cleanUnity "$(pwd)/workers/unity"
+echo "--- Testing Unity: Playmode :joystick:"
 
-echo "--- Testing Unity: Test Project Editmode :microscope:"
-
-pushd "test-project"
+pushd "workers/unity"
     dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
         -batchmode \
         -enableCodeCoverage \
-        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/test-project" \
+        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/playground" \
         -coverageOptions "${COVERAGE_OPTIONS}" \
-        -projectPath "${PROJECT_DIR}/test-project" \
-        -runEditorTests \
-        -logfile "${PROJECT_DIR}/logs/test-project-editmode-test-run.log" \
-        -editorTestsResultFile "${TEST_RESULTS_DIR}/test-project-editmode-test-results.xml" \
-        "${ACCELERATOR_ARGS}"
-popd
-
-echo "--- Testing Unity: Test Project Playmode :joystick:"
-
-pushd "test-project"
-    dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-        -batchmode \
-        -enableCodeCoverage \
-        -coverageResultsPath "${COVERAGE_RESULTS_PATH}/test-project" \
-        -coverageOptions "${COVERAGE_OPTIONS}" \
-        -projectPath "${PROJECT_DIR}/test-project" \
+        -projectPath "${PROJECT_DIR}/workers/unity" \
         -runTests \
         -testPlatform playmode \
-        -logfile "${PROJECT_DIR}/logs/test-project-playmode-test-run.log" \
-        -testResults "${TEST_RESULTS_DIR}/test-project-playmode-test-results.xml" \
+        -logfile "${PROJECT_DIR}/logs/playmode-test-run.log" \
+        -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml" \
         "${ACCELERATOR_ARGS}"
 popd
+
+cleanUnity "$(pwd)/workers/unity"

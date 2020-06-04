@@ -10,11 +10,11 @@ using Improbable.Gdk.Tools.MiniJSON;
 using Improbable.Worker.CInterop;
 using UnityEditor;
 using UnityEngine;
-using UploadTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Tools.RedirectedProcessResult, Improbable.Gdk.DeploymentLauncher.AssemblyConfig>;
+using AuthTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Tools.RedirectedProcessResult, int>;
 using LaunchTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Core.Collections.Result<Improbable.Gdk.Tools.RedirectedProcessResult, Improbable.Gdk.DeploymentLauncher.Ipc.Error>, (string, string, Improbable.Gdk.DeploymentLauncher.BaseDeploymentConfig)>;
 using ListTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Core.Collections.Result<System.Collections.Generic.List<Improbable.Gdk.DeploymentLauncher.DeploymentInfo>, Improbable.Gdk.DeploymentLauncher.Ipc.Error>, string>;
 using StopTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Core.Collections.Result<Improbable.Gdk.Tools.RedirectedProcessResult, Improbable.Gdk.DeploymentLauncher.Ipc.Error>, Improbable.Gdk.DeploymentLauncher.DeploymentInfo>;
-using AuthTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Tools.RedirectedProcessResult, int>;
+using UploadTask = Improbable.Gdk.DeploymentLauncher.Commands.WrappedTask<Improbable.Gdk.Tools.RedirectedProcessResult, Improbable.Gdk.DeploymentLauncher.AssemblyConfig>;
 
 namespace Improbable.Gdk.DeploymentLauncher
 {

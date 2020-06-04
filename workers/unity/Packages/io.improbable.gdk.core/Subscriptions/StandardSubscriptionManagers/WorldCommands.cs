@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
-using Unity.Entities;
 using Improbable.Gdk.Subscriptions;
+using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core

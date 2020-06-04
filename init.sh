@@ -23,11 +23,10 @@ fi
 PKG_ROOT="workers/unity/Packages"
 SDK_PATH="${PKG_ROOT}/io.improbable.worker.sdk"
 SDK_MOBILE_PATH="${PKG_ROOT}/io.improbable.worker.sdk.mobile"
-TEST_SDK_PATH="test-project/Packages/io.improbable.worker.sdk.testschema"
 
 if [[ -n "${WORKER_SDK_OVERRIDE:-}" ]]; then
     SDK_VERSION="${WORKER_SDK_OVERRIDE}"
-else 
+else
     SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
 fi
 
@@ -61,7 +60,7 @@ update_package worker_sdk c-dynamic-x86_64-vc141_mt-win32 "${SDK_PATH}/Plugins/I
 update_package worker_sdk csharp_cinterop "${SDK_PATH}/Plugins/Improbable/Sdk/Common"
 
 update_package schema standard_library "${SDK_PATH}/.schema"
-update_package schema test_schema_library "${TEST_SDK_PATH}/.schema"
+update_package schema test_schema_library "schema"
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
