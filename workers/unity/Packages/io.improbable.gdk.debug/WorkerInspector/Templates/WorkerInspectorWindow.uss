@@ -81,6 +81,11 @@
     height: 15%;
 }
 
+#worker-details-container {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
 #worker-details-label {
     -unity-font-style: bold;
     font-size: 18px;
