@@ -1,4 +1,3 @@
-using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Editor.UIElements;
 using Unity.Entities;
 using UnityEditor;
@@ -10,6 +9,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
     {
         private WorldSelector worldSelector;
         private EntityList entityList;
+        private EntityDetail entityDetail;
 
         [MenuItem("SpatialOS/Window/Worker Inspector", false)]
         public static void ShowWindow()
@@ -29,6 +29,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             worldSelector.UpdateWorldSelection();
             entityList.Update();
+            entityDetail.Update();
         }
 
         private void SetupUI()
@@ -47,16 +48,19 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
             entityList = rootVisualElement.Q<EntityList>();
             entityList.OnEntitySelected += OnEntitySelected;
+
+            entityDetail = rootVisualElement.Q<EntityDetail>();
         }
 
         private void OnWorldChanged(World world)
         {
             entityList.SetWorld(world);
+            entityDetail.SetWorld(world);
         }
 
-        private void OnEntitySelected(EntityId entityId)
+        private void OnEntitySelected(EntityData entityData)
         {
-            UnityEngine.Debug.Log($"Selected {entityId}");
+            entityDetail.SetSelectedEntity(entityData);
         }
     }
 }

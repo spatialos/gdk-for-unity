@@ -93,6 +93,32 @@ namespace Improbable.Gdk.CodeGeneration.Jobs
             }));
         }
 
+        protected void AddGenerators<TDetails>(string relativeOutputDir, IEnumerable<TDetails> details, params GeneratorSetupDelegate<TDetails, CodeWriter.CodeWriter>[] generatorSetupDelegates)
+            where TDetails : GeneratorInputDetails
+        {
+            jobTargets.AddRange(details.SelectMany(detail =>
+            {
+                return generatorSetupDelegates.Select(generatorSetup =>
+                {
+                    var (filePath, generate) = generatorSetup(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, relativeOutputDir, detail.NamespacePath, filePath), () => generate(detail));
+                });
+            }));
+        }
+
+        protected void AddGenerators<TDetails>(string relativeOutputDir, IEnumerable<TDetails> details, params GeneratorSetupDelegate<TDetails, string>[] generatorSetupDelegates)
+            where TDetails : GeneratorInputDetails
+        {
+            jobTargets.AddRange(details.SelectMany(detail =>
+            {
+                return generatorSetupDelegates.Select(generatorSetup =>
+                {
+                    var (filePath, generate) = generatorSetup(detail);
+                    return new JobTarget(Path.Combine(OutputDirectory, relativeOutputDir, detail.NamespacePath, filePath), () => generate(detail));
+                });
+            }));
+        }
+
         public void Clean()
         {
             var numRemovedDirectories = 0;

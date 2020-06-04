@@ -1,4 +1,9 @@
-.entity-list-view {
+.columns {
+    flex-direction: row;
+    flex-grow: 1;
+}
+
+#entity-list-view {
     flex-grow: 1;
     flex-direction: column;
     --unity-item-height: 24;
@@ -9,7 +14,7 @@
     -unity-text-align: middle-left;
 }
 
-.entity-panel {
+#entity-panel {
     flex-grow: 1;
     flex-direction: column;
     max-width: 33%;
@@ -20,7 +25,55 @@
     border-top-width: 1px;
 }
 
-.entity-list-searchbar {
+#entity-list-searchbar {
     flex-grow: 1;
     width: auto;
+}
+
+#entity-detail {
+    flex-grow: 1;
+    flex-direction: column;
+    max-width: 67%;
+    border-top-color: rgba(0, 0, 0, 0.2);
+    border-top-width: 1px;
+}
+
+#entity-info {
+    min-height: 50px;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom-color: rgba(0, 0, 0, 0.20);
+    border-bottom-width: 1px;
+    -unity-text-align: middle-left;
+}
+
+#entity-name {
+    -unity-font-style: bold;
+    font-size: 14px;
+    padding-bottom: 4px;
+}
+
+.component-foldout {
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-color: rgba(0,0,0,0.10);
+    padding: 0;
+}
+
+.component-foldout .unity-foldout__toggle {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: white;
+    -unity-font-style: bold;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 0;
+}
+
+.component-foldout .unity-foldout__content {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.is-auth-toggle .unity-label:disabled {
+    color: white;
 }
