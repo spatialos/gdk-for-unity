@@ -7,6 +7,12 @@
 - Added a "C# Editor Output Directory" field to the GDK Tools Configuration. [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376)
     - This specifies where Editor-only code is generated to.
     - This defaults to `Assets/Generated/Editor`.
+- `EntityId` now implements `IComparable<EntityId>`. [#1375](https://github.com/spatialos/gdk-for-unity/pull/1375)
+- The `ComponentDatabase` now exposes a non-generic `GetComponentId(Type type)` static method. [#1379](https://github.com/spatialos/gdk-for-unity/pull/1379)
+- Added a new "Worker Inspector" Editor window. [#1375](https://github.com/spatialos/gdk-for-unity/pull/1375) [#1379](https://github.com/spatialos/gdk-for-unity/pull/1379) [#1382](https://github.com/spatialos/gdk-for-unity/pull/1382)
+    - This window displays worker information like: worker flags, worker ID, and worker type.
+    - This window also displays the entities that a worker has checked out.
+    - For each entity checked out, you can view the components on that entity and whether the worker is authoritative over that component. 
 
 ### Fixed
 

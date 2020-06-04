@@ -1,0 +1,11 @@
+.is-auth-toggle .unity-label:disabled {
+    color: black;
+}
+
+#worker-info .unity-label:disabled {
+    color: black;
+}
+
+#worker-flags .unity-label:disabled {
+    color: black;
+}

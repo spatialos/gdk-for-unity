@@ -4,7 +4,8 @@
     xmlns:wi="Improbable.Gdk.Debug.WorkerInspector"
 >
     <gdk:WorldSelector />
-    <VisualElement class="columns">
+    <wi:WorkerDetail name="worker-details"/>
+    <VisualElement name="entities">
         <wi:EntityList name="entity-panel"/>
         <wi:EntityDetail name="entity-detail" />
     </VisualElement>

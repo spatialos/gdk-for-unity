@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private WorldSelector worldSelector;
         private EntityList entityList;
         private EntityDetail entityDetail;
+        private WorkerDetail workerDetail;
 
         [MenuItem("SpatialOS/Window/Worker Inspector", false)]
         public static void ShowWindow()
@@ -30,6 +31,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             worldSelector.UpdateWorldSelection();
             entityList.Update();
             entityDetail.Update();
+            workerDetail.Update();
         }
 
         private void SetupUI()
@@ -37,11 +39,22 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             const string windowUxmlPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uxml";
             const string windowUssPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uss";
 
+            const string darkModeUssPath =
+                "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow_Dark.uss";
+            const string lightModeUssPath =
+                "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow_Light.uss";
+
             var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(windowUxmlPath);
             windowTemplate.CloneTree(rootVisualElement);
 
             var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(windowUssPath);
             rootVisualElement.styleSheets.Add(stylesheet);
+
+            var themedSheet =
+                AssetDatabase.LoadAssetAtPath<StyleSheet>(EditorGUIUtility.isProSkin
+                    ? darkModeUssPath
+                    : lightModeUssPath);
+            rootVisualElement.styleSheets.Add(themedSheet);
 
             worldSelector = rootVisualElement.Q<WorldSelector>();
             worldSelector.OnWorldChanged += OnWorldChanged;
@@ -50,12 +63,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityList.OnEntitySelected += OnEntitySelected;
 
             entityDetail = rootVisualElement.Q<EntityDetail>();
+
+            workerDetail = rootVisualElement.Q<WorkerDetail>();
         }
 
         private void OnWorldChanged(World world)
         {
             entityList.SetWorld(world);
             entityDetail.SetWorld(world);
+            workerDetail.SetWorld(world);
         }
 
         private void OnEntitySelected(EntityData entityData)
