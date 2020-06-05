@@ -2,14 +2,16 @@
 set -e -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
-  set -x
+    set -x
 fi
 
 cd "$(dirname "$0")/../"
 
-echo "--- Bootstrapping :boot:"
-./ci/get-shared-ci.sh
+traceStart "Bootstrapping :boot:"
+    ./ci/get-shared-ci.sh
+traceEnd
 
 # Download local copy of the SDK packages.
-echo "--- Hit init :right-facing_fist::red_button:"
-./init.sh
+traceStart "Hit init :right-facing_fist::red_button:"
+    ./init.sh
+traceEnd
