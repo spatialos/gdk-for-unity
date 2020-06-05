@@ -1,5 +1,8 @@
 package playground;
 
+import "improbable/gdk/debug/worker_inspector.schema";
+
+[improbable.gdk.debug.ComponentIcon("NavMeshAgent Icon")]
 component PlayerInput
 {
     id = 12001;

@@ -1,5 +1,7 @@
 package playground;
 
+import "improbable/gdk/debug/worker_inspector.schema";
+
 enum Color {
     YELLOW = 0;
     GREEN = 1;
@@ -11,11 +13,13 @@ type ColorData {
     Color color = 1;
 }
 
+[improbable.gdk.debug.ComponentIcon("PreTextureRGB")]
 component CubeColor {
     id = 12000;
     event ColorData change_color;
 }
 
+[improbable.gdk.debug.ComponentIcon("PreTextureRGB")]
 component SpinnerColor
 {
 	id = 12010;
