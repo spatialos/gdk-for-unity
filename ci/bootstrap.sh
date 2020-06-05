@@ -17,4 +17,4 @@ traceStart "Hit init :right-facing_fist::red_button:"
     ./init.sh
 traceEnd
 
-echo "## imp-ci group-start Bootstrapping :boot:"
+echo "## imp-ci group-end Bootstrapping :boot:"
