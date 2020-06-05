@@ -74,6 +74,13 @@
     padding-bottom: 4px;
 }
 
+.component-foldout .component-icon {
+    height: 15px;
+    width: 15px;
+    align-self: center;
+    margin-right: 10px;
+}
+
 #worker-details {
     padding: 8px 4px;
     border-top-color: rgba(0, 0, 0, 0.20);
