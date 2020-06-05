@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.6-bktracing` - 2020-06-05
+
 ### Added
 
 - Added a "C# Editor Output Directory" field to the GDK Tools Configuration. [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376)
