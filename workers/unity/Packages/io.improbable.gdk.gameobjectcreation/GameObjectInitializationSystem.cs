@@ -106,7 +106,7 @@ namespace Improbable.Gdk.GameObjectCreation
                 }
                 catch (Exception e)
                 {
-                    Debug.LogException(e);
+                    UnityEngine.Debug.LogException(e);
                 }
             });
 
@@ -139,7 +139,7 @@ namespace Improbable.Gdk.GameObjectCreation
                     }
                     catch (Exception e)
                     {
-                        Debug.LogException(e);
+                        UnityEngine.Debug.LogException(e);
                     }
 
                     PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent

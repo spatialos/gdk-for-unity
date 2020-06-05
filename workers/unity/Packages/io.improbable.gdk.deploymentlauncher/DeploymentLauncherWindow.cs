@@ -87,11 +87,11 @@ namespace Improbable.Gdk.DeploymentLauncher
             {
                 if (wrappedTask.Task.Result.ExitCode != 0)
                 {
-                    Debug.LogError($"Upload of {wrappedTask.Context.AssemblyName} failed.");
+                    UnityEngine.Debug.LogError($"Upload of {wrappedTask.Context.AssemblyName} failed.");
                 }
                 else
                 {
-                    Debug.Log($"Upload of {wrappedTask.Context.AssemblyName} succeeded.");
+                    UnityEngine.Debug.Log($"Upload of {wrappedTask.Context.AssemblyName} succeeded.");
                 }
             }
 
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
                     else
                     {
-                        Debug.LogError($"Launch of {config.Name} failed. Code: {error.Code} Message: {error.Message}");
+                        UnityEngine.Debug.LogError($"Launch of {config.Name} failed. Code: {error.Code} Message: {error.Message}");
                     }
                 }
             }
@@ -139,7 +139,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
                     else
                     {
-                        Debug.LogError($"Failed to list deployments in project {wrappedTask.Context}. Code: {error.Code} Message: {error.Message}");
+                        UnityEngine.Debug.LogError($"Failed to list deployments in project {wrappedTask.Context}. Code: {error.Code} Message: {error.Message}");
                     }
                 }
             }
@@ -150,7 +150,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 var info = wrappedTask.Context;
                 if (result.IsOkay)
                 {
-                    Debug.Log($"Stopped deployment: \"{info.Name}\" successfully.");
+                    UnityEngine.Debug.Log($"Stopped deployment: \"{info.Name}\" successfully.");
 
                     for (var i = 0; i < listedDeployments.Count; i++)
                     {
@@ -171,7 +171,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     }
                     else
                     {
-                        Debug.LogError($"Failed to stop deployment: \"{info.Name}\". Code: {error.Code} Message: {error.Message}.");
+                        UnityEngine.Debug.LogError($"Failed to stop deployment: \"{info.Name}\". Code: {error.Code} Message: {error.Message}.");
                     }
                 }
             }
@@ -182,13 +182,13 @@ namespace Improbable.Gdk.DeploymentLauncher
 
                 if (result.ExitCode == 0)
                 {
-                    Debug.Log("Successfully authenticated with SpatialOS. Retrying previous action.");
+                    UnityEngine.Debug.Log("Successfully authenticated with SpatialOS. Retrying previous action.");
                 }
                 else
                 {
                     // Stop the potential infinite loop of retries.
                     manager.Cancel();
-                    Debug.LogError("Failed to authenticate with SpatialOS. Please run \"spatial auth login\" manually.");
+                    UnityEngine.Debug.LogError("Failed to authenticate with SpatialOS. Please run \"spatial auth login\" manually.");
                 }
             }
 
@@ -388,11 +388,11 @@ namespace Improbable.Gdk.DeploymentLauncher
             {
                 if (manager.CancelCurrentTask(taskId))
                 {
-                    Debug.Log("Cancelled task.");
+                    UnityEngine.Debug.Log("Cancelled task.");
                 }
                 else
                 {
-                    Debug.LogWarning("Cannot cancel task as it has already reached completion.");
+                    UnityEngine.Debug.LogWarning("Cannot cancel task as it has already reached completion.");
                 }
             }
         }
@@ -713,7 +713,7 @@ namespace Improbable.Gdk.DeploymentLauncher
             catch (Exception e)
             {
                 allWorkers = new string[0];
-                Debug.LogException(e);
+                UnityEngine.Debug.LogException(e);
                 return false;
             }
         }
@@ -858,7 +858,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
             if (!File.Exists(spatialJsonFile))
             {
-                Debug.LogError($"Could not find a spatialos.json file located at: {spatialJsonFile}");
+                UnityEngine.Debug.LogError($"Could not find a spatialos.json file located at: {spatialJsonFile}");
                 return null;
             }
 
@@ -866,7 +866,7 @@ namespace Improbable.Gdk.DeploymentLauncher
 
             if (data == null)
             {
-                Debug.LogError($"Could not parse spatialos.json file located at: {spatialJsonFile}");
+                UnityEngine.Debug.LogError($"Could not parse spatialos.json file located at: {spatialJsonFile}");
                 return null;
             }
 
@@ -876,7 +876,7 @@ namespace Improbable.Gdk.DeploymentLauncher
             }
             catch (KeyNotFoundException e)
             {
-                Debug.LogError($"Could not find a \"name\" field in {spatialJsonFile}.\n Raw exception: {e.Message}");
+                UnityEngine.Debug.LogError($"Could not find a \"name\" field in {spatialJsonFile}.\n Raw exception: {e.Message}");
                 return null;
             }
         }
@@ -888,7 +888,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                 return false;
             }
 
-            Debug.Log("Attempting to authenticate...");
+            UnityEngine.Debug.Log("Attempting to authenticate...");
             manager.Auth();
 
             return true;
