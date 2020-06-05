@@ -7,11 +7,14 @@ fi
 
 cd "$(dirname "$0")/../"
 
-traceStart "Bootstrapping :boot:"
-    ./ci/get-shared-ci.sh
-traceEnd
+echo "## imp-ci group-start Bootstrapping :boot:"
+
+./ci/get-shared-ci.sh
+source ".shared-ci/scripts/pinned-tools.sh"
 
 # Download local copy of the SDK packages.
 traceStart "Hit init :right-facing_fist::red_button:"
     ./init.sh
 traceEnd
+
+echo "## imp-ci group-start Bootstrapping :boot:"
