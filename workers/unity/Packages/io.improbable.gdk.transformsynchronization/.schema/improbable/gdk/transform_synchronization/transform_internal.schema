@@ -1,5 +1,7 @@
 package improbable.gdk.transform_synchronization;
 
+import "improbable/gdk/debug/worker_inspector.schema";
+
 type FixedPointVector3 {
     sint32 x = 1;
     sint32 y = 2;
@@ -10,6 +12,7 @@ type CompressedQuaternion {
     uint32 data = 1;
 }
 
+[improbable.gdk.debug.ComponentIcon("Transform Icon")]
 component TransformInternal {
     id = 11000;
     FixedPointVector3 location = 1;
