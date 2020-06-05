@@ -1,6 +1,7 @@
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.CodeWriter;
 using Improbable.Gdk.CodeGeneration.CodeWriter.Scopes;
+using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 
 namespace Improbable.Gdk.CodeGenerator
@@ -51,6 +52,8 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     mb.TextList(typeGenerator.ToFieldInitialisation(field, "ComponentFoldout"));
                 }
+                
+                mb.Line($"InjectComponentIcon(\"{GetComponentIcon(details)}\");");
             });
         }
 
@@ -63,6 +66,36 @@ namespace Improbable.Gdk.CodeGenerator
 
                 mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToUiFieldUpdate(fd, "component")));
             });
+        }
+
+        private static string GetComponentIcon(UnityComponentDetails details)
+        {
+            string componentIcon;
+
+            switch (details.ComponentId)
+            {
+                case 53: // Metadata
+                    componentIcon = "d_FilterByLabel";
+                    break;
+                case 54: //Position
+                    componentIcon = "Transform Icon";
+                    break;
+                case 58: // Interest
+                    componentIcon = "d_ViewToolOrbit";
+                    break;
+                default:
+                    componentIcon = "d_TextAsset Icon";
+                    break;
+            }
+
+            if (details.Annotations.TryGetValue("improbable.gdk.debug.ComponentIcon", out var annotations))
+            {
+                var annotation = annotations[0].TypeValue;
+                var iconNameField = annotation.Fields.First(field => field.Name == "icon_name");
+                componentIcon = iconNameField.Value.StringValue;
+            }
+
+            return componentIcon;
         }
     }
 }
