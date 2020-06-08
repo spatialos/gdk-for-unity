@@ -2,7 +2,7 @@
 set -e -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
-  set -x
+    set -x
 fi
 
 SHARED_CI_DIR="$(pwd)/.shared-ci"

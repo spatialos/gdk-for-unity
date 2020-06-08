@@ -2,14 +2,19 @@
 set -e -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
-  set -x
+    set -x
 fi
 
 cd "$(dirname "$0")/../"
 
-echo "--- Bootstrapping :boot:"
+echo "## imp-ci group-start Bootstrapping :boot:"
+
 ./ci/get-shared-ci.sh
+source ".shared-ci/scripts/pinned-tools.sh"
 
 # Download local copy of the SDK packages.
-echo "--- Hit init :right-facing_fist::red_button:"
-./init.sh
+traceStart "Hit init :right-facing_fist::red_button:"
+    ./init.sh
+traceEnd
+
+echo "## imp-ci group-end Bootstrapping :boot:"

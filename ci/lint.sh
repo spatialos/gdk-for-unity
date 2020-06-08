@@ -3,7 +3,7 @@
 set -e -u -o pipefail
 
 if [[ -n "${DEBUG-}" ]]; then
-  set -x
+    set -x
 fi
 
 cd "$(dirname "$0")/.."
