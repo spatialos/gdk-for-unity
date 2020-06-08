@@ -7,6 +7,7 @@ namespace Improbable.Gdk.CodeGenerator
             return @"{
     ""name"": ""Improbable.Gdk.Generated.Debug"",
     ""references"": [
+        ""Improbable.Gdk.Core"",
         ""Improbable.Gdk.Generated"",
         ""Improbable.Gdk.Debug.WorkerInspector.Codegen"",
         ""Unity.Entities""
