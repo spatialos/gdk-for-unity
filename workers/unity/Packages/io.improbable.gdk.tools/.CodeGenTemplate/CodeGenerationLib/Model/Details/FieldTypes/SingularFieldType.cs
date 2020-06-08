@@ -4,44 +4,44 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class SingularFieldType : IFieldType
     {
-        public string Type => containedType.FqnType;
+        public string Type => ContainedType.FqnType;
 
-        private readonly ContainedType containedType;
+        public readonly ContainedType ContainedType;
 
         public SingularFieldType(TypeReference innerType)
         {
-            containedType = new ContainedType(innerType);
+            ContainedType = new ContainedType(innerType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
-            return containedType.GetSerializationStatement(fieldInstance, schemaObject, fieldNumber);
+            return ContainedType.GetSerializationStatement(fieldInstance, schemaObject, fieldNumber);
         }
 
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
-            return $"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};";
+            return $"{fieldInstance} = {ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)};";
         }
 
         public string GetDeserializeUpdateString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
+            return new IfElseBlock($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.Line($"{fieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                then.Line($"{fieldInstance} = {ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }).Format();
         }
 
         public string GetDeserializeUpdateIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
+            return new IfElseBlock($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.Line($"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
+                then.Line($"{updateFieldInstance} = {ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)};");
             }).Format();
         }
 
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
         {
-            return $"{updateFieldInstance} = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};";
+            return $"{updateFieldInstance} = {ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)};";
         }
 
         public string GetTrySetClearedFieldString(string fieldInstance, string componentUpdateSchemaObject, uint fieldNumber)
