@@ -48,21 +48,21 @@ linux: &linux
       - exit_status: -1
         limit: 3
 
-macos: &macos
-  agents:
-    - "capable_of_building=gdk-for-unity"
-    - "environment=production"
-    - "permission_set=builder"
-    - "platform=macos"
-    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
-  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
-  retry:
-    automatic:
-        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
-      - exit_status: -1
-        limit: 3
-  env: &macos-env
-    ACCELERATOR_ENDPOINT: "172.16.100.150"
+#macos: &macos
+#  agents:
+#    - "capable_of_building=gdk-for-unity"
+#    - "environment=production"
+#    - "permission_set=builder"
+#    - "platform=macos"
+#    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
+#  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
+#  retry:
+#    automatic:
+#        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+#      - exit_status: -1
+#        limit: 3
+#  env: &macos-env
+#    ACCELERATOR_ENDPOINT: "172.16.100.150"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
@@ -87,12 +87,12 @@ steps:
     command: bash -c ci/sonar-scanner.sh
     <<: *windows
 
-  - label: ":darwin: ~ test"
-    id: "test-darwin"
-    command: bash -c ci/test.sh
-    <<: *macos
-    artifact_paths:
-      - logs/**/*
+#  - label: ":darwin: ~ test"
+#    id: "test-darwin"
+#    command: bash -c ci/test.sh
+#    <<: *macos
+#    artifact_paths:
+#      - logs/**/*
 
   - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
@@ -109,20 +109,20 @@ steps:
           context: test-summary-windows
     <<: *linux
 
-  - label: ":debian: ~ annotate :darwin: test results :pencil2:"
-    depends_on:
-      - step: "test-darwin"
-        allow_failure: true
-    plugins:
-      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
-          inputs:
-            - label: ":octagonal_sign: :darwin: Test failures "
-              artifact_path: "logs/nunit/*.xml"
-              type: nunit
-          formatter:
-            type: details
-          context: test-summary-darwin
-    <<: *linux
+#  - label: ":debian: ~ annotate :darwin: test results :pencil2:"
+#    depends_on:
+#      - step: "test-darwin"
+#        allow_failure: true
+#    plugins:
+#      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
+#          inputs:
+#            - label: ":octagonal_sign: :darwin: Test failures "
+#              artifact_path: "logs/nunit/*.xml"
+#              type: nunit
+#          formatter:
+#            type: details
+#          context: test-summary-darwin
+#    <<: *linux
 
   - label: ":windows: ~ build deployment launcher :rocket:"
     command: bash -c ci/build-deployment-launcher.sh
@@ -176,15 +176,15 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
 
-  - label: ":darwin: ~ build :ios:"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *macos
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *macos-env
-      WORKER_TYPE: "MobileClient"
-      BUILD_ENVIRONMENT: "local"
-      BUILD_TARGET_FILTER: "ios"
-      SCRIPTING_BACKEND: "il2cpp"
-      TARGET_IOS_SDK: "simulator"
+#  - label: ":darwin: ~ build :ios:"
+#    command: bash -c .shared-ci/scripts/build-worker.sh
+#    <<: *macos
+#    artifact_paths:
+#      - logs/**/*
+#    env:
+#      <<: *macos-env
+#      WORKER_TYPE: "MobileClient"
+#      BUILD_ENVIRONMENT: "local"
+#      BUILD_TARGET_FILTER: "ios"
+#      SCRIPTING_BACKEND: "il2cpp"
+#      TARGET_IOS_SDK: "simulator"
