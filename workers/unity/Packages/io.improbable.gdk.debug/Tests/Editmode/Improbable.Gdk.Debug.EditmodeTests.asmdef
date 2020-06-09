@@ -1,13 +1,13 @@
 {
     "name": "Improbable.Gdk.Debug.EditmodeTests",
     "references": [
-        "GUID:40425aeb5a2b3f74797745fff21bc766",
-        "GUID:c5f2ea2f695256346af9ccd76c6f055d",
-        "GUID:edb3612c44ad0d24988d387581fd5fbe",
-        "GUID:0acc523941302664db1f4e527237feb3",
-        "GUID:27619889b8ba8c24980f49ee34dbb44a",
-        "GUID:734d92eba21c94caba915361bd5ac177",
-        "GUID:bd66e1825421d9041a8f2c4fa9ca562a"
+        "Improbable.Gdk.Debug",
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.Core",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
+        "Unity.Entities",
+        "Improbable.Gdk.Generated"
     ],
     "includePlatforms": [
         "Editor"
