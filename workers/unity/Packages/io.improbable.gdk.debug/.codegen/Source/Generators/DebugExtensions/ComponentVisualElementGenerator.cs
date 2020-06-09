@@ -29,7 +29,7 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         type.Line($"public override ComponentType ComponentType {{ get; }} = ComponentType.ReadOnly<{details.Name}.Component>();");
 
-                        type.TextList(TextList.New(details.FieldDetails.Select(ToFieldDeclaration)));
+                        type.TextList(details.FieldDetails.Select(ToFieldDeclaration));
 
                         GenerateConstructor(type, details);
                         GenerateUpdateMethod(type, details);
@@ -67,7 +67,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 foreach (var field in details.FieldDetails)
                 {
-                    mb.TextList(TextList.New(ToFieldInitialisation(field)));
+                    mb.TextList(ToFieldInitialisation(field));
                 }
             });
         }
