@@ -1,8 +1,8 @@
 {
     "name": "Improbable.Gdk.Core.Editor",
     "references": [
-        "GUID:734d92eba21c94caba915361bd5ac177",
-        "GUID:edb3612c44ad0d24988d387581fd5fbe"
+        "Unity.Entities",
+        "Improbable.Gdk.Core"
     ],
     "includePlatforms": [
         "Editor"
@@ -13,5 +13,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

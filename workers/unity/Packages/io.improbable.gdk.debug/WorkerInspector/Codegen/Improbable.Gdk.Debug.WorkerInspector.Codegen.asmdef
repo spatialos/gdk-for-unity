@@ -1,7 +1,7 @@
 {
     "name": "Improbable.Gdk.Debug.WorkerInspector.Codegen",
     "references": [
-        "GUID:734d92eba21c94caba915361bd5ac177"
+        "Unity.Entities"
     ],
     "includePlatforms": [
         "Editor"
