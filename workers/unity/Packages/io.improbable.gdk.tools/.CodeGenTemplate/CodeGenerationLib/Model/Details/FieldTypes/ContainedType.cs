@@ -7,7 +7,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     {
         public readonly string FqnType;
         public readonly ValueType Category;
-        public PrimitiveType? PrimitiveType;
+        public readonly PrimitiveType? PrimitiveType;
 
         public ContainedType(TypeReference innerType)
         {
