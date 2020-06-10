@@ -2,7 +2,8 @@
     "name": "Improbable.Gdk.TestUtils",
     "references": [
         "Improbable.Gdk.Core",
-        "Unity.Entities"
+        "Unity.Entities",
+        "Unity.PerformanceTesting"
     ],
     "includePlatforms": [
         "Editor"
@@ -15,5 +16,6 @@
     ],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }

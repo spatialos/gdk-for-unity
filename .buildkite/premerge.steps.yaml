@@ -74,6 +74,13 @@ steps:
     command: bash -c ci/lint.sh
     <<: *linux
 
+  - label: ":windows: ~ perf test"
+    id: "perftest-windows"
+    command: bash -c ci/perf-test.sh
+    <<: *windows
+    artifact_paths:
+      - logs/**/*
+
   - label: ":windows: ~ test"
     id: "test-windows"
     command: bash -c ci/test.sh

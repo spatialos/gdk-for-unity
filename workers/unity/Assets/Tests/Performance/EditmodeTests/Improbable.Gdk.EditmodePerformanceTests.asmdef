@@ -1,0 +1,33 @@
+{
+    "name": "Improbable.Gdk.EditmodePerformanceTests",
+    "references": [
+        "Improbable.Gdk.QueryBasedInterestHelper",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Core",
+        "Unity.Entities",
+        "Unity.Entities.Hybrid",
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.TransformSynchronization",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.GameObjectCreation",
+        "Unity.PerformanceTesting"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Improbable.Worker.CInterop.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
