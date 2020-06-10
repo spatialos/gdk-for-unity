@@ -105,6 +105,8 @@ steps:
     depends_on:
       - step: "test-windows"
         allow_failure: true
+      - step: "perftest-windows"
+        allow_failure: true
     plugins:
       - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
           inputs:
@@ -131,57 +133,57 @@ steps:
 #          context: test-summary-darwin
 #    <<: *linux
 
-  - label: ":windows: ~ build deployment launcher :rocket:"
-    command: bash -c ci/build-deployment-launcher.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
+  # - label: ":windows: ~ build deployment launcher :rocket:"
+  #   command: bash -c ci/build-deployment-launcher.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
 
-  - label: ":windows: ~ build :android:"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-      - workers/unity/build/worker/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "MobileClient"
-      BUILD_ENVIRONMENT: "local"
-      BUILD_TARGET_FILTER: "android"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build :android:"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #     - workers/unity/build/worker/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "MobileClient"
+  #     BUILD_ENVIRONMENT: "local"
+  #     BUILD_TARGET_FILTER: "android"
+  #     SCRIPTING_BACKEND: "mono"
 
-  - label: ":windows: ~ build UnityClient mono"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityClient"
-      BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build UnityClient mono"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityClient"
+  #     BUILD_ENVIRONMENT: "cloud"
+  #     SCRIPTING_BACKEND: "mono"
 
-  - label: ":windows: ~ build UnityClient il2cpp"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityClient"
-      BUILD_ENVIRONMENT: "local"
-      SCRIPTING_BACKEND: "il2cpp"
+  # - label: ":windows: ~ build UnityClient il2cpp"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityClient"
+  #     BUILD_ENVIRONMENT: "local"
+  #     SCRIPTING_BACKEND: "il2cpp"
 
-  - label: ":windows: ~ build UnityGameLogic mono"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityGameLogic"
-      BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build UnityGameLogic mono"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityGameLogic"
+  #     BUILD_ENVIRONMENT: "cloud"
+  #     SCRIPTING_BACKEND: "mono"
 
 #  - label: ":darwin: ~ build :ios:"
 #    command: bash -c .shared-ci/scripts/build-worker.sh
