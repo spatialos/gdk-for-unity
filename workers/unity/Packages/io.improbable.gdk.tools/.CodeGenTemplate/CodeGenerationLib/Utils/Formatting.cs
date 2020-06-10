@@ -22,6 +22,12 @@ namespace Improbable.Gdk.CodeGeneration.Utils
                 .Aggregate(string.Empty, (s1, s2) => s1 + s2);
         }
 
+        public static string SnakeCaseToHumanReadable(string text)
+        {
+            return string.Join(" ", text.Split(new[] { "_" }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => char.ToUpperInvariant(s[0]) + s.Substring(1, s.Length - 1)));
+        }
+
         public static string GetNamespacePath(string packageName)
         {
             var capitalisedPackageName = CapitaliseQualifiedNameParts(packageName);

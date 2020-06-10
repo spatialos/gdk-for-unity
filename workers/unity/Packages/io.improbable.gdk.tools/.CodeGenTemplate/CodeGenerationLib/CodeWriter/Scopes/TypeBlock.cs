@@ -29,6 +29,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             Add(textList);
         }
 
+        public void TextList(IEnumerable<string> text)
+        {
+            Add(CodeGeneration.CodeWriter.TextList.New(text));
+        }
+
         public void Line(string snippet)
         {
             Add(new Text(snippet));
