@@ -132,3 +132,19 @@
     flex-grow: 1;
     max-width: 50%;
 }
+
+.user-defined-type-container {
+    margin: 1px 0px 1px 3px;
+}
+
+.user-defined-type-container-data {
+    margin-left: 8px;
+}
+
+.component-foldout .unity-text-field:disabled, .unity-toggle:disabled {
+    opacity: 1;
+}
+
+#worker-details .unity-text-field:disabled, .unity-toggle:disabled {
+    opacity: 1;
+}
