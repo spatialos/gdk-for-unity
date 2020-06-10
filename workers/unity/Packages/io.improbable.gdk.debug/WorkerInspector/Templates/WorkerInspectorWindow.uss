@@ -148,3 +148,9 @@
 #worker-details .unity-text-field:disabled, .unity-toggle:disabled {
     opacity: 1;
 }
+
+.label-empty-option {
+    margin-left: 3px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+}

@@ -1,7 +1,8 @@
 {
     "name": "Improbable.Gdk.Debug.WorkerInspector.Codegen",
     "references": [
-        "Unity.Entities"
+        "Unity.Entities",
+        "Improbable.Gdk.Core"
     ],
     "includePlatforms": [
         "Editor"
