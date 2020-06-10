@@ -37,6 +37,7 @@ traceStart "Testing Unity: Editmode :writing_hand:"
             -coverageOptions "${COVERAGE_OPTIONS}" \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runEditorTests \
+            -testCategory "Uncategorized" \
             -logfile "${PROJECT_DIR}/logs/editmode-test-run.log" \
             -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-test-results.xml" \
             "${ACCELERATOR_ARGS}"
@@ -53,6 +54,7 @@ traceStart "Testing Unity: Playmode :joystick:"
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runTests \
             -testPlatform playmode \
+            -testCategory "Uncategorized" \
             -logfile "${PROJECT_DIR}/logs/playmode-test-run.log" \
             -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml" \
             "${ACCELERATOR_ARGS}"

@@ -3,12 +3,12 @@ using Unity.PerformanceTesting;
 
 namespace Improbable.Gdk.EditmodePerformanceTests
 {
-    public class ThisShouldNotRun
+    public class ThisShouldRun
     {
         [Performance, Test]
-        public void This_should_not_run()
+        public void SampleEditmodePerformanceTest()
         {
-            Assert.IsTrue(false);
+            Assert.IsTrue(true);
         }
     }
 }
