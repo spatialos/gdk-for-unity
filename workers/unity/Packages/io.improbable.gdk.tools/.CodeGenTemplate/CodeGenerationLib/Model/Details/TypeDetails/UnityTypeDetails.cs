@@ -14,6 +14,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public IReadOnlyList<UnityTypeDetails> ChildTypes { get; private set; }
         public IReadOnlyList<UnityEnumDetails> ChildEnums { get; private set; }
 
+        public UnityTypeDetails Parent { get; private set; }
+
         public SerializationOverride SerializationOverride { get; internal set; }
 
         public bool HasSerializationOverride => SerializationOverride != null;
@@ -44,6 +46,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 .Select(kv => kv.Value)
                 .ToList()
                 .AsReadOnly();
+
+            foreach (var child in ChildTypes)
+            {
+                child.Parent = this;
+            }
 
             Logger.Trace($"Populating child enum details for type {rawTypeDefinition.QualifiedName}.");
             ChildEnums = store.Enums
