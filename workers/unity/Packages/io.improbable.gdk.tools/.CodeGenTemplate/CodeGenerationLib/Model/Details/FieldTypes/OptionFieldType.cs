@@ -9,39 +9,37 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             get
             {
-                if (containedType.FqnType ==
-                    UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.String]
-                    ||
-                    containedType.FqnType ==
-                    UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.Bytes])
+                if (!IsNullable)
                 {
-                    return $"global::Improbable.Gdk.Core.Option<{containedType.FqnType}>";
+                    return $"global::Improbable.Gdk.Core.Option<{ContainedType.FqnType}>";
                 }
 
-                return $"{containedType.FqnType}?";
+                return $"{ContainedType.FqnType}?";
             }
         }
 
-        private readonly ContainedType containedType;
+        public readonly ContainedType ContainedType;
+        public readonly bool IsNullable;
 
         public OptionFieldType(TypeReference innerType)
         {
-            containedType = new ContainedType(innerType);
+            ContainedType = new ContainedType(innerType);
+            IsNullable = ContainedType.FqnType != UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.String] && ContainedType.FqnType != UnityTypeMappings.SchemaTypeToUnityType[PrimitiveType.Bytes];
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
             return new IfElseBlock($"{fieldInstance}.HasValue", then =>
             {
-                then.Line(containedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
+                then.Line(ContainedType.GetSerializationStatement($"{fieldInstance}.Value", schemaObject, fieldNumber));
             }).Format();
         }
 
         public string GetDeserializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
+            return new IfElseBlock($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
             {
-                then.Line($"{fieldInstance} = new {Type}({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                then.Line($"{fieldInstance} = new {Type}({ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
             }).Format();
         }
 
@@ -55,11 +53,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     {
                         then.Line($"{fieldInstance} = new {Type}();");
                     })
-                    .ElseIf($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
+                    .ElseIf($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1", then =>
                     {
                         then.Line(new[]
                         {
-                            $"var value = {containedType.GetDeserializationExpression(schemaObject, fieldNumber)};",
+                            $"var value = {ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)};",
                             $"{fieldInstance} = new {Type}(value);"
                         });
                     });
@@ -76,21 +74,21 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     then =>
                     {
                         then.Line($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());");
-                    }).ElseIf($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
+                    }).ElseIf($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
                     then =>
                     {
-                        then.Line($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                        then.Line($"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                     });
             }).Format();
         }
 
         public string GetDeserializeDataIntoUpdateString(string updateFieldInstance, string schemaObject, uint fieldNumber)
         {
-            return new IfElseBlock($"{containedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
+            return new IfElseBlock($"{ContainedType.GetCountExpression(schemaObject, fieldNumber)} == 1",
                 then =>
                 {
                     then.Line(
-                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({containedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
+                        $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>({ContainedType.GetDeserializationExpression(schemaObject, fieldNumber)});");
                 }).Format();
         }
 
