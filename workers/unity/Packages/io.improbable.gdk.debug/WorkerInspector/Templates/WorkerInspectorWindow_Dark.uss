@@ -1,4 +1,8 @@
-.is-auth-toggle .unity-label:disabled {
+#worker-details .unity-label:disabled {
+    color: white;
+}
+
+.component-foldout .unity-label:disabled {
     color: white;
 }
 
@@ -7,5 +11,9 @@
 }
 
 #worker-flags .unity-label:disabled {
+    color: white;
+}
+
+.unity-label {
     color: white;
 }

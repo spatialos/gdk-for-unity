@@ -6,6 +6,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
     public class ContainedType
     {
         public readonly string FqnType;
+        public readonly string RawType;
         public readonly ValueType Category;
         public readonly PrimitiveType? PrimitiveType;
 
@@ -16,16 +17,19 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Enum:
                     Category = ValueType.Enum;
                     FqnType = DetailsUtils.GetCapitalisedFqnTypename(innerType.Enum);
+                    RawType = innerType.Enum;
                     PrimitiveType = null;
                     break;
                 case ValueType.Primitive:
                     Category = ValueType.Primitive;
                     FqnType = UnityTypeMappings.SchemaTypeToUnityType[innerType.Primitive];
+                    RawType = innerType.Primitive.ToString();
                     PrimitiveType = innerType.Primitive;
                     break;
                 case ValueType.Type:
                     Category = ValueType.Type;
                     FqnType = DetailsUtils.GetCapitalisedFqnTypename(innerType.Type);
+                    RawType = innerType.Type;
                     PrimitiveType = null;
                     break;
                 default:
