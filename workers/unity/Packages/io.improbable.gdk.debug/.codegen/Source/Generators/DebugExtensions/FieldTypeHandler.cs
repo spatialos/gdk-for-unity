@@ -31,8 +31,20 @@ namespace Improbable.Gdk.CodeGenerator
                     }
 
                     return $"private readonly {uiType} {fieldDetails.CamelCaseName}Field;";
+                case OptionFieldType optionFieldType:
+                    var innerUiType = GetUiFieldType(optionFieldType.ContainedType);
+
+                    if (innerUiType == "")
+                    {
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        return "";
+                    }
+
+                    var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
+
+                    return $"private readonly {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
                 default:
-                    // TODO: Lists, maps, and options
+                    // TODO: Lists and maps.
                     return "";
             }
         }
@@ -66,8 +78,35 @@ namespace Improbable.Gdk.CodeGenerator
 
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
+                case OptionFieldType optionFieldType:
+                    var innerUiType = GetUiFieldType(optionFieldType.ContainedType);
+
+                    if (innerUiType == "")
+                    {
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        yield break;
+                    }
+
+                    yield return $"var {fieldDetails.CamelCaseName}InnerField = new {innerUiType}(\"Value\");";
+
+                    if (optionFieldType.ContainedType.Category != ValueType.Type)
+                    {
+                        yield return $"{fieldDetails.CamelCaseName}InnerField.SetEnabled(false);";
+                    }
+
+                    if (optionFieldType.ContainedType.Category == ValueType.Enum)
+                    {
+                        yield return $"{fieldDetails.CamelCaseName}InnerField.Init(default({optionFieldType.ContainedType.FqnType}));";
+                    }
+
+                    var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
+
+                    yield return
+                        $"{fieldDetails.CamelCaseName}Field = new {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", {fieldDetails.CamelCaseName}InnerField, (element, data) => {{ {ContainedTypeToUiFieldUpdate(optionFieldType.ContainedType, "element", "data")} }});";
+                    yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
+                    break;
                 default:
-                    // TODO: Lists, maps, and options
+                    // TODO: Lists and maps.
                     yield break;
             }
         }
@@ -78,51 +117,63 @@ namespace Improbable.Gdk.CodeGenerator
             switch (fieldDetails.FieldType)
             {
                 case SingularFieldType singularFieldType:
-                    switch (singularFieldType.ContainedType.Category)
+                    return ContainedTypeToUiFieldUpdate(singularFieldType.ContainedType, uiElementName, $"{fieldParent}.{fieldDetails.PascalCaseName}");
+                case OptionFieldType optionFieldType:
+                    if (GetUiFieldType(optionFieldType.ContainedType) == "")
                     {
-                        case ValueType.Enum:
-                            return $"{uiElementName}.value = {fieldParent}.{fieldDetails.PascalCaseName};";
-                        case ValueType.Primitive:
-                            var primitiveType = singularFieldType.ContainedType.PrimitiveType.Value;
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        return "";
+                    }
 
-                            switch (primitiveType)
-                            {
-                                case PrimitiveType.Int32:
-                                case PrimitiveType.Int64:
-                                case PrimitiveType.Uint32:
-                                case PrimitiveType.Uint64:
-                                case PrimitiveType.Sint32:
-                                case PrimitiveType.Sint64:
-                                case PrimitiveType.Fixed32:
-                                case PrimitiveType.Fixed64:
-                                case PrimitiveType.Sfixed32:
-                                case PrimitiveType.Sfixed64:
-                                case PrimitiveType.Float:
-                                case PrimitiveType.Double:
-                                case PrimitiveType.String:
-                                case PrimitiveType.EntityId:
-                                    return $"{uiElementName}.value = {fieldParent}.{fieldDetails.PascalCaseName}.ToString();";
-                                case PrimitiveType.Bytes:
-                                    return $"{uiElementName}.value = global::System.Text.Encoding.Default.GetString({fieldParent}.{fieldDetails.PascalCaseName});";
-                                case PrimitiveType.Bool:
-                                    return $"{uiElementName}.value = {fieldParent}.{fieldDetails.PascalCaseName};";
-                                    break;
-                                case PrimitiveType.Entity:
-                                    // TODO: Entity type.
-                                    return "";
-                                case PrimitiveType.Invalid:
-                                    throw new ArgumentException("Unknown primitive type encountered");
-                                default:
-                                    throw new ArgumentOutOfRangeException();
-                            }
-                        case ValueType.Type:
-                            return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
+                    return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
+                default:
+                    // TODO: Lists and maps.
+                    return "";
+            }
+        }
+
+        private string ContainedTypeToUiFieldUpdate(ContainedType containedType, string uiElementName, string fieldAccessor)
+        {
+            switch (containedType.Category)
+            {
+                case ValueType.Enum:
+                    return $"{uiElementName}.value = {fieldAccessor};";
+                case ValueType.Primitive:
+                    var primitiveType = containedType.PrimitiveType.Value;
+                    switch (primitiveType)
+                    {
+                        case PrimitiveType.Int32:
+                        case PrimitiveType.Int64:
+                        case PrimitiveType.Uint32:
+                        case PrimitiveType.Uint64:
+                        case PrimitiveType.Sint32:
+                        case PrimitiveType.Sint64:
+                        case PrimitiveType.Fixed32:
+                        case PrimitiveType.Fixed64:
+                        case PrimitiveType.Sfixed32:
+                        case PrimitiveType.Sfixed64:
+                        case PrimitiveType.Float:
+                        case PrimitiveType.Double:
+                        case PrimitiveType.String:
+                        case PrimitiveType.EntityId:
+                            return $"{uiElementName}.value = {fieldAccessor}.ToString();";
+                        case PrimitiveType.Bytes:
+                            return $"{uiElementName}.value = global::System.Text.Encoding.Default.GetString({fieldAccessor});";
+                        case PrimitiveType.Bool:
+                            return $"{uiElementName}.value = {fieldAccessor};";
+                            break;
+                        case PrimitiveType.Entity:
+                            // TODO: Entity type.
+                            return "";
+                        case PrimitiveType.Invalid:
+                            throw new ArgumentException("Unknown primitive type encountered");
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
+                case ValueType.Type:
+                    return $"{uiElementName}.Update({fieldAccessor});";
                 default:
-                    // TODO: Lists, maps, and options
-                    return "";
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
