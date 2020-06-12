@@ -52,7 +52,7 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     mb.TextList(typeGenerator.ToFieldInitialisation(field, "ComponentFoldout"));
                 }
-                
+
                 mb.Line($"InjectComponentIcon(\"{GetComponentIcon(details)}\");");
             });
         }

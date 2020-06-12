@@ -12,7 +12,8 @@
 - Added a new "Worker Inspector" Editor window. [#1375](https://github.com/spatialos/gdk-for-unity/pull/1375) [#1379](https://github.com/spatialos/gdk-for-unity/pull/1379) [#1382](https://github.com/spatialos/gdk-for-unity/pull/1382)
     - This window displays worker information like: worker flags, worker ID, and worker type.
     - This window also displays the entities that a worker has checked out.
-    - For each entity checked out, you can view the components on that entity and whether the worker is authoritative over that component. 
+    - For each entity checked out, you can view the components on that entity and whether the worker is authoritative over that component.
+    - Each component can have an icon associated with it, set through a schema annotation. [#1385](https://github.com/spatialos/gdk-for-unity/pull/1385)
 
 ### Fixed
 
