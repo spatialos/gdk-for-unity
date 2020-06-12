@@ -88,7 +88,7 @@ namespace Improbable.Gdk.CodeGenerator
                     break;
             }
 
-            if (details.Annotations.TryGetValue("improbable.gdk.debug.ComponentIcon", out var annotations))
+            if (details.Annotations.TryGetValue("improbable.gdk.editor.ComponentIcon", out var annotations))
             {
                 var annotation = annotations[0].TypeValue;
                 var iconNameField = annotation.Fields.First(field => field.Name == "icon_name");
