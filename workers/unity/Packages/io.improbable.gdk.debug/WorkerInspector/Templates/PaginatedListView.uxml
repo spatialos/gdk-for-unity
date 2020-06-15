@@ -1,0 +1,11 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <VisualElement class="user-defined-type-container">
+        <Label name="list-name" />
+        <VisualElement class="user-defined-type-container-data" />
+        <VisualElement class="paginated-list-controls">
+            <Button class="paginated-list-controls__child" name="back-button"/>
+            <Label class="paginated-list-controls__child" name="page-counter" />
+            <Button class="paginated-list-controls__child" name="forward-button"/>
+        </VisualElement>
+    </VisualElement>
+</UXML>
