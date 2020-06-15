@@ -43,8 +43,18 @@ namespace Improbable.Gdk.CodeGenerator
                     var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
 
                     return $"private readonly {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
+                case ListFieldType listFieldType:
+                    var innerListType = GetUiFieldType(listFieldType.ContainedType);
+
+                    if (innerListType == "")
+                    {
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        return "";
+                    }
+
+                    return $"private readonly PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
                 default:
-                    // TODO: Lists and maps.
+                    // TODO: Maps.
                     return "";
             }
         }
@@ -105,8 +115,40 @@ namespace Improbable.Gdk.CodeGenerator
                         $"{fieldDetails.CamelCaseName}Field = new {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", {fieldDetails.CamelCaseName}InnerField, (element, data) => {{ {ContainedTypeToUiFieldUpdate(optionFieldType.ContainedType, "element", "data")} }});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
+                case ListFieldType listFieldType:
+                    var innerListType = GetUiFieldType(listFieldType.ContainedType);
+
+                    if (innerListType == "")
+                    {
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        yield break;
+                    }
+
+                    yield return
+                        $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", () => {{ var inner = new {innerListType}(\"\");";
+
+                    // These lines are part of the func to create an inner list item.
+                    if (listFieldType.ContainedType.Category != ValueType.Type)
+                    {
+                        yield return "inner.SetEnabled(false);";
+                    }
+
+                    if (listFieldType.ContainedType.Category == ValueType.Enum)
+                    {
+                        yield return $"inner.Init(default({listFieldType.ContainedType.FqnType}));";
+                    }
+
+                    yield return "return inner; }, (index, data, element) => {";
+
+                    // These lines are part of the binding.
+                    var labelBinding = listFieldType.ContainedType.Category == ValueType.Type ? "Label" : "label";
+                    yield return $"element.{labelBinding} = $\"Item {{index + 1}}\";";
+                    yield return ContainedTypeToUiFieldUpdate(listFieldType.ContainedType, "element", "data");
+                    yield return "});";
+                    yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
+                    break;
                 default:
-                    // TODO: Lists and maps.
+                    // TODO: Maps.
                     yield break;
             }
         }
@@ -126,8 +168,16 @@ namespace Improbable.Gdk.CodeGenerator
                     }
 
                     return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
+                case ListFieldType listFieldType:
+                    if (GetUiFieldType(listFieldType.ContainedType) == "")
+                    {
+                        // TODO: Eliminate this case by supporting 'Entity'.
+                        return "";
+                    }
+
+                    return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
                 default:
-                    // TODO: Lists and maps.
+                    // TODO: Maps.
                     return "";
             }
         }
