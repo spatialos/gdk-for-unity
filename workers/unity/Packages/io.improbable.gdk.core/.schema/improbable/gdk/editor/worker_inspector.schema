@@ -1,0 +1,5 @@
+package improbable.gdk.editor;
+
+type ComponentIcon {
+    string icon_name = 1;
+}

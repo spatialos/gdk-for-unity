@@ -173,7 +173,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             if (!interestQueries.Any())
             {
-                Debug.LogWarning("At least one InterestQuery must be provided to add to a component's interest.");
+                UnityEngine.Debug.LogWarning("At least one InterestQuery must be provided to add to a component's interest.");
                 return this;
             }
 
@@ -286,7 +286,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             if (!interestQueries.Any())
             {
-                Debug.LogWarning("At least one InterestQuery must be provided to replace a component's interest.");
+                UnityEngine.Debug.LogWarning("At least one InterestQuery must be provided to replace a component's interest.");
                 return this;
             }
 

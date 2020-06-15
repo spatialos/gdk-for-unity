@@ -1,6 +1,7 @@
 package playground;
 
 import "playground/shared.schema";
+import "improbable/gdk/editor/worker_inspector.schema";
 
 // Launcher represents an entity that can launch Launchables.
 // The act of launching costs the launcher energy.
@@ -41,9 +42,9 @@ component Launcher {
     command ScoreIncreaseResponse increase_score(ScoreIncreaseRequest);
 }
 
+[improbable.gdk.editor.ComponentIcon("PhysicsMaterial2D Icon")]
 component Launchable {
     id = 12006;
     EntityId most_recent_launcher = 1;
     command LaunchMeCommandResponse launch_me(LaunchMeCommandRequest);
 }
-

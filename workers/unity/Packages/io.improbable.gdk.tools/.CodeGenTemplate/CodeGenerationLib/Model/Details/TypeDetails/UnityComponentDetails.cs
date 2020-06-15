@@ -12,6 +12,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public IReadOnlyList<UnityFieldDetails> FieldDetails { get; private set; }
         public readonly IReadOnlyList<UnityCommandDetails> CommandDetails;
         public readonly IReadOnlyList<UnityEventDetails> EventDetails;
+        public readonly IReadOnlyDictionary<string, List<Annotation>> Annotations;
 
         private readonly ComponentDefinition rawComponentDefinition;
 
@@ -57,6 +58,21 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 })
                 .ToList()
                 .AsReadOnly();
+
+            var annotations = new Dictionary<string, List<Annotation>>();
+
+            foreach (var annotation in rawComponentDefinition.Annotations)
+            {
+                if (!annotations.TryGetValue(annotation.TypeValue.Type, out var list))
+                {
+                    list = new List<Annotation>();
+                    annotations[annotation.TypeValue.Type] = list;
+                }
+
+                list.Add(annotation);
+            }
+
+            Annotations = annotations;
 
             this.rawComponentDefinition = rawComponentDefinition;
         }

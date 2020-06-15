@@ -105,7 +105,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         {
             if (!resultComponentIds.Any())
             {
-                Debug.LogWarning("At least one component ID must be provided to filter a query's results.");
+                UnityEngine.Debug.LogWarning("At least one component ID must be provided to filter a query's results.");
                 return this;
             }
 
