@@ -4,20 +4,20 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class ListFieldType : IFieldType
     {
-        public string Type => $"global::System.Collections.Generic.List<{containedType.FqnType}>";
+        public string Type => $"global::System.Collections.Generic.List<{ContainedType.FqnType}>";
 
-        private readonly ContainedType containedType;
+        public readonly ContainedType ContainedType;
 
         public ListFieldType(TypeReference innerType)
         {
-            containedType = new ContainedType(innerType);
+            ContainedType = new ContainedType(innerType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber)
         {
             return new LoopBlock($"foreach (var value in {fieldInstance})", body =>
             {
-                body.Line(containedType.GetSerializationStatement("value", schemaObject, fieldNumber));
+                body.Line(ContainedType.GetSerializationStatement("value", schemaObject, fieldNumber));
             }).Format();
         }
 
@@ -29,12 +29,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     $"{fieldInstance} = new {Type}();",
                     $"var list = {fieldInstance};",
-                    $"var listLength = {containedType.GetCountExpression(schemaObject, fieldNumber)};"
+                    $"var listLength = {ContainedType.GetCountExpression(schemaObject, fieldNumber)};"
                 });
 
                 scope.Loop("for (var i = 0; i < listLength; i++)", body =>
                 {
-                    body.Line($"list.Add({containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")});");
+                    body.Line($"list.Add({ContainedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")});");
                 });
             }).Format();
         }
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.Line($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
+                scope.Line($"var listSize = {ContainedType.GetCountExpression(schemaObject, fieldNumber)};");
 
                 scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
@@ -56,7 +56,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     body.Line(new[]
                     {
-                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
+                        $"var value = {ContainedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
                         $"{fieldInstance}.Add(value);"
                     });
                 });
@@ -67,7 +67,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             return new CustomScopeBlock(scope =>
             {
-                scope.Line($"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};");
+                scope.Line($"var listSize = {ContainedType.GetCountExpression(schemaObject, fieldNumber)};");
 
                 scope.Line($"var isCleared = updateObj.IsFieldCleared({fieldNumber});");
 
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     body.Line(new[]
                     {
-                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
+                        $"var value = {ContainedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
                         $"{updateFieldInstance}.Value.Add(value);"
                     });
                 });
@@ -94,7 +94,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 scope.Line(new[]
                 {
-                    $"var listSize = {containedType.GetCountExpression(schemaObject, fieldNumber)};",
+                    $"var listSize = {ContainedType.GetCountExpression(schemaObject, fieldNumber)};",
                     $"{updateFieldInstance} = new global::Improbable.Gdk.Core.Option<{Type}>(new {Type}());"
                 });
 
@@ -102,7 +102,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 {
                     body.Line(new[]
                     {
-                        $"var value = {containedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
+                        $"var value = {ContainedType.GetFieldIndexExpression(schemaObject, fieldNumber, "i")};",
                         $"{updateFieldInstance}.Value.Add(value);"
                     });
                 });
