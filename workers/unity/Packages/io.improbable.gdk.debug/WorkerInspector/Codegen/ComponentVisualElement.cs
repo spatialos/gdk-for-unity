@@ -32,14 +32,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             // We want to inject the icon after the toggle icon and before the text.
             var foldoutToggle = ComponentFoldout.Q<VisualElement>(className: "unity-toggle__input");
-            var children = foldoutToggle.Children().ToList();
-            children.Insert(1, iconVisualElement);
-
-            foldoutToggle.Clear();
-            foreach (var child in children)
-            {
-                foldoutToggle.Add(child);
-            }
+            foldoutToggle.Insert(1, iconVisualElement);
         }
 
         public abstract ComponentType ComponentType { get; }
