@@ -13,11 +13,12 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-05-14-120002-bk11367-f5a4805a-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-06-22-162008-bk12700-8704d97e-d}"
     - "scaler_version=2"
-    - "minimum_instances=1"
+    - "minimum_instances=2"
     - "agent_count=1"
     - "machine_type=quad"
+    - "node_stability=canary_pb23062020"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -80,6 +81,7 @@ steps:
     <<: *windows
     artifact_paths:
       - logs/**/*
+      - perftest-results/**/*
 
   - label: ":windows: ~ test"
     id: "test-windows"

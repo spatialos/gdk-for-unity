@@ -13,77 +13,87 @@ source .shared-ci/scripts/pinned-tools.sh
 ACCELERATOR_ARGS=$(getAcceleratorArgs)
 
 PROJECT_DIR="$(pwd)"
-TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
-mkdir -p "${TEST_RESULTS_DIR}"
+XML_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
+JSON_RESULTS_DIR="${PROJECT_DIR}/perftest-results"
+
+mkdir -p "${XML_RESULTS_DIR}"
+mkdir -p "${JSON_RESULTS_DIR}"
 
 TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettings"
 
-function runPlaymodeTests {
-    local burst=$1
-    local scriptingBackend=$2
-    local apiProfile=$3
-    local category=$4
-    local platform=$5
+function runTests {
+    local platform=$1
+    local category=$2
+    local burst=$3
+    local apiProfile=$4
 
+    local scriptingBackend="mono"
     local args=()
-    args+=("-batchmode -runTests")
-    args+=("-projectPath ${PROJECT_DIR}/workers/unity ")
-    args+=("-logfile ${PROJECT_DIR}/logs/playmode-${burst}-${scriptingBackend}-${apiProfile}-perftest-run.log")
-    args+=("-testResults ${TEST_RESULTS_DIR}/playmode-${burst}-${scriptingBackend}-${apiProfile}-perftest-results.xml")
-    args+=("-testSettingsFile ${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json")
 
-    if [[ "${burst}" == "burst-disabled" ]]; then
-        args+=('--burst-disable-compilation')
+    if [[ "${platform}" == "editmode" ]]; then
+        args+=("-runEditorTests")
+    else
+        scriptingBackend=$5
+        args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
-    traceStart "${burst} ${scriptingBackend} ${apiProfile}"
+    if [[ "${burst}" == "burst-disabled" ]]; then
+        args+=("--burst-disable-compilation")
+    fi
+
+    pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -nographics \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
             "${ACCELERATOR_ARGS}" \
+            -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
+            -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
             -testCategory "${category}" \
-            -testPlatform "${platform}" \
-            "${args[@]}"
-    traceEnd
+            -testSettingsFile "${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json" \
+            ${args[@]}
+    popd
 }
 
 traceStart "Performance Testing: Editmode :writing_hand:"
-    pushd "workers/unity"
-        traceStart "Burst default"
-            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-                -batchmode \
-                -projectPath "${PROJECT_DIR}/workers/unity" \
-                -runEditorTests \
-                -testCategory "Performance" \
-                -logfile "${PROJECT_DIR}/logs/editmode-burst-default-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-burst-default-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}"
-        traceEnd
-
-        traceStart "Burst disabled"
-            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-                -batchmode \
-                -projectPath "${PROJECT_DIR}/workers/unity" \
-                -runEditorTests \
-                -testCategory "Performance" \
-                -logfile "${PROJECT_DIR}/logs/editmode-burst-disabled-perftest-run.log" \
-                -editorTestsResultFile "${TEST_RESULTS_DIR}/editmode-burst-disabled-perftest-results.xml" \
-                "${ACCELERATOR_ARGS}" \
-                --burst-disable-compilation
-        traceEnd
-    popd
+    for burst in burst-default burst-disabled
+    do
+        for apiProfile in dotnet-std-2 dotnet-4
+        do
+            traceStart "${burst} ${apiProfile}"
+                runTests "editmode" "Performance" ${burst} ${apiProfile}
+            traceEnd
+        done
+    done
 traceEnd
 
 traceStart "Performance Testing: Playmode :joystick:"
-    pushd "workers/unity"
-        for burst in burst-default burst-disabled
+    for burst in burst-default burst-disabled
+    do
+        for apiProfile in dotnet-std-2 dotnet-4
         do
             for scriptingBackend in mono il2cpp winrt
             do
-                for apiProfile in dotnet-std-2 dotnet-4
-                do
-                    runPlaymodeTests $burst $scriptingBackend $apiProfile "Performance" "StandaloneWindows64"
-                done
+                traceStart "${burst} ${apiProfile} ${scriptingBackend}"
+                    runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
+                traceEnd
             done
         done
+    done
+traceEnd
+
+traceStart "Parsing XML Test Results"
+    pushd "workers/unity"
+        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -nographics \
+            -quit \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
+            "${ACCELERATOR_ARGS}" \
+            -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
+            -executeMethod "Improbable.Gdk.TestUtils.Editor.PerformanceTestRunParser.Parse" \
+            -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+            -jsonOutputDirectory "${JSON_RESULTS_DIR}"
     popd
 traceEnd
 

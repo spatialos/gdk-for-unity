@@ -1,4 +1,4 @@
 {
-  "scriptingBackend": 2,
-  "apiProfile": 6
+  "scriptingBackend": "WinRTDotNET",
+  "apiProfile": "NET_Standard_2_0"
 }

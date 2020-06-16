@@ -1,4 +1,4 @@
 {
-  "scriptingBackend": 0,
-  "apiProfile": 6
+  "scriptingBackend": "Mono2x",
+  "apiProfile": "NET_Standard_2_0"
 }

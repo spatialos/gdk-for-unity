@@ -1,4 +1,4 @@
 {
-  "scriptingBackend": 1,
-  "apiProfile": 6
+  "scriptingBackend": "IL2CPP",
+  "apiProfile": "NET_Standard_2_0"
 }
