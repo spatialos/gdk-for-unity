@@ -172,3 +172,7 @@
 .paginated-list-controls__child {
     margin: 0 5px;
 }
+
+.hidden {
+    display: none;
+}

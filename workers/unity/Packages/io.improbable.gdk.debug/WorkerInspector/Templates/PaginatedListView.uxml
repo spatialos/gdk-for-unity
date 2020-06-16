@@ -2,7 +2,7 @@
     <VisualElement class="user-defined-type-container">
         <Label name="list-name" />
         <VisualElement class="user-defined-type-container-data" />
-        <VisualElement class="paginated-list-controls">
+        <VisualElement class="paginated-list-controls hidden">
             <Button class="paginated-list-controls__child" name="back-button"/>
             <Label class="paginated-list-controls__child" name="page-counter" />
             <Button class="paginated-list-controls__child" name="forward-button"/>

@@ -19,6 +19,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly Pool elementPool;
         private readonly int elementsPerPage;
 
+        private readonly VisualElement controlsContainer;
         private readonly Button forwardButton;
         private readonly Button backButton;
         private readonly Label pageCounter;
@@ -36,6 +37,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             this.Q<Label>(name: "list-name").text = label;
             container = this.Q<VisualElement>(className: "user-defined-type-container-data");
+
+            controlsContainer = this.Q<VisualElement>(className: "paginated-list-controls");
             pageCounter = this.Q<Label>(name: "page-counter");
 
             backButton = this.Q<Button>(name: "back-button");
@@ -52,6 +55,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         public void Update(List<TData> newData)
         {
             data = newData;
+
+            if (data.Count == 0)
+            {
+                controlsContainer.AddToClassList("hidden");
+            }
+            else
+            {
+                controlsContainer.RemoveFromClassList("hidden");
+            }
+
             CalculatePages();
             RefreshView();
         }
