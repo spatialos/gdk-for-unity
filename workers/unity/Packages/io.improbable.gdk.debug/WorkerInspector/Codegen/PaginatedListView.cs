@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             RefreshView();
         }
 
-        private void ChangePageCount(int diff)
+        internal void ChangePageCount(int diff)
         {
             currentPage += diff;
             currentPage = Mathf.Clamp(currentPage, 0, numPages - 1);
