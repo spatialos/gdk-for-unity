@@ -161,3 +161,18 @@
     margin-top: 1px;
     margin-bottom: 1px;
 }
+
+.paginated-list-controls {
+    flex-direction: row;
+    justify-content: center;
+    margin: 5px 15px;
+    align-items: center;
+}
+
+.paginated-list-controls__child {
+    margin: 0 5px;
+}
+
+.hidden {
+    display: none;
+}

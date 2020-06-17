@@ -1,0 +1,19 @@
+{
+    "name": "Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.Debug.WorkerInspector.Codegen"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
