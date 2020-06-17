@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private readonly Action<int, TData, TElement> bindElement;
         private readonly VisualElement container;
-        private readonly Pool elementPool;
+        private readonly ElementPool<TElement> elementPool;
         private readonly int elementsPerPage;
 
         private readonly VisualElement controlsContainer;
@@ -42,14 +42,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             pageCounter = this.Q<Label>(name: "page-counter");
 
             backButton = this.Q<Button>(name: "back-button");
-            backButton.text = "<";
             backButton.clickable.clicked += () => ChangePageCount(-1);
 
             forwardButton = this.Q<Button>(name: "forward-button");
-            forwardButton.text = ">";
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
-            elementPool = new Pool(makeElement);
+            elementPool = new ElementPool<TElement>(makeElement);
         }
 
         public void Update(List<TData> newData)
@@ -79,7 +77,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private void CalculatePages()
         {
-            numPages = (int) Math.Ceiling((double) data.Count / elementsPerPage);
+            numPages = Mathf.CeilToInt((float) data.Count / elementsPerPage);
             numPages = Mathf.Clamp(numPages, 1, numPages);
             currentPage = Mathf.Clamp(currentPage, 0, numPages - 1);
 
@@ -116,36 +114,36 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             }
 
             // At this point, container.Children() has the same length as the slice.
-            var j = 0;
+            var elementIndex = firstIndex;
             foreach (var child in container.Children())
             {
-                bindElement(firstIndex + j, data[firstIndex + j], (TElement) child);
-                j++;
+                bindElement(elementIndex, data[elementIndex], (TElement) child);
+                elementIndex++;
             }
 
             backButton.SetEnabled(currentPage != 0);
             forwardButton.SetEnabled(currentPage != numPages - 1);
         }
+    }
 
-        private class Pool
+    internal class ElementPool<TElement> where TElement : VisualElement
+    {
+        private readonly Stack<TElement> pool = new Stack<TElement>();
+        private readonly Func<TElement> makeElement;
+
+        public ElementPool(Func<TElement> makeElement)
         {
-            private readonly Stack<TElement> pool = new Stack<TElement>();
-            private readonly Func<TElement> makeElement;
+            this.makeElement = makeElement;
+        }
 
-            public Pool(Func<TElement> makeElement)
-            {
-                this.makeElement = makeElement;
-            }
+        public TElement GetOrCreate()
+        {
+            return pool.Count == 0 ? makeElement() : pool.Pop();
+        }
 
-            public TElement GetOrCreate()
-            {
-                return pool.Count == 0 ? makeElement() : pool.Pop();
-            }
-
-            public void Return(TElement element)
-            {
-                pool.Push(element);
-            }
+        public void Return(TElement element)
+        {
+            pool.Push(element);
         }
     }
 }

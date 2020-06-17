@@ -3,9 +3,9 @@
         <Label name="list-name" />
         <VisualElement class="user-defined-type-container-data" />
         <VisualElement class="paginated-list-controls hidden">
-            <Button class="paginated-list-controls__child" name="back-button"/>
+            <Button class="paginated-list-controls__child" name="back-button" text="&lt;"/>
             <Label class="paginated-list-controls__child" name="page-counter" />
-            <Button class="paginated-list-controls__child" name="forward-button"/>
+            <Button class="paginated-list-controls__child" name="forward-button" text="&gt;"/>
         </VisualElement>
     </VisualElement>
 </UXML>
