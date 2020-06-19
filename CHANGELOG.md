@@ -14,6 +14,10 @@
     - This window also displays the entities that a worker has checked out.
     - For each entity checked out, you can view the components on that entity and whether the worker is authoritative over that component.
     - Each component can have an icon associated with it, set through a schema annotation. [#1385](https://github.com/spatialos/gdk-for-unity/pull/1385)
+    - Each component's data will also be rendered in the Worker Inspector, with the exception of `map<k, v>` fields. (This will come in a future release!) [#1387](https://github.com/spatialos/gdk-for-unity/pull/1387) [#1391](https://github.com/spatialos/gdk-for-unity/pull/1391) [#1392](https://github.com/spatialos/gdk-for-unity/pull/1392) [#1396](https://github.com/spatialos/gdk-for-unity/pull/1396) [#1401](https://github.com/spatialos/gdk-for-unity/pull/1401)
+- Added two ways to instantiate valid `EntitySnapshot` objects. [#1401](https://github.com/spatialos/gdk-for-unity/pull/1401)
+    - `EntitySnapshot.Empty()` to create an empty `EntitySnapshot`
+    - `new EntitySnapshot(params ISpatialComponentSnapshot[] components)` to create and seed the `EntitySnapshot` with some data.
 
 ### Fixed
 
