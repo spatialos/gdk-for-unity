@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Improbable.Worker.CInterop;
 
 namespace Improbable.Gdk.Core
@@ -8,7 +10,22 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public struct EntitySnapshot
     {
-        private readonly Dictionary<uint, ISpatialComponentSnapshot> components;
+        private Dictionary<uint, ISpatialComponentSnapshot> components;
+
+        public static EntitySnapshot Empty()
+        {
+            return new EntitySnapshot { components = new Dictionary<uint, ISpatialComponentSnapshot>() };
+        }
+
+        public EntitySnapshot(params ISpatialComponentSnapshot[] snapshots)
+        {
+            components = new Dictionary<uint, ISpatialComponentSnapshot>();
+
+            foreach (var snapshot in snapshots)
+            {
+                components[snapshot.ComponentId] = snapshot;
+            }
+        }
 
         /// <summary>
         ///     Gets the SpatialOS component snapshot if present.
@@ -89,6 +106,25 @@ namespace Improbable.Gdk.Core
             {
                 Dynamic.ForComponent(pair.Key, handler);
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder("Entity Snapshot: ");
+
+            var componentNames = components.Keys.Select(id =>
+            {
+                if (!ComponentDatabase.Metaclasses.TryGetValue(id, out var metaclass))
+                {
+                    return $"Unknown Component ({id})";
+                }
+
+                return metaclass.Name;
+            });
+
+            sb.Append(string.Join(", ", componentNames));
+
+            return sb.ToString();
         }
     }
 
