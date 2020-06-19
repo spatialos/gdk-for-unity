@@ -41,8 +41,6 @@
 #entity-detail .unity-text-field__input {
     white-space: normal;
 }
-
-
 #entity-info {
     min-height: 50px;
     padding: 8px;
