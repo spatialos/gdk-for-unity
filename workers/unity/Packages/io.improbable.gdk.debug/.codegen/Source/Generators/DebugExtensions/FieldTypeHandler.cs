@@ -23,35 +23,13 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 case SingularFieldType singularFieldType:
                     var uiType = GetUiFieldType(singularFieldType.ContainedType);
-
-                    if (uiType == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        return "";
-                    }
-
                     return $"private readonly {uiType} {fieldDetails.CamelCaseName}Field;";
                 case OptionFieldType optionFieldType:
                     var innerUiType = GetUiFieldType(optionFieldType.ContainedType);
-
-                    if (innerUiType == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        return "";
-                    }
-
                     var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
-
                     return $"private readonly {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
                 case ListFieldType listFieldType:
                     var innerListType = GetUiFieldType(listFieldType.ContainedType);
-
-                    if (innerListType == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        return "";
-                    }
-
                     return $"private readonly PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
                 default:
                     // TODO: Maps.
@@ -64,26 +42,11 @@ namespace Improbable.Gdk.CodeGenerator
             switch (fieldDetails.FieldType)
             {
                 case SingularFieldType singularFieldType:
-
-                    var uiType = GetUiFieldType(singularFieldType.ContainedType);
-
-                    if (uiType == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        yield break;
-                    }
-
                     var humanReadableName = Formatting.SnakeCaseToHumanReadable(fieldDetails.Name);
-                    yield return $"{fieldDetails.CamelCaseName}Field = new {uiType}(\"{humanReadableName}\");";
 
-                    if (singularFieldType.ContainedType.Category != ValueType.Type)
+                    foreach (var initializer in GetFieldInitializer(singularFieldType.ContainedType, $"{fieldDetails.CamelCaseName}Field", humanReadableName, false))
                     {
-                        yield return $"{fieldDetails.CamelCaseName}Field.SetEnabled(false);";
-                    }
-
-                    if (singularFieldType.ContainedType.Category == ValueType.Enum)
-                    {
-                        yield return $"{fieldDetails.CamelCaseName}Field.Init(default({fieldDetails.Type}));";
+                        yield return initializer;
                     }
 
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
@@ -91,22 +54,9 @@ namespace Improbable.Gdk.CodeGenerator
                 case OptionFieldType optionFieldType:
                     var innerUiType = GetUiFieldType(optionFieldType.ContainedType);
 
-                    if (innerUiType == "")
+                    foreach (var initializer in GetFieldInitializer(optionFieldType.ContainedType, $"{fieldDetails.CamelCaseName}InnerField", "Value"))
                     {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        yield break;
-                    }
-
-                    yield return $"var {fieldDetails.CamelCaseName}InnerField = new {innerUiType}(\"Value\");";
-
-                    if (optionFieldType.ContainedType.Category != ValueType.Type)
-                    {
-                        yield return $"{fieldDetails.CamelCaseName}InnerField.SetEnabled(false);";
-                    }
-
-                    if (optionFieldType.ContainedType.Category == ValueType.Enum)
-                    {
-                        yield return $"{fieldDetails.CamelCaseName}InnerField.Init(default({optionFieldType.ContainedType.FqnType}));";
+                        yield return initializer;
                     }
 
                     var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
@@ -118,24 +68,12 @@ namespace Improbable.Gdk.CodeGenerator
                 case ListFieldType listFieldType:
                     var innerListType = GetUiFieldType(listFieldType.ContainedType);
 
-                    if (innerListType == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        yield break;
-                    }
-
                     yield return
-                        $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", () => {{ var inner = new {innerListType}(\"\");";
+                        $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", () => {{";
 
-                    // These lines are part of the func to create an inner list item.
-                    if (listFieldType.ContainedType.Category != ValueType.Type)
+                    foreach (var initializer in GetFieldInitializer(listFieldType.ContainedType, "inner", ""))
                     {
-                        yield return "inner.SetEnabled(false);";
-                    }
-
-                    if (listFieldType.ContainedType.Category == ValueType.Enum)
-                    {
-                        yield return $"inner.Init(default({listFieldType.ContainedType.FqnType}));";
+                        yield return initializer;
                     }
 
                     yield return "return inner; }, (index, data, element) => {";
@@ -161,24 +99,37 @@ namespace Improbable.Gdk.CodeGenerator
                 case SingularFieldType singularFieldType:
                     return ContainedTypeToUiFieldUpdate(singularFieldType.ContainedType, uiElementName, $"{fieldParent}.{fieldDetails.PascalCaseName}");
                 case OptionFieldType optionFieldType:
-                    if (GetUiFieldType(optionFieldType.ContainedType) == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        return "";
-                    }
-
                     return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
                 case ListFieldType listFieldType:
-                    if (GetUiFieldType(listFieldType.ContainedType) == "")
-                    {
-                        // TODO: Eliminate this case by supporting 'Entity'.
-                        return "";
-                    }
-
                     return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
                 default:
                     // TODO: Maps.
                     return "";
+            }
+        }
+
+        private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, bool newVariable = true)
+        {
+            var inner = GetUiFieldType(containedType);
+
+            if (newVariable)
+            {
+                yield return $"var {uiElementName} = new {inner}(\"{label}\");";
+            }
+            else
+            {
+                yield return $"{uiElementName} = new {inner}(\"{label}\");";
+            }
+
+            // These lines are part of the func to create an inner list item.
+            if (containedType.Category != ValueType.Type)
+            {
+                yield return $"{uiElementName}.SetEnabled(false);";
+            }
+
+            if (containedType.Category == ValueType.Enum)
+            {
+                yield return $"{uiElementName}.Init(default({containedType.FqnType}));";
             }
         }
 
@@ -206,15 +157,12 @@ namespace Improbable.Gdk.CodeGenerator
                         case PrimitiveType.Double:
                         case PrimitiveType.String:
                         case PrimitiveType.EntityId:
+                        case PrimitiveType.Entity:
                             return $"{uiElementName}.value = {fieldAccessor}.ToString();";
                         case PrimitiveType.Bytes:
                             return $"{uiElementName}.value = global::System.Text.Encoding.Default.GetString({fieldAccessor});";
                         case PrimitiveType.Bool:
                             return $"{uiElementName}.value = {fieldAccessor};";
-                            break;
-                        case PrimitiveType.Entity:
-                            // TODO: Entity type.
-                            return "";
                         case PrimitiveType.Invalid:
                             throw new ArgumentException("Unknown primitive type encountered");
                         default:
@@ -251,11 +199,10 @@ namespace Improbable.Gdk.CodeGenerator
                         case PrimitiveType.String:
                         case PrimitiveType.EntityId:
                         case PrimitiveType.Bytes:
+                        case PrimitiveType.Entity:
                             return "TextField";
                         case PrimitiveType.Bool:
                             return "Toggle";
-                        case PrimitiveType.Entity:
-                            return "";
                         case PrimitiveType.Invalid:
                             throw new ArgumentException("Unknown primitive type encountered.");
                         default:

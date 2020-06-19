@@ -38,6 +38,9 @@
     border-top-width: 1px;
 }
 
+#entity-detail .unity-text-field__input {
+    white-space: normal;
+}
 #entity-info {
     min-height: 50px;
     padding: 8px;
@@ -51,6 +54,7 @@
     -unity-font-style: bold;
     font-size: 14px;
     padding-bottom: 4px;
+    white-space: normal;
 }
 
 .component-foldout {
