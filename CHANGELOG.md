@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.7` - 2020-06-22
+
 ### Added
 
 - Added a "C# Editor Output Directory" field to the GDK Tools Configuration. [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376)
