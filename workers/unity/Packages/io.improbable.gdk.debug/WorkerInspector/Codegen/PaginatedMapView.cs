@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     {
         private readonly PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>> list;
         private readonly List<KeyValuePair<TKeyData, TValueData>> listData = new List<KeyValuePair<TKeyData, TValueData>>();
-        private Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
+        private readonly Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
 
         public PaginatedMapView(string label, Func<TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
             Func<TValueElement> makeValue, Action<TValueData, TValueElement> bindValue)
@@ -36,8 +36,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             private readonly TKeyElement keyElement;
             private readonly TValueElement valueElement;
 
-            private Action<TKeyData, TKeyElement> bindKey;
-            private Action<TValueData, TValueElement> bindValue;
+            private readonly Action<TKeyData, TKeyElement> bindKey;
+            private readonly Action<TValueData, TValueElement> bindValue;
 
             public KeyValuePairElement(TKeyElement keyElement, TValueElement valueElement,
                 Action<TKeyData, TKeyElement> bindKey, Action<TValueData, TValueElement> bindValue)
