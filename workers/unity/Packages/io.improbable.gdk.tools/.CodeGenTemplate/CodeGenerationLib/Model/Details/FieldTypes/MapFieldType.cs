@@ -5,15 +5,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 {
     public class MapFieldType : IFieldType
     {
-        public string Type => $"global::System.Collections.Generic.Dictionary<{keyType.FqnType}, {valueType.FqnType}>";
+        public string Type => $"global::System.Collections.Generic.Dictionary<{KeyType.FqnType}, {ValueType.FqnType}>";
 
-        private readonly ContainedType keyType;
-        private readonly ContainedType valueType;
+        public readonly ContainedType KeyType;
+        public readonly ContainedType ValueType;
 
         public MapFieldType(TypeReference keyType, TypeReference valueType)
         {
-            this.keyType = new ContainedType(keyType);
-            this.valueType = new ContainedType(valueType);
+            KeyType = new ContainedType(keyType);
+            ValueType = new ContainedType(valueType);
         }
 
         public string GetSerializationString(string fieldInstance, string schemaObject, uint fieldNumber)
@@ -23,8 +23,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 body.Line(new[]
                 {
                     $"var mapObj = {schemaObject}.AddObject({fieldNumber});",
-                    keyType.GetSerializationStatement("keyValuePair.Key", "mapObj", 1),
-                    valueType.GetSerializationStatement("keyValuePair.Value", "mapObj", 2)
+                    KeyType.GetSerializationStatement("keyValuePair.Key", "mapObj", 1),
+                    ValueType.GetSerializationStatement("keyValuePair.Value", "mapObj", 2)
                 });
             }).Format();
         }
@@ -45,8 +45,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
-                        $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
-                        $"var value = {valueType.GetDeserializationExpression("mapObj", 2)};",
+                        $"var key = {KeyType.GetDeserializationExpression("mapObj", 1)};",
+                        $"var value = {ValueType.GetDeserializationExpression("mapObj", 2)};",
                         "map.Add(key, value);"
                     });
                 });
@@ -71,8 +71,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
-                        $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
-                        $"var value = {valueType.GetDeserializationExpression("mapObj", 2)};",
+                        $"var key = {KeyType.GetDeserializationExpression("mapObj", 1)};",
+                        $"var value = {ValueType.GetDeserializationExpression("mapObj", 2)};",
                         $"{fieldInstance}.Add(key, value);"
                     });
                 });
@@ -99,8 +99,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
-                        $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
-                        $"var value = {valueType.GetDeserializationExpression("mapObj", 2)};",
+                        $"var key = {KeyType.GetDeserializationExpression("mapObj", 1)};",
+                        $"var value = {ValueType.GetDeserializationExpression("mapObj", 2)};",
                         $"{updateFieldInstance}.Value.Add(key, value);"
                     });
                 });
@@ -123,8 +123,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     body.Line(new[]
                     {
                         $"var mapObj = {schemaObject}.IndexObject({fieldNumber}, (uint) i);",
-                        $"var key = {keyType.GetDeserializationExpression("mapObj", 1)};",
-                        $"var value = {valueType.GetDeserializationExpression("mapObj", 2)};",
+                        $"var key = {KeyType.GetDeserializationExpression("mapObj", 1)};",
+                        $"var value = {ValueType.GetDeserializationExpression("mapObj", 2)};",
                         "map.Add(key, value);"
                     });
                 });
