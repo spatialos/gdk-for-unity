@@ -55,6 +55,18 @@ function runTests {
     popd
 }
 
+traceStart "Performance Testing: Editmode :writing_hand:"
+    for burst in burst-default burst-disabled
+    do
+        for apiProfile in dotnet-std-2 dotnet-4
+        do
+            traceStart "${burst} ${apiProfile}"
+                runTests "editmode" "Performance" ${burst} ${apiProfile}
+            traceEnd
+        done
+    done
+traceEnd
+
 traceStart "Performance Testing: Playmode :joystick:"
     for burst in burst-default burst-disabled
     do
@@ -66,18 +78,6 @@ traceStart "Performance Testing: Playmode :joystick:"
                     runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
-        done
-    done
-traceEnd
-
-traceStart "Performance Testing: Editmode :writing_hand:"
-    for burst in burst-default burst-disabled
-    do
-        for apiProfile in dotnet-std-2 dotnet-4
-        do
-            traceStart "${burst} ${apiProfile}"
-                runTests "editmode" "Performance" ${burst} ${apiProfile}
-            traceEnd
         done
     done
 traceEnd
