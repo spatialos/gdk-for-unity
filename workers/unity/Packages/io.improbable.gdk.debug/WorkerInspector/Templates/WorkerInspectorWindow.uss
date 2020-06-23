@@ -180,3 +180,7 @@
 .hidden {
     display: none;
 }
+
+.map-view__item {
+    padding: 5px 0px;
+}

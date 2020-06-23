@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Added
+
+- Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
+
+### Fixed
+
+- Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
+
 ## `0.3.7` - 2020-06-22
 
 ### Added

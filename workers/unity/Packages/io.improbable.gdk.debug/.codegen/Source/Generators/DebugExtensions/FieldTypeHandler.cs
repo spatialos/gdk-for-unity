@@ -31,9 +31,14 @@ namespace Improbable.Gdk.CodeGenerator
                 case ListFieldType listFieldType:
                     var innerListType = GetUiFieldType(listFieldType.ContainedType);
                     return $"private readonly PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}> {fieldDetails.CamelCaseName}Field;";
+                case MapFieldType mapFieldType:
+                    var innerKeyType = GetUiFieldType(mapFieldType.KeyType);
+                    var innerValueType = GetUiFieldType(mapFieldType.ValueType);
+
+                    return
+                        $"private readonly PaginatedMapView<{innerKeyType}, {mapFieldType.KeyType.FqnType}, {innerValueType}, {mapFieldType.ValueType.FqnType}> {fieldDetails.CamelCaseName}Field;";
                 default:
-                    // TODO: Maps.
-                    return "";
+                    throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
             }
         }
 
@@ -85,9 +90,33 @@ namespace Improbable.Gdk.CodeGenerator
                     yield return "});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
+                case MapFieldType mapFieldType:
+                    var innerKeyType = GetUiFieldType(mapFieldType.KeyType);
+                    var innerValueType = GetUiFieldType(mapFieldType.ValueType);
+
+                    yield return
+                        $"{fieldDetails.CamelCaseName}Field = new PaginatedMapView<{innerKeyType}, {mapFieldType.KeyType.FqnType}, {innerValueType}, {mapFieldType.ValueType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\",";
+                    yield return "() => {";
+
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.KeyType, "inner", "Key"))
+                    {
+                        yield return initializer;
+                    }
+
+                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.KeyType, "element", "data")} }},";
+
+                    yield return "() => {";
+
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.ValueType, "inner", "Value"))
+                    {
+                        yield return initializer;
+                    }
+
+                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.ValueType, "element", "data")} }});";
+                    yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
+                    break;
                 default:
-                    // TODO: Maps.
-                    yield break;
+                    throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
             }
         }
 
@@ -99,12 +128,11 @@ namespace Improbable.Gdk.CodeGenerator
                 case SingularFieldType singularFieldType:
                     return ContainedTypeToUiFieldUpdate(singularFieldType.ContainedType, uiElementName, $"{fieldParent}.{fieldDetails.PascalCaseName}");
                 case OptionFieldType optionFieldType:
-                    return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
                 case ListFieldType listFieldType:
+                case MapFieldType mapFieldType:
                     return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
                 default:
-                    // TODO: Maps.
-                    return "";
+                    throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
             }
         }
 
