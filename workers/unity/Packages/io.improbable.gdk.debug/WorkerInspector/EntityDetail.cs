@@ -105,7 +105,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
             foreach (var componentType in componentTypes)
             {
-                if (componentType != componentVisualElements[i].ComponentType)
+                if (componentType.TypeIndex != componentVisualElements[i].ComponentType.TypeIndex)
                 {
                     return false;
                 }
