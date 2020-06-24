@@ -21,6 +21,11 @@ mkdir -p "${JSON_RESULTS_DIR}"
 
 TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettings"
 
+# `parallelism` must be 4 else all jobs are done sequentially.
+if [[ ${BUILDKITE_PARALLEL_JOB_COUNT:-0} == 4 ]]; then
+    JOB_ID=${BUILDKITE_PARALLEL_JOB}
+fi
+
 function runTests {
     local platform=$1
     local category=$2
@@ -55,32 +60,28 @@ function runTests {
     popd
 }
 
-traceStart "Performance Testing: Editmode :writing_hand:"
-    for burst in burst-default burst-disabled
+targetId=0
+
+for burst in burst-default burst-disabled
+do
+    for apiProfile in dotnet-std-2 dotnet-4
     do
-        for apiProfile in dotnet-std-2 dotnet-4
-        do
-            traceStart "${burst} ${apiProfile}"
+        if [[ ${targetId} == ${JOB_ID:-$targetId} ]]; then
+            traceStart "Editmode: ${burst} ${apiProfile}"
                 runTests "editmode" "Performance" ${burst} ${apiProfile}
             traceEnd
-        done
-    done
-traceEnd
 
-traceStart "Performance Testing: Playmode :joystick:"
-    for burst in burst-default burst-disabled
-    do
-        for apiProfile in dotnet-std-2 dotnet-4
-        do
             for scriptingBackend in mono il2cpp winrt
             do
-                traceStart "${burst} ${apiProfile} ${scriptingBackend}"
+                traceStart "Playmode: ${burst} ${apiProfile} ${scriptingBackend}"
                     runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
-        done
+        fi
+
+        ((targetId+=1))
     done
-traceEnd
+done
 
 traceStart "Parsing XML Test Results"
     pushd "workers/unity"

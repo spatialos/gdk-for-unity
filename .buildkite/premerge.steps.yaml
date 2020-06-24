@@ -76,6 +76,8 @@ steps:
 
   - label: ":windows: ~ perf test"
     id: "perftest-windows"
+    # ci/perf-test.sh expects 4 jobs.
+    parallelism: 4
     command: bash -c ci/perf-test.sh
     <<: *windows
     artifact_paths:
