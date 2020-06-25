@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Tools
     public static class LocalLaunch
     {
         private const string InspectorUrl = "http://localhost:21000/inspector";
+        private const string InspectorV2Url = "http://localhost:21000/inspector-v2";
 
         private static readonly string DefaultLogFileName
             = Path.GetFullPath(Path.Combine(Common.SpatialProjectRootDir, "logs", "*unityclient.log"));
@@ -59,6 +60,12 @@ namespace Improbable.Gdk.Tools
         private static void OpenInspector()
         {
             Application.OpenURL(InspectorUrl);
+        }
+
+        [MenuItem("SpatialOS/Open inspector V2 (Beta)", false, MenuPriorities.OpenInspectorV2)]
+        private static void OpenInspectorV2()
+        {
+            Application.OpenURL(InspectorV2Url);
         }
 
         public static void BuildConfig()

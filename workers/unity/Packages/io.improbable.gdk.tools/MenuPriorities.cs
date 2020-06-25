@@ -9,7 +9,8 @@ namespace Improbable.Gdk.Tools
         internal const int LocalLaunch = 71;
         internal const int LaunchStandaloneClient = 72;
         internal const int OpenInspector = 74;
-        internal const int PortForwarding = 75;
+        internal const int OpenInspectorV2 = 75;
+        internal const int PortForwarding = 76;
 
         internal const int GdkToolsConfiguration = 201;
         internal const int GenerateDevAuthToken = 202;
