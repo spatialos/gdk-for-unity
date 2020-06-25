@@ -22,8 +22,12 @@ pushd "${PKG_ROOT}" > /dev/null
             PACKAGE_NAME=$(npm pack | tail -n 1)
             if [[ -n "${DRY_RUN-}" ]]; then
                 cloudsmith push npm spatialos/gdk-for-unity "${PACKAGE_NAME}" --republish --dry-run
+                # NOTE: The trailing slash on the repository URL is required.
+                npm publish "${PACKAGE_NAME}" --registry="https://npm.spatialoschina.com/repository/unity/" --dry-run
             else
                 cloudsmith push npm spatialos/gdk-for-unity "${PACKAGE_NAME}" --republish
+                # NOTE: The trailing slash on the repository URL is required.
+                npm publish "${PACKAGE_NAME}" --registry="https://npm.spatialoschina.com/repository/unity/"
             fi
             rm "${PACKAGE_NAME}"
         popd > /dev/null
