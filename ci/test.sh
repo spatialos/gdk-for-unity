@@ -19,6 +19,14 @@ mkdir -p "${TEST_RESULTS_DIR}"
 COVERAGE_OPTIONS="generateHtmlReport\;assemblyFilters:+Improbable.Gdk.*,-Improbable.Gdk.Generated,-Improbable.Gdk.Generated.BuildSystem"
 COVERAGE_RESULTS_PATH="${PROJECT_DIR}/logs/coverage-results"
 
+if isMacOS; then
+    PLAYMODE_PLATFORM="StandaloneOSX"
+elif isLinux; then
+    PLAYMODE_PLATFORM="StandaloneLinux64"
+else
+    PLAYMODE_PLATFORM="StandaloneWindows64"
+fi
+
 traceStart "Testing Code Generator :gear:"
     dotnet test \
         --logger:"nunit;LogFilePath=${TEST_RESULTS_DIR}/code-gen-lib-test-results.xml" \
@@ -54,8 +62,8 @@ traceStart "Testing Unity: Playmode :joystick:"
             -coverageOptions "${COVERAGE_OPTIONS}" \
             -projectPath "${PROJECT_DIR}/workers/unity" \
             -runTests \
-            -testPlatform "StandaloneWindows64" \
-            -buildTarget "StandaloneWindows64" \
+            -testPlatform ${PLAYMODE_PLATFORM} \
+            -buildTarget ${PLAYMODE_PLATFORM} \
             -testCategory "Uncategorized" \
             -logfile "${PROJECT_DIR}/logs/playmode-test-run.log" \
             -testResults "${TEST_RESULTS_DIR}/playmode-test-results.xml" \

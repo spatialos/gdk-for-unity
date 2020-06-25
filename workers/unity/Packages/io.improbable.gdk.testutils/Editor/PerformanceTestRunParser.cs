@@ -21,19 +21,18 @@ namespace Improbable.Gdk.TestUtils.Editor
             if (!args.TryGetCommandLineValue(xmlResultsDirKey, ref xmlResultsDirectory) ||
                 !args.TryGetCommandLineValue(jsonOutputDirKey, ref jsonOutputDirectory))
             {
-                Debug.LogWarning($"You must provide valid {xmlResultsDirKey} and {jsonOutputDirKey} arguments.");
+                Debug.LogError($"You must provide valid {xmlResultsDirKey} and {jsonOutputDirKey} arguments.");
                 return;
             }
 
             var jsonOutputPath = Path.GetFullPath(jsonOutputDirectory);
+            Directory.CreateDirectory(jsonOutputPath);
 
             var testResults = Directory.EnumerateFiles(Path.GetFullPath(xmlResultsDirectory), "*.xml");
             foreach (var testResult in testResults)
             {
                 try
                 {
-                    Directory.CreateDirectory(jsonOutputPath);
-
                     var jsonFileName = Path.ChangeExtension(Path.GetFileName(testResult), "json");
                     var jsonFilePath = Path.Combine(jsonOutputPath, jsonFileName);
 
@@ -41,7 +40,7 @@ namespace Improbable.Gdk.TestUtils.Editor
                     var run = xmlParser.GetPerformanceTestRunFromXml(testResult);
                     if (run == null)
                     {
-                        Debug.LogWarning($"No result at given path: {testResult}");
+                        Debug.LogError($"No result at given path: {testResult}");
                         return;
                     }
 

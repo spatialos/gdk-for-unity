@@ -19,11 +19,19 @@ JSON_RESULTS_DIR="${PROJECT_DIR}/perftest-results"
 mkdir -p "${XML_RESULTS_DIR}"
 mkdir -p "${JSON_RESULTS_DIR}"
 
-TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Packages/io.improbable.gdk.testutils/TestSettings"
+TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Assets/Tests/PlaymodeTests/TestSettings"
 
 # `parallelism` must be 4 else all jobs are done sequentially.
 if [[ ${BUILDKITE_PARALLEL_JOB_COUNT:-0} == 4 ]]; then
     JOB_ID=${BUILDKITE_PARALLEL_JOB}
+fi
+
+if isMacOS; then
+    PLAYMODE_PLATFORM="StandaloneOSX"
+elif isLinux; then
+    PLAYMODE_PLATFORM="StandaloneLinux64"
+else
+    PLAYMODE_PLATFORM="StandaloneWindows64"
 fi
 
 function runTests {
@@ -74,7 +82,7 @@ do
             for scriptingBackend in mono il2cpp winrt
             do
                 traceStart "Playmode: ${burst} ${apiProfile} ${scriptingBackend}"
-                    runTests "StandaloneWindows64" "Performance" ${burst} ${apiProfile} ${scriptingBackend}
+                    runTests ${PLAYMODE_PLATFORM} "Performance" ${burst} ${apiProfile} ${scriptingBackend}
                 traceEnd
             done
         fi
