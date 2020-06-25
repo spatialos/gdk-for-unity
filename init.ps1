@@ -37,7 +37,7 @@ function UpdatePackage($type, $identifier, $path, $removes)
 
 function UpdateSpot($identifier, $path)
 {
-    spatial package get spot $identifier $SpotVersion "$path" --force --json_output $EnvironmentArgs
+    spatial package get spot $identifier $SpotVersion "$path" --force $EnvironmentArgs
 }
 
 UpdatePackage worker_sdk c-dynamic-x86_64-gcc510-linux "$SdkPath/Plugins/Improbable/Core/Linux/x86_64"
@@ -59,7 +59,7 @@ UpdateSpot spot-macos "$SdkPath/.spot/spot"
 UpdatePackage worker_sdk c-static-arm-clang-ios "$SdkMobilePath/Plugins/Improbable/Core/iOS/arm"
 UpdatePackage worker_sdk c-static-x86_64-clang-ios "$SdkMobilePath/Plugins/Improbable/Core/iOS/x86_64"
 
-UpdatePackage worker_sdk c-dynamic-arm64v8a-clang_ndk16b-android "$SdkMobilePath/Plugins/Improbable/Core/Android/arm64"
-UpdatePackage worker_sdk c-dynamic-armv7a-clang_ndk16b-android "$SdkMobilePath/Plugins/Improbable/Core/Android/armv7"
+UpdatePackage worker_sdk c-dynamic-arm64v8a-clang_ndk21-android "$SdkMobilePath/Plugins/Improbable/Core/Android/arm64"
+UpdatePackage worker_sdk c-dynamic-armv7a-clang_ndk21-android "$SdkMobilePath/Plugins/Improbable/Core/Android/armv7"
 
 UpdatePackage worker_sdk csharp_cinterop_static "$SdkMobilePath/Plugins/Improbable/Sdk/iOS"
