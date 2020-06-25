@@ -37,7 +37,7 @@ function UpdatePackage($type, $identifier, $path, $removes)
 
 function UpdateSpot($identifier, $path)
 {
-    spatial package get spot $identifier $SpotVersion "$path" --force $EnvironmentArgs
+    spatial package get spot $identifier $SpotVersion "$path" --force --json_output $EnvironmentArgs
 }
 
 UpdatePackage worker_sdk c-dynamic-x86_64-gcc510-linux "$SdkPath/Plugins/Improbable/Core/Linux/x86_64"
