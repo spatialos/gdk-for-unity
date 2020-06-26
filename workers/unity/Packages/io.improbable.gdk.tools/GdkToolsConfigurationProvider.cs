@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Tools
     /// </summary>
     public class GdkToolsConfigurationProvider : SettingsProvider
     {
-        public const string ProjectSettingsPath = "Project/GDK Tools Configuration";
+        public const string ProjectSettingsPath = "Project/Spatial OS";
 
         internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string VerboseLoggingLabel = "Verbose logging";
