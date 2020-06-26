@@ -21,9 +21,16 @@ mkdir -p "${JSON_RESULTS_DIR}"
 
 TEST_SETTINGS_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
 
+declare -A CONFIGS=()
+NUM_CONFIGS=0
+
+JOB_ID=${BUILDKITE_PARALLEL_JOB:-0}
+NUM_JOBS=${BUILDKITE_PARALLEL_JOB_COUNT:-1}
+
 # `parallelism` must be 4 else all jobs are done sequentially.
-if [[ ${BUILDKITE_PARALLEL_JOB_COUNT:-0} == 4 ]]; then
-    JOB_ID=${BUILDKITE_PARALLEL_JOB}
+if [[ ${NUM_JOBS} != 4 ]]; then
+    JOB_ID=0
+    NUM_JOBS=1
 fi
 
 if isMacOS; then
@@ -34,19 +41,82 @@ else
     PLAYMODE_PLATFORM="StandaloneWindows64"
 fi
 
-function runTests {
-    local platform=$1
-    local category=$2
-    local burst=$3
-    local apiProfile=$4
+function main {
+    configureTargets
 
-    local scriptingBackend="Mono2x"
+    for config in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
+    do
+        runTests $config
+    done
+
+    traceStart "Parsing XML Test Results"
+        pushd "workers/unity"
+            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+                -batchmode \
+                -nographics \
+                -quit \
+                -projectPath "${PROJECT_DIR}/workers/unity" \
+                "${ACCELERATOR_ARGS}" \
+                -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
+                -executeMethod "Improbable.Gdk.TestUtils.Editor.PerformanceTestRunParser.Parse" \
+                -xmlResultsDirectory "${XML_RESULTS_DIR}" \
+                -jsonOutputDirectory "${JSON_RESULTS_DIR}"
+        popd
+    traceEnd
+
+    cleanUnity "$(pwd)/workers/unity"
+}
+
+function configureTargets {
+    # Editmode tests
+    addConfig editmode Performance burst-default NET_Standard_2_0 Mono2x
+    addConfig editmode Performance burst-default NET_4_6 Mono2x
+    addConfig editmode Performance burst-disabled NET_Standard_2_0 Mono2x
+    addConfig editmode Performance burst-disabled NET_4_6 Mono2x
+
+    # Mono2x backend
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 Mono2x
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 Mono2x
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 Mono2x
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 Mono2x
+
+    # IL2CPP backend
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 IL2CPP
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 IL2CPP
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 IL2CPP
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 IL2CPP
+
+    # WinRTDotNET backend
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 WinRTDotNET
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 WinRTDotNET
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 WinRTDotNET
+    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 WinRTDotNET
+}
+
+function addConfig {
+    CONFIGS["${NUM_CONFIGS}, platform"]=${1}
+    CONFIGS["${NUM_CONFIGS}, category"]=${2}
+    CONFIGS["${NUM_CONFIGS}, burst"]=${3}
+    CONFIGS["${NUM_CONFIGS}, apiProfile"]=${4}
+    CONFIGS["${NUM_CONFIGS}, scriptingBackend"]=${5}
+
+    ((NUM_CONFIGS+=1))
+}
+
+function runTests {
+    local configId=${1}
+
+    local platform="${CONFIGS["${configId}, platform"]}"
+    local category="${CONFIGS["${configId}, category"]}"
+    local burst="${CONFIGS["${configId}, burst"]}"
+    local apiProfile="${CONFIGS["${configId}, apiProfile"]}"
+    local scriptingBackend="${CONFIGS["${configId}, scriptingBackend"]}"
+
     local args=()
 
     if [[ "${platform}" == "editmode" ]]; then
         args+=("-runEditorTests")
     else
-        scriptingBackend=$5
         args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
@@ -77,38 +147,4 @@ function runTests {
     traceEnd
 }
 
-targetId=0
-
-for burst in burst-default burst-disabled
-do
-    for apiProfile in NET_Standard_2_0 NET_4_6
-    do
-        if [[ ${targetId} == ${JOB_ID:-$targetId} ]]; then
-            runTests "editmode" "Performance" ${burst} ${apiProfile}
-
-            for scriptingBackend in Mono2x IL2CPP WinRTDotNET
-            do
-                runTests ${PLAYMODE_PLATFORM} "Performance" ${burst} ${apiProfile} ${scriptingBackend}
-            done
-        fi
-
-        ((targetId+=1))
-    done
-done
-
-traceStart "Parsing XML Test Results"
-    pushd "workers/unity"
-        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-            -batchmode \
-            -nographics \
-            -quit \
-            -projectPath "${PROJECT_DIR}/workers/unity" \
-            "${ACCELERATOR_ARGS}" \
-            -logfile "${PROJECT_DIR}/logs/results-parsing.log" \
-            -executeMethod "Improbable.Gdk.TestUtils.Editor.PerformanceTestRunParser.Parse" \
-            -xmlResultsDirectory "${XML_RESULTS_DIR}" \
-            -jsonOutputDirectory "${JSON_RESULTS_DIR}"
-    popd
-traceEnd
-
-cleanUnity "$(pwd)/workers/unity"
+main
