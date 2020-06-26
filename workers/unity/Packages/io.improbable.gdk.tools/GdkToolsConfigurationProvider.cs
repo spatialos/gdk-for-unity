@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Tools
     /// </summary>
     public class GdkToolsConfigurationProvider : SettingsProvider
     {
+        public const string ProjectSettingsPath = "Project/GDK Tools Configuration";
+
         internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string VerboseLoggingLabel = "Verbose logging";
         internal const string CodegenLogOutputDirLabel = "Log output directory";
@@ -40,16 +42,15 @@ namespace Improbable.Gdk.Tools
         // Flag to indicate if we have unsaved changes in the settings window
         private bool hasUnsavedData;
 
-        public GdkToolsConfigurationProvider(string path, SettingsScope scope = SettingsScope.User)
-        : base(path, scope) { }
+        private GdkToolsConfigurationProvider(string path, SettingsScope scope = SettingsScope.User) : base(path, scope) { }
 
         [SettingsProvider]
         public static SettingsProvider CreateGdkToolsConfigurationProvider()
         {
-            var provider = new GdkToolsConfigurationProvider("Project/GDK Tools Configuration", SettingsScope.Project);
+            var provider = new GdkToolsConfigurationProvider(ProjectSettingsPath, SettingsScope.Project);
 
-            PropertyInfo[] GdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
-            provider.keywords = GdkToolsConfigProperties.Select(property => property.Name).ToList();
+            var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            provider.keywords = gdkToolsConfigProperties.Select(property => property.Name).ToList();
             return provider;
         }
 
