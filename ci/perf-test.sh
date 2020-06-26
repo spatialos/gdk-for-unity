@@ -19,7 +19,7 @@ JSON_RESULTS_DIR="${PROJECT_DIR}/perftest-results"
 mkdir -p "${XML_RESULTS_DIR}"
 mkdir -p "${JSON_RESULTS_DIR}"
 
-TEST_SETTINGS_DIR="${PROJECT_DIR}/workers/unity/Assets/Tests/PlaymodeTests/TestSettings"
+TEST_SETTINGS_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
 
 # `parallelism` must be 4 else all jobs are done sequentially.
 if [[ ${BUILDKITE_PARALLEL_JOB_COUNT:-0} == 4 ]]; then
@@ -40,7 +40,7 @@ function runTests {
     local burst=$3
     local apiProfile=$4
 
-    local scriptingBackend="mono"
+    local scriptingBackend="Mono2x"
     local args=()
 
     if [[ "${platform}" == "editmode" ]]; then
@@ -54,36 +54,41 @@ function runTests {
         args+=("--burst-disable-compilation")
     fi
 
-    pushd "workers/unity"
-        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-            -batchmode \
-            -nographics \
-            -projectPath "${PROJECT_DIR}/workers/unity" \
-            "${ACCELERATOR_ARGS}" \
-            -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
-            -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
-            -testCategory "${category}" \
-            -testSettingsFile "${TEST_SETTINGS_DIR}/${scriptingBackend}-${apiProfile}.json" \
-            ${args[@]}
-    popd
+    TEST_SETTINGS_PATH="${TEST_SETTINGS_DIR}/${apiProfile}-${scriptingBackend}.json"
+    TEST_SETTINGS_JSON=$( jq -n \
+                  --arg apiProfile "${apiProfile}" \
+                  --arg scriptingBackend "${scriptingBackend}" \
+                  '{apiProfile: $apiProfile, scriptingBackend: $scriptingBackend}' \
+                  > ${TEST_SETTINGS_PATH})
+
+    traceStart "${platform}: ${burst} ${apiProfile} ${scriptingBackend}"
+        pushd "workers/unity"
+            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+                -batchmode \
+                -nographics \
+                -projectPath "${PROJECT_DIR}/workers/unity" \
+                "${ACCELERATOR_ARGS}" \
+                -logfile "${PROJECT_DIR}/logs/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-run.log" \
+                -testResults "${XML_RESULTS_DIR}/${platform}-${burst}-${apiProfile}-${scriptingBackend}-perftest-results.xml" \
+                -testCategory "${category}" \
+                -testSettingsFile "${TEST_SETTINGS_PATH}" \
+                ${args[@]}
+        popd
+    traceEnd
 }
 
 targetId=0
 
 for burst in burst-default burst-disabled
 do
-    for apiProfile in dotnet-std-2 dotnet-4
+    for apiProfile in NET_Standard_2_0 NET_4_6
     do
         if [[ ${targetId} == ${JOB_ID:-$targetId} ]]; then
-            traceStart "Editmode: ${burst} ${apiProfile}"
-                runTests "editmode" "Performance" ${burst} ${apiProfile}
-            traceEnd
+            runTests "editmode" "Performance" ${burst} ${apiProfile}
 
-            for scriptingBackend in mono il2cpp winrt
+            for scriptingBackend in Mono2x IL2CPP WinRTDotNET
             do
-                traceStart "Playmode: ${burst} ${apiProfile} ${scriptingBackend}"
-                    runTests ${PLAYMODE_PLATFORM} "Performance" ${burst} ${apiProfile} ${scriptingBackend}
-                traceEnd
+                runTests ${PLAYMODE_PLATFORM} "Performance" ${burst} ${apiProfile} ${scriptingBackend}
             done
         fi
 
