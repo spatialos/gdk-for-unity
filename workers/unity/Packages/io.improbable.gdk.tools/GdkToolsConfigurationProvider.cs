@@ -256,23 +256,5 @@ namespace Improbable.Gdk.Tools
                 }
             }
         }
-
-        //private void Update()
-        //{
-        //    TrySaveChanges();
-        //}
-
-        //private void TrySaveChanges()
-        //{
-        //    var timeSinceLastSave = DateTime.Now - lastSaveTime;
-        //    if (!hasUnsavedData || timeSinceLastSave < FileSavingInterval || configErrors.Any())
-        //    {
-        //        return;
-        //    }
-
-        //    toolsConfig.Save();
-        //    lastSaveTime = DateTime.Now;
-        //    hasUnsavedData = false;
-        //}
     }
 }
