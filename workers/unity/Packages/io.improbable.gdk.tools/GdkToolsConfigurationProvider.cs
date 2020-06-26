@@ -49,6 +49,8 @@ namespace Improbable.Gdk.Tools
         {
             var provider = new GdkToolsConfigurationProvider(ProjectSettingsPath, SettingsScope.Project);
 
+            // Extract all public and private properties from the GdkToolsConfiguration class
+            // Use the names of the discovered properties as the keyword search terms in Project Settings panel
             var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             provider.keywords = gdkToolsConfigProperties.Select(property => property.Name).ToList();
             return provider;
