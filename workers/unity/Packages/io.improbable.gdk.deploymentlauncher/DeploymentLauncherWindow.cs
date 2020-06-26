@@ -240,21 +240,6 @@ namespace Improbable.Gdk.DeploymentLauncher
                     EditorGUILayout.LabelField("Project Name", projectName);
                 }
 
-                using (new EditorGUILayout.HorizontalScope())
-                {
-                    using (new EditorGUI.DisabledScope(manager.IsActive))
-                    {
-                        if (GUILayout.Button(style.EditRuntimeVersionButtonContents, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
-                        {
-                            GdkToolsConfigurationWindow.ShowWindow();
-                        }
-                    }
-
-                    var config = GdkToolsConfiguration.GetOrCreateInstance();
-
-                    EditorGUILayout.LabelField("Runtime Version", config.RuntimeVersion);
-                }
-
                 CommonUIElements.DrawHorizontalLine(5, style.HorizontalLineColor);
 
                 launcherConfig.AssemblyConfig = DrawAssemblyConfig(launcherConfig.AssemblyConfig);
