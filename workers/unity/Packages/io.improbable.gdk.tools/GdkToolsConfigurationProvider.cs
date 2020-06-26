@@ -118,14 +118,11 @@ namespace Improbable.Gdk.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.miniButtonMid, GUILayout.Width(150)))
+                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.miniButtonMid, GUILayout.Width(150))
+                        && EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?", "Yes", "No"))
                     {
-                        if (EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?",
-                            "Yes", "No"))
-                        {
-                            GUI.FocusControl(null);
-                            toolsConfig.ResetToDefault();
-                        }
+                        GUI.FocusControl(null);
+                        toolsConfig.ResetToDefault();
                     }
 
                     GUILayout.FlexibleSpace();
