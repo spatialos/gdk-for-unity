@@ -12,7 +12,8 @@
         "UnityEditor.TestRunner",
         "Improbable.Gdk.TestUtils",
         "Improbable.Gdk.GameObjectCreation",
-        "Unity.PerformanceTesting"
+        "Unity.PerformanceTesting",
+        "Improbable.Gdk.Debug"
     ],
     "includePlatforms": [
         "Editor"
