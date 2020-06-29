@@ -1,0 +1,114 @@
+[
+  {
+    "platform": "Editmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Editmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Editmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Editmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "Mono2x"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "IL2CPP"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "IL2CPP"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "IL2CPP"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "IL2CPP"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "WinRTDotNET"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-default",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "WinRTDotNET"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_Standard_2_0",
+    "scriptingBackend": "WinRTDotNET"
+  },
+  {
+    "platform": "Playmode",
+    "categories": "Performance",
+    "burst": "burst-disabled",
+    "apiProfile": "NET_4_6",
+    "scriptingBackend": "WinRTDotNET"
+  }
+]

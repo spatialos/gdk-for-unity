@@ -15,14 +15,14 @@ ACCELERATOR_ARGS=$(getAcceleratorArgs)
 PROJECT_DIR="$(pwd)"
 XML_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 JSON_RESULTS_DIR="${PROJECT_DIR}/perftest-results"
+CONFIG_FILE="ci/perftest-configs.json"
 
 mkdir -p "${XML_RESULTS_DIR}"
 mkdir -p "${JSON_RESULTS_DIR}"
 
 TEST_SETTINGS_DIR=$(mktemp -d "${TMPDIR:-/tmp}/XXXXXXXXX")
 
-declare -A CONFIGS=()
-NUM_CONFIGS=0
+NUM_CONFIGS=$(jq '. | length' ${CONFIG_FILE})
 
 JOB_ID=${BUILDKITE_PARALLEL_JOB:-0}
 NUM_JOBS=${BUILDKITE_PARALLEL_JOB_COUNT:-1}
@@ -42,8 +42,6 @@ else
 fi
 
 function main {
-    configureTargets
-
     for config in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
     do
         runTests $config
@@ -67,56 +65,22 @@ function main {
     cleanUnity "$(pwd)/workers/unity"
 }
 
-function configureTargets {
-    # Editmode tests
-    addConfig editmode Performance burst-default NET_Standard_2_0 Mono2x
-    addConfig editmode Performance burst-default NET_4_6 Mono2x
-    addConfig editmode Performance burst-disabled NET_Standard_2_0 Mono2x
-    addConfig editmode Performance burst-disabled NET_4_6 Mono2x
-
-    # Mono2x backend
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 Mono2x
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 Mono2x
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 Mono2x
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 Mono2x
-
-    # IL2CPP backend
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 IL2CPP
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 IL2CPP
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 IL2CPP
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 IL2CPP
-
-    # WinRTDotNET backend
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_Standard_2_0 WinRTDotNET
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-default NET_4_6 WinRTDotNET
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_Standard_2_0 WinRTDotNET
-    addConfig ${PLAYMODE_PLATFORM} Performance burst-disabled NET_4_6 WinRTDotNET
-}
-
-function addConfig {
-    CONFIGS["${NUM_CONFIGS}, platform"]=${1}
-    CONFIGS["${NUM_CONFIGS}, category"]=${2}
-    CONFIGS["${NUM_CONFIGS}, burst"]=${3}
-    CONFIGS["${NUM_CONFIGS}, apiProfile"]=${4}
-    CONFIGS["${NUM_CONFIGS}, scriptingBackend"]=${5}
-
-    ((NUM_CONFIGS+=1))
-}
-
 function runTests {
     local configId=${1}
 
-    local platform="${CONFIGS["${configId}, platform"]}"
-    local category="${CONFIGS["${configId}, category"]}"
-    local burst="${CONFIGS["${configId}, burst"]}"
-    local apiProfile="${CONFIGS["${configId}, apiProfile"]}"
-    local scriptingBackend="${CONFIGS["${configId}, scriptingBackend"]}"
+    # use jq instead
+    local platform=$(jq -r .[${configId}].platform ${CONFIG_FILE})
+    local category=$(jq -r .[${configId}].category ${CONFIG_FILE})
+    local burst=$(jq -r .[${configId}].burst ${CONFIG_FILE})
+    local apiProfile=$(jq -r .[${configId}].apiProfile ${CONFIG_FILE})
+    local scriptingBackend=$(jq -r .[${configId}].scriptingBackend ${CONFIG_FILE})
 
     local args=()
 
-    if [[ "${platform}" == "editmode" ]]; then
+    if [[ "${platform}" == "Editmode" ]]; then
         args+=("-runEditorTests")
     else
+        platform=${PLAYMODE_PLATFORM}
         args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
