@@ -8,7 +8,7 @@
 - Added `Open inspector V2` menu item that opens the new inspector in the browser. [#1407](https://github.com/spatialos/gdk-for-unity/pull/1407)
 
 ### Changed
-- Moved Gdk Tools Configuration to the Unity "Project Settings" window. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
+- Moved Gdk Tools Configuration to the Unity "Project Settings" window under `Spatial OS`. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
 
 ### Fixed
 
