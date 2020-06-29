@@ -59,9 +59,9 @@ namespace Improbable.Gdk.Core
             var desiredType = typeof(T);
             if (arguments.TryGetValue(key, out var strValue))
             {
-                if (strValue == string.Empty)
+                if (string.IsNullOrEmpty(strValue))
                 {
-                    throw new FormatException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
+                    throw new InvalidOperationException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
                 }
 
                 if (desiredType.IsEnum)
@@ -85,7 +85,7 @@ namespace Improbable.Gdk.Core
             return false;
         }
 
-        private static bool isFlag(string flag)
+        private static bool IsFlag(string flag)
         {
             return flag.StartsWith("+") || flag.StartsWith("-");
         }
@@ -96,10 +96,10 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < args.Count; i++)
             {
                 var flag = args[i];
-                if (isFlag(flag))
+                if (IsFlag(flag))
                 {
                     var strippedOfPlus = flag.Substring(1, flag.Length - 1);
-                    if (i + 1 >= args.Count || isFlag(args[i + 1]))
+                    if (i + 1 >= args.Count || IsFlag(args[i + 1]))
                     {
                         config[strippedOfPlus] = string.Empty;
                     }

@@ -30,7 +30,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
 
         [TestCase("ranket")]
         [TestCase("raknet")]
-        [TestCase("")]
         public void Initialize_should_throw_with_invalid_protocol(string protocolStr)
         {
             var args = new Dictionary<string, string>
