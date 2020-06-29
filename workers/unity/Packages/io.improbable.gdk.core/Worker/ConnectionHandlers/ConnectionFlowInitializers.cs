@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Improbable.Gdk.Core
@@ -56,6 +57,12 @@ namespace Improbable.Gdk.Core
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.ReceptionistPort,
                 ref receptionist.ReceptionistPort);
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.WorkerId, ref receptionist.WorkerId);
+
+            var useExternalIp = string.Empty;
+            if (commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.UseExternalIp, ref useExternalIp))
+            {
+                receptionist.UseExternalIp = bool.Parse(useExternalIp);
+            }
         }
 
         public void Initialize(LocatorFlow locator)
@@ -64,6 +71,12 @@ namespace Improbable.Gdk.Core
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.PlayerIdentityToken,
                 ref locator.PlayerIdentityToken);
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.LoginToken, ref locator.LoginToken);
+
+            var useExternalIp = string.Empty;
+            if (commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.UseExternalIp, ref useExternalIp))
+            {
+                locator.UseExternalIp = bool.Parse(useExternalIp);
+            }
 
             if (!string.IsNullOrEmpty(locator.PlayerIdentityToken)
                 && !string.IsNullOrEmpty(locator.LoginToken))

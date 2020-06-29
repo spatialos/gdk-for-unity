@@ -43,6 +43,11 @@ namespace Improbable.Gdk.Core
         public string WorkerId;
 
         /// <summary>
+        ///     The flag to use to connect to SpatialOS using the externally-visible IP address.
+        /// </summary>
+        public bool UseExternalIp = RuntimeConfigDefaults.ReceptionistUseExternalIp;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="ReceptionistFlow"/> class.
         /// </summary>
         /// <param name="workerId">The worker ID to use for the worker connection.</param>
@@ -55,6 +60,8 @@ namespace Improbable.Gdk.Core
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
         {
+            parameters.Network.UseExternalIp = UseExternalIp;
+
             using (var connectionFuture =
                 Connection.ConnectAsync(ReceptionistHost, ReceptionistPort, WorkerId, parameters))
             {
@@ -108,6 +115,11 @@ namespace Improbable.Gdk.Core
         public bool UseInsecureConnection = false;
 
         /// <summary>
+        ///     The flag to use to connect to SpatialOS using the externally-visible IP address.
+        /// </summary>
+        public bool UseExternalIp = RuntimeConfigDefaults.LocatorUseExternalIp;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="LocatorFlow"/> class.
         /// </summary>
         /// <param name="initializer">Optional. An initializer to seed the data required to connect via the Alpha Locator flow.</param>
@@ -118,7 +130,7 @@ namespace Improbable.Gdk.Core
 
         public async Task<Connection> CreateAsync(ConnectionParameters parameters, CancellationToken? token = null)
         {
-            parameters.Network.UseExternalIp = true;
+            parameters.Network.UseExternalIp = UseExternalIp;
 
             if (UseDevAuthFlow)
             {

@@ -17,6 +17,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 { RuntimeConfigNames.ReceptionistPort, "1337" },
                 { RuntimeConfigNames.WorkerId, "my_worker_id" },
                 { RuntimeConfigNames.LocatorHost, "locator_host" },
+                { RuntimeConfigNames.UseExternalIp, "true" }
             };
         }
 
@@ -44,6 +45,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.ReceptionistHost], flow.ReceptionistHost);
             Assert.AreEqual(1337, flow.ReceptionistPort);
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.WorkerId], flow.WorkerId);
+            Assert.AreEqual(bool.Parse(GetBaseArgs()[RuntimeConfigNames.UseExternalIp]), flow.UseExternalIp);
+        }
+
+        [Test]
+        public void Initialize_receptionist_with_external_ip_false()
+        {
+            var args = GetBaseArgs();
+            args[RuntimeConfigNames.UseExternalIp] = "false";
+            var initializer = new CommandLineConnectionFlowInitializer(args);
+            var flow = new ReceptionistFlow("a_worker_id", initializer);
+            Assert.AreEqual(bool.Parse(args[RuntimeConfigNames.UseExternalIp]), flow.UseExternalIp);
         }
 
         [Test]
@@ -55,6 +67,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             Assert.AreEqual(RuntimeConfigDefaults.ReceptionistHost, flow.ReceptionistHost);
             Assert.AreEqual(RuntimeConfigDefaults.ReceptionistPort, flow.ReceptionistPort);
             Assert.AreEqual("a_worker_id", flow.WorkerId);
+            Assert.AreEqual(RuntimeConfigDefaults.ReceptionistUseExternalIp, flow.UseExternalIp);
         }
 
         [Test]
@@ -66,6 +79,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LocatorHost], flow.LocatorHost);
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.LoginToken], flow.LoginToken);
             Assert.AreEqual(GetBaseArgs()[RuntimeConfigNames.PlayerIdentityToken], flow.PlayerIdentityToken);
+            Assert.AreEqual(bool.Parse(GetBaseArgs()[RuntimeConfigNames.UseExternalIp]), flow.UseExternalIp);
+        }
+
+        [Test]
+        public void Initialize_alpha_locator_with_external_ip_false()
+        {
+            var args = GetBaseArgs();
+            args[RuntimeConfigNames.UseExternalIp] = "false";
+            var initializer = new CommandLineConnectionFlowInitializer(args);
+            var flow = new LocatorFlow(initializer);
+            Assert.AreEqual(bool.Parse(args[RuntimeConfigNames.UseExternalIp]), flow.UseExternalIp);
         }
 
         [Test]
@@ -86,6 +110,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
                 var flow = new LocatorFlow(initializer);
                 Assert.IsTrue(flow.UseDevAuthFlow);
             }
+        }
+
+        [Test]
+        public void Initialize_alpha_locator_ignores_params_that_arent_there()
+        {
+            var initializer = new CommandLineConnectionFlowInitializer(new Dictionary<string, string>());
+            var flow = new LocatorFlow(initializer);
+
+            Assert.AreEqual(RuntimeConfigDefaults.LocatorHost, flow.LocatorHost);
+            Assert.AreEqual(RuntimeConfigDefaults.LocatorPort, flow.LocatorPort);
+            Assert.AreEqual(RuntimeConfigDefaults.LocatorUseExternalIp, flow.UseExternalIp);
         }
     }
 }
