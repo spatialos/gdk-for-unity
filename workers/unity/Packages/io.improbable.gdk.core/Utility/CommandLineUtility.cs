@@ -61,7 +61,7 @@ namespace Improbable.Gdk.Core
             {
                 if (strValue == string.Empty)
                 {
-                    throw new ArgumentException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
+                    throw new FormatException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
                 }
 
                 if (desiredType.IsEnum)

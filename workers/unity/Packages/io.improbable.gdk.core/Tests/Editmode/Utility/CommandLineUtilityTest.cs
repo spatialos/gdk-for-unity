@@ -113,9 +113,9 @@ namespace Improbable.Gdk.Core.EditmodeTests
             });
 
             var boolVal = false;
-            Assert.Throws<ArgumentException>(() => args.TryGetCommandLineValue("flag", ref boolVal));
+            Assert.Throws<FormatException>(() => args.TryGetCommandLineValue("flag", ref boolVal));
             var stringVal = string.Empty;
-            Assert.Throws<ArgumentException>(() => args.TryGetCommandLineValue("flag", ref stringVal));
+            Assert.Throws<FormatException>(() => args.TryGetCommandLineValue("flag", ref stringVal));
         }
     }
 }
