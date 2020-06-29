@@ -14,8 +14,6 @@ namespace Improbable.Gdk.Core
         public const string CloudEnvironment = "cloud";
         public const ushort ReceptionistPort = 7777;
         public const ushort LocatorPort = 443;
-        public const bool ReceptionistUseExternalIp = false;
-        public const bool LocatorUseExternalIp = true;
     }
 
     /// <summary>
