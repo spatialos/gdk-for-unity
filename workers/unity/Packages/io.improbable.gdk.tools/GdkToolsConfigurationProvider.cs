@@ -50,10 +50,10 @@ namespace Improbable.Gdk.Tools
             var provider = new GdkToolsConfigurationProvider(ProjectSettingsPath, SettingsScope.Project);
 
             // Extract all members (fields, methods etc) from the GdkToolsConfiguration class
-            // We later filter the results so we only have fields and properties remaining
-            // Use the names of the discovered members as the keyword search terms in Project Settings panel
             var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetMembers();
 
+            // Filter the results so that fields and properties remain
+            // Use the names of the discovered members as the keyword search terms in the Project Settings panel
             provider.keywords = gdkToolsConfigProperties
                 .Where(member => member.MemberType == MemberTypes.Property || member.MemberType == MemberTypes.Field)
                 .Select(property => property.Name).ToList();
