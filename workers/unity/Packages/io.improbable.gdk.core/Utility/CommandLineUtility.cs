@@ -98,14 +98,15 @@ namespace Improbable.Gdk.Core
                 var flag = args[i];
                 if (isFlag(flag))
                 {
-                    var isNextArgFlagOrEnd = i + 1 >= args.Count || isFlag(args[i + 1]);
-                    var flagArg = isNextArgFlagOrEnd ? string.Empty : args[i + 1];
                     var strippedOfPlus = flag.Substring(1, flag.Length - 1);
-                    config[strippedOfPlus] = flagArg;
-                    // We process the next argument if its a flag, otherwise skip it.
-                    if (!isNextArgFlagOrEnd)
+                    if (i + 1 >= args.Count || isFlag(args[i + 1]))
                     {
-                        ++i;
+                        config[strippedOfPlus] = string.Empty;
+                    }
+                    else
+                    {
+                        config[strippedOfPlus] = args[i + 1];
+                        i++;
                     }
                 }
             }
