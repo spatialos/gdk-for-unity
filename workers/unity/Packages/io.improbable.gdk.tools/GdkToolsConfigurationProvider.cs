@@ -49,11 +49,14 @@ namespace Improbable.Gdk.Tools
         {
             var provider = new GdkToolsConfigurationProvider(ProjectSettingsPath, SettingsScope.Project);
 
-            // Extract all public fields from the GdkToolsConfiguration class
-            // Use the names of the discovered fields as the keyword search terms in Project Settings panel
-            var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetFields(BindingFlags.Public | BindingFlags.Instance);
+            // Extract all members (fields, methods etc) from the GdkToolsConfiguration class
+            // We later filter the results so we only have fields and properties remaining
+            // Use the names of the discovered members as the keyword search terms in Project Settings panel
+            var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetMembers();
 
-            provider.keywords = gdkToolsConfigProperties.Select(property => property.Name).ToList();
+            provider.keywords = gdkToolsConfigProperties
+                .Where(member => member.MemberType == MemberTypes.Property || member.MemberType == MemberTypes.Field)
+                .Select(property => property.Name).ToList();
             return provider;
         }
 
