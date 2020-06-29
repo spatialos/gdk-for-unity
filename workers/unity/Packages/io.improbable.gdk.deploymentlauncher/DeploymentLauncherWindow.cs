@@ -246,7 +246,7 @@ namespace Improbable.Gdk.DeploymentLauncher
                     {
                         if (GUILayout.Button(style.EditRuntimeVersionButtonContents, EditorStyles.miniButton, GUILayout.ExpandWidth(false)))
                         {
-                            GdkToolsConfigurationWindow.ShowWindow();
+                            SettingsService.OpenProjectSettings(GdkToolsConfigurationProvider.ProjectSettingsPath);
                         }
                     }
 

@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Tools
 {
     /// <summary>
-    ///     Defines a custom inspector window that allows you to configure the GDK Tools.
+    ///     Defines a custom section in Unity Project settings for GDK Tools configuration.
     /// </summary>
-    public class GdkToolsConfigurationWindow : EditorWindow
+    public class GdkToolsConfigurationProvider : SettingsProvider
     {
+        public const string ProjectSettingsPath = "Project/Spatial OS";
+
         internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string VerboseLoggingLabel = "Verbose logging";
         internal const string CodegenLogOutputDirLabel = "Log output directory";
@@ -35,40 +39,41 @@ namespace Improbable.Gdk.Tools
         private List<string> configErrors = new List<string>();
         private Vector2 scrollPosition;
 
-        // Minimum time required from last config change before saving to file
-        private readonly TimeSpan FileSavingInterval = TimeSpan.FromSeconds(1);
-        private DateTime lastSaveTime = DateTime.Now;
+        // Flag to indicate if we have unsaved changes in the settings window
         private bool hasUnsavedData;
 
-        [MenuItem("SpatialOS/GDK tools configuration", false, MenuPriorities.GdkToolsConfiguration)]
-        public static void ShowWindow()
+        private GdkToolsConfigurationProvider(string path, SettingsScope scope = SettingsScope.User) : base(path, scope) { }
+
+        [SettingsProvider]
+        public static SettingsProvider CreateGdkToolsConfigurationProvider()
         {
-            GetWindow<GdkToolsConfigurationWindow>().Show();
+            var provider = new GdkToolsConfigurationProvider(ProjectSettingsPath, SettingsScope.Project);
+
+            // Extract all members (fields, methods etc) from the GdkToolsConfiguration class
+            var gdkToolsConfigProperties = typeof(GdkToolsConfiguration).GetMembers();
+
+            // Filter the results so that fields and properties remain
+            // Use the names of the discovered members as the keyword search terms in the Project Settings panel
+            provider.keywords = gdkToolsConfigProperties
+                .Where(member => member.MemberType == MemberTypes.Property || member.MemberType == MemberTypes.Field)
+                .Select(property => property.Name).ToList();
+            return provider;
         }
 
-        private void OnEnable()
+
+        public override void OnActivate(string searchContext, VisualElement rootElement)
         {
             if (toolsConfig != null)
             {
                 return;
             }
 
-            titleContent = new GUIContent("GDK Tools");
             toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             Undo.undoRedoPerformed += () => { configErrors = toolsConfig.Validate(); };
-
-            EditorApplication.quitting += OnExit;
         }
 
-        private void OnDestroy()
-        {
-            OnExit();
-
-            EditorApplication.quitting -= OnExit;
-        }
-
-        private void OnExit()
+        public override void OnDeactivate()
         {
             if (!hasUnsavedData || configErrors.Any())
             {
@@ -77,9 +82,11 @@ namespace Improbable.Gdk.Tools
 
             toolsConfig.Save();
             AssetDatabase.SaveAssets();
+            hasUnsavedData = false;
         }
 
-        public void OnGUI()
+
+        public override void OnGUI(string searchContext)
         {
             if (AddSchemaDirButton == null)
             {
@@ -118,14 +125,11 @@ namespace Improbable.Gdk.Tools
                 using (new EditorGUILayout.HorizontalScope())
                 {
                     GUILayout.FlexibleSpace();
-                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.miniButtonMid, GUILayout.Width(150)))
+                    if (GUILayout.Button(ResetConfigurationButtonText, EditorStyles.miniButtonMid, GUILayout.Width(150))
+                        && EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?", "Yes", "No"))
                     {
-                        if (EditorUtility.DisplayDialog("Confirmation", "Are you sure you want to reset to defaults?",
-                            "Yes", "No"))
-                        {
-                            GUI.FocusControl(null);
-                            toolsConfig.ResetToDefault();
-                        }
+                        GUI.FocusControl(null);
+                        toolsConfig.ResetToDefault();
                     }
 
                     GUILayout.FlexibleSpace();
@@ -255,24 +259,6 @@ namespace Improbable.Gdk.Tools
                     }
                 }
             }
-        }
-
-        private void Update()
-        {
-            TrySaveChanges();
-        }
-
-        private void TrySaveChanges()
-        {
-            var timeSinceLastSave = DateTime.Now - lastSaveTime;
-            if (!hasUnsavedData || timeSinceLastSave < FileSavingInterval || configErrors.Any())
-            {
-                return;
-            }
-
-            toolsConfig.Save();
-            lastSaveTime = DateTime.Now;
-            hasUnsavedData = false;
         }
     }
 }

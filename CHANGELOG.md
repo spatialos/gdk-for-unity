@@ -7,6 +7,10 @@
 - Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
 - Added `Open inspector V2` menu item that opens the new inspector in the browser. [#1407](https://github.com/spatialos/gdk-for-unity/pull/1407)
 
+### Changed
+
+- Moved Gdk Tools Configuration to the Unity "Project Settings" window under `Spatial OS`. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
+
 ### Fixed
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
