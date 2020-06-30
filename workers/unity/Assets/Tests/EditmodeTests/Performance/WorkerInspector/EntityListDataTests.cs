@@ -22,12 +22,13 @@ namespace Improbable.Gdk.EditmodeTests.WorkerInspector
                 {
                     for (var i = 1; i < entityCount + 1; i++)
                     {
-                        world.Connection.CreateEntity(1, GetTemplate("some-entity"));
+                        world.Connection.CreateEntity(i, GetTemplate("some-entity"));
                     }
                 })
                 .Step(world =>
                 {
                     var data = new EntityListData();
+                    data.ApplySearch(EntitySearchParameters.FromSearchString("2"));
                     data.SetNewWorld(world.Worker.World); // Yikes
                     return data;
                 });
@@ -38,9 +39,6 @@ namespace Improbable.Gdk.EditmodeTests.WorkerInspector
                     {
                         data.RefreshData();
                         return data;
-                    }).Step((world, data) =>
-                    {
-                        data.ApplySearch(EntitySearchParameters.FromSearchString("2"));
                     });
                 })
                 .WarmupCount(2)

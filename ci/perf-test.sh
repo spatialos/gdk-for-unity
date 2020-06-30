@@ -42,13 +42,25 @@ else
 fi
 
 function main {
+    pushd "workers/unity"
+        traceStart "Generate csproj & sln files :csharp:"
+            dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+                -batchmode \
+                -nographics \
+                -projectPath "${PROJECT_DIR}/workers/unity" \
+                -quit \
+                -executeMethod UnityEditor.SyncVS.SyncSolution \
+                "${ACCELERATOR_ARGS}"
+        traceEnd
+    popd
+
     for config in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
     do
         runTests $config
     done
 
-    traceStart "Parsing XML Test Results"
-        pushd "workers/unity"
+    pushd "workers/unity"
+        traceStart "Parsing XML Test Results"
             dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
                 -batchmode \
                 -nographics \
@@ -59,8 +71,8 @@ function main {
                 -executeMethod "Improbable.Gdk.TestUtils.Editor.PerformanceTestRunParser.Parse" \
                 -xmlResultsDirectory "${XML_RESULTS_DIR}" \
                 -jsonOutputDirectory "${JSON_RESULTS_DIR}"
-        popd
-    traceEnd
+        traceEnd
+    popd
 
     cleanUnity "$(pwd)/workers/unity"
 }
@@ -84,7 +96,7 @@ function runTests {
         args+=("-runTests -testPlatform ${platform} -buildTarget ${platform}")
     fi
 
-    if [[ "${burst}" == "burst-disabled" ]]; then
+    if [[ "${burst}" == "disabled" ]]; then
         args+=("--burst-disable-compilation")
     fi
 

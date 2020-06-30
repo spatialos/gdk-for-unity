@@ -12,19 +12,10 @@ namespace Improbable.Gdk.PlaymodeTests
         private const string WorkerType = "TestWorkerType";
         private const long EntityId = 100;
 
-        protected override MockWorld.Options GetOptions()
-        {
-            return new MockWorld.Options
-            {
-                WorkerType = WorkerType
-            };
-        }
-
         [Performance, Test]
         public void SinglePositionUpdate()
         {
-            var random = new System.Random(42);
-            var markers = new[] { "GatherAllChunks", "ExecuteReplication", "Position" };
+            var markers = new[] { "GatherAllChunks", "ExecuteReplication", "Position.SendUpdates" };
 
             var currentState = World.Step(world =>
             {
@@ -36,10 +27,12 @@ namespace Improbable.Gdk.PlaymodeTests
                 {
                     currentState.Step(world =>
                     {
-                        world.Connection.UpdateComponent(EntityId, Position.ComponentId, new Position.Update
-                        {
-                            Coords = new Coordinates(random.NextDouble(), random.NextDouble(), random.NextDouble())
-                        });
+                        var workerSystem = world.Worker.World.GetExistingSystem<WorkerSystem>();
+                        var entity = workerSystem.GetEntity(new EntityId(EntityId));
+                        var position = workerSystem.EntityManager.GetComponentData<Position.Component>(entity);
+
+                        position.Coords = new Coordinates(3006, 42, 2020);
+                        workerSystem.EntityManager.SetComponentData(entity, position);
                     });
                 })
                 .ProfilerMarkers(markers)

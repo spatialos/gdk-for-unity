@@ -2,112 +2,112 @@
   {
     "platform": "Editmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Editmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Editmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Editmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "Mono2x"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "IL2CPP"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "IL2CPP"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "IL2CPP"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "IL2CPP"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "WinRTDotNET"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-default",
+    "burst": "default",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "WinRTDotNET"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_Standard_2_0",
     "scriptingBackend": "WinRTDotNET"
   },
   {
     "platform": "Playmode",
     "category": "Performance",
-    "burst": "burst-disabled",
+    "burst": "disabled",
     "apiProfile": "NET_4_6",
     "scriptingBackend": "WinRTDotNET"
   }
