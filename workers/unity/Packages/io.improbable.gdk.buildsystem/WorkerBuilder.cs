@@ -169,7 +169,11 @@ namespace Improbable.Gdk.BuildSystem
             };
 
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildContext.BuildTargetConfig.Target);
-            PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
+            var activeScriptingBackend = PlayerSettings.GetScriptingBackend(buildTargetGroup);
+            if (activeScriptingBackend != buildContext.ScriptingImplementation)
+            {
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
+            }
 
             var activeIOSSdkVersion = PlayerSettings.iOS.sdkVersion;
             if (buildContext.IOSSdkVersion.HasValue && activeIOSSdkVersion != buildContext.IOSSdkVersion)
@@ -206,7 +210,7 @@ namespace Improbable.Gdk.BuildSystem
             {
                 currentContext = null;
                 PlayerSettings.iOS.sdkVersion = activeIOSSdkVersion;
-                PlayerSettings.SetScriptingBackend(buildTargetGroup, buildContext.ScriptingImplementation);
+                PlayerSettings.SetScriptingBackend(buildTargetGroup, activeScriptingBackend);
             }
 
             if (buildContext.BuildTargetConfig.Target == BuildTarget.StandaloneOSX)
