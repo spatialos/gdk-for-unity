@@ -49,6 +49,7 @@ function main {
                 -nographics \
                 -projectPath "${PROJECT_DIR}/workers/unity" \
                 -quit \
+                -logfile "${PROJECT_DIR}/logs/generate-csproj-sln-files.log" \
                 -executeMethod UnityEditor.SyncVS.SyncSolution \
                 "${ACCELERATOR_ARGS}"
         traceEnd
