@@ -655,6 +655,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var enabled = buildTarget.Enabled;
             var required = buildTarget.Required;
 
+            // Pick the current backend based on the current build target
+            var scriptingImplementation = buildTarget.ScriptingImplementation;
+
             using (var check = new EditorGUI.ChangeCheckScope())
             using (new EditorGUILayout.VerticalScope(GUILayout.ExpandWidth(true)))
             {
@@ -695,6 +698,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     }
 
                     options = ConfigureCompression(options);
+
+                    scriptingImplementation = ConfigureScriptingImplementation(scriptingImplementation, buildTarget.Target);
                 }
 
                 if (!canBuildTarget)
@@ -710,11 +715,25 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     RecordUndo("Worker build options");
 
                     env.BuildTargets[selectedBuildTarget.Index] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled, required);
+                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, scriptingImplementation);
 
                     selectedBuildTarget.Choices = null;
                 }
             }
+        }
+
+        private ScriptingImplementation ConfigureScriptingImplementation(ScriptingImplementation backend, BuildTarget buildTarget)
+        {
+            var choice = backend;
+            var disallowBackendChoice = buildTarget == BuildTarget.iOS;
+
+            using (new EditorGUI.DisabledScope(disallowBackendChoice))
+            {
+                choice = (ScriptingImplementation) EditorGUILayout.Popup("Scripting Backend",
+                    (int) choice, style.ScriptingImplementationOptions);
+            }
+
+            return choice;
         }
 
         private BuildOptions ConfigureCompression(BuildOptions options)
