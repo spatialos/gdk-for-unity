@@ -30,6 +30,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// </summary>
         public bool Required;
 
+        /// <summary>
+        /// The backend scripting implementation.
+        /// </summary>
+        public ScriptingImplementation ScriptingImplementation;
+
         internal string Label
         {
             get
@@ -57,12 +62,16 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         ///     Creates a new instance of a build target and its options.
         /// </summary>
-        public BuildTargetConfig(BuildTarget target, BuildOptions options, bool enabled, bool required)
+        public BuildTargetConfig(BuildTarget target, BuildOptions options,
+            bool enabled, bool required, ScriptingImplementation scriptingImplementation = ScriptingImplementation.Mono2x)
         {
             Enabled = enabled;
             Required = required;
             Target = target;
             Options = options;
+
+            // If build target is iOS then force the Scripting Implementation to be IL2CPP (as Mono is not supported)
+            ScriptingImplementation = target == BuildTarget.iOS ? ScriptingImplementation.IL2CPP : scriptingImplementation;
         }
     }
 }
