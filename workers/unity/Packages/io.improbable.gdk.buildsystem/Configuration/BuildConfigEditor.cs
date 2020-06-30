@@ -724,16 +724,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private ScriptingImplementation ConfigureScriptingImplementation(ScriptingImplementation backend, BuildTarget buildTarget)
         {
-            var choice = backend;
             var disallowBackendChoice = buildTarget == BuildTarget.iOS;
 
             using (new EditorGUI.DisabledScope(disallowBackendChoice))
             {
-                choice = (ScriptingImplementation) EditorGUILayout.Popup("Scripting Backend",
-                    (int) choice, style.ScriptingImplementationOptions);
+                backend = (ScriptingImplementation) EditorGUILayout.Popup("Scripting Backend",
+                    (int) backend, style.ScriptingImplementationOptions);
             }
 
-            return choice;
+            return backend;
         }
 
         private BuildOptions ConfigureCompression(BuildOptions options)
