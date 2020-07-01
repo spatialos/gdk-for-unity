@@ -20,6 +20,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal readonly string[] CompressionOptions = { "Default", "LZ4", "LZ4HC" };
 
+        internal readonly string[] ScriptingImplementationOptions = { "Mono", "IL2CPP" };
+
         internal readonly Dictionary<BuildTarget, GUIContent> BuildTargetIcons =
             new Dictionary<BuildTarget, GUIContent>();
 
