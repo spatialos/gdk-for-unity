@@ -49,7 +49,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         {
             var args = new Dictionary<string, string>
             {
-                { RuntimeConfigNames.UseExternalIp, string.Empty }
+                { RuntimeConfigNames.UseExternalIp, null }
             };
 
             var connParams = new ConnectionParameters();
