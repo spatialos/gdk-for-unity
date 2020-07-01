@@ -1,5 +1,11 @@
 # Upgrade Guide
 
+## From `0.3.7` to `0.3.8`
+
+### Scripting Backend in Project Settings is now overwritten by the Build Configuration
+
+The Scripting Backend defined in the Unity Project Settings is now overwritten by the Build Configuration Asset. More information can be found on the [Build Configuration UI](https://documentation.improbable.io/gdk-for-unity/v0.3.8/docs/build-configuration#section-build-configuration-ui) wiki page.
+
 ## From `0.3.6` to `0.3.7`
 
 ### Update your `.gitignore`
