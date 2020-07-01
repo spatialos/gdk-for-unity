@@ -124,13 +124,13 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var args = CommandLineArgs.From(new List<string>
             {
                 "+key1",
-                "first-value",
+                "",
                 "+key2",
-                ""
+                "second-value"
             });
 
             var stringVal = string.Empty;
-            Assert.DoesNotThrow(() => args.TryGetCommandLineValue("key2", ref stringVal));
+            Assert.DoesNotThrow(() => args.TryGetCommandLineValue("key1", ref stringVal));
             Assert.IsEmpty(stringVal);
         }
     }
