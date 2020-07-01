@@ -60,8 +60,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     WorkerType = workerType,
                     BuildEnvironment = buildEnvironment,
-                    ScriptingImplementation = scriptImplementation ??
-                        PlayerSettings.GetScriptingBackend(BuildPipeline.GetBuildTargetGroup(targetConfig.Target)),
+                    ScriptingImplementation = scriptImplementation ?? targetConfig.ScriptingImplementation,
                     BuildTargetConfig = targetConfig,
                     IOSSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? iosSdkVersion : null
                 }));
