@@ -59,7 +59,7 @@ namespace Improbable.Gdk.Core
             var desiredType = typeof(T);
             if (arguments.TryGetValue(key, out var strValue))
             {
-                if (string.IsNullOrEmpty(strValue))
+                if (strValue == null)
                 {
                     throw new InvalidOperationException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
                 }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.Core
                     var strippedOfPlus = flag.Substring(1, flag.Length - 1);
                     if (i + 1 >= args.Count || IsFlag(args[i + 1]))
                     {
-                        config[strippedOfPlus] = string.Empty;
+                        config[strippedOfPlus] = null;
                     }
                     else
                     {

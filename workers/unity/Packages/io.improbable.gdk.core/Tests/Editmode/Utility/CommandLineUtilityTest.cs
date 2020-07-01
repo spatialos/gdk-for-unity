@@ -117,5 +117,21 @@ namespace Improbable.Gdk.Core.EditmodeTests
             var stringVal = string.Empty;
             Assert.Throws<InvalidOperationException>(() => args.TryGetCommandLineValue("flag", ref stringVal));
         }
+
+        [Test]
+        public void TryGetCommandLineValue_is_valid_for_empty_arg()
+        {
+            var args = CommandLineArgs.From(new List<string>
+            {
+                "+key1",
+                "first-value",
+                "+key2",
+                ""
+            });
+
+            var stringVal = string.Empty;
+            Assert.DoesNotThrow(() => args.TryGetCommandLineValue("key2", ref stringVal));
+            Assert.IsEmpty(stringVal);
+        }
     }
 }
