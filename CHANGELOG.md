@@ -10,6 +10,7 @@
 - Added support for flag arguments in `CommandLineParser`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
 
+
 ### Changed
 
 - Moved Gdk Tools Configuration to the Unity "Project Settings" window under `Spatial OS`. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
@@ -54,6 +55,7 @@
 - `WorkerConnector` no longer destroys itself in `Dispose`. [#1365](https://github.com/spatialos/gdk-for-unity/pull/1365)
 - `MultiThreadedSpatialOSConnectionHandler` and `SpatialOSConnectionHandlerBuilder.SetThreadingMode` have been removed. [#1367](https://github.com/spatialos/gdk-for-unity/pull/1367)
 - Command request IDs are now typed as `CommandRequestID` instead of `long`. [#1372](https://github.com/spatialos/gdk-for-unity/pull/1372)
+- C# enums will be generated to start from 0 and shifted to schema values on serialization and shifted back to C# values on deserialization. A warning will be generated when enums defined in schema does not start from 0. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
 
 ### Added
 
