@@ -41,8 +41,8 @@ namespace Improbable.Gdk.EditmodeTests.WorkerInspector
                         return data;
                     });
                 })
-                .WarmupCount(2)
-                .MeasurementCount(10)
+                .WarmupCount(3)
+                .MeasurementCount(30)
                 .ProfilerMarkers(profilerMarkers)
                 .Run();
         }

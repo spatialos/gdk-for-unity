@@ -52,8 +52,8 @@ namespace Improbable.Gdk.PlaymodeTests
                     });
                 })
                 .ProfilerMarkers(markers)
-                .WarmupCount(100)
-                .MeasurementCount(1000)
+                .WarmupCount(10)
+                .MeasurementCount(100)
                 .Run();
         }
 
