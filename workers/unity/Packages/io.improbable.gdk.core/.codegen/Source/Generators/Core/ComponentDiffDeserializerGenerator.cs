@@ -15,7 +15,8 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 cgw.UsingDirectives(
                     "Improbable.Gdk.Core",
-                    "Improbable.Worker.CInterop"
+                    "Improbable.Worker.CInterop",
+                    "Unity.Profiling"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
@@ -94,17 +95,21 @@ if (eventCount > 0)
 
             return Scope.Type("public class ComponentSerializer : IComponentSerializer", serializer =>
             {
-                serializer.Line(@"
+                serializer.Line($@"
+private ProfilerMarker serializeMarker = new ProfilerMarker(""{componentDetails.Name}.ComponentSerializer.Serialize"");
+
 public uint GetComponentId()
-{
+{{
     return ComponentId;
-}
+}}
 ");
 
                 serializer.Method("public void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages)",
                     m =>
                     {
-                        m.Line(@"
+                        m.ProfileScope("serializeMarker", s =>
+                        {
+                            s.Line(@"
 var storage = messages.GetComponentDiffStorage(ComponentId);
 
 var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
@@ -119,11 +124,11 @@ for (int i = 0; i < updates.Count; ++i)
 }
 ");
 
-                        foreach (var ev in eventDetailsList)
-                        {
-                            m.CustomScope(() => new[]
+                            foreach (var ev in eventDetailsList)
                             {
-                                $@"
+                                s.CustomScope(() => new[]
+                                {
+                                    $@"
 var events = ((IDiffEventStorage<{ev.PascalCaseName}.Event>) storage).GetEvents();
 
 for (int i = 0; i < events.Count; ++i)
@@ -136,8 +141,9 @@ for (int i = 0; i < events.Count; ++i)
     serializedMessages.AddComponentUpdate(componentUpdate, ev.EntityId.Id);
 }}
 "
-                            });
-                        }
+                                });
+                            }
+                        });
                     });
             });
         }

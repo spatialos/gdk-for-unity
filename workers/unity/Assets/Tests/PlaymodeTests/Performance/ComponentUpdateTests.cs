@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
@@ -12,10 +13,25 @@ namespace Improbable.Gdk.PlaymodeTests
         private const string WorkerType = "TestWorkerType";
         private const long EntityId = 100;
 
+        protected override MockWorld.Options GetOptions()
+        {
+            return new MockWorld.Options
+            {
+                EnableSerialization = true
+            };
+        }
+
         [Performance, Test]
         public void SinglePositionUpdate()
         {
-            var markers = new[] { "GatherAllChunks", "ExecuteReplication", "Position.SendUpdates" };
+            var markers = new[]
+            {
+                "GatherAllChunks",
+                "ExecuteReplication",
+                "Position.SendUpdates",
+                "WorkerSystem.SendMessages",
+                "Position.ComponentSerializer.Serialize"
+            };
 
             var currentState = World.Step(world =>
             {
@@ -27,7 +43,7 @@ namespace Improbable.Gdk.PlaymodeTests
                 {
                     currentState.Step(world =>
                     {
-                        var workerSystem = world.Worker.World.GetExistingSystem<WorkerSystem>();
+                        var workerSystem = world.GetSystem<WorkerSystem>();
                         var entity = workerSystem.GetEntity(new EntityId(EntityId));
                         var position = workerSystem.EntityManager.GetComponentData<Position.Component>(entity);
 

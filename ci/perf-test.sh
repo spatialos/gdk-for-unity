@@ -81,7 +81,6 @@ function main {
 function runTests {
     local configId=${1}
 
-    # use jq instead
     local platform=$(jq -r .[${configId}].platform ${CONFIG_FILE})
     local category=$(jq -r .[${configId}].category ${CONFIG_FILE})
     local burst=$(jq -r .[${configId}].burst ${CONFIG_FILE})
