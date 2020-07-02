@@ -675,7 +675,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     required = EditorGUILayout.Toggle("Required", required);
 
-                    options = ConfigurePlatform(buildTarget);
+                    options = ConfigurePlatform(buildTarget.Target, options);
 
                     options = ConfigureCompression(options);
 
@@ -745,11 +745,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             return options;
         }
 
-        private static BuildOptions ConfigurePlatform(BuildTargetConfig buildTarget)
+        private static BuildOptions ConfigurePlatform(BuildTarget target, BuildOptions options)
         {
-            var headlessSupported = BuildSupportChecker.CanBuildHeadless(buildTarget.Target);
+            var headlessSupported = BuildSupportChecker.CanBuildHeadless(target);
 
-            var options = buildTarget.Options;
             if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
                 options |= BuildOptions.Development;
