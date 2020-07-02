@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NLog;
@@ -29,7 +30,11 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         public static uint GetEnumMinimum(string fullQualifiedName)
         {
-            EnumMinimums.TryGetValue(fullQualifiedName, out var output);
+            if (!EnumMinimums.TryGetValue(fullQualifiedName, out var output))
+            {
+                throw new ArgumentException($"Could not find the following enum: {fullQualifiedName}");
+            }
+
             return output;
         }
     }
