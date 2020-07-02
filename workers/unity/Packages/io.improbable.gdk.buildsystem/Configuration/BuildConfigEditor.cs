@@ -777,13 +777,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static BuildOptions ConfigureDebug(BuildOptions options)
         {
-            var debugEnabled = options.HasFlag(BuildOptions.Development)
+            var isDebugEnabled = options.HasFlag(BuildOptions.Development)
                 && options.HasFlag(BuildOptions.AllowDebugging);
 
             using (new EditorGUI.DisabledScope(!options.HasFlag(BuildOptions.Development)))
             {
-                ;
-                if (EditorGUILayout.Toggle("Allow Debug", debugEnabled))
+                if (EditorGUILayout.Toggle("Allow Debug", isDebugEnabled))
                 {
                     options |= BuildOptions.AllowDebugging;
                 }
