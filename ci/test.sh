@@ -17,7 +17,7 @@ TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 mkdir -p "${TEST_RESULTS_DIR}"
 
 COVERAGE_OPTIONS="generateHtmlReport\;assemblyFilters:+Improbable.Gdk.*,-Improbable.Gdk.Generated,-Improbable.Gdk.Generated.BuildSystem"
-COVERAGE_RESULTS_PATH="${PROJECT_DIR}/logs/coverage-results"
+COVERAGE_RESULTS_PATH="${PROJECT_DIR}/workers/unity/logs/coverage-results"
 
 traceStart "Testing Code Generator :gear:"
     dotnet test \
