@@ -68,7 +68,7 @@ pushd "workers/unity"
 
     traceStart "Execute sonar-scanner :sonarqube:"
         dotnet-sonarscanner begin "${args[@]}"
-        dotnet msbuild ./unity.sln -t:Rebuild -nr:false
-        dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
+        dotnet msbuild ./unity.sln -t:Rebuild -nr:false > "${PROJECT_DIR}/logs/sonar-msbuild.log"
+        dotnet-sonarscanner end "-d:sonar.login=${TOKEN}" > "${PROJECT_DIR}/logs/sonar-postprocess.log"
     traceEnd
 popd
