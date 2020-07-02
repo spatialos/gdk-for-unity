@@ -10,7 +10,6 @@
 - Added support for flag arguments in `CommandLineParser`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
 
-
 ### Changed
 
 - Moved Gdk Tools Configuration to the Unity "Project Settings" window under `Spatial OS`. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
