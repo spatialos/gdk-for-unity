@@ -17,6 +17,7 @@ namespace Improbable.Gdk.TestUtils
             public string WorkerType;
             public Action<World> AdditionalSystems;
             public ILogDispatcher Logger;
+            public bool EnableSerialization;
         }
 
         public WorkerInWorld Worker { get; private set; }
@@ -30,7 +31,7 @@ namespace Improbable.Gdk.TestUtils
         {
             var mockWorld = new MockWorld();
 
-            var connectionBuilder = new MockConnectionHandlerBuilder();
+            var connectionBuilder = new MockConnectionHandlerBuilder(options.EnableSerialization);
             mockWorld.Connection = connectionBuilder.ConnectionHandler;
 
             mockWorld.Worker = WorkerInWorld

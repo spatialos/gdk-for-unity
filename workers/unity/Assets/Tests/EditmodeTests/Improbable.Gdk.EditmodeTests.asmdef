@@ -1,17 +1,19 @@
 {
-    "name": "Improbable.Gdk.EditModeTests",
+    "name": "Improbable.Gdk.EditmodeTests",
     "references": [
-        "Improbable.Gdk.QueryBasedInterestHelper",
-        "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
+        "Improbable.Gdk.Debug",
+        "Improbable.Gdk.GameObjectCreation",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.QueryBasedInterestHelper",
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.TransformSynchronization",
-        "UnityEngine.TestRunner",
+        "Unity.PerformanceTesting",
         "UnityEditor.TestRunner",
-        "Improbable.Gdk.TestUtils",
-        "Improbable.Gdk.GameObjectCreation"
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [
         "Editor"
