@@ -28,6 +28,17 @@ traceStart "Testing Code Generator :gear:"
     echo ""
 traceEnd
 
+traceStart "Generate csproj & sln files :csharp:"
+    pushd "workers/unity"
+        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
+            -quit \
+            -executeMethod UnityEditor.SyncVS.SyncSolution \
+            "${ACCELERATOR_ARGS}"
+    popd
+traceEnd
+
 traceStart "Testing Unity: Editmode :writing_hand:"
     pushd "workers/unity"
         dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
