@@ -59,4 +59,6 @@ traceStart "Testing Unity: Playmode :joystick:"
     popd
 traceEnd
 
+ci/sonar-scanner.sh
+
 cleanUnity "$(pwd)/workers/unity"
