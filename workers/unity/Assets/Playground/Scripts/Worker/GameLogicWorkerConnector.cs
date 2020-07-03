@@ -2,7 +2,6 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Worker.CInterop;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Playground
 {

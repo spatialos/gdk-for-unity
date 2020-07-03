@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core.Representation
         // Required components before spawning (same as the current `EntityTypeExpectations`)
         IEnumerable<uint> RequiredComponents { get; }
 
-        GameObject Resolve(SpatialOSEntityInfo entity, EntityManager manager);
+        GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager);
         void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs);
     }
 }

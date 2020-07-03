@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Core.Representation.Types
         public SimpleEntityResolver(string entityType, GameObject prefab)
         {
             this.entityType = entityType;
-            Prefab = prefab;
+            this.prefab = prefab;
         }
 
         public string EntityType => entityType;
@@ -23,18 +23,18 @@ namespace Improbable.Gdk.Core.Representation.Types
 
 #pragma warning disable 649
         [SerializeField] private string entityType;
-        public GameObject Prefab;
+        [SerializeField] private GameObject prefab;
         [SerializeField] private uint[] requiredComponents = { };
 #pragma warning restore 649
 
-        public GameObject Resolve(SpatialOSEntityInfo entity, EntityManager manager)
+        public GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager)
         {
-            return Prefab;
+            return prefab;
         }
 
         public void DeclareReferencedPrefabs(List<GameObject> referencedPrefabs)
         {
-            referencedPrefabs.Add(Prefab);
+            referencedPrefabs.Add(prefab);
         }
     }
 }

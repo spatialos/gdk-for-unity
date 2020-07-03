@@ -23,7 +23,7 @@ MonoBehaviour:
         asm: Improbable.Gdk.Core}
       data:
         entityType: Cube
-        Prefab: {fileID: 1119241936791015974, guid: 3095f262424c6314a9a2487e12d1e1e2,
+        prefab: {fileID: 1119241936791015974, guid: 3095f262424c6314a9a2487e12d1e1e2,
           type: 3}
         requiredComponents: 
     00000001:
@@ -31,7 +31,7 @@ MonoBehaviour:
         asm: Improbable.Gdk.Core}
       data:
         entityType: Character
-        Prefab: {fileID: 1292271339760838, guid: 34f6f8ff026facf49bbc20f4663b8209,
+        prefab: {fileID: 1292271339760838, guid: 34f6f8ff026facf49bbc20f4663b8209,
           type: 3}
         requiredComponents: 
     00000002:
@@ -39,6 +39,6 @@ MonoBehaviour:
         asm: Improbable.Gdk.Core}
       data:
         entityType: Spinner
-        Prefab: {fileID: 1198430049189278, guid: 913515e03e128a0489711fdead38a227,
+        prefab: {fileID: 1198430049189278, guid: 913515e03e128a0489711fdead38a227,
           type: 3}
         requiredComponents: 

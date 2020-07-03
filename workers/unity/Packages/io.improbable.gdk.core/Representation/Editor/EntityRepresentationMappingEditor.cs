@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 namespace Improbable.Gdk.Core.Representation.Editor
 {
     [CustomEditor(typeof(EntityRepresentationMapping))]
-    public class EntityLinkerDatabaseEditor : UnityEditor.Editor
+    public class EntityRepresentationMappingEditor : UnityEditor.Editor
     {
         private static TypeCache.TypeCollection entityRepresentationTypes;
 
@@ -16,7 +16,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private VisualElement listContainer;
 
-        static EntityLinkerDatabaseEditor()
+        static EntityRepresentationMappingEditor()
         {
             entityRepresentationTypes = TypeCache.GetTypesDerivedFrom<IEntityRepresentationResolver>();
         }
@@ -28,7 +28,6 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         public override VisualElement CreateInspectorGUI()
         {
-            // TODO Replace with UXML
             var container = new VisualElement { name = "container" };
             container.style.paddingTop = 5;
 
@@ -52,7 +51,10 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
                 var superElementContainer = new VisualElement { name = "element-root-container" };
                 var typeLabel = new Label(TargetDatabase.EntityRepresentationResolvers[i].GetType().Name)
-                { name = "element-type-name" };
+                {
+                    name = "element-type-name"
+                };
+
                 typeLabel.style.unityTextAlign = TextAnchor.UpperRight;
                 typeLabel.style.marginRight = 22;
                 typeLabel.SetEnabled(false);
