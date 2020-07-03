@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
+    - A warning will be generated when enums defined in schema does not start from 0. 
+
 ### Added
 
 - Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
@@ -9,11 +14,6 @@
 - Added the option to set `UseExternalIp` using the command line argument `+useExternalIp` with the `CommandLineConnectionParameterInitializer`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added support for flag arguments in `CommandLineParser`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
-
-### Breaking Changes
-
-- All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
-    - A warning will be generated when enums defined in schema does not start from 0. 
 
 ### Changed
 
