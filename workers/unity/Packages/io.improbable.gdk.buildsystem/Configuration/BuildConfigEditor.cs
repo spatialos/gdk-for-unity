@@ -675,27 +675,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     required = EditorGUILayout.Toggle("Required", required);
 
-                    switch (buildTarget.Target)
-                    {
-                        case BuildTarget.StandaloneOSX:
-                            options = ConfigureOSX(buildTarget);
-                            break;
-                        case BuildTarget.StandaloneWindows:
-                            options = ConfigureWindows(buildTarget);
-                            break;
-                        case BuildTarget.iOS:
-                            options = ConfigureIOS(buildTarget);
-                            break;
-                        case BuildTarget.Android:
-                            options = ConfigureAndroid(buildTarget);
-                            break;
-                        case BuildTarget.StandaloneWindows64:
-                            options = ConfigureWindows(buildTarget);
-                            break;
-                        case BuildTarget.StandaloneLinux64:
-                            options = ConfigureLinux(buildTarget);
-                            break;
-                    }
+                    options = ConfigurePlatform(buildTarget.Target, options);
 
                     options = ConfigureCompression(options);
 
@@ -765,19 +745,26 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             return options;
         }
 
-        private BuildOptions ConfigureLinux(BuildTargetConfig buildTarget)
+        private static BuildOptions ConfigurePlatform(BuildTarget target, BuildOptions options)
         {
-            var options = buildTarget.Options;
+            var headlessSupported = BuildSupportChecker.CanBuildHeadless(target);
+
             if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
             {
                 options |= BuildOptions.Development;
             }
             else
             {
-                options &= ~BuildOptions.Development;
+                // When the `Development flag` is disabled, we also disable the 'Allow Debug' flag to
+                // ensure consistency between UI and BuildOptions flags
+                options &= ~(BuildOptions.Development | BuildOptions.AllowDebugging);
             }
 
-            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
+            options = ConfigureDebug(options);
+
+
+            if (headlessSupported &&
+                EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
             {
                 options |= BuildOptions.EnableHeadlessMode;
             }
@@ -789,79 +776,21 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             return options;
         }
 
-        private BuildOptions ConfigureAndroid(BuildTargetConfig buildTarget)
+        private static BuildOptions ConfigureDebug(BuildOptions options)
         {
-            var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
-            {
-                options |= BuildOptions.Development;
-            }
-            else
-            {
-                options &= ~BuildOptions.Development;
-            }
+            var isDebugEnabled = options.HasFlag(BuildOptions.Development)
+                && options.HasFlag(BuildOptions.AllowDebugging);
 
-            return options;
-        }
-
-        private BuildOptions ConfigureIOS(BuildTargetConfig buildTarget)
-        {
-            var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
+            using (new EditorGUI.DisabledScope(!options.HasFlag(BuildOptions.Development)))
             {
-                options |= BuildOptions.Development;
-            }
-            else
-            {
-                options &= ~BuildOptions.Development;
-            }
-
-            return options;
-        }
-
-        private BuildOptions ConfigureOSX(BuildTargetConfig buildTarget)
-        {
-            var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
-            {
-                options |= BuildOptions.Development;
-            }
-            else
-            {
-                options &= ~BuildOptions.Development;
-            }
-
-            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
-            {
-                options |= BuildOptions.EnableHeadlessMode;
-            }
-            else
-            {
-                options &= ~BuildOptions.EnableHeadlessMode;
-            }
-
-            return options;
-        }
-
-        private BuildOptions ConfigureWindows(BuildTargetConfig buildTarget)
-        {
-            var options = buildTarget.Options;
-            if (EditorGUILayout.Toggle("Development", options.HasFlag(BuildOptions.Development)))
-            {
-                options |= BuildOptions.Development;
-            }
-            else
-            {
-                options &= ~BuildOptions.Development;
-            }
-
-            if (EditorGUILayout.Toggle("Server build", options.HasFlag(BuildOptions.EnableHeadlessMode)))
-            {
-                options |= BuildOptions.EnableHeadlessMode;
-            }
-            else
-            {
-                options &= ~BuildOptions.EnableHeadlessMode;
+                if (EditorGUILayout.Toggle("Allow Debug", isDebugEnabled))
+                {
+                    options |= BuildOptions.AllowDebugging;
+                }
+                else
+                {
+                    options &= ~BuildOptions.AllowDebugging;
+                }
             }
 
             return options;

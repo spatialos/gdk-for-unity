@@ -14,6 +14,8 @@
 - Added the option to set `UseExternalIp` using the command line argument `+useExternalIp` with the `CommandLineConnectionParameterInitializer`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added support for flag arguments in `CommandLineParser`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
+- Added `Allow Debug` toggle to the Build Configuration UI. [#1413](https://github.com/spatialos/gdk-for-unity/pull/1413)
+    - Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player.
 
 ### Changed
 
