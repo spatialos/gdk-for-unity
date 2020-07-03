@@ -53,6 +53,7 @@ namespace Improbable.Gdk.CodeGenerator.Core
             AddGenerators(componentsToGenerate,
                 c => ($"{c.Name}.cs", UnityComponentDataGenerator.Generate),
                 c => ($"{c.Name}UpdateSender.cs", UnityComponentSenderGenerator.Generate),
+                c => ($"{c.Name}ReplicationSystem.cs", UnityComponentReplicationSystemGenerator.Generate),
                 c => ($"{c.Name}EcsViewManager.cs", UnityEcsViewManagerGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffStorage.cs", ComponentDiffStorageGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffDeserializer.cs", ComponentDiffDeserializerGenerator.Generate),

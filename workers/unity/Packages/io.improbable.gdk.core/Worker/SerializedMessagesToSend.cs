@@ -272,7 +272,7 @@ namespace Improbable.Gdk.Core
 
         #region Containers
 
-        private readonly struct UpdateToSend
+        public readonly struct UpdateToSend
         {
             public readonly ComponentUpdate Update;
             public readonly long EntityId;

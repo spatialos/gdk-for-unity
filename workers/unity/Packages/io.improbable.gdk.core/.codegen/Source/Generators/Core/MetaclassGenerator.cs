@@ -40,6 +40,7 @@ public Type Authority {{ get; }} = typeof({rootNamespace}.HasAuthority);
 public Type Snapshot {{ get; }} = typeof({rootNamespace}.Snapshot);
 public Type Update {{ get; }} = typeof({rootNamespace}.Update);
 
+public Type ReplicationSystem {{ get; }} = typeof({rootNamespace}.ReplicationSystem);
 public Type ReplicationHandler {{ get; }} = typeof({rootNamespace}.ComponentReplicator);
 public Type Serializer {{ get; }} = typeof({rootNamespace}.ComponentSerializer);
 public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.DiffComponentDeserializer);

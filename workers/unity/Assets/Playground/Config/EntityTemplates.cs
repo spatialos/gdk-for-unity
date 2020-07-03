@@ -69,7 +69,7 @@ namespace Playground
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(location.ToCoordinates()), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Persistence.Snapshot());
             template.AddComponent(new CubeColor.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new CubeTargetVelocity.Snapshot(new Vector3f(-2.0f, 0, 0)),
                 WorkerUtils.UnityGameLogic);
@@ -99,7 +99,7 @@ namespace Playground
             template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Spinner"), WorkerUtils.UnityGameLogic);
             template.AddComponent(transform, WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Persistence.Snapshot());
             template.AddComponent(new Collisions.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE), WorkerUtils.UnityGameLogic);
             template.AddComponent(new SpinnerRotation.Snapshot(), WorkerUtils.UnityGameLogic);
@@ -121,9 +121,9 @@ namespace Playground
         public static EntityTemplate CreatePlayerSpawnerEntityTemplate(Coordinates playerSpawnerLocation)
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(playerSpawnerLocation), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Metadata.Snapshot("PlayerCreator"), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new Position.Snapshot(playerSpawnerLocation));
+            template.AddComponent(new Metadata.Snapshot("PlayerCreator"));
+            template.AddComponent(new Persistence.Snapshot());
             template.AddComponent(new PlayerCreator.Snapshot(), WorkerUtils.UnityGameLogic);
 
             return template;
