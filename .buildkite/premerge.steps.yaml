@@ -91,12 +91,6 @@ steps:
     artifact_paths:
       - logs/**/*
 
-  - label: ":windows: ~ sonar scanner :sonarqube:"
-    depends_on:
-      - step: "test-windows"
-    command: bash -c ci/sonar-scanner.sh
-    <<: *windows
-
 #  - label: ":darwin: ~ test"
 #    id: "test-darwin"
 #    command: bash -c ci/test.sh

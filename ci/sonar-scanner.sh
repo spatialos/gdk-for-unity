@@ -12,8 +12,6 @@ PROJECT_DIR="$(pwd)"
 
 source .shared-ci/scripts/pinned-tools.sh
 
-ACCELERATOR_ARGS=$(getAcceleratorArgs)
-
 # TODO: Add a more specific secret-type to vault and swap these around
 TOKEN=$(imp-ci secrets read --environment="production" --buildkite-org="improbable" --secret-type="generic-token" --secret-name="gdk-for-unity-bot-sonarcloud-token" --field="token")
 
@@ -63,31 +61,14 @@ fi
 # To enable this to work with Unity, we first need to generate the `.sln` and `.csproj` files in order to build them with `msbuild`
 # For ease of use, we execute msbuild through `dotnet`!
 pushd "workers/unity"
-    traceStart "Downloading Buildkite artifacts :buildkite:"
-        # Download test coverage reports from previous build step.
-        buildkite-agent artifact download \
-            logs\\coverage-results\\*.xml \
-            . \
-            --step ":windows: ~ test"
-    traceEnd
-
     # This finds all .xml files in the logs/ directory and concatentates their relative path together, separated by comma:
     # E.g. - -d:sonar.cs.opencover.reportsPath=./logs/coverage-results/my-first-report.xml,./logs/coverage-results/my-second-report.xml
     # Wildcards don't appear to play nice with this.
     args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
 
-    traceStart "Generate csproj & sln files :csharp:"
-        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
-            -batchmode \
-            -projectPath "${PROJECT_DIR}/workers/unity" \
-            -quit \
-            -executeMethod UnityEditor.SyncVS.SyncSolution \
-            "${ACCELERATOR_ARGS}"
-    traceEnd
-
     traceStart "Execute sonar-scanner :sonarqube:"
         dotnet-sonarscanner begin "${args[@]}"
-        dotnet msbuild ./unity.sln -t:Rebuild -nr:false
-        dotnet-sonarscanner end "-d:sonar.login=${TOKEN}"
+        dotnet msbuild ./unity.sln -t:Rebuild -nr:false | tee "${PROJECT_DIR}/logs/sonar-msbuild.log"
+        dotnet-sonarscanner end "-d:sonar.login=${TOKEN}" | tee "${PROJECT_DIR}/logs/sonar-postprocess.log"
     traceEnd
 popd

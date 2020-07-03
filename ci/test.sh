@@ -17,7 +17,7 @@ TEST_RESULTS_DIR="${PROJECT_DIR}/logs/nunit"
 mkdir -p "${TEST_RESULTS_DIR}"
 
 COVERAGE_OPTIONS="generateHtmlReport\;assemblyFilters:+Improbable.Gdk.*,-Improbable.Gdk.Generated,-Improbable.Gdk.Generated.BuildSystem"
-COVERAGE_RESULTS_PATH="${PROJECT_DIR}/logs/coverage-results"
+COVERAGE_RESULTS_PATH="${PROJECT_DIR}/workers/unity/logs/coverage-results"
 
 if isMacOS; then
     PLAYMODE_PLATFORM="StandaloneOSX"
@@ -34,6 +34,18 @@ traceStart "Testing Code Generator :gear:"
 
     #dotnet output does not end with a newline, we force one here to fix buildkite output.
     echo ""
+traceEnd
+
+traceStart "Generate csproj & sln files :csharp:"
+    pushd "workers/unity"
+        dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
+            -batchmode \
+            -projectPath "${PROJECT_DIR}/workers/unity" \
+            -quit \
+            -logfile "${PROJECT_DIR}/logs/generate-csproj-sln-files.log" \
+            -executeMethod UnityEditor.SyncVS.SyncSolution \
+            "${ACCELERATOR_ARGS}"
+    popd
 traceEnd
 
 traceStart "Testing Unity: Editmode :writing_hand:"
@@ -70,5 +82,7 @@ traceStart "Testing Unity: Playmode :joystick:"
             "${ACCELERATOR_ARGS}"
     popd
 traceEnd
+
+ci/sonar-scanner.sh
 
 cleanUnity "$(pwd)/workers/unity"
