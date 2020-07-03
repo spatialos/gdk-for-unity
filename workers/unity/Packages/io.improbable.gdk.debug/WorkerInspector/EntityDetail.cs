@@ -29,6 +29,20 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityName = this.Q<Label>("entity-name");
             entityId = this.Q<Label>("entity-id");
             componentContainer = this.Q<ScrollView>();
+            var window = EditorWindow.GetWindow<WorkerInspectorWindow>();
+            if (window != null)
+            {
+                UnityEngine.Debug.Log("Hello");
+                window.OnToggleHideCollections += HideAllEmptyCollections;
+            }
+        }
+
+        private void HideAllEmptyCollections(bool value)
+        {
+            foreach (var element in visualElements)
+            {
+                element.ToggleHideIfEmpty(value);
+            }
         }
 
         public void SetSelectedEntity(EntityData entityData)

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
@@ -12,6 +14,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected readonly Foldout ComponentFoldout;
         protected readonly Toggle AuthoritativeToggle;
+        protected bool HideIfEmpty { get; private set; }
 
         protected ComponentVisualElement()
         {
@@ -56,6 +59,76 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         }
 
         protected abstract void WriteDebugInfo();
+
+        private void RemoveCollectionIfPresent(VisualElement collection)
+        {
+            if (ComponentFoldout.Contains(collection))
+            {
+                ComponentFoldout.Remove(collection);
+            }
+        }
+
+        private void AddCollectionIfNotPresent(VisualElement collection)
+        {
+            if (!ComponentFoldout.Contains(collection))
+            {
+                ComponentFoldout.Add(collection);
+            }
+        }
+
+        protected void SetVisibility<TKey, TValue>(Dictionary<TKey, TValue> dict, VisualElement element)
+        {
+            if (dict.Count == 0 && HideIfEmpty)
+            {
+                AddCollectionIfNotPresent(element);
+            }
+            else
+            {
+                RemoveCollectionIfPresent(element);
+            }
+        }
+
+        protected void SetVisibility<T>(List<T> list, VisualElement element)
+        {
+            if (list.Count == 0 && HideIfEmpty)
+            {
+                AddCollectionIfNotPresent(element);
+            }
+            else
+            {
+                RemoveCollectionIfPresent(element);
+            }
+        }
+
+        protected void SetVisibility<T>(T? opt, VisualElement element) where T : struct
+        {
+            if (!opt.HasValue && HideIfEmpty)
+            {
+                AddCollectionIfNotPresent(element);
+            }
+            else
+            {
+                RemoveCollectionIfPresent(element);
+            }
+        }
+
+        protected void SetVisibility<T>(Option<T> opt, VisualElement element)
+        {
+            if (!opt.HasValue && HideIfEmpty)
+            {
+                AddCollectionIfNotPresent(element);
+            }
+            else
+            {
+                RemoveCollectionIfPresent(element);
+            }
+        }
+
+        public void ToggleHideIfEmpty(bool newValue)
+        {
+            HideIfEmpty = newValue;
+        }
+
         public abstract ComponentType ComponentType { get; }
         public abstract void Update(EntityManager manager, Entity entity);
     }

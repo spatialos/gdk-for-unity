@@ -1,6 +1,8 @@
+using System;
 using Improbable.Gdk.Core.Editor.UIElements;
 using Unity.Entities;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector
@@ -11,6 +13,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private EntityList entityList;
         private EntityDetail entityDetail;
         private WorkerDetail workerDetail;
+        private bool hideCollectionsIfEmpty;
+
+        public event Action<bool> OnToggleHideCollections;
 
         [MenuItem("SpatialOS/Window/Worker Inspector", false)]
         public static void ShowWindow()
@@ -24,6 +29,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             SetupUI();
             worldSelector.UpdateWorldSelection();
+            entityDetail.RegisterCallback<MouseUpEvent>(HandleRightClick);
+        }
+
+        private void OnDisable()
+        {
+            entityDetail.UnregisterCallback<MouseUpEvent>(HandleRightClick);
         }
 
         private void OnInspectorUpdate()
@@ -33,6 +44,25 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityDetail.Update();
             workerDetail.Update();
         }
+
+        private void HandleRightClick(MouseUpEvent evt)
+        {
+            if (evt.button != (int) MouseButton.RightMouse)
+            {
+                return;
+            }
+
+            var menu = new GenericMenu();
+
+            menu.AddItem(new GUIContent("Hide Empty Collections"), hideCollectionsIfEmpty, () =>
+            {
+                hideCollectionsIfEmpty = !hideCollectionsIfEmpty;
+                OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
+            });
+
+            menu.ShowAsContext();
+        }
+
 
         private void SetupUI()
         {
@@ -77,6 +107,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private void OnEntitySelected(EntityData entityData)
         {
             entityDetail.SetSelectedEntity(entityData);
+            OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
         }
     }
 }

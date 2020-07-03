@@ -136,6 +136,22 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
+        public string ToSetCollectionVisibility(UnityFieldDetails fieldDetails, string fieldParent)
+        {
+            var uiElementName = $"{fieldDetails.CamelCaseName}Field";
+            switch (fieldDetails.FieldType)
+            {
+                case SingularFieldType singularFieldType:
+                    return null;
+                case OptionFieldType optionFieldType:
+                case ListFieldType listFieldType:
+                case MapFieldType mapFieldType:
+                    return $"SetVisibility({fieldParent}.{fieldDetails.PascalCaseName}, {uiElementName});";
+                default:
+                    throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
+            }
+        }
+
         private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, bool newVariable = true)
         {
             var inner = GetUiFieldType(containedType);
