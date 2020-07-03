@@ -33,6 +33,7 @@ namespace Improbable.Gdk.Core
         {
             commandLineArgs.TryGetCommandLineValue(RuntimeConfigNames.LinkProtocol,
                 ref connectionParameters.Network.ConnectionType);
+            connectionParameters.Network.UseExternalIp = commandLineArgs.Contains(RuntimeConfigNames.UseExternalIp);
         }
     }
 }

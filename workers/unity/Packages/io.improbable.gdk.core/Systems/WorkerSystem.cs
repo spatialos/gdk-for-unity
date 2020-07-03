@@ -40,6 +40,7 @@ namespace Improbable.Gdk.Core
         internal MessagesToSend MessagesToSend => Worker.MessagesToSend;
 
         private ProfilerMarker tickMarker = new ProfilerMarker("WorkerSystem.Tick");
+        private ProfilerMarker sendMessagesMarker = new ProfilerMarker("WorkerSystem.SendMessages");
 
         public WorkerSystem(WorkerInWorld worker)
         {
@@ -108,7 +109,10 @@ namespace Improbable.Gdk.Core
 
         internal void SendMessages(NetFrameStats frameStats)
         {
-            Worker.EnsureMessagesFlushed(frameStats);
+            using (sendMessagesMarker.Auto())
+            {
+                Worker.EnsureMessagesFlushed(frameStats);
+            }
         }
 
         protected override void OnCreate()

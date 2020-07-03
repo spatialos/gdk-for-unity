@@ -59,6 +59,11 @@ namespace Improbable.Gdk.Core
             var desiredType = typeof(T);
             if (arguments.TryGetValue(key, out var strValue))
             {
+                if (strValue == null)
+                {
+                    throw new InvalidOperationException($"Cannot convert flag only argument, {key}, did you mean to call Contains?");
+                }
+
                 if (desiredType.IsEnum)
                 {
                     try
@@ -80,25 +85,29 @@ namespace Improbable.Gdk.Core
             return false;
         }
 
+        private static bool IsFlag(string flag)
+        {
+            return flag.StartsWith("+") || flag.StartsWith("-");
+        }
+
         private static Dictionary<string, string> ParseCommandLineArgs(IList<string> args)
         {
             var config = new Dictionary<string, string>();
             for (var i = 0; i < args.Count; i++)
             {
                 var flag = args[i];
-                if (flag.StartsWith("+") || flag.StartsWith("-"))
+                if (IsFlag(flag))
                 {
-                    if (i + 1 >= args.Count)
-                    {
-                        throw new ArgumentException(
-                            $"Flag \"{flag}\" requires an argument\nArguments: \"{string.Join(", ", args)}\"");
-                    }
-
-                    var flagArg = args[i + 1];
                     var strippedOfPlus = flag.Substring(1, flag.Length - 1);
-                    config[strippedOfPlus] = flagArg;
-                    // We've already processed the next argument, so skip it.
-                    i++;
+                    if (i + 1 >= args.Count || IsFlag(args[i + 1]))
+                    {
+                        config[strippedOfPlus] = null;
+                    }
+                    else
+                    {
+                        config[strippedOfPlus] = args[i + 1];
+                        i++;
+                    }
                 }
             }
 
