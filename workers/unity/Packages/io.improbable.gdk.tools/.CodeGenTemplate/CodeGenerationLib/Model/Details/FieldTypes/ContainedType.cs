@@ -44,7 +44,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                 case ValueType.Primitive:
                     return $"{schemaObject}.{SchemaFunctionMappings.AddSchemaFunctionFromType(PrimitiveType.Value)}({fieldNumber}, {instance});";
                 case ValueType.Enum:
-                    return $"{schemaObject}.AddEnum({fieldNumber}, (uint) {instance});";
+                    var shifter = UnityEnumDetails.GetEnumMinimum(FqnType);
+                    return $"{schemaObject}.AddEnum({fieldNumber}, (uint) ({instance}) + {shifter});";
                 case ValueType.Type:
                     return $"{FqnType}.Serialization.Serialize({instance}, {schemaObject}.AddObject({fieldNumber}));";
                 default:
@@ -60,7 +61,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
                     return
                         $"{schemaObject}.{SchemaFunctionMappings.GetSchemaFunctionFromType(PrimitiveType.Value)}({fieldNumber})";
                 case ValueType.Enum:
-                    return $"({FqnType}) {schemaObject}.GetEnum({fieldNumber})";
+                    var shifter = UnityEnumDetails.GetEnumMinimum(FqnType);
+                    return $"({FqnType}) ({schemaObject}.GetEnum({fieldNumber}) - {shifter})";
                 case ValueType.Type:
                     return $"{FqnType}.Serialization.Deserialize({schemaObject}.GetObject({fieldNumber}))";
                 default:
