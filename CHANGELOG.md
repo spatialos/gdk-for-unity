@@ -12,7 +12,7 @@
 
 ### Breaking Changes
 
-- C# enums will be generated to start from 0 and shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
+- All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
     - A warning will be generated when enums defined in schema does not start from 0. 
 
 ### Changed
