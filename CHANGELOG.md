@@ -6,6 +6,8 @@
 
 - Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
 - Added `Open inspector V2` menu item that opens the new inspector in the browser. [#1407](https://github.com/spatialos/gdk-for-unity/pull/1407)
+- Added the option to set `UseExternalIp` using the command line argument `+useExternalIp` with the `CommandLineConnectionParameterInitializer`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
+- Added support for flag arguments in `CommandLineParser`. [#1409](https://github.com/spatialos/gdk-for-unity/pull/1409)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
 
 ### Changed

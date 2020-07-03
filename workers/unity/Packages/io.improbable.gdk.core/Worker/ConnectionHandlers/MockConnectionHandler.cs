@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
 
@@ -8,11 +9,14 @@ namespace Improbable.Gdk.Core
 {
     public class MockConnectionHandlerBuilder : IConnectionHandlerBuilder
     {
-        public MockConnectionHandler ConnectionHandler;
+        public readonly MockConnectionHandler ConnectionHandler;
 
-        public MockConnectionHandlerBuilder()
+        public MockConnectionHandlerBuilder(bool enableSerialization = false)
         {
-            ConnectionHandler = new MockConnectionHandler();
+            ConnectionHandler = new MockConnectionHandler
+            {
+                EnableSerialization = enableSerialization
+            };
         }
 
         public Task<IConnectionHandler> CreateAsync(CancellationToken? token = null)
@@ -25,47 +29,51 @@ namespace Improbable.Gdk.Core
 
     public class MockConnectionHandler : IConnectionHandler
     {
+        internal bool EnableSerialization;
+
+        private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
+        private readonly CommandMetaData commandMetaData = new CommandMetaData();
+
         private uint updateId;
 
-        private ViewDiff currentDiff => diffs[currentDiffIndex];
+        private ViewDiff CurrentDiff => diffs[currentDiffIndex];
 
         private readonly ViewDiff[] diffs = new[]
         {
-            new ViewDiff(),
-            new ViewDiff()
+            new ViewDiff(), new ViewDiff()
         };
 
         private int currentDiffIndex = 0;
 
         public void CreateEntity(long entityId, EntityTemplate template)
         {
-            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, currentDiff);
+            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, CurrentDiff);
             Dynamic.ForEachComponent(handler);
         }
 
         public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
         {
-            currentDiff.SetAuthority(entityId, componentId, newAuthority);
+            CurrentDiff.SetAuthority(entityId, componentId, newAuthority);
         }
 
         public void UpdateComponent<T>(long entityId, uint componentId, T update) where T : ISpatialComponentUpdate
         {
-            currentDiff.AddComponentUpdate(update, entityId, componentId, updateId++);
+            CurrentDiff.AddComponentUpdate(update, entityId, componentId, updateId++);
         }
 
         public void AddEvent<T>(long entityId, uint componentId, T ev) where T : IEvent
         {
-            currentDiff.AddEvent(ev, entityId, componentId, updateId++);
+            CurrentDiff.AddEvent(ev, entityId, componentId, updateId++);
         }
 
         public void RemoveEntity(long entityId)
         {
-            currentDiff.RemoveEntity(entityId);
+            CurrentDiff.RemoveEntity(entityId);
         }
 
         public void RemoveEntityAndComponents(long entityId, EntityTemplate template)
         {
-            var handler = new RemoveEntityTemplateDynamicHandler(template, entityId, currentDiff);
+            var handler = new RemoveEntityTemplateDynamicHandler(template, entityId, CurrentDiff);
             Dynamic.ForEachComponent(handler);
 
             RemoveEntity(entityId);
@@ -73,13 +81,13 @@ namespace Improbable.Gdk.Core
 
         public void RemoveComponent(long entityId, uint componentId)
         {
-            currentDiff.RemoveComponent(entityId, componentId);
+            CurrentDiff.RemoveComponent(entityId, componentId);
         }
 
         public void AddComponent<T>(long entityId, uint componentId, T component)
             where T : ISpatialComponentUpdate
         {
-            currentDiff.AddComponent(component, entityId, componentId);
+            CurrentDiff.AddComponent(component, entityId, componentId);
         }
 
         public void UpdateComponentAndAddEvents<TUpdate, TEvent>(long entityId, uint componentId, TUpdate update,
@@ -89,10 +97,10 @@ namespace Improbable.Gdk.Core
         {
             var thisUpdateId = updateId++;
 
-            currentDiff.AddComponentUpdate(update, entityId, componentId, thisUpdateId);
+            CurrentDiff.AddComponentUpdate(update, entityId, componentId, thisUpdateId);
             foreach (var ev in events)
             {
-                currentDiff.AddEvent(ev, entityId, componentId, thisUpdateId);
+                CurrentDiff.AddEvent(ev, entityId, componentId, thisUpdateId);
             }
         }
 
@@ -112,10 +120,10 @@ namespace Improbable.Gdk.Core
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
-            var diffToReturn = currentDiff;
+            var diffToReturn = CurrentDiff;
 
             currentDiffIndex = (currentDiffIndex + 1) % diffs.Length;
-            var nextDiff = currentDiff;
+            var nextDiff = CurrentDiff;
             nextDiff.Clear();
 
             viewDiff = diffToReturn;
@@ -128,6 +136,17 @@ namespace Improbable.Gdk.Core
 
         public void PushMessagesToSend(MessagesToSend messages, NetFrameStats netFrameStats)
         {
+            if (!EnableSerialization)
+            {
+                return;
+            }
+
+            serializedMessagesToSend.SerializeFrom(messages, commandMetaData);
+
+            // Unable to actually send anything over a Connection, so just tidy up after serialization.
+
+            serializedMessagesToSend.Clear();
+            messages.Clear();
         }
 
         public bool IsConnected()

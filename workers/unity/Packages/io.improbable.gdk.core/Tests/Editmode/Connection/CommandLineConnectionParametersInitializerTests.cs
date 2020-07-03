@@ -43,5 +43,30 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
 
             Assert.Throws<FormatException>(() => initializer.Initialize(connParams));
         }
+
+        [Test]
+        public void Initialize_with_UseExternalIp_true_when_flag_is_set()
+        {
+            var args = new Dictionary<string, string>
+            {
+                { RuntimeConfigNames.UseExternalIp, null }
+            };
+
+            var connParams = new ConnectionParameters();
+            new CommandLineConnectionParameterInitializer(args).Initialize(connParams);
+
+            Assert.AreEqual(true, connParams.Network.UseExternalIp);
+        }
+
+        [Test]
+        public void Initialize_with_UseExternalIp_false_when_flag_is_unset()
+        {
+            var args = new Dictionary<string, string>();
+
+            var connParams = new ConnectionParameters();
+            new CommandLineConnectionParameterInitializer(args).Initialize(connParams);
+
+            Assert.AreEqual(false, connParams.Network.UseExternalIp);
+        }
     }
 }

@@ -6,4 +6,5 @@
     <assembly fullname="Unity.Entities.Hybrid">
         <type fullname="Unity.Entities.GameObjectEntity" preserve="all"/>
     </assembly>
+    <assembly fullname="Unity.PerformanceTesting" preserve="all"/>
 </linker>

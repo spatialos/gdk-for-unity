@@ -74,6 +74,16 @@ steps:
     command: bash -c ci/lint.sh
     <<: *linux
 
+  - label: ":windows: ~ perf test"
+    id: "perftest-windows"
+    # ci/perf-test.sh expects 4 jobs.
+    parallelism: 4
+    command: bash -c ci/perf-test.sh
+    <<: *windows
+    artifact_paths:
+      - logs/**/*
+      - perftest-results/**/*
+
   - label: ":windows: ~ test"
     id: "test-windows"
     command: bash -c ci/test.sh
@@ -91,6 +101,8 @@ steps:
   - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
       - step: "test-windows"
+        allow_failure: true
+      - step: "perftest-windows"
         allow_failure: true
     plugins:
       - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:

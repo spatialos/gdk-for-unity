@@ -1,17 +1,18 @@
 {
     "name": "Improbable.Gdk.PlaymodeTests",
     "references": [
-        "Improbable.Gdk.QueryBasedInterestHelper",
-        "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
+        "Improbable.Gdk.GameObjectCreation",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.PlayerLifecycle",
+        "Improbable.Gdk.QueryBasedInterestHelper",
+        "Improbable.Gdk.TestUtils",
+        "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Improbable.Gdk.PlayerLifecycle",
-        "Improbable.Gdk.GameObjectCreation",
-        "UnityEngine.TestRunner",
+        "Unity.PerformanceTesting",
         "UnityEditor.TestRunner",
-        "Improbable.Gdk.TransformSynchronization",
-        "Improbable.Gdk.TestUtils"
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
