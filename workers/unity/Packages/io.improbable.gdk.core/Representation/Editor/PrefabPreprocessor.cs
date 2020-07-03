@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Improbable.Gdk.Subscriptions;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Improbable.Gdk.Subscriptions.Editor
+namespace Improbable.Gdk.Core.Representation.Editor
 {
     /// <summary>
     ///     A prefab processor which disables any Monobehaviours on top-level GameObjects in the Resources folder
@@ -42,16 +44,25 @@ namespace Improbable.Gdk.Subscriptions.Editor
 
         private static void PreprocessPrefabs()
         {
-            var allPrefabObjectsInResources = AssetDatabase.FindAssets("t:Prefab")
+            var resolvers = AssetDatabase.FindAssets("t:EntityLinkerDatabase")
                 .Select(AssetDatabase.GUIDToAssetPath)
-                .Where(assetPath => assetPath.Contains("Resources")).ToArray();
+                .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(EntityRepresentationMapping)) as EntityRepresentationMapping)
+                .SelectMany(asdb => asdb.EntityRepresentationResolvers)
+                .ToArray();
+
+            var prefabs = new List<GameObject>();
+            foreach (var entityRepresentation in resolvers)
+            {
+                entityRepresentation.DeclareReferencedPrefabs(prefabs);
+            }
+
+            prefabs = prefabs.Distinct().ToList();
 
             AssetDatabase.StartAssetEditing();
-            foreach (var prefabPath in allPrefabObjectsInResources)
+            foreach (var prefabObject in prefabs)
             {
                 try
                 {
-                    var prefabObject = PrefabUtility.LoadPrefabContents(prefabPath);
                     if (prefabObject == null)
                     {
                         continue;
@@ -69,14 +80,12 @@ namespace Improbable.Gdk.Subscriptions.Editor
 
                     if (changed)
                     {
-                        PrefabUtility.SaveAsPrefabAsset(prefabObject, prefabPath);
+                        PrefabUtility.SavePrefabAsset(prefabObject);
                     }
-
-                    PrefabUtility.UnloadPrefabContents(prefabObject);
                 }
                 catch
                 {
-                    Debug.LogError($"Failed to process prefab {prefabPath}");
+                    Debug.LogError($"Failed to process prefab {prefabObject.name}");
                     throw;
                 }
             }

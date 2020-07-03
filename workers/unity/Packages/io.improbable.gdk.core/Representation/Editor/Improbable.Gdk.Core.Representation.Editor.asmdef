@@ -1,7 +1,8 @@
 {
-    "name": "Improbable.Gdk.Core.Subscriptions.Editor",
+    "name": "Improbable.Gdk.Core.Representation.Editor",
     "references": [
-        "Improbable.Gdk.Core"
+        "GUID:edb3612c44ad0d24988d387581fd5fbe",
+        "GUID:8819f35a0fc84499b990e90a4ca1911f"
     ],
     "includePlatforms": [
         "Editor"
@@ -12,5 +13,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
