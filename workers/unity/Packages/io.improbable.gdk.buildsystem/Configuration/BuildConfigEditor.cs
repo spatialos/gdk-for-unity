@@ -755,7 +755,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
             else
             {
-                options &= ~BuildOptions.Development;
+                // When the `Development flag` is disabled, we also disable the 'Allow Debug' flag to
+                // ensure consistency between UI and BuildOptions flags
+                options &= ~(BuildOptions.Development | BuildOptions.AllowDebugging);
             }
 
             options = ConfigureDebug(options);
