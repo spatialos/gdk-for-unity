@@ -23,7 +23,7 @@ args+=("-o:spatialos")
 args+=("-d:sonar.login=${TOKEN}")
 args+=("-d:sonar.project_key=spatialos_gdk-for-unity")
 args+=("-d:sonar.host.url=https://sonarcloud.io")
-args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE}")
+args+=("-d:sonar.buildString=${BUILDKITE_MESSAGE:0:100}")
 args+=("-d:sonar.log.level=${SONAR_LOG_LEVEL:-"INFO"}")
 
 # Exclude all generated code from analysis.
