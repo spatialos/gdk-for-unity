@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
+    - A warning will be generated when enums defined in schema does not start from 0. 
+
 ### Added
 
 - Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
