@@ -32,3 +32,4 @@ sysinfo.txt
 _ReSharper.Caches
 
 .shared-ci/
+perftest-results/

@@ -31,7 +31,7 @@ namespace Improbable.Gdk.CodeGenerator
                         partial.Type("internal class ComponentReplicator : IComponentReplicationHandler", replicator =>
                         {
                             replicator.Line($@"
-private ProfilerMarker componentMarker = new ProfilerMarker(""{componentDetails.Name}"");
+private ProfilerMarker componentMarker = new ProfilerMarker(""{componentDetails.Name}.SendUpdates"");
 
 public uint ComponentId => {componentDetails.ComponentId};
 

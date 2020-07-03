@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -65,6 +66,72 @@ namespace Improbable.Gdk.Core.EditmodeTests
 
             Assert.AreEqual("first-value", args.GetCommandLineValue("key1", "not-value"));
             Assert.AreEqual("second-value", args.GetCommandLineValue("key2", "not-value"));
+        }
+
+        [Test]
+        public void ParseCommandLineArgs_can_parse_flag_arguments()
+        {
+            var args = CommandLineArgs.From(new List<string>
+            {
+                "+key1",
+                "first-value",
+                "+flag",
+                "+key2",
+                "second-value"
+            });
+            Assert.True(args.Contains("key1"));
+            Assert.True(args.Contains("key2"));
+            Assert.True(args.Contains("flag"));
+        }
+
+        [Test]
+        public void ParseCommandLineArgs_can_parse_flag_arguments_at_end_of_arg_list()
+        {
+            var args = CommandLineArgs.From(new List<string>
+            {
+                "+key1",
+                "first-value",
+                "+key2",
+                "second-value",
+                "+flag"
+            });
+            Assert.True(args.Contains("key1"));
+            Assert.True(args.Contains("key2"));
+            Assert.True(args.Contains("flag"));
+        }
+
+        [Test]
+        public void TryGetCommandLineValue_throws_when_accessing_flag_only_args()
+        {
+            var args = CommandLineArgs.From(new List<string>
+            {
+                "+key1",
+                "first-value",
+                "+key2",
+                "second-value",
+                "+flag"
+            });
+
+            var boolVal = false;
+            Assert.Throws<InvalidOperationException>(() => args.TryGetCommandLineValue("flag", ref boolVal));
+            var stringVal = string.Empty;
+            Assert.Throws<InvalidOperationException>(() => args.TryGetCommandLineValue("flag", ref stringVal));
+        }
+
+        [Test]
+        public void TryGetCommandLineValue_is_valid_for_empty_arg()
+        {
+            var args = CommandLineArgs.From(new List<string>
+            {
+                "+key1",
+                "",
+                "+key2",
+                "second-value"
+            });
+
+            var stringVal = string.Empty;
+            Assert.DoesNotThrow(() => args.TryGetCommandLineValue("key1", ref stringVal));
+            Assert.IsEmpty(stringVal);
         }
     }
 }
