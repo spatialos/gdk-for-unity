@@ -2,6 +2,34 @@
 
 ## From `0.3.7` to `0.3.8`
 
+### Asset based entity representation
+
+The methods for mapping a Prefab to a type of entity have been changed since 0.3.8
+
+To upgrade to the new method, please do the following steps for every worker type you have in Unity:
+
+1. Create an `Entity Representation Mapping` asset through the `Create > SpatialOS > Entity Representation Mapping` context menu.
+1. Name the asset accordingly. eg `ClientPrefabMapping` or `GamelogicPrefabMapping`.
+1. Select the asset in the Unity Inspector.
+1. For each entity type that needs to have a GameObject spawned for them.:
+    1. Select `New Entity Type`, and select type of resolver you'd like to use:
+        * `SimpleEntityResolver` is a 1 to 1 mapping between entity type and prefab
+        * `AuthoritativeEntityResolver` lets you map 2 prefabs, which picks the "Owned Prefab" based on your worker's authority over the given component id.
+        * `OwningWorkerEntityResolver` lets you map 2 prefabs, which picks the "Owned Prefab" if the entity's `OwningWorker` component contains your worker's id. This uses the Player Lifecycle feature module.
+    1. Fill in the `Entity Type` with the name of the entity type. This has to match the string uses for the `Metadata` component.
+    1. Select the prefab(s) you'd like to use for this entity type.
+1. Update your `WorkerConnector` script to pass the `Entity Representation Mapping` asset along to `GameObjectCreationHelper.EnableStandardGameObjectCreation`.
+
+For example, the `ClientPrefabMapping` in our playground project looks like:
+
+![Prefab mapping for Client worker](.github/ClientPrefabMapping.PNG)
+
+With this change, you can now put prefabs for entities anywhere in your Unity project, instead of being restricted to the `Resources` folder.
+
+| Old project prefab layout | New project prefab layout |
+| :-|:-|
+| ![Old prefab folder](.github/ResourcesOld.PNG) | ![New prefab folder](.github/ResourcesNew.PNG) |
+
 ### Scripting Backend in Project Settings is now overwritten by the Build Configuration
 
 The Scripting Backend defined in the Unity Project Settings is now overwritten by the Build Configuration Asset. More information can be found on the [Build Configuration UI](https://documentation.improbable.io/gdk-for-unity/v0.3.8/docs/build-configuration#section-build-configuration-ui) wiki page.
