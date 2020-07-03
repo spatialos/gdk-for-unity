@@ -7,7 +7,8 @@
 - Added `map<k,v>` support to the Worker Inspector window. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
 - Added `Open inspector V2` menu item that opens the new inspector in the browser. [#1407](https://github.com/spatialos/gdk-for-unity/pull/1407)
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
-- Added `Allow Debug` toggle to the Build Configuration UI. Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player. [#1413](https://github.com/spatialos/gdk-for-unity/pull/1413)
+- Added `Allow Debug` toggle to the Build Configuration UI. [#1413](https://github.com/spatialos/gdk-for-unity/pull/1413)
+    - Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player.
 
 ### Changed
 
