@@ -25,6 +25,10 @@
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
 
+### Internal
+
+- Updated buildkite artifact paths to only use `/` rather than `\\` as path-seperators. [#1418](https://github.com/spatialos/gdk-for-unity/pull/1418)
+
 ## `0.3.7` - 2020-06-22
 
 ### Added
