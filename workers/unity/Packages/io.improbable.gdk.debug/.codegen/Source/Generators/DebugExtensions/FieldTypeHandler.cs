@@ -142,7 +142,7 @@ namespace Improbable.Gdk.CodeGenerator
             switch (fieldDetails.FieldType)
             {
                 case SingularFieldType singularFieldType:
-                    return null;
+                    return string.Empty;
                 case OptionFieldType optionFieldType:
                 case ListFieldType listFieldType:
                 case MapFieldType mapFieldType:
