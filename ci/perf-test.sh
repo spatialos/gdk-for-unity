@@ -84,7 +84,7 @@ function main {
 }
 
 function anyMatchingTargets {
-    for config in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
+    for configId in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
     do
         local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
 
