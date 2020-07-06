@@ -10,6 +10,8 @@ cd "$(dirname "$0")/../"
 
 source .shared-ci/scripts/pinned-tools.sh
 
+BRANCH_NAME=${BUILDKITE_BRANCH:-"local"}
+
 ACCELERATOR_ARGS=$(getAcceleratorArgs)
 
 PROJECT_DIR="$(pwd)"
@@ -42,7 +44,7 @@ else
 fi
 
 function main {
-    if ! anyMatchingTargets ; then
+    if ! anyMatchingTargets; then
         echo "Skipping all targets for this job as current branch does not match any corresponding filters."
         return
     fi
@@ -88,7 +90,7 @@ function anyMatchingTargets {
     do
         local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
 
-        if [[ ${BUILDKITE_BRANCH:-"local"} =~ ${branchFilter} ]]; then
+        if [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
             return 0
         fi
     done
@@ -107,7 +109,7 @@ function runTests {
 
     local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
 
-    if ! [[ ${BUILDKITE_BRANCH:-"local"} =~ ${branchFilter} ]]; then
+    if ! [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
         echo "Skipping target as current branch does not match regex '${branchFilter}'."
         return
     fi
