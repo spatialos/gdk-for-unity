@@ -108,7 +108,7 @@ steps:
       - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
           inputs:
             - label: ":octagonal_sign: :windows: Test failures "
-              artifact_path: "logs\\nunit\\*.xml"
+              artifact_path: "logs/nunit/*.xml"
               type: nunit
           formatter:
             type: details
