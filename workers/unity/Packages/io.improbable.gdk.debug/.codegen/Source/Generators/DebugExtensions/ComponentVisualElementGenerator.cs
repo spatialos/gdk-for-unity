@@ -64,6 +64,7 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 mb.Line($"AuthoritativeToggle.value = manager.HasComponent<{details.Name}.HasAuthority>(entity);");
                 mb.Line($"var component = manager.GetComponentData<{details.Name}.Component>(entity);");
+                
                 mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToSetCollectionVisibility(fd, "component")).Where(str => !string.IsNullOrEmpty(str)));
                 mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToUiFieldUpdate(fd, "component")));
             });

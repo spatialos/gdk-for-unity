@@ -63,6 +63,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             typeBlock.Method($"public override void Update({details.FullyQualifiedName} data)", mb =>
             {
+                mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToSetCollectionVisibility(fd, "data")).Where(str => !string.IsNullOrEmpty(str)));
                 mb.TextList(details.FieldDetails.Select(fd => fieldTypeHandler.ToUiFieldUpdate(fd, "data")));
             });
         }
