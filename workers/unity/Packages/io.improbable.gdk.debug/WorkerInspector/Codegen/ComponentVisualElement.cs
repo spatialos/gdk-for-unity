@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEditor;
@@ -81,27 +81,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             }
         }
 
-        protected void SetVisibility<TKey, TValue>(Dictionary<TKey, TValue> dict, VisualElement element)
+        protected void SetVisibility(ICollection collection, VisualElement element)
         {
-            if (dict.Count == 0 && hideIfEmpty)
-            {
-                AddCollectionIfNotPresent(element);
-            }
-            else
+            if (collection.Count == 0 && hideIfEmpty)
             {
                 RemoveCollectionIfPresent(element);
             }
-        }
-
-        protected void SetVisibility<T>(List<T> list, VisualElement element)
-        {
-            if (list.Count == 0 && hideIfEmpty)
-            {
-                AddCollectionIfNotPresent(element);
-            }
             else
             {
-                RemoveCollectionIfPresent(element);
+                AddCollectionIfNotPresent(element);
             }
         }
 
@@ -109,11 +97,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
             if (!opt.HasValue && hideIfEmpty)
             {
-                AddCollectionIfNotPresent(element);
+                RemoveCollectionIfPresent(element);
             }
             else
             {
-                RemoveCollectionIfPresent(element);
+                AddCollectionIfNotPresent(element);
             }
         }
 
@@ -121,11 +109,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
             if (!opt.HasValue && hideIfEmpty)
             {
-                AddCollectionIfNotPresent(element);
+                RemoveCollectionIfPresent(element);
             }
             else
             {
-                RemoveCollectionIfPresent(element);
+                AddCollectionIfNotPresent(element);
             }
         }
 

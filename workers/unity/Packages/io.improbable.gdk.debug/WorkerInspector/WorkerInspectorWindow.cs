@@ -29,12 +29,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             SetupUI();
             worldSelector.UpdateWorldSelection();
-            entityDetail.RegisterCallback<MouseUpEvent>(HandleRightClick);
-        }
-
-        private void OnDisable()
-        {
-            entityDetail.UnregisterCallback<MouseUpEvent>(HandleRightClick);
         }
 
         private void OnInspectorUpdate()
@@ -63,7 +57,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             menu.ShowAsContext();
         }
 
-
         private void SetupUI()
         {
             const string windowUxmlPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uxml";
@@ -85,6 +78,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
                     ? darkModeUssPath
                     : lightModeUssPath);
             rootVisualElement.styleSheets.Add(themedSheet);
+            rootVisualElement.RegisterCallback<MouseUpEvent>(HandleRightClick);
 
             worldSelector = rootVisualElement.Q<WorldSelector>();
             worldSelector.OnWorldChanged += OnWorldChanged;
@@ -95,6 +89,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityDetail = rootVisualElement.Q<EntityDetail>();
 
             workerDetail = rootVisualElement.Q<WorkerDetail>();
+            OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
         }
 
         private void OnWorldChanged(World world)
@@ -107,7 +102,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private void OnEntitySelected(EntityData entityData)
         {
             entityDetail.SetSelectedEntity(entityData);
-            OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
         }
     }
 }
