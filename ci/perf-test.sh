@@ -42,6 +42,11 @@ else
 fi
 
 function main {
+    if ! anyMatchingTargets ; then
+        echo "Skipping all targets for this job as current branch does not match any corresponding filters."
+        return
+    fi
+
     pushd "workers/unity"
         traceStart "Generate csproj & sln files :csharp:"
             dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -76,6 +81,19 @@ function main {
     popd
 
     cleanUnity "$(pwd)/workers/unity"
+}
+
+function anyMatchingTargets {
+    for config in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
+    do
+        local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
+
+        if [[ ${BUILDKITE_BRANCH:-"local"} =~ ${branchFilter} ]]; then
+            return 0
+        fi
+    done
+
+    return 1
 }
 
 function runTests {
