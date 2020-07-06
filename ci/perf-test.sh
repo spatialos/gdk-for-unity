@@ -87,6 +87,13 @@ function runTests {
     local apiProfile=$(jq -r .[${configId}].apiProfile ${CONFIG_FILE})
     local scriptingBackend=$(jq -r .[${configId}].scriptingBackend ${CONFIG_FILE})
 
+    local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
+
+    if ! [[ ${BUILDKITE_BRANCH:-"local"} =~ ${branchFilter} ]]; then
+        echo "Skipping target as current branch does not match regex '${branchFilter}'."
+        return
+    fi
+
     local args=()
 
     if [[ "${platform}" == "Editmode" ]]; then
