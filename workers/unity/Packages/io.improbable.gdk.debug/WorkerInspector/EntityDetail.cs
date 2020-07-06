@@ -32,16 +32,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             var window = EditorWindow.GetWindow<WorkerInspectorWindow>();
             if (window != null)
             {
-                UnityEngine.Debug.Log("Hello");
-                window.OnToggleHideCollections += HideAllEmptyCollections;
-            }
-        }
-
-        private void HideAllEmptyCollections(bool value)
-        {
-            foreach (var element in visualElements)
-            {
-                element.ToggleHideIfEmpty(value);
+                window.OnToggleHideCollections += ComponentVisualElement.ToggleHideIfEmpty;
             }
         }
 

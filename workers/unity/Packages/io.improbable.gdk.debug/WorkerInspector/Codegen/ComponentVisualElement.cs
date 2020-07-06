@@ -14,7 +14,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected readonly Foldout ComponentFoldout;
         protected readonly Toggle AuthoritativeToggle;
-        protected bool HideIfEmpty { get; private set; }
+        private static bool hideIfEmpty;
+
+        public static void ToggleHideIfEmpty(bool newValue)
+        {
+            hideIfEmpty = newValue;
+        }
 
         protected ComponentVisualElement()
         {
@@ -78,7 +83,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected void SetVisibility<TKey, TValue>(Dictionary<TKey, TValue> dict, VisualElement element)
         {
-            if (dict.Count == 0 && HideIfEmpty)
+            if (dict.Count == 0 && hideIfEmpty)
             {
                 AddCollectionIfNotPresent(element);
             }
@@ -90,7 +95,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected void SetVisibility<T>(List<T> list, VisualElement element)
         {
-            if (list.Count == 0 && HideIfEmpty)
+            if (list.Count == 0 && hideIfEmpty)
             {
                 AddCollectionIfNotPresent(element);
             }
@@ -102,7 +107,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected void SetVisibility<T>(T? opt, VisualElement element) where T : struct
         {
-            if (!opt.HasValue && HideIfEmpty)
+            if (!opt.HasValue && hideIfEmpty)
             {
                 AddCollectionIfNotPresent(element);
             }
@@ -114,7 +119,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected void SetVisibility<T>(Option<T> opt, VisualElement element)
         {
-            if (!opt.HasValue && HideIfEmpty)
+            if (!opt.HasValue && hideIfEmpty)
             {
                 AddCollectionIfNotPresent(element);
             }
@@ -122,11 +127,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 RemoveCollectionIfPresent(element);
             }
-        }
-
-        public void ToggleHideIfEmpty(bool newValue)
-        {
-            HideIfEmpty = newValue;
         }
 
         public abstract ComponentType ComponentType { get; }
