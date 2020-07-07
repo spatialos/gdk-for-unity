@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
@@ -9,6 +10,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             get => labelElement.text;
             set => labelElement.text = value;
         }
+
+        public int FieldCount => Container.childCount;
 
         protected readonly VisualElement Container;
         private readonly Label labelElement;
@@ -24,6 +27,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Container.AddToClassList("user-defined-type-container-data");
             Add(Container);
         }
+
+        public abstract void SetVisibility(T data, bool hideIfEmpty);
 
         public abstract void Update(T data);
     }

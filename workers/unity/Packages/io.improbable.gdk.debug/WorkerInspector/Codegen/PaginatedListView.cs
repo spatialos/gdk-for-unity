@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -27,6 +28,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private int currentPage = 0;
         private int numPages = 0;
 
+        private bool hideEmptyCollections;
+
         public PaginatedListView(string label, Func<TElement> makeElement, Action<int, TData, TElement> bindElement, int elementsPerPage = 5)
         {
             this.bindElement = bindElement;
@@ -48,6 +51,28 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
             elementPool = new ElementPool<TElement>(makeElement);
+        }
+
+        public void SetVisibility(List<TData> listData, bool hideIfEmpty)
+        {
+            hideEmptyCollections = hideIfEmpty;
+            if (listData.Count == 0 && hideIfEmpty)
+            {
+                AddToClassList("hidden");
+            }
+            else
+            {
+                RemoveFromClassList("hidden");
+            }
+
+            Update(listData);
+            foreach (var i in Enumerable.Range(0, container.childCount))
+            {
+                if (container.ElementAt(i) is SchemaTypeVisualElement<TData> element)
+                {
+                    element.SetVisibility(data[i], hideIfEmpty);
+                }
+            }
         }
 
         public void Update(List<TData> newData)
@@ -109,7 +134,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 for (var i = diff; i < 0; i++)
                 {
-                    container.Add(elementPool.GetOrCreate());
+                    container.Add(elementPool.GetOrCreate(hideEmptyCollections));
                 }
             }
 
@@ -136,9 +161,19 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             this.makeElement = makeElement;
         }
 
-        public TElement GetOrCreate()
+        public TElement GetOrCreate(bool hidden = false)
         {
-            return pool.Count == 0 ? makeElement() : pool.Pop();
+            var element = pool.Count == 0 ? makeElement() : pool.Pop();
+            if (hidden)
+            {
+                element.AddToClassList("hidden");
+            }
+            else
+            {
+                element.RemoveFromClassList("hidden");
+            }
+
+            return element;
         }
 
         public void Return(TElement element)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
@@ -20,6 +21,27 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 (index, kvp, element) => element.Update(kvp));
 
             Add(list);
+        }
+
+        public void SetVisibility(Dictionary<TKeyData, TValueData> data, bool hideIfEmpty)
+        {
+            if (data.Count == 0 && hideIfEmpty)
+            {
+                AddToClassList("hidden");
+            }
+            else
+            {
+                RemoveFromClassList("hidden");
+            }
+
+            Update(data);
+            foreach (var i in Enumerable.Range(0, list.childCount))
+            {
+                if (list.ElementAt(i) is KeyValuePairElement element)
+                {
+                    element.SetVisibility(listData[i], hideIfEmpty);
+                }
+            }
         }
 
         public void Update(Dictionary<TKeyData, TValueData> data)
@@ -51,6 +73,19 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 Add(valueElement);
 
                 AddToClassList("map-view__item");
+            }
+
+            public void SetVisibility(KeyValuePair<TKeyData, TValueData> keyValuePair, bool hideIfEmpty)
+            {
+                if (keyElement is SchemaTypeVisualElement<TKeyData> key)
+                {
+                    key.SetVisibility(keyValuePair.Key, hideIfEmpty);
+                }
+
+                if (valueElement is SchemaTypeVisualElement<TValueData> value)
+                {
+                    value.SetVisibility(keyValuePair.Value, hideIfEmpty);
+                }
             }
 
             public void Update(KeyValuePair<TKeyData, TValueData> keyValuePair)

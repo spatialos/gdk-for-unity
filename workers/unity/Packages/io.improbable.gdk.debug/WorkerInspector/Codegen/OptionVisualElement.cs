@@ -11,6 +11,23 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
         }
 
+        public void SetVisibility(Option<TData> opt, bool hideIfEmpty)
+        {
+            if (!opt.HasValue && hideIfEmpty)
+            {
+                AddToClassList("hidden");
+            }
+            else
+            {
+                RemoveFromClassList("hidden");
+            }
+
+            if (opt.HasValue)
+            {
+                base.SetVisibility(opt.Value, hideIfEmpty);
+            }
+        }
+
         public void Update(Option<TData> data)
         {
             if (data.HasValue)
@@ -30,6 +47,23 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     {
         public NullableVisualElement(string label, TElement innerElement, Action<TElement, TData> applyData) : base(label, innerElement, applyData)
         {
+        }
+
+        public void SetVisibility(TData? opt, bool hideIfEmpty)
+        {
+            if (!opt.HasValue && hideIfEmpty)
+            {
+                AddToClassList("hidden");
+            }
+            else
+            {
+                RemoveFromClassList("hidden");
+            }
+
+            if (opt.HasValue)
+            {
+                base.SetVisibility(opt.Value, hideIfEmpty);
+            }
         }
 
         public void Update(TData? data)
@@ -66,6 +100,14 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             this.innerElement = innerElement;
             this.applyData = applyData;
+        }
+
+        protected void SetVisibility(TData opt, bool hideIfEmpty)
+        {
+            if (innerElement is SchemaTypeVisualElement<TData> element)
+            {
+                element.SetVisibility(opt, hideIfEmpty);
+            }
         }
 
         protected void UpdateWithData(TData data)

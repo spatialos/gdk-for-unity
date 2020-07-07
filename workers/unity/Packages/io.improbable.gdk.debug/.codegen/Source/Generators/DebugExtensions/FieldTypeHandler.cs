@@ -136,17 +136,21 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public string ToSetCollectionVisibility(UnityFieldDetails fieldDetails, string fieldParent)
+        public string ToSetCollectionVisibility(UnityFieldDetails fieldDetails, string fieldParent, string booleanArg)
         {
             var uiElementName = $"{fieldDetails.CamelCaseName}Field";
             switch (fieldDetails.FieldType)
             {
                 case SingularFieldType singularFieldType:
-                    return string.Empty;
+                    if (!fieldDetails.IsCustomType())
+                    {
+                        return string.Empty;
+                    }
+                    return $"{uiElementName}.SetVisibility({fieldParent}.{fieldDetails.PascalCaseName}, {booleanArg});";
                 case OptionFieldType optionFieldType:
                 case ListFieldType listFieldType:
                 case MapFieldType mapFieldType:
-                    return $"SetVisibility({fieldParent}.{fieldDetails.PascalCaseName}, {uiElementName});";
+                    return $"{uiElementName}.SetVisibility({fieldParent}.{fieldDetails.PascalCaseName}, {booleanArg});";
                 default:
                     throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
             }

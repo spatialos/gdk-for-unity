@@ -6,6 +6,7 @@ using Improbable.Gdk.Debug.WorkerInspector.Codegen;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector
@@ -19,6 +20,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private World world;
         private EntityData? selected;
         private readonly List<ComponentVisualElement> visualElements = new List<ComponentVisualElement>();
+        private bool hideIfEmpty;
 
         public EntityDetail()
         {
@@ -29,11 +31,29 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityName = this.Q<Label>("entity-name");
             entityId = this.Q<Label>("entity-id");
             componentContainer = this.Q<ScrollView>();
-            var window = EditorWindow.GetWindow<WorkerInspectorWindow>();
-            if (window != null)
+            RegisterCallback<MouseUpEvent>(evt =>
             {
-                window.OnToggleHideCollections += ComponentVisualElement.ToggleHideIfEmpty;
-            }
+                if (evt.button != (int) MouseButton.RightMouse)
+                {
+                    return;
+                }
+
+                var contextMenu = new GenericMenu();
+                contextMenu.AddItem(new GUIContent("Hide Empty Collections"), hideIfEmpty, () =>
+                {
+                    hideIfEmpty = !hideIfEmpty;
+                    if (!selected.HasValue || world == null || !world.EntityManager.Exists(selected.Value.Entity))
+                    {
+                        return;
+                    }
+
+                    foreach (var element in visualElements)
+                    {
+                        element.UpdateCollectionVisibility(world.EntityManager, selected.Value.Entity, hideIfEmpty);
+                    }
+                });
+                contextMenu.ShowAsContext();
+            });
         }
 
         public void SetSelectedEntity(EntityData entityData)

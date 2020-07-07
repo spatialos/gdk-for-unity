@@ -13,10 +13,17 @@ type ColorData {
     Color color = 1;
 }
 
+type DummyData {
+	list<string> str_list = 1;
+}
+
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]
 component CubeColor {
     id = 12000;
     event ColorData change_color;
+    list<DummyData> dummies = 4;
+    DummyData dummy_dat = 5;
+    map<DummyData, DummyData> dummy_map = 6;
 }
 
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]

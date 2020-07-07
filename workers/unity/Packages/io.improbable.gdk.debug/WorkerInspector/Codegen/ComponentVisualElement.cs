@@ -14,12 +14,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected readonly Foldout ComponentFoldout;
         protected readonly Toggle AuthoritativeToggle;
-        private static bool hideIfEmpty;
-
-        public static void ToggleHideIfEmpty(bool newValue)
-        {
-            hideIfEmpty = newValue;
-        }
 
         protected ComponentVisualElement()
         {
@@ -105,19 +99,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             }
         }
 
-        protected void SetVisibility<T>(Option<T> opt, VisualElement element)
-        {
-            if (!opt.HasValue && hideIfEmpty)
-            {
-                RemoveCollectionIfPresent(element);
-            }
-            else
-            {
-                AddCollectionIfNotPresent(element);
-            }
-        }
-
         public abstract ComponentType ComponentType { get; }
+
+        public abstract void UpdateCollectionVisibility(EntityManager manager, Entity entity, bool hideIfEmpty);
+
         public abstract void Update(EntityManager manager, Entity entity);
     }
 }

@@ -1,8 +1,6 @@
-using System;
 using Improbable.Gdk.Core.Editor.UIElements;
 using Unity.Entities;
 using UnityEditor;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector
@@ -13,9 +11,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private EntityList entityList;
         private EntityDetail entityDetail;
         private WorkerDetail workerDetail;
-        private bool hideCollectionsIfEmpty;
-
-        public event Action<bool> OnToggleHideCollections;
 
         [MenuItem("SpatialOS/Window/Worker Inspector", false)]
         public static void ShowWindow()
@@ -39,24 +34,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             workerDetail.Update();
         }
 
-        private void HandleRightClick(MouseUpEvent evt)
-        {
-            if (evt.button != (int) MouseButton.RightMouse)
-            {
-                return;
-            }
-
-            var menu = new GenericMenu();
-
-            menu.AddItem(new GUIContent("Hide Empty Collections"), hideCollectionsIfEmpty, () =>
-            {
-                hideCollectionsIfEmpty = !hideCollectionsIfEmpty;
-                OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
-            });
-
-            menu.ShowAsContext();
-        }
-
         private void SetupUI()
         {
             const string windowUxmlPath = "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/WorkerInspectorWindow.uxml";
@@ -78,7 +55,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
                     ? darkModeUssPath
                     : lightModeUssPath);
             rootVisualElement.styleSheets.Add(themedSheet);
-            rootVisualElement.RegisterCallback<MouseUpEvent>(HandleRightClick);
 
             worldSelector = rootVisualElement.Q<WorldSelector>();
             worldSelector.OnWorldChanged += OnWorldChanged;
@@ -89,7 +65,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityDetail = rootVisualElement.Q<EntityDetail>();
 
             workerDetail = rootVisualElement.Q<WorkerDetail>();
-            OnToggleHideCollections?.Invoke(hideCollectionsIfEmpty);
         }
 
         private void OnWorldChanged(World world)

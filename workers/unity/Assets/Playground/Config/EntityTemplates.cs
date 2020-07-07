@@ -61,6 +61,8 @@ namespace Playground
 
             template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
 
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
+
             return template;
         }
 
@@ -70,7 +72,7 @@ namespace Playground
             template.AddComponent(new Position.Snapshot(location.ToCoordinates()), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot(), WorkerUtils.UnityGameLogic);
-            template.AddComponent(new CubeColor.Snapshot(), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new CubeColor.Snapshot(new List<DummyData> { new DummyData(new List<string>()) }, new DummyData(new List<string> { "Yes" }), new Dictionary<DummyData, DummyData> { { new DummyData(new List<string>()), new DummyData(new List<string>()) } }), WorkerUtils.UnityGameLogic);
             template.AddComponent(new CubeTargetVelocity.Snapshot(new Vector3f(-2.0f, 0, 0)),
                 WorkerUtils.UnityGameLogic);
             template.AddComponent(new Launchable.Snapshot(), WorkerUtils.UnityGameLogic);
@@ -87,6 +89,8 @@ namespace Playground
             template.AddComponent(interest.ToSnapshot());
 
             template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
+
+            template.SetComponentWriteAccess(EntityAcl.ComponentId, WorkerUtils.UnityGameLogic);
 
             return template;
         }
