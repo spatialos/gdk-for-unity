@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core.Representation
     public interface IEntityRepresentationResolver
     {
         /// <summary>
-        /// The type of the entity
+        /// The type of the entity.
         /// </summary>
         string EntityType { get; }
 
