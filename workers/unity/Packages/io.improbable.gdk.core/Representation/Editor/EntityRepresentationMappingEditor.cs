@@ -13,6 +13,8 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private EntityRepresentationMapping targetDatabase => (EntityRepresentationMapping) target;
         private SerializedProperty listProperty;
+        private VisualTreeAsset elementTemplate;
+        private StyleSheet elementStyleSheet;
 
         private VisualElement listContainer;
 
@@ -23,6 +25,12 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private void OnEnable()
         {
+            const string elementUxmlPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uxml";
+            const string elementUssPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uss";
+
+            elementTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(elementUxmlPath);
+            elementStyleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(elementUssPath);
+
             listProperty = serializedObject.FindProperty(nameof(EntityRepresentationMapping.EntityRepresentationResolvers));
         }
 
@@ -48,12 +56,6 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private void GenerateListElements()
         {
-            const string uxmlPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uxml";
-            const string ussPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uss";
-
-            var elementTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
-            var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
-
             listContainer.Clear();
             for (var i = 0; i < listProperty.arraySize; i++)
             {
@@ -61,7 +63,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
                 var property = listProperty.GetArrayElementAtIndex(i);
 
                 var rootElementContainer = elementTemplate.CloneTree();
-                rootElementContainer.styleSheets.Add(stylesheet);
+                rootElementContainer.styleSheets.Add(elementStyleSheet);
 
                 rootElementContainer.Q<Label>("type-label").text =
                     targetDatabase.EntityRepresentationResolvers[i].GetType().Name;
