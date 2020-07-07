@@ -29,7 +29,6 @@
 
 - Added `com.unity.test-framework` and `com.unity.test-framework.performance` as dependencies to the `io.improbable.gdk.testutils` package. [#1416](https://github.com/spatialos/gdk-for-unity/pull/1416)
     - In addition, both packages have been removed from the playground `manifest.json`.
-- Updated buildkite artifact paths to only use `/` rather than `\\` as path-seperators. [#1418](https://github.com/spatialos/gdk-for-unity/pull/1418)
 
 ## `0.3.7` - 2020-06-22
 
