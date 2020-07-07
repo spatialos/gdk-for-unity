@@ -11,7 +11,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
     {
         private static TypeCache.TypeCollection entityRepresentationTypes;
 
-        private EntityRepresentationMapping TargetDatabase => (EntityRepresentationMapping) target;
+        private EntityRepresentationMapping targetDatabase => (EntityRepresentationMapping) target;
         private SerializedProperty listProperty;
 
         private VisualElement listContainer;
@@ -28,69 +28,62 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         public override VisualElement CreateInspectorGUI()
         {
-            var container = new VisualElement { name = "container" };
-            container.style.paddingTop = 5;
+            const string uxmlPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityRepresentationMappingEditor.uxml";
+            const string ussPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityRepresentationMappingEditor.uss";
 
-            listContainer = new VisualElement { name = "list-container" };
-            container.Add(listContainer);
+            var windowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
+            var rootVisualElement = windowTemplate.CloneTree();
+
+            var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
+            rootVisualElement.styleSheets.Add(stylesheet);
+
+            listContainer = rootVisualElement.Q("list-container");
             GenerateListElements();
 
-            var addButton = CreateNewEntityButton();
-            container.Add(addButton);
+            var button = rootVisualElement.Q<Button>("add-type-button");
+            InitializeNewEntityButton(button);
 
-            return container;
+            return rootVisualElement;
         }
 
         private void GenerateListElements()
         {
+            const string uxmlPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uxml";
+            const string ussPath = "Packages/io.improbable.gdk.core/Representation/Templates/EntityResolverElement.uss";
+
+            var elementTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
+            var stylesheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
+
             listContainer.Clear();
             for (var i = 0; i < listProperty.arraySize; i++)
             {
                 var elementIndex = i;
                 var property = listProperty.GetArrayElementAtIndex(i);
 
-                var superElementContainer = new VisualElement { name = "element-root-container" };
-                var typeLabel = new Label(TargetDatabase.EntityRepresentationResolvers[i].GetType().Name)
-                {
-                    name = "element-type-name"
-                };
+                var rootElementContainer = elementTemplate.CloneTree();
+                rootElementContainer.styleSheets.Add(stylesheet);
 
-                typeLabel.style.unityTextAlign = TextAnchor.UpperRight;
-                typeLabel.style.marginRight = 22;
-                typeLabel.SetEnabled(false);
-                superElementContainer.Add(typeLabel);
+                rootElementContainer.Q<Label>("type-label").text =
+                    targetDatabase.EntityRepresentationResolvers[i].GetType().Name;
 
-                var elementContainer = new VisualElement { name = "element-data-container" };
-                elementContainer.style.flexDirection = FlexDirection.Row;
-                elementContainer.style.marginTop = -17;
-
-                // Display Element itself
-                var elementPropertyField = new PropertyField(property);
+                var elementPropertyField = new PropertyField(property) { name = "element-property" };
                 elementPropertyField.BindProperty(property);
-                elementPropertyField.style.flexGrow = 1;
-                elementPropertyField.style.marginRight = -22;
-                elementContainer.Add(elementPropertyField);
+                rootElementContainer.Q("property-container").Insert(0, elementPropertyField);
 
-                // Removal button
-                var button = new Button { name = "remove-element-button", text = $"-" };
-                button.clicked += () =>
+                rootElementContainer.Q<Button>("delete-button").clicked += () =>
                 {
                     listProperty.DeleteArrayElementAtIndex(elementIndex);
                     serializedObject.ApplyModifiedProperties();
                     GenerateListElements();
                 };
-                button.style.maxWidth = button.style.maxHeight = 16;
-                elementContainer.Add(button);
 
-                superElementContainer.Add(elementContainer);
-                listContainer.Add(superElementContainer);
+                listContainer.Add(rootElementContainer);
             }
         }
 
-        private Button CreateNewEntityButton()
+        private void InitializeNewEntityButton(Button button)
         {
-            var addButton = new Button { name = "new-element-button", text = "New Entity Type" };
-            addButton.clicked += () =>
+            button.clicked += () =>
             {
                 var menu = new GenericMenu();
 
@@ -101,14 +94,12 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
                 menu.ShowAsContext();
             };
-
-            return addButton;
         }
 
         private void AddNewElement(object elementType)
         {
             var instance = (IEntityRepresentationResolver) Activator.CreateInstance((Type) elementType);
-            TargetDatabase.EntityRepresentationResolvers.Add(instance);
+            targetDatabase.EntityRepresentationResolvers.Add(instance);
             serializedObject.Update();
             GenerateListElements();
         }
