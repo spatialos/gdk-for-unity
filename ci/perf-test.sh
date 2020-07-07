@@ -10,6 +10,8 @@ cd "$(dirname "$0")/../"
 
 source .shared-ci/scripts/pinned-tools.sh
 
+BRANCH_NAME=${BUILDKITE_BRANCH:-"local"}
+
 ACCELERATOR_ARGS=$(getAcceleratorArgs)
 
 PROJECT_DIR="$(pwd)"
@@ -42,6 +44,11 @@ else
 fi
 
 function main {
+    if ! anyMatchingTargets; then
+        echo "Skipping all targets for this job as current branch does not match any corresponding filters."
+        return
+    fi
+
     pushd "workers/unity"
         traceStart "Generate csproj & sln files :csharp:"
             dotnet run -p "${PROJECT_DIR}/.shared-ci/tools/RunUnity/RunUnity.csproj" -- \
@@ -78,6 +85,19 @@ function main {
     cleanUnity "$(pwd)/workers/unity"
 }
 
+function anyMatchingTargets {
+    for configId in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
+    do
+        local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
+
+        if [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
+            return 0
+        fi
+    done
+
+    return 1
+}
+
 function runTests {
     local configId=${1}
 
@@ -86,6 +106,13 @@ function runTests {
     local burst=$(jq -r .[${configId}].burst ${CONFIG_FILE})
     local apiProfile=$(jq -r .[${configId}].apiProfile ${CONFIG_FILE})
     local scriptingBackend=$(jq -r .[${configId}].scriptingBackend ${CONFIG_FILE})
+
+    local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
+
+    if ! [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
+        echo "Skipping target as current branch does not match regex '${branchFilter}'."
+        return
+    fi
 
     local args=()
 

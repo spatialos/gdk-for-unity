@@ -5,7 +5,7 @@
 ### Breaking Changes
 
 - All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
-    - A warning will be generated when enums defined in schema does not start from 0. 
+    - A warning will be generated when enums defined in schema do not start from 0.
 
 ### Added
 
@@ -24,6 +24,11 @@
 ### Fixed
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
+
+### Internal
+
+- Added `com.unity.test-framework` and `com.unity.test-framework.performance` as dependencies to the `io.improbable.gdk.testutils` package. [#1416](https://github.com/spatialos/gdk-for-unity/pull/1416)
+    - In addition, both packages have been removed from the playground `manifest.json`.
 
 ## `0.3.7` - 2020-06-22
 
