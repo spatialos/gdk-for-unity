@@ -6,6 +6,7 @@
 
 - All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
     - A warning will be generated when enums defined in schema do not start from 0.
+- Removed Windows x86 support in the Cloud build configuration. [#1421](https://github.com/spatialos/gdk-for-unity/pull/1421)
 
 ### Added
 
