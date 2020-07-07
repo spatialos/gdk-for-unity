@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TestUtils;
@@ -22,7 +23,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
             {
                 world.AddSystem(
                     new GameObjectInitializationSystem(
-                        new GameObjectCreatorFromMetadata(opts.WorkerType, Vector3.zero, null), null));
+                        new GameObjectCreatorFromMetadata(opts.WorkerType, Vector3.zero), ScriptableObject.CreateInstance<EntityRepresentationMapping>(), null));
             };
 
             return opts;

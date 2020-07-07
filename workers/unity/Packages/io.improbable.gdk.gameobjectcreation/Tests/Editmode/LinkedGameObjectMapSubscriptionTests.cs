@@ -1,7 +1,9 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 {
@@ -32,7 +34,7 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
             World
                 .Step((world) =>
                 {
-                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world.Worker.World, new MockGameObjectCreator());
+                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world.Worker.World, new MockGameObjectCreator(), ScriptableObject.CreateInstance<EntityRepresentationMapping>());
                     var subscriptionSystem = world.GetSystem<SubscriptionSystem>();
                     var goMapSubscription = subscriptionSystem.Subscribe<LinkedGameObjectMap>(entityId);
 

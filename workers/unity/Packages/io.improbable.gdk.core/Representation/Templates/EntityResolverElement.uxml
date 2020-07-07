@@ -1,0 +1,10 @@
+<UXML
+        xmlns="UnityEngine.UIElements"
+>
+    <VisualElement>
+        <Label name="type-label" class="unity-disabled"/>
+        <VisualElement name="property-container">
+            <Button name="delete-button" text="-"/>
+        </VisualElement>
+    </VisualElement>
+</UXML>

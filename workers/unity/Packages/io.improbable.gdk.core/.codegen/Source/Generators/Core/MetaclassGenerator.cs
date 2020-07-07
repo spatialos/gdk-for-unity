@@ -36,6 +36,7 @@ public uint ComponentId => {componentDetails.ComponentId};
 public string Name => ""{componentDetails.Name}"";
 
 public Type Data {{ get; }} = typeof({rootNamespace}.Component);
+public Type Authority {{ get; }} = typeof({rootNamespace}.HasAuthority);
 public Type Snapshot {{ get; }} = typeof({rootNamespace}.Snapshot);
 public Type Update {{ get; }} = typeof({rootNamespace}.Update);
 

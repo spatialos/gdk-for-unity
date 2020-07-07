@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
+using Unity.Entities;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,9 +11,6 @@ namespace Improbable.Gdk.GameObjectCreation
 {
     public class GameObjectCreatorFromMetadata : IEntityGameObjectCreator
     {
-        private readonly Dictionary<string, GameObject> cachedPrefabs
-            = new Dictionary<string, GameObject>();
-
         private readonly string workerType;
         private readonly Vector3 workerOrigin;
 
@@ -23,7 +21,7 @@ namespace Improbable.Gdk.GameObjectCreation
             typeof(Transform), typeof(Rigidbody), typeof(MeshRenderer)
         };
 
-        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin, ILogDispatcher logger)
+        public GameObjectCreatorFromMetadata(string workerType, Vector3 workerOrigin)
         {
             this.workerType = workerType;
             this.workerOrigin = workerOrigin;
@@ -37,32 +35,16 @@ namespace Improbable.Gdk.GameObjectCreation
             });
         }
 
-        public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
+        public void OnEntityCreated(SpatialOSEntityInfo entityInfo, GameObject prefab, EntityManager entityManager, EntityGameObjectLinker linker)
         {
-            var spatialOSPosition = entity.GetComponent<Position.Component>();
-
-            var prefabName = entityType;
+            var spatialOSPosition = entityManager.GetComponentData<Position.Component>(entityInfo.Entity);
             var position = spatialOSPosition.Coords.ToUnityVector() + workerOrigin;
 
-            if (!cachedPrefabs.TryGetValue(prefabName, out var prefab))
-            {
-                var workerSpecificPath = Path.Combine("Prefabs", workerType, prefabName);
-                var commonPath = Path.Combine("Prefabs", "Common", prefabName);
-
-                prefab = Resources.Load<GameObject>(workerSpecificPath) ?? Resources.Load<GameObject>(commonPath);
-                cachedPrefabs[prefabName] = prefab;
-            }
-
-            if (prefab == null)
-            {
-                return;
-            }
-
             var gameObject = Object.Instantiate(prefab, position, Quaternion.identity);
-            gameObject.name = $"{prefab.name}(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
+            gameObject.name = $"{prefab.name}(SpatialOS: {entityInfo.SpatialOSEntityId}, Worker: {workerType})";
 
-            entityIdToGameObject.Add(entity.SpatialOSEntityId, gameObject);
-            linker.LinkGameObjectToSpatialOSEntity(entity.SpatialOSEntityId, gameObject, componentsToAdd);
+            entityIdToGameObject.Add(entityInfo.SpatialOSEntityId, gameObject);
+            linker.LinkGameObjectToSpatialOSEntity(entityInfo.SpatialOSEntityId, gameObject, componentsToAdd);
         }
 
         public void OnEntityRemoved(EntityId entityId)
