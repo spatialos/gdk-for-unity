@@ -6,10 +6,14 @@ namespace Improbable.Gdk.Core.Representation
 {
     public interface IEntityRepresentationResolver
     {
-        // The type of the entity (meta-data string)
+        /// <summary>
+        /// The type of the entity (meta-data string)
+        /// </summary>
         string EntityType { get; }
 
-        // Required components before spawning (same as the current `EntityTypeExpectations`)
+        /// <summary>
+        ///  Required components before spawning (same as the current `EntityTypeExpectations`)
+        /// </summary>
         IEnumerable<uint> RequiredComponents { get; }
 
         GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager);

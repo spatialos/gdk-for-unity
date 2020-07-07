@@ -34,7 +34,6 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
             World
                 .Step((world) =>
                 {
-                    // TODO: Hacked in EntityLinkerDatabase
                     GameObjectCreationHelper.EnableStandardGameObjectCreation(world.Worker.World, new MockGameObjectCreator(), ScriptableObject.CreateInstance<EntityRepresentationMapping>());
                     var subscriptionSystem = world.GetSystem<SubscriptionSystem>();
                     var goMapSubscription = subscriptionSystem.Subscribe<LinkedGameObjectMap>(entityId);

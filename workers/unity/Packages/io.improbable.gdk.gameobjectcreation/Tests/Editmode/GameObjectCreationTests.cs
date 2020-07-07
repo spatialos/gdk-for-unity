@@ -25,7 +25,6 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
             {
                 AdditionalSystems = world =>
                 {
-                    // TODO: Hacked in EntityLinkerDatabase
                     var testGameObjectCreator = new TestGameObjectCreator(WorkerType);
                     var dummyDatabase = ScriptableObject.CreateInstance<EntityRepresentationMapping>();
                     dummyDatabase.EntityRepresentationResolvers = new List<IEntityRepresentationResolver>
