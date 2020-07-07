@@ -34,8 +34,6 @@ namespace Improbable.Gdk.BuildSystem
                             return BuildTarget.Android;
                         case "ios":
                             return BuildTarget.iOS;
-                        case "winx86":
-                            return BuildTarget.StandaloneWindows;
                         case "win":
                             return BuildTarget.StandaloneWindows64;
                         case "linux":

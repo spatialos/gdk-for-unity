@@ -41,8 +41,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 switch (Target)
                 {
-                    case BuildTarget.StandaloneWindows:
-                        return "Win x86";
                     case BuildTarget.StandaloneWindows64:
                         return "Win x64";
                     case BuildTarget.StandaloneLinux64:

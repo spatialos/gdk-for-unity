@@ -52,7 +52,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             BuildTargetToContent(BuildTarget.Android, "BuildSettings.Android", "Android");
             BuildTargetToContent(BuildTarget.iOS, "BuildSettings.iPhone", "iOS");
-            BuildTargetToContent(BuildTarget.StandaloneWindows, "BuildSettings.Standalone", "Win x86");
             BuildTargetToContent(BuildTarget.StandaloneWindows64, "BuildSettings.Standalone", "Win x64");
             BuildTargetToContent(BuildTarget.StandaloneLinux64, "BuildSettings.Standalone", "Linux");
             BuildTargetToContent(BuildTarget.StandaloneOSX, "BuildSettings.Standalone", "MacOS");
