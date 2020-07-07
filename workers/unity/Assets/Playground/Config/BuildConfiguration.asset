@@ -36,10 +36,6 @@ MonoBehaviour:
         Enabled: 1
         Required: 0
         ScriptingImplementation: 0
-      - Options: 0
-        Enabled: 1
-        Required: 0
-        ScriptingImplementation: 0
       - Options: 16384
         Enabled: 0
         Required: 0
@@ -79,10 +75,6 @@ MonoBehaviour:
         Enabled: 0
         Required: 0
         ScriptingImplementation: 0
-      - Options: 0
-        Enabled: 0
-        Required: 0
-        ScriptingImplementation: 0
       - Options: 16384
         Enabled: 1
         Required: 1
@@ -118,10 +110,6 @@ MonoBehaviour:
         ScriptingImplementation: 1
     CloudBuildConfig:
       BuildTargets:
-      - Options: 0
-        Enabled: 0
-        Required: 0
-        ScriptingImplementation: 0
       - Options: 0
         Enabled: 0
         Required: 0
