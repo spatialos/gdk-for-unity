@@ -40,7 +40,7 @@ linux: &linux
     - "environment=production"
     - "permission_set=builder"
     - "platform=linux"  # if you need a different platform, configure this: macos|linux|windows.
-    - "queue=v3-1562766449-11b126f880607f28-------z"
+    - "queue=v4-20-07-06-120608-bk13080-eb89af6c"
     - "scaler_version=2"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
