@@ -46,8 +46,8 @@ namespace Improbable.Gdk.Core.Representation.Editor
         {
             var resolvers = AssetDatabase.FindAssets("t:EntityLinkerDatabase")
                 .Select(AssetDatabase.GUIDToAssetPath)
-                .Select(path => AssetDatabase.LoadAssetAtPath(path, typeof(EntityRepresentationMapping)) as EntityRepresentationMapping)
-                .SelectMany(asdb => asdb.EntityRepresentationResolvers)
+                .Select(AssetDatabase.LoadAssetAtPath<EntityRepresentationMapping>)
+                .SelectMany(mapping => mapping.EntityRepresentationResolvers)
                 .ToArray();
 
             var prefabs = new List<GameObject>();
@@ -56,18 +56,16 @@ namespace Improbable.Gdk.Core.Representation.Editor
                 entityRepresentation.DeclareReferencedPrefabs(prefabs);
             }
 
-            prefabs = prefabs.Distinct().ToList();
+            prefabs = prefabs
+                .Where(prefab => prefab != null)
+                .Distinct()
+                .ToList();
 
             AssetDatabase.StartAssetEditing();
             foreach (var prefabObject in prefabs)
             {
                 try
                 {
-                    if (prefabObject == null)
-                    {
-                        continue;
-                    }
-
                     var changed = false;
 
                     foreach (var monoBehaviour in prefabObject
