@@ -59,7 +59,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static readonly IReadOnlyDictionary<BuildTarget, string> BuildPlatformExtensions =
             new Dictionary<BuildTarget, string>
-            {,
+            {
                 { BuildTarget.StandaloneWindows64, ".exe" },
                 { BuildTarget.StandaloneLinux64, string.Empty },
                 { BuildTarget.StandaloneOSX, string.Empty },
