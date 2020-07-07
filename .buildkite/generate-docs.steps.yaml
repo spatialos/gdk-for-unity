@@ -2,7 +2,7 @@
 linux: &linux
   agents:
     - "capable_of_building=gdk-for-unity"
-    - "queue=${LINUX_QUEUE:-v3-1568738590-4881a8663c5d900a-------z}"
+    - "queue=${LINUX_QUEUE:-v4-20-07-06-120608-bk13080-eb89af6c}"
     - "platform=linux"
     - "permission_set=builder"
     - "scaler_version=2"
