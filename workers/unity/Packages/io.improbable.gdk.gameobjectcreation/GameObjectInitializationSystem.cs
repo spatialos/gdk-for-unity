@@ -197,7 +197,9 @@ namespace Improbable.Gdk.GameObjectCreation
         [Conditional("UNITY_EDITOR")]
         private void SetEntityName(Entity entity, string name)
         {
+#if UNITY_EDITOR
             EntityManager.SetName(entity, name);
+#endif
         }
     }
 }
