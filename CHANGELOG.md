@@ -8,8 +8,8 @@
     - A warning will be generated when enums defined in schema do not start from 0.
 - GameObjectCreation feature module now links entity types with prefabs through EntityRepresentationMapping assets. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
     - See the [upgrade guide](UPGRADE_GUIDE.md) for detailed upgrade instructions for this breaking change.
-    - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` Now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.
-    - `GameObjectCreationHelperEnableStandardGameObjectCreation` Now requires a non-null `EntityRepresentationMapping` to be passed in.
+    - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.
+    - `GameObjectCreationHelper.EnableStandardGameObjectCreation` now requires a non-null `EntityRepresentationMapping` to be passed in.
 
 ### Added
 
@@ -20,7 +20,7 @@
 - Added `Scripting Backend` option dropdown to the Build Configuration UI. [#1411](https://github.com/spatialos/gdk-for-unity/pull/1411)
 - Added `Allow Debug` toggle to the Build Configuration UI. [#1413](https://github.com/spatialos/gdk-for-unity/pull/1413)
     - Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player.
-- Added `Authority` type field to the `ComponentDatabase` `IComponentMetaclass`. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
+- Added `Authority` type field to `IComponentMetaclass`. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
 
 ### Changed
 
