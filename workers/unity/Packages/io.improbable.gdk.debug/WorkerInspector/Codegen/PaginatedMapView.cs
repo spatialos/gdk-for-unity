@@ -22,9 +22,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Add(list);
         }
 
-        public void SetVisibility(Dictionary<TKeyData, TValueData> data, bool hideIfEmpty)
+        public void SetVisibility(Dictionary<TKeyData, TValueData> dataSource, bool hideIfEmpty)
         {
-            Update(data);
+            Update(dataSource);
             if (listData.Count == 0 && hideIfEmpty)
             {
                 AddToClassList("hidden");
@@ -68,16 +68,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 AddToClassList("map-view__item");
             }
 
-            public void SetVisibility(KeyValuePair<TKeyData, TValueData> keyValuePair, bool hideIfEmpty)
+            public void SetVisibility(KeyValuePair<TKeyData, TValueData> dataSource, bool hideIfEmpty)
             {
                 if (keyElement is IConcealable<TKeyData> key)
                 {
-                    key.SetVisibility(keyValuePair.Key, hideIfEmpty);
+                    key.SetVisibility(dataSource.Key, hideIfEmpty);
                 }
 
                 if (valueElement is IConcealable<TValueData> value)
                 {
-                    value.SetVisibility(keyValuePair.Value, hideIfEmpty);
+                    value.SetVisibility(dataSource.Value, hideIfEmpty);
                 }
             }
 

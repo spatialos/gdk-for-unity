@@ -53,11 +53,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             elementPool = new ElementPool<TElement>(makeElement);
         }
 
-        public void SetVisibility(List<TData> listData, bool hideIfEmpty)
+        public void SetVisibility(List<TData> dataSource, bool hideIfEmpty)
         {
             hideEmptyCollections = hideIfEmpty;
-            Update(listData);
-            if (listData.Count == 0 && hideIfEmpty)
+            Update(dataSource);
+            if (dataSource.Count == 0 && hideIfEmpty)
             {
                 AddToClassList("hidden");
             }
@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 if (container.ElementAt(i) is IConcealable<TData> element)
                 {
-                    element.SetVisibility(data[i], hideIfEmpty);
+                    element.SetVisibility(this.data[i], hideIfEmpty);
                 }
             }
         }

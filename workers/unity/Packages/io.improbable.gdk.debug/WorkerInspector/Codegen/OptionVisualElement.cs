@@ -11,9 +11,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
         }
 
-        public void SetVisibility(Option<TData> opt, bool hideIfEmpty)
+        public void SetVisibility(Option<TData> dataSource, bool hideIfEmpty)
         {
-            if (!opt.HasValue && hideIfEmpty)
+            if (!dataSource.HasValue && hideIfEmpty)
             {
                 AddToClassList("hidden");
             }
@@ -22,9 +22,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 RemoveFromClassList("hidden");
             }
 
-            if (opt.HasValue)
+            if (dataSource.HasValue)
             {
-                Hider.SetVisibility(opt.Value, hideIfEmpty);
+                Hider.SetVisibility(dataSource.Value, hideIfEmpty);
             }
         }
 
@@ -49,9 +49,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
         }
 
-        public void SetVisibility(TData? opt, bool hideIfEmpty)
+        public void SetVisibility(TData? dataSource, bool hideIfEmpty)
         {
-            if (!opt.HasValue && hideIfEmpty)
+            if (!dataSource.HasValue && hideIfEmpty)
             {
                 AddToClassList("hidden");
             }
@@ -60,9 +60,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 RemoveFromClassList("hidden");
             }
 
-            if (opt.HasValue)
+            if (dataSource.HasValue)
             {
-                Hider.SetVisibility(opt.Value, hideIfEmpty);
+                Hider.SetVisibility(dataSource.Value, hideIfEmpty);
             }
         }
 
@@ -135,11 +135,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 element = innerElement;
             }
 
-            public void SetVisibility(TData data, bool hideIfEmpty)
+            public void SetVisibility(TData dataSource, bool hideIfEmpty)
             {
                 if (element is IConcealable<TData> concealable)
                 {
-                    concealable.SetVisibility(data, hideIfEmpty);
+                    concealable.SetVisibility(dataSource, hideIfEmpty);
                 }
             }
         }

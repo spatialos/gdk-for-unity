@@ -25,7 +25,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Add(Container);
         }
 
-        public abstract void SetVisibility(T data, bool hideIfEmpty);
+        public abstract void SetVisibility(T dataSource, bool hideIfEmpty);
 
         public abstract void Update(T data);
     }
