@@ -25,7 +25,7 @@
 ### Changed
 
 - Moved Gdk Tools Configuration to the Unity "Project Settings" window under `Spatial OS`. [#1408](https://github.com/spatialos/gdk-for-unity/pull/1408)
-- `spatialos.json` sdk and standard library version updated to `14.6.1`
+- `spatialos.json` sdk and standard library version updated to `14.6.1`. [#1422](https://github.com/spatialos/gdk-for-unity/pull/1422)
 
 ### Fixed
 
