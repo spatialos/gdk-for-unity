@@ -13,22 +13,10 @@ type ColorData {
     Color color = 1;
 }
 
-type ListStringStringString {
-	list<ListStringString> str_list = 1;
-}
-type ListStringString {
-    list<ListString> str_list = 1;   
-}
-
-type ListString {
-    list<string> str_list = 1;   
-}
-
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]
 component CubeColor {
     id = 12000;
     event ColorData change_color;
-    map<int32, ListStringStringString> yolo = 1;
 }
 
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]
