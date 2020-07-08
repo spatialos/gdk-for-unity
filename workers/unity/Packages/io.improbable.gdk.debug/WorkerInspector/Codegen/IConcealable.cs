@@ -1,4 +1,4 @@
-﻿namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
+namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
     public interface IConcealable<T>
     {
