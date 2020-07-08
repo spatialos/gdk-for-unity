@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public sealed class OptionVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>
+    public sealed class OptionVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, IConcealable<Option<TData>>
         where TElement : VisualElement
     {
         public OptionVisualElement(string label, TElement innerElement, Action<TElement, TData> applyData) : base(label, innerElement, applyData)
@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             if (opt.HasValue)
             {
-                base.SetVisibility(opt.Value, hideIfEmpty);
+                Hider.SetVisibility(opt.Value, hideIfEmpty);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         }
     }
 
-    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>
+    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, IConcealable<TData?>
         where TData : struct
         where TElement : VisualElement
     {
@@ -62,7 +62,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             if (opt.HasValue)
             {
-                base.SetVisibility(opt.Value, hideIfEmpty);
+                Hider.SetVisibility(opt.Value, hideIfEmpty);
             }
         }
 
@@ -82,9 +82,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     public class OptionalVisualElementBase<TElement, TData> : VisualElement where TElement : VisualElement
     {
         private readonly VisualElement container;
-        private readonly TElement innerElement;
         private readonly Label isEmptyLabel;
         private readonly Action<TElement, TData> applyData;
+        private readonly TElement innerElement;
+        protected readonly IConcealable<TData> Hider;
 
         protected OptionalVisualElementBase(string label, TElement innerElement, Action<TElement, TData> applyData)
         {
@@ -100,14 +101,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             this.innerElement = innerElement;
             this.applyData = applyData;
-        }
-
-        protected void SetVisibility(TData opt, bool hideIfEmpty)
-        {
-            if (innerElement is SchemaTypeVisualElement<TData> element)
-            {
-                element.SetVisibility(opt, hideIfEmpty);
-            }
+            Hider = new ElementHider(innerElement);
         }
 
         protected void UpdateWithData(TData data)
@@ -129,6 +123,24 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             if (container.Contains(element))
             {
                 container.Remove(element);
+            }
+        }
+
+        private class ElementHider : IConcealable<TData>
+        {
+            private readonly TElement element;
+
+            public ElementHider(TElement innerElement)
+            {
+                element = innerElement;
+            }
+
+            public void SetVisibility(TData data, bool hideIfEmpty)
+            {
+                if (element is IConcealable<TData> concealable)
+                {
+                    concealable.SetVisibility(data, hideIfEmpty);
+                }
             }
         }
     }

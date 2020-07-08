@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public abstract class SchemaTypeVisualElement<T> : VisualElement
+    public abstract class SchemaTypeVisualElement<T> : VisualElement, IConcealable<T>
     {
         public string Label
         {

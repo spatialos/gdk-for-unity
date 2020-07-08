@@ -63,7 +63,7 @@ namespace Improbable.Gdk.CodeGenerator
         private void GenerateVisibilityMethod(TypeBlock typeBlock, UnityTypeDetails details)
         {
             var booleanArg = "hideIfEmpty";
-            typeBlock.Method($"public override void SetVisibility(in {details.FullyQualifiedName} data, bool {booleanArg})", mb =>
+            typeBlock.Method($"public override void SetVisibility({details.FullyQualifiedName} data, bool {booleanArg})", mb =>
             {
                 mb.TextList(details.FieldDetails.Select(fd => fieldTypeHandler.ToSetCollectionVisibility(fd, "data", booleanArg)).Where(str => !string.IsNullOrEmpty(str)));
             });

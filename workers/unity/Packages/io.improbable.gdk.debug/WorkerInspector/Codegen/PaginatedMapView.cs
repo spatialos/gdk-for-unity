@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : VisualElement
+    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : VisualElement, IConcealable<Dictionary<TKeyData, TValueData>>
         where TKeyElement : VisualElement
         where TValueElement : VisualElement
     {
@@ -53,7 +53,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             list.Update(listData);
         }
 
-        private class KeyValuePairElement : VisualElement
+        private class KeyValuePairElement : VisualElement, IConcealable<KeyValuePair<TKeyData, TValueData>>
         {
             private readonly TKeyElement keyElement;
             private readonly TValueElement valueElement;
@@ -77,12 +77,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             public void SetVisibility(KeyValuePair<TKeyData, TValueData> keyValuePair, bool hideIfEmpty)
             {
-                if (keyElement is SchemaTypeVisualElement<TKeyData> key)
+                if (keyElement is IConcealable<TKeyData> key)
                 {
                     key.SetVisibility(keyValuePair.Key, hideIfEmpty);
                 }
 
-                if (valueElement is SchemaTypeVisualElement<TValueData> value)
+                if (valueElement is IConcealable<TValueData> value)
                 {
                     value.SetVisibility(keyValuePair.Value, hideIfEmpty);
                 }

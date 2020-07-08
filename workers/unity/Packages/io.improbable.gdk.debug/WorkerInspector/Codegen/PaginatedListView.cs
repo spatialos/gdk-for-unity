@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedListView<TElement, TData> : VisualElement
+    public class PaginatedListView<TElement, TData> : VisualElement, IConcealable<List<TData>>
         where TElement : VisualElement
     {
         private const string UxmlPath =
@@ -68,7 +68,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Update(listData);
             foreach (var i in Enumerable.Range(0, container.childCount))
             {
-                if (container.ElementAt(i) is SchemaTypeVisualElement<TData> element)
+                if (container.ElementAt(i) is IConcealable<TData> element)
                 {
                     element.SetVisibility(data[i], hideIfEmpty);
                 }
