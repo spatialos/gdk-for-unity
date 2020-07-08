@@ -25,7 +25,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         public void SetVisibility(Dictionary<TKeyData, TValueData> data, bool hideIfEmpty)
         {
-            if (data.Count == 0 && hideIfEmpty)
+            Update(data);
+            if (listData.Count == 0 && hideIfEmpty)
             {
                 AddToClassList("hidden");
             }
@@ -34,14 +35,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 RemoveFromClassList("hidden");
             }
 
-            Update(data);
-            foreach (var i in Enumerable.Range(0, list.childCount))
-            {
-                if (list.ElementAt(i) is KeyValuePairElement element)
-                {
-                    element.SetVisibility(listData[i], hideIfEmpty);
-                }
-            }
+            list.SetVisibility(listData, hideIfEmpty);
         }
 
         public void Update(Dictionary<TKeyData, TValueData> data)

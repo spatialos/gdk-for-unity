@@ -56,6 +56,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         public void SetVisibility(List<TData> listData, bool hideIfEmpty)
         {
             hideEmptyCollections = hideIfEmpty;
+            Update(listData);
             if (listData.Count == 0 && hideIfEmpty)
             {
                 AddToClassList("hidden");
@@ -65,7 +66,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 RemoveFromClassList("hidden");
             }
 
-            Update(listData);
             foreach (var i in Enumerable.Range(0, container.childCount))
             {
                 if (container.ElementAt(i) is IConcealable<TData> element)

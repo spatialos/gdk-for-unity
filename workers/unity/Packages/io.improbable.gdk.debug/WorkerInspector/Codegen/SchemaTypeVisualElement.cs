@@ -11,8 +11,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             set => labelElement.text = value;
         }
 
-        public int FieldCount => Container.childCount;
-
         protected readonly VisualElement Container;
         private readonly Label labelElement;
 
