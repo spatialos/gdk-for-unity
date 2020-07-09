@@ -33,6 +33,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             componentContainer = this.Q<ScrollView>();
             RegisterCallback<MouseUpEvent>(evt =>
             {
+                evt.StopImmediatePropagation();
                 if (evt.button != (int) MouseButton.RightMouse)
                 {
                     return;
