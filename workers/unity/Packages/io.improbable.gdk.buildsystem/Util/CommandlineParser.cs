@@ -34,6 +34,8 @@ namespace Improbable.Gdk.BuildSystem
                             return BuildTarget.Android;
                         case "ios":
                             return BuildTarget.iOS;
+                        case "winx86":
+                            throw new ArgumentException("winx86 is no longer supported, use win instead.");
                         case "win":
                             return BuildTarget.StandaloneWindows64;
                         case "linux":
