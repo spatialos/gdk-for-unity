@@ -1,7 +1,9 @@
 using System;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
 {
@@ -11,7 +13,8 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
         {
         }
 
-        public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
+        public void OnEntityCreated(SpatialOSEntityInfo entityInfo, GameObject prefab, EntityManager entityManager,
+            EntityGameObjectLinker linker)
         {
             throw new NotImplementedException();
         }

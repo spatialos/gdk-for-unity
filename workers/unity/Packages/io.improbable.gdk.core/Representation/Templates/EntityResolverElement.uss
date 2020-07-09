@@ -1,0 +1,19 @@
+#type-label {
+    -unity-text-align: upper-right;
+    margin-right: 22px;
+}
+
+#property-container {
+    flex-direction: row;
+    margin-top: -17px;
+}
+
+#element-property {
+    flex-grow: 1;
+    margin-right: -22px;
+}
+
+#delete-button {
+    max-height: 16px;
+    max-width: 16px;
+}

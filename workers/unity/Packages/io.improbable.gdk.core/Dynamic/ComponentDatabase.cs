@@ -23,6 +23,16 @@ namespace Improbable.Gdk.Core
             SnapshotsToIds = Metaclasses.ToDictionary(pair => pair.Value.Snapshot, pair => pair.Key);
         }
 
+        public static IComponentMetaclass GetMetaclass(uint componentId)
+        {
+            if (!Metaclasses.TryGetValue(componentId, out var metaclass))
+            {
+                throw new ArgumentException($"Can not find Metaclass for SpatialOS component ID {componentId}.");
+            }
+
+            return metaclass;
+        }
+
         public static uint GetComponentId<T>() where T : ISpatialComponentData
         {
             if (!ComponentsToIds.TryGetValue(typeof(T), out var id))

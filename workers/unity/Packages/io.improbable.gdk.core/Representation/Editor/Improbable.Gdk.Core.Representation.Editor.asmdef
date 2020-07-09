@@ -1,0 +1,18 @@
+{
+    "name": "Improbable.Gdk.Core.Representation.Editor",
+    "references": [
+        "GUID:edb3612c44ad0d24988d387581fd5fbe",
+        "GUID:8819f35a0fc84499b990e90a4ca1911f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

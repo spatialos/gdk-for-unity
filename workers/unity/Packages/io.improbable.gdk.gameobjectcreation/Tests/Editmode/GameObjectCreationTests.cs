@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
+using Improbable.Gdk.Core.Representation.Types;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
@@ -24,7 +26,13 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
                 AdditionalSystems = world =>
                 {
                     var testGameObjectCreator = new TestGameObjectCreator(WorkerType);
-                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator);
+                    var dummyDatabase = ScriptableObject.CreateInstance<EntityRepresentationMapping>();
+                    dummyDatabase.EntityRepresentationResolvers = new List<IEntityRepresentationResolver>
+                    {
+                        new SimpleEntityResolver("TestObject", new GameObject())
+                    };
+
+                    GameObjectCreationHelper.EnableStandardGameObjectCreation(world, testGameObjectCreator, dummyDatabase);
                 }
             };
         }
@@ -128,15 +136,15 @@ namespace Improbable.Gdk.GameObjectCreation.EditmodeTests
                 });
             }
 
-            public void OnEntityCreated(string entityType, SpatialOSEntity entity, EntityGameObjectLinker linker)
+            public void OnEntityCreated(SpatialOSEntityInfo entityInfo, GameObject prefab, EntityManager entityManager, EntityGameObjectLinker linker)
             {
                 var gameObject = new GameObject();
                 gameObject.transform.position = Vector3.one;
                 gameObject.transform.rotation = Quaternion.identity;
-                gameObject.name = $"TestObject(SpatialOS: {entity.SpatialOSEntityId}, Worker: {workerType})";
+                gameObject.name = $"TestObject(SpatialOS: {entityInfo.SpatialOSEntityId}, Worker: {workerType})";
 
-                entityIdToGameObject.Add(entity.SpatialOSEntityId, gameObject);
-                linker.LinkGameObjectToSpatialOSEntity(entity.SpatialOSEntityId, gameObject);
+                entityIdToGameObject.Add(entityInfo.SpatialOSEntityId, gameObject);
+                linker.LinkGameObjectToSpatialOSEntity(entityInfo.SpatialOSEntityId, gameObject);
             }
 
             public void OnEntityRemoved(EntityId entityId)

@@ -9,6 +9,7 @@ namespace Improbable.Gdk.Core
         string Name { get; }
 
         Type Data { get; }
+        Type Authority { get; }
         Type Snapshot { get; }
         Type Update { get; }
 

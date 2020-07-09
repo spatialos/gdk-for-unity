@@ -1,8 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
 namespace Improbable.Gdk.GameObjectCreation
 {
@@ -26,12 +31,43 @@ namespace Improbable.Gdk.GameObjectCreation
         private EntityQuery newEntitiesQuery;
         private EntityQuery removedEntitiesQuery;
 
-        private readonly EntityTypeExpectations entityTypeExpectations = new EntityTypeExpectations();
+        private readonly Dictionary<string, (IEntityRepresentationResolver representation, ComponentType[] expectedTypes)> entityTypeExpectations
+            = new Dictionary<string, (IEntityRepresentationResolver representation, ComponentType[] expectedTypes)>();
 
-        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, GameObject workerGameObject)
+        public GameObjectInitializationSystem(IEntityGameObjectCreator gameObjectCreator, EntityRepresentationMapping entityRepresentationMapping, GameObject workerGameObject)
         {
+            if (gameObjectCreator == null)
+            {
+                throw new ArgumentException("gameObjectCreator can not be Null", nameof(gameObjectCreator));
+            }
+
+            if (entityRepresentationMapping == null)
+            {
+                throw new ArgumentException("entityLinkerDatabase can not be Null", nameof(entityRepresentationMapping));
+            }
+
             this.gameObjectCreator = gameObjectCreator;
             this.workerGameObject = workerGameObject;
+
+            var additionalTypeExpectations = new EntityTypeExpectations();
+            gameObjectCreator.PopulateEntityTypeExpectations(additionalTypeExpectations);
+
+            foreach (var entityRepresentation in entityRepresentationMapping.EntityRepresentationResolvers)
+            {
+                var entityType = entityRepresentation.EntityType;
+                var additionalTypes = additionalTypeExpectations.GetExpectedTypes(entityType);
+                var componentTypes = entityRepresentation.RequiredComponents
+                    .Select(componentId =>
+                    {
+                        var managedType = ComponentDatabase.GetMetaclass(componentId).Data;
+                        return ComponentType.ReadOnly(managedType);
+                    })
+                    .Concat(additionalTypes)
+                    .Distinct()
+                    .ToArray();
+
+                entityTypeExpectations.Add(entityType, (entityRepresentation, componentTypes));
+            }
         }
 
         protected override void OnCreate()
@@ -63,8 +99,6 @@ namespace Improbable.Gdk.GameObjectCreation
                 All = new[] { ComponentType.ReadOnly<GameObjectInitSystemStateComponent>() },
                 None = minimumComponentSet
             });
-
-            gameObjectCreator.PopulateEntityTypeExpectations(entityTypeExpectations);
         }
 
         protected override void OnDestroy()
@@ -119,7 +153,18 @@ namespace Improbable.Gdk.GameObjectCreation
                 (Entity entity, ref SpatialEntityId spatialEntityId, ref Metadata.Component metadata) =>
                 {
                     var entityType = metadata.EntityType;
-                    var expectedTypes = entityTypeExpectations.GetExpectedTypes(entityType);
+                    var registered = entityTypeExpectations.TryGetValue(entityType, out var tuple);
+                    var (representation, expectedTypes) = tuple;
+
+                    if (!registered)
+                    {
+                        SetEntityName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
+                        PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
+                        {
+                            EntityId = spatialEntityId.EntityId
+                        });
+                        return;
+                    }
 
                     foreach (var expectedType in expectedTypes)
                     {
@@ -129,17 +174,17 @@ namespace Improbable.Gdk.GameObjectCreation
                         }
                     }
 
-#if UNITY_EDITOR
-                    EntityManager.SetName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
-#endif
+                    SetEntityName(entity, $"{entityType} (SpatialOS: {spatialEntityId.EntityId.Id.ToString()})");
 
                     try
                     {
-                        gameObjectCreator.OnEntityCreated(entityType, new SpatialOSEntity(entity, EntityManager), Linker);
+                        var entityInfo = new SpatialOSEntityInfo(entityType, entity, spatialEntityId.EntityId);
+                        var prefab = representation.Resolve(entityInfo, EntityManager);
+                        gameObjectCreator.OnEntityCreated(entityInfo, prefab, EntityManager, Linker);
                     }
                     catch (Exception e)
                     {
-                        UnityEngine.Debug.LogException(e);
+                        Debug.LogException(e);
                     }
 
                     PostUpdateCommands.AddComponent(entity, new GameObjectInitSystemStateComponent
@@ -147,6 +192,14 @@ namespace Improbable.Gdk.GameObjectCreation
                         EntityId = spatialEntityId.EntityId
                     });
                 });
+        }
+
+        [Conditional("UNITY_EDITOR")]
+        private void SetEntityName(Entity entity, string name)
+        {
+#if UNITY_EDITOR
+            EntityManager.SetName(entity, name);
+#endif
         }
     }
 }

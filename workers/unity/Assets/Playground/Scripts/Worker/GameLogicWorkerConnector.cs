@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -7,6 +8,7 @@ namespace Playground
     public class GameLogicWorkerConnector : WorkerConnector
     {
 #pragma warning disable 649
+        [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private bool UseExternalIp;
         [SerializeField] private GameObject level;
 #pragma warning restore 649
@@ -49,7 +51,7 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddGameLogicSystems(Worker.World);
+            WorkerUtils.AddGameLogicSystems(Worker.World, entityRepresentationMapping);
         }
 
         public override void Dispose()
