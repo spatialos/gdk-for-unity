@@ -11,7 +11,7 @@ cd "$(dirname "$0")/../"
 source ".shared-ci/scripts/pinned-tools.sh"
 
 traceStart "Downloading assembly :inbox_tray:"
-    buildkite-agent artifact download "build\assembly\**\*" .
+    buildkite-agent artifact download "build/assembly/**/*" .
 traceEnd
 
 uploadAssembly "${ASSEMBLY_PREFIX}" "${PROJECT_NAME}"
