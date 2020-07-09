@@ -20,6 +20,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         [NonSerialized] public BuildTarget Target;
 
         /// <summary>
+        /// Is this target deprecated?
+        /// </summary>
+        public bool Deprecated;
+
+        /// <summary>
         /// Should this target be built?
         /// </summary>
         public bool Enabled;
@@ -41,6 +46,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             {
                 switch (Target)
                 {
+                    // Windows x86 (Deprecated) included for backwards compatibility of the BuildConfiguration asset
+                    case BuildTarget.StandaloneWindows:
+                        return "Win x86";
                     case BuildTarget.StandaloneWindows64:
                         return "Win x64";
                     case BuildTarget.StandaloneLinux64:
@@ -61,12 +69,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         ///     Creates a new instance of a build target and its options.
         /// </summary>
         public BuildTargetConfig(BuildTarget target, BuildOptions options,
-            bool enabled, bool required, ScriptingImplementation scriptingImplementation = ScriptingImplementation.Mono2x)
+            bool enabled, bool required, bool deprecated = false, ScriptingImplementation scriptingImplementation = ScriptingImplementation.Mono2x)
         {
             Enabled = enabled;
             Required = required;
             Target = target;
             Options = options;
+            Deprecated = deprecated;
 
             // If build target is iOS then force the Scripting Implementation to be IL2CPP (as Mono is not supported)
             ScriptingImplementation = target == BuildTarget.iOS ? ScriptingImplementation.IL2CPP : scriptingImplementation;
