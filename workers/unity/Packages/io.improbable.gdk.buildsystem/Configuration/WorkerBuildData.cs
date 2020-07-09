@@ -23,6 +23,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal static readonly IReadOnlyList<BuildTarget> AllBuildTargets = new List<BuildTarget>
         {
+            BuildTarget.StandaloneWindows,
             BuildTarget.StandaloneWindows64,
             BuildTarget.StandaloneLinux64,
             BuildTarget.StandaloneOSX,
@@ -40,6 +41,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         internal static readonly IReadOnlyDictionary<BuildTarget, BuildOptions> BuildTargetDefaultOptions =
             new Dictionary<BuildTarget, BuildOptions>
             {
+                { BuildTarget.StandaloneWindows, BuildOptions.None },
                 { BuildTarget.StandaloneWindows64, BuildOptions.None },
                 { BuildTarget.StandaloneLinux64, BuildOptions.EnableHeadlessMode },
                 { BuildTarget.StandaloneOSX, BuildOptions.None },
@@ -50,6 +52,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetNames =
             new Dictionary<BuildTarget, string>
             {
+                { BuildTarget.StandaloneWindows, "Windows86" },
                 { BuildTarget.StandaloneWindows64, "Windows" },
                 { BuildTarget.StandaloneLinux64, "Linux" },
                 { BuildTarget.StandaloneOSX, "Mac" },
@@ -60,6 +63,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private static readonly IReadOnlyDictionary<BuildTarget, string> BuildPlatformExtensions =
             new Dictionary<BuildTarget, string>
             {
+                { BuildTarget.StandaloneWindows, ".exe" },
                 { BuildTarget.StandaloneWindows64, ".exe" },
                 { BuildTarget.StandaloneLinux64, string.Empty },
                 { BuildTarget.StandaloneOSX, string.Empty },
@@ -70,6 +74,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         internal static readonly IReadOnlyDictionary<BuildTarget, string> BuildTargetSupportDirectoryNames =
             new Dictionary<BuildTarget, string>
             {
+                { BuildTarget.StandaloneWindows, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneWindows64, "WindowsStandaloneSupport" },
                 { BuildTarget.StandaloneLinux64, "LinuxStandaloneSupport" },
                 { BuildTarget.StandaloneOSX, "MacStandaloneSupport" },
