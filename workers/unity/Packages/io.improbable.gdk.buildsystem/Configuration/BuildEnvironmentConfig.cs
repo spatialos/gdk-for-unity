@@ -38,7 +38,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 else
                 {
                     BuildTargets.Add(new BuildTargetConfig(available,
-                        WorkerBuildData.BuildTargetDefaultOptions[available], enabled: false, required: false));
+                        WorkerBuildData.BuildTargetDefaultOptions[available], enabled: false,
+                        required: false, deprecated: BuildSupportChecker.IsDeprecatedTarget(available)));
                 }
             }
         }

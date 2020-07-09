@@ -40,6 +40,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private int invalidateCachedContent;
         private WorkerChoicePopup workerChooser;
         private UIStateManager stateManager = new UIStateManager();
+        private readonly Dictionary<int, int> toolbarMapping = new Dictionary<int, int>();
 
         private static string[] allWorkers;
 
@@ -564,8 +565,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
             if (foldoutState.Content == null || invalidateCachedContent > 0)
             {
-                var builtTargets = string.Join(",",
-                    environmentConfiguration.BuildTargets.Where(t => t.Enabled).Select(t => t.Label));
+                var builtTargets = string.Join(", ",
+                    environmentConfiguration.BuildTargets.Where(t => t.Enabled && !t.Deprecated).Select(t => t.Label));
 
                 foldoutState.Content = new GUIContent($"{environmentName} Build Options ({builtTargets})");
 
@@ -632,13 +633,37 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
         {
+            // Build a mapping the build target position in the toolbar and it's position in the BuildTargets array.
+            // Sometimes there is a different of targets in the BuildTargets array and those in the toolbar as
+            // some are deprecated
+            if (toolbarMapping.Count == 0)
+            {
+                var index = 0;
+                var skipped = 0;
+                env.BuildTargets.ForEach(t =>
+                {
+                    if (t.Deprecated)
+                    {
+                        skipped++;
+                    }
+                    else
+                    {
+                        toolbarMapping.Add(index++, skipped++);
+                    }
+                });
+            }
+
             // Init cached UI state.
             var selectedBuildTarget = stateManager.GetStateObjectOrDefault<BuildTargetState>(hash ^ typeof(BuildTargetState).GetHashCode());
 
             if (selectedBuildTarget.Choices == null || invalidateCachedContent > 0)
             {
-                selectedBuildTarget.Choices = env.BuildTargets.Select(GetBuildTargetGuiContents).ToArray();
+                selectedBuildTarget.Choices = env.BuildTargets
+                    .Where(c => !c.Deprecated)
+                    .Select(GetBuildTargetGuiContents)
+                    .ToArray();
             }
+
 
             // Draw available build targets.
             using (new EditorGUIUtility.IconSizeScope(SmallIconSize))
@@ -647,13 +672,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     GUILayout.Toolbar(selectedBuildTarget.Index, selectedBuildTarget.Choices);
             }
 
+            // Convert the index from the position selected in the toolbar to the position in the BuildTargets array
+            var selectedTargetIndex = toolbarMapping[selectedBuildTarget.Index];
+
             // Draw selected build target.
-            var buildTarget = env.BuildTargets[selectedBuildTarget.Index];
+            var buildTarget = env.BuildTargets[selectedTargetIndex];
             var canBuildTarget = BuildSupportChecker.CanBuildTarget(buildTarget.Target);
 
             var options = buildTarget.Options;
             var enabled = buildTarget.Enabled;
             var required = buildTarget.Required;
+            var deprecated = buildTarget.Deprecated;
 
             // Pick the current backend based on the current build target
             var scriptingImplementation = buildTarget.ScriptingImplementation;
@@ -694,8 +723,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     RecordUndo("Worker build options");
 
-                    env.BuildTargets[selectedBuildTarget.Index] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, scriptingImplementation);
+                    env.BuildTargets[selectedTargetIndex] =
+                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, deprecated, scriptingImplementation);
 
                     selectedBuildTarget.Choices = null;
                 }
