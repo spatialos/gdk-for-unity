@@ -17,7 +17,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
 
         private readonly List<KeyValuePair<string, string>> workerFlagData = new List<KeyValuePair<string, string>>();
 
-        private View view;
+        private WorkerSystem workerSystem;
 
         public WorkerDetail()
         {
@@ -46,29 +46,27 @@ namespace Improbable.Gdk.Debug.WorkerInspector
                 workerId.value = "";
                 workerFlagData.Clear();
                 workerFlags.Refresh();
-                view = null;
+                workerSystem = null;
                 return;
             }
 
-            var workerSystem = world.GetExistingSystem<WorkerSystem>();
+            workerSystem = world.GetExistingSystem<WorkerSystem>();
 
             workerType.value = workerSystem.WorkerType;
             workerId.value = workerSystem.WorkerId;
-
-            view = workerSystem.View;
             Update();
         }
 
         public void Update()
         {
-            if (view == null)
+            if (workerSystem == null)
             {
                 return;
             }
 
             workerFlagData.Clear();
 
-            foreach (var pair in view.WorkerFlags)
+            foreach (var pair in workerSystem.WorkerFlags)
             {
                 workerFlagData.Add(pair);
             }

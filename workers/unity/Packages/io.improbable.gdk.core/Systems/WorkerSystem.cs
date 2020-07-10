@@ -30,6 +30,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public bool IsConnected => Worker.IsConnected;
 
+        public IReadOnlyDictionary<string, string> WorkerFlags => workerFlags;
+
         private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
