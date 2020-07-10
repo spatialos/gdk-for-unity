@@ -85,6 +85,14 @@
     margin-right: 10px;
 }
 
+.component-foldout .component-info-icon {
+    height: 15px;
+    width: 15px;
+    align-self: center;
+    margin-right: 10px;
+    margin-left: 10px;
+}
+
 #worker-details {
     padding: 8px 4px;
     border-top-color: rgba(0, 0, 0, 0.20);
