@@ -34,17 +34,20 @@ namespace Improbable.Gdk.CodeGenerator
                             {
                                 system.Line(@"
 private NativeQueue<SerializedMessagesToSend.UpdateToSend> dirtyComponents;
+private SpatialOSSendSystem spatialOsSendSystem;
 
 protected override void OnCreate()
 {
-    dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.Persistent);
+    dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);
+    spatialOsSendSystem = World.GetExistingSystem<SpatialOSSendSystem>();
 }
 ");
                                 system.Method("protected override void OnUpdate()", m =>
                                 {
                                     m.Line(new[]
                                     {
-                                        "dirtyComponents.Clear();",
+                                        "dirtyComponents.Dispose();",
+                                        "dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);",
                                         "var dirtyComponentsWriter = dirtyComponents.AsParallelWriter();",
                                     });
 
@@ -58,6 +61,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
 
                                     m.Line(@"
     .WithAll<HasAuthority>()
+    .WithChangeFilter<Component>()
     .ForEach((ref Component component, in SpatialEntityId entity) =>
     {
         if (!component.IsDataDirty())
@@ -78,7 +82,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
     })
     .ScheduleParallel(Dependency);
 
-World.GetExistingSystem<SpatialOSSendSystem>().AddReplicationJobProducer(Dependency);
+spatialOsSendSystem.AddReplicationJobProducer(Dependency);
 ");
                                 });
                             });

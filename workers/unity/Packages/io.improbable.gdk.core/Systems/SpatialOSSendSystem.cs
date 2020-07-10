@@ -1,7 +1,7 @@
 using Improbable.Gdk.Core.NetworkStats;
+using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Core
         private NetworkStatisticsSystem networkStatisticsSystem;
         private NetFrameStats netFrameStats = new NetFrameStats();
 
-        private JobHandle replicationHandle;
+        private NativeList<JobHandle> replicationHandles;
 
         protected override void OnCreate()
         {
@@ -22,12 +22,13 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingSystem<WorkerSystem>();
             networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
+            replicationHandles = new NativeList<JobHandle>(Allocator.Persistent);
         }
 
         protected override void OnUpdate()
         {
-            replicationHandle.Complete();
-            replicationHandle = default;
+            JobHandle.CompleteAll(replicationHandles);
+            replicationHandles.Clear();
 
             worker.SendMessages(netFrameStats);
             networkStatisticsSystem.AddOutgoingSample(netFrameStats);
@@ -36,7 +37,7 @@ namespace Improbable.Gdk.Core
 
         public void AddReplicationJobProducer(JobHandle job)
         {
-            replicationHandle = JobHandle.CombineDependencies(replicationHandle, job);
+            replicationHandles.Add(job);
         }
     }
 }
