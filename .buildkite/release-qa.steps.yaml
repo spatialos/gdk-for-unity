@@ -13,11 +13,13 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-03-27-114536-bk10005-d340403f-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-07-06-124455-bk13081-5d808a4a}"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
     - "machine_type=quad"
+    - "experiment_normalised_upload_paths=true"
+    - "health_check_enabled=false"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
