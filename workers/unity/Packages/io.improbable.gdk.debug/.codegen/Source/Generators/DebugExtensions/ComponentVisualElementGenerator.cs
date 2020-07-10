@@ -54,6 +54,7 @@ namespace Improbable.Gdk.CodeGenerator
                 }
 
                 mb.Line($"InjectComponentIcon(\"{GetComponentIcon(details)}\");");
+                mb.Line($"AddInfoIcon(() => UnityEngine.Debug.Log(\"{details.Name} generated from '{details.SchemaFilePath}' with Component ID {details.ComponentId}\"));");
             });
         }
 

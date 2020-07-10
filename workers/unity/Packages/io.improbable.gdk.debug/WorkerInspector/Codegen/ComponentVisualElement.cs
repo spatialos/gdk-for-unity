@@ -21,7 +21,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             ComponentFoldout = this.Q<Foldout>(className: "component-foldout");
             AuthoritativeToggle = this.Q<Toggle>(className: "is-auth-toggle");
-            AddInfoIcon();
         }
 
         protected void InjectComponentIcon(string iconName)
@@ -36,21 +35,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             foldoutToggle.Insert(1, iconVisualElement);
         }
 
-        private void AddInfoIcon()
+        protected void AddInfoIcon(Action action)
         {
             var iconContent = EditorGUIUtility.IconContent("console.infoicon.sml");
             var iconVisualElement = new Button();
             iconVisualElement.style.backgroundImage = new StyleBackground((Texture2D) iconContent.image);
             iconVisualElement.AddToClassList("component-info-icon");
+            iconVisualElement.clicked += action;
 
-            // We want to inject the icon after the toggle icon and before the text.
             var foldoutToggle = ComponentFoldout.Q<VisualElement>(className: "unity-toggle__input");
             foldoutToggle.Add(iconVisualElement);
-        }
-
-        protected void RegisterInfoCallback(Action action)
-        {
-            ComponentFoldout.Q<Button>(className: "component-info-icon").clicked += action;
         }
 
         public abstract ComponentType ComponentType { get; }

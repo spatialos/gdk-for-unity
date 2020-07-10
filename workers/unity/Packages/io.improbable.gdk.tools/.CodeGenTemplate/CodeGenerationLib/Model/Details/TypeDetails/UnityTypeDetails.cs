@@ -24,8 +24,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityTypeDetails(string package, TypeDefinition rawTypeDefinition)
-            : base(package, rawTypeDefinition)
+        public UnityTypeDetails(string package, string path, TypeDefinition rawTypeDefinition)
+            : base(package, path, rawTypeDefinition)
         {
             this.rawTypeDefinition = rawTypeDefinition;
         }
