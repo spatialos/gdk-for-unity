@@ -1,4 +1,3 @@
-using System;
 using Unity.Entities;
 using UnityEditor;
 using UnityEngine;
