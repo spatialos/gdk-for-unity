@@ -30,6 +30,7 @@
 ### Fixed
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
+- Fixed minor indentation issue in generated code caused by newline formatting. [#1424](https://github.com/spatialos/gdk-for-unity/pull/1424)
 
 ### Internal
 
