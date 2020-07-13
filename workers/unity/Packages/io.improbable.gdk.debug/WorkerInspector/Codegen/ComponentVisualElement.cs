@@ -21,6 +21,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             ComponentFoldout = this.Q<Foldout>(className: "component-foldout");
             AuthoritativeToggle = this.Q<Toggle>(className: "is-auth-toggle");
+
+            ComponentFoldout.text = "Component";
+            SetInfoButton();
         }
 
         protected void InjectComponentIcon(string iconName)
@@ -35,18 +38,23 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             foldoutToggle.Insert(1, iconVisualElement);
         }
 
-        protected void AddInfoIcon(Action action)
+        private void SetInfoButton()
         {
             var iconContent = EditorGUIUtility.IconContent("console.infoicon.sml");
-            var iconVisualElement = new Button();
-            iconVisualElement.style.backgroundImage = new StyleBackground((Texture2D) iconContent.image);
-            iconVisualElement.AddToClassList("component-info-icon");
-            iconVisualElement.clicked += action;
+            var infoButton = new Button();
+            infoButton.style.backgroundImage = new StyleBackground((Texture2D) iconContent.image);
+            infoButton.AddToClassList("component-info-icon");
+            infoButton.clicked += WriteDebugInfo;
+
+            var buttonContainer = new VisualElement();
+            buttonContainer.AddToClassList("component-info-container");
+            buttonContainer.Add(infoButton);
 
             var foldoutToggle = ComponentFoldout.Q<VisualElement>(className: "unity-toggle__input");
-            foldoutToggle.Add(iconVisualElement);
+            foldoutToggle.Add(buttonContainer);
         }
 
+        protected abstract void WriteDebugInfo();
         public abstract ComponentType ComponentType { get; }
         public abstract void Update(EntityManager manager, Entity entity);
     }
