@@ -643,7 +643,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     if (!env.BuildTargets[buildTargetIndex].Deprecated)
                     {
-                        toolbarMapping.Add(toolbarIndex++, buildTargetIndex++);
+                        toolbarMapping.Add(toolbarIndex++, buildTargetIndex);
                     }
                 }
             }
