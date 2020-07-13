@@ -68,8 +68,20 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
-                    var buildContexts = BuildContext.GetBuildContexts(workerTypes, environment);
-                    BuildWorkers(buildContexts);
+                    var overrideCompilerError = CompilerValidator.HasCompileErrors
+                        && EditorUtility.DisplayDialog("Script Compiler Errors",
+                            "There are outstanding compiler errors, are you sure you want to build the workers?",
+                            "Yes", "No");
+
+                    if (!CompilerValidator.HasCompileErrors || overrideCompilerError)
+                    {
+                        var buildContexts = BuildContext.GetBuildContexts(workerTypes, environment);
+                        BuildWorkers(buildContexts);
+                    }
+                    else
+                    {
+                        throw new BuildFailedException("Script Compile errors");
+                    }
                 }
                 catch (Exception e)
                 {
