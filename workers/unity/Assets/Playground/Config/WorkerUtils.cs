@@ -1,4 +1,5 @@
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
@@ -12,12 +13,12 @@ namespace Playground
         public const string UnityGameLogic = "UnityGameLogic";
         public const string MobileClient = "MobileClient";
 
-        public static void AddClientSystems(World world)
+        public static void AddClientSystems(World world, EntityRepresentationMapping entityRepresentationMapping)
         {
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddClientSystems(world);
             PlayerLifecycleHelper.AddClientSystems(world);
-            GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(world, entityRepresentationMapping);
             world.GetOrCreateSystem<ProcessColorChangeSystem>();
             world.GetOrCreateSystem<LocalPlayerInputSync>();
             world.GetOrCreateSystem<MoveLocalPlayerSystem>();
@@ -28,12 +29,12 @@ namespace Playground
             world.GetOrCreateSystem<MetricSendSystem>();
         }
 
-        public static void AddGameLogicSystems(World world)
+        public static void AddGameLogicSystems(World world, EntityRepresentationMapping entityRepresentationMapping)
         {
             AddLifecycleSystems(world);
             TransformSynchronizationHelper.AddServerSystems(world);
             PlayerLifecycleHelper.AddServerSystems(world);
-            GameObjectCreationHelper.EnableStandardGameObjectCreation(world);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(world, entityRepresentationMapping);
 
             world.GetOrCreateSystem<TriggerColorChangeSystem>();
             world.GetOrCreateSystem<ProcessLaunchCommandSystem>();

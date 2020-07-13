@@ -1,0 +1,8 @@
+<UXML
+        xmlns="UnityEngine.UIElements"
+>
+    <VisualElement name="root">
+        <VisualElement name="list-container"/>
+        <Button name="add-type-button" text="New Entity Type"/>
+    </VisualElement>
+</UXML>
