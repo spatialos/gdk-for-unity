@@ -134,7 +134,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 for (var i = diff; i < 0; i++)
                 {
-                    container.Add(elementPool.GetOrCreate(hideEmptyCollections));
+                    container.Add(elementPool.GetOrCreate());
                 }
             }
 
@@ -161,19 +161,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             this.makeElement = makeElement;
         }
 
-        public TElement GetOrCreate(bool hidden = false)
+        public TElement GetOrCreate()
         {
-            var element = pool.Count == 0 ? makeElement() : pool.Pop();
-            if (hidden)
-            {
-                element.AddToClassList("hidden");
-            }
-            else
-            {
-                element.RemoveFromClassList("hidden");
-            }
-
-            return element;
+            return pool.Count == 0 ? makeElement() : pool.Pop();
         }
 
         public void Return(TElement element)
