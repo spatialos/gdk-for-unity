@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedListView<TElement, TData> : VisualElement, IConcealable<List<TData>>
+    public class PaginatedListView<TElement, TData> : VisualElement
         where TElement : VisualElement
     {
         private const string UxmlPath =
@@ -27,8 +26,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private int currentPage = 0;
         private int numPages = 0;
-
-        private bool hideEmptyCollections;
 
         public PaginatedListView(string label, Func<TElement> makeElement, Action<int, TData, TElement> bindElement, int elementsPerPage = 5)
         {
@@ -51,28 +48,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
             elementPool = new ElementPool<TElement>(makeElement);
-        }
-
-        public void SetVisibility(List<TData> dataSource, bool hideIfEmpty)
-        {
-            hideEmptyCollections = hideIfEmpty;
-            Update(dataSource);
-            if (dataSource.Count == 0 && hideIfEmpty)
-            {
-                AddToClassList("hidden");
-            }
-            else
-            {
-                RemoveFromClassList("hidden");
-            }
-
-            foreach (var i in Enumerable.Range(0, container.childCount))
-            {
-                if (container.ElementAt(i) is IConcealable<TData> element)
-                {
-                    element.SetVisibility(this.data[i], hideIfEmpty);
-                }
-            }
         }
 
         public void Update(List<TData> newData)
