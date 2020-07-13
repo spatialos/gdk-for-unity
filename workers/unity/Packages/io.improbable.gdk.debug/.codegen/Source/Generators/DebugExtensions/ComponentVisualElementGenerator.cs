@@ -73,7 +73,7 @@ namespace Improbable.Gdk.CodeGenerator
         {
             typeBlock.Method("protected override void WriteDebugInfo()", mb =>
             {
-                mb.Line($"UnityEngine.Debug.Log(\"{details.Name} generated from '{details.SchemaFilePath}' with Component ID {details.ComponentId}\");");
+                mb.Line($"UnityEngine.Debug.Log(\"{details.Name} generated from '{details.SchemaFilePath}' with Component ID '{details.ComponentId}'\");");
             });
         }
 

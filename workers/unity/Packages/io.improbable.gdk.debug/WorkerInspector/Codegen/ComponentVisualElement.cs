@@ -22,6 +22,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             ComponentFoldout = this.Q<Foldout>(className: "component-foldout");
             AuthoritativeToggle = this.Q<Toggle>(className: "is-auth-toggle");
 
+            // This assignment forces the generation of the text element
+            // This prevents the text element from generating after the button which aligns the text element to the right.
             ComponentFoldout.text = "Component";
             SetInfoButton();
         }
