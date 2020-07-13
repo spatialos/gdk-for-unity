@@ -633,24 +633,19 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private void DrawBuildTargets(BuildEnvironmentConfig env, int hash)
         {
-            // Build a mapping the build target position in the toolbar and it's position in the BuildTargets array.
-            // Sometimes there is a different of targets in the BuildTargets array and those in the toolbar as
-            // some are deprecated
+            // Build a mapping from the 'build target' position in the toolbar to it's position in the 'BuildTargets' array.
+            // We do this since sometimes there are different number of targets in the BuildTargets array and those
+            // in the toolbar as some targets are deprecated
             if (toolbarMapping.Count == 0)
             {
-                var index = 0;
-                var skipped = 0;
-                env.BuildTargets.ForEach(t =>
+                var toolbarIndex = 0;
+                for (var buildTargetIndex = 0; buildTargetIndex < env.BuildTargets.Count; buildTargetIndex++)
                 {
-                    if (t.Deprecated)
+                    if (!env.BuildTargets[buildTargetIndex].Deprecated)
                     {
-                        skipped++;
+                        toolbarMapping.Add(toolbarIndex++, buildTargetIndex++);
                     }
-                    else
-                    {
-                        toolbarMapping.Add(index++, skipped++);
-                    }
-                });
+                }
             }
 
             // Init cached UI state.
@@ -682,7 +677,6 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             var options = buildTarget.Options;
             var enabled = buildTarget.Enabled;
             var required = buildTarget.Required;
-            var deprecated = buildTarget.Deprecated;
 
             // Pick the current backend based on the current build target
             var scriptingImplementation = buildTarget.ScriptingImplementation;
@@ -724,7 +718,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     RecordUndo("Worker build options");
 
                     env.BuildTargets[selectedTargetIndex] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, deprecated, scriptingImplementation);
+                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, deprecated: false, scriptingImplementation);
 
                     selectedBuildTarget.Choices = null;
                 }
