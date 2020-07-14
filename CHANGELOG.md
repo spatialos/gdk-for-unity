@@ -6,6 +6,7 @@
 
 - All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
     - A warning will be generated when enums defined in schema do not start from 0.
+- Removed Windows x86 build support. [#1421](https://github.com/spatialos/gdk-for-unity/pull/1421)
 - GameObjectCreation feature module now links entity types with prefabs through EntityRepresentationMapping assets. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
     - See the [upgrade guide](UPGRADE_GUIDE.md) for detailed upgrade instructions for this breaking change.
     - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.

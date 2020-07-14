@@ -24,12 +24,17 @@ public static class BuildSupportChecker
         return supportedBuildTargets.Contains(target);
     }
 
+    public static bool IsDeprecatedTarget(BuildTarget target)
+    {
+        // Check if the provided target is one of the targets which we no longer support
+        return target == BuildTarget.StandaloneWindows;
+    }
+
     public static bool CanBuildHeadless(BuildTarget target)
     {
         // Check if the target platform supports headless mode
         // Supported platforms: see https://docs.unity3d.com/ScriptReference/BuildOptions.EnableHeadlessMode.html
-        return target == BuildTarget.StandaloneWindows
-            || target == BuildTarget.StandaloneWindows64
+        return target == BuildTarget.StandaloneWindows64
             || target == BuildTarget.StandaloneOSX
             || target == BuildTarget.StandaloneLinux64;
     }
