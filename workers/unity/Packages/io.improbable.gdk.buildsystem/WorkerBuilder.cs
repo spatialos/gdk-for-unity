@@ -5,6 +5,7 @@ using System.Linq;
 using Improbable.Gdk.BuildSystem.Configuration;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Tools;
+using Packages.io.improbable.gdk.buildsystem.Util;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Build.Reporting;
@@ -69,8 +70,8 @@ namespace Improbable.Gdk.BuildSystem
                 try
                 {
                     var overrideCompilerError = CompilerValidator.HasCompileErrors
-                        && EditorUtility.DisplayDialog("Script Compiler Errors",
-                            "There are outstanding compiler errors, are you sure you want to build the workers?",
+                        && EditorUtility.DisplayDialog("Compile Errors in Scripts",
+                            "There are outstanding compile errors, are you sure you want to build the workers?",
                             "Yes", "No");
 
                     if (!CompilerValidator.HasCompileErrors || overrideCompilerError)
@@ -80,7 +81,7 @@ namespace Improbable.Gdk.BuildSystem
                     }
                     else
                     {
-                        throw new BuildFailedException("Script Compile errors");
+                        throw new BuildFailedException($"Compiling failed with {CompilerValidator.CompileErrorCount} errors.");
                     }
                 }
                 catch (Exception e)

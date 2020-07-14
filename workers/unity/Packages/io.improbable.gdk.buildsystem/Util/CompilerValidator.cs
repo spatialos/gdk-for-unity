@@ -1,15 +1,19 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 
-namespace Improbable.Gdk.BuildSystem.Configuration
+namespace Packages.io.improbable.gdk.buildsystem.Util
 {
     [InitializeOnLoad]
     public static class CompilerValidator
     {
         private static bool hasCompileErrors;
+        private static int compileErrorCount;
 
         public static bool HasCompileErrors => hasCompileErrors;
+
+        public static int CompileErrorCount => compileErrorCount;
 
         static CompilerValidator()
         {
@@ -18,8 +22,9 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         private static void ProcessCompileFinished(string s, CompilerMessage[] compilerMessages)
         {
-            hasCompileErrors = compilerMessages
-                .Any(m => m.type == CompilerMessageType.Error);
+            compileErrorCount = compilerMessages
+                .Count(m => m.type == CompilerMessageType.Error);
+            hasCompileErrors = compileErrorCount > 0;
         }
     }
 }
