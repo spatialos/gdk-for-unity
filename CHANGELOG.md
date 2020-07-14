@@ -6,6 +6,7 @@
 
 - All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
     - A warning will be generated when enums defined in schema do not start from 0.
+- Removed Windows x86 build support. [#1421](https://github.com/spatialos/gdk-for-unity/pull/1421)
 - GameObjectCreation feature module now links entity types with prefabs through EntityRepresentationMapping assets. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
     - See the [upgrade guide](UPGRADE_GUIDE.md) for detailed upgrade instructions for this breaking change.
     - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.
@@ -29,6 +30,7 @@
 ### Fixed
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
+- Fixed minor indentation issue in generated code caused by newline formatting. [#1424](https://github.com/spatialos/gdk-for-unity/pull/1424)
 
 ### Internal
 
