@@ -31,8 +31,13 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     .Where(t => t.Enabled && (buildTargetFilter?.Contains(t.Target) ?? true))
                     .ToList();
 
+                // Filter out any deprecated targets
+                var supportedTargets = targetConfigs
+                    .Where(c => !c.Deprecated)
+                    .ToList();
+
                 // Which build targets are not supported by current install?
-                var missingTargets = targetConfigs
+                var missingTargets = supportedTargets
                     .Where(c => !BuildSupportChecker.CanBuildTarget(c.Target))
                     .ToList();
 
@@ -56,7 +61,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     targetConfigs.RemoveAll(t => missingTargets.Contains(t));
                 }
 
-                result.AddRange(targetConfigs.Select(targetConfig => new BuildContext
+                result.AddRange(supportedTargets.Select(targetConfig => new BuildContext
                 {
                     WorkerType = workerType,
                     BuildEnvironment = buildEnvironment,

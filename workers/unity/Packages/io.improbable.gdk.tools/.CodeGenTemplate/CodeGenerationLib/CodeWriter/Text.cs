@@ -29,7 +29,8 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
         {
             var spaces = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
             var indentedCode = snippet
-                .Replace($"{Environment.NewLine}", $"{Environment.NewLine}{spaces}")
+                .Replace("\r\n", "\n")
+                .Replace("\n", $"{Environment.NewLine}{spaces}")
                 .Replace($"{Environment.NewLine}{spaces}{Environment.NewLine}", $"{Environment.NewLine}{Environment.NewLine}");
             return $"{spaces}{indentedCode}";
         }
