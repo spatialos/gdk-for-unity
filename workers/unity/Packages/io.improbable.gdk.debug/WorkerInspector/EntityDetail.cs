@@ -33,11 +33,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             componentContainer = this.Q<ScrollView>();
             RegisterCallback<MouseUpEvent>(evt =>
             {
-                evt.StopImmediatePropagation();
                 if (evt.button != (int) MouseButton.RightMouse)
                 {
                     return;
                 }
+
+                evt.StopImmediatePropagation();
 
                 var contextMenu = new GenericMenu();
                 contextMenu.AddItem(new GUIContent("Hide Empty Collections"), hideIfEmpty, () =>
