@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Debug.WorkerInspector.Codegen;
 using Unity.Collections;
@@ -31,37 +32,45 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityName = this.Q<Label>("entity-name");
             entityId = this.Q<Label>("entity-id");
             componentContainer = this.Q<ScrollView>();
-            RegisterCallback<MouseUpEvent>(evt =>
+            RegisterCallback<MouseUpEvent>(HandleMouseUp);
+        }
+
+        private void HandleMouseUp(MouseUpEvent evt)
+        {
+            if (evt.button != (int) MouseButton.RightMouse)
             {
-                if (evt.button != (int) MouseButton.RightMouse)
+                return;
+            }
+
+            evt.StopImmediatePropagation();
+
+            var contextMenu = new GenericMenu();
+            contextMenu.AddItem(new GUIContent("Hide Empty Collections"), hideIfEmpty, () =>
+            {
+                hideIfEmpty = !hideIfEmpty;
+                if (!selected.HasValue || world == null || !world.EntityManager.Exists(selected.Value.Entity))
                 {
                     return;
                 }
 
-                evt.StopImmediatePropagation();
-
-                var contextMenu = new GenericMenu();
-                contextMenu.AddItem(new GUIContent("Hide Empty Collections"), hideIfEmpty, () =>
-                {
-                    hideIfEmpty = !hideIfEmpty;
-                    if (!selected.HasValue || world == null || !world.EntityManager.Exists(selected.Value.Entity))
-                    {
-                        return;
-                    }
-
-                    foreach (var element in visualElements)
-                    {
-                        element.UpdateCollectionVisibility(world.EntityManager, selected.Value.Entity, hideIfEmpty);
-                    }
-                });
-                contextMenu.ShowAsContext();
+                DispatchHideChangeEvent();
             });
+            contextMenu.ShowAsContext();
+        }
+
+        private void DispatchHideChangeEvent()
+        {
+            foreach (var handler in visualElements)
+            {
+                HideCollectionEvent.SendToTarget(hideIfEmpty, handler);
+            }
         }
 
         public void SetSelectedEntity(EntityData entityData)
         {
             selected = entityData;
             Update();
+            DispatchHideChangeEvent();
         }
 
         public void SetWorld(World world)

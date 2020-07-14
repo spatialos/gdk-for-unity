@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public abstract class SchemaTypeVisualElement<T> : VisualElement, IConcealable<T>
+    public abstract class SchemaTypeVisualElement<T> : VisualElement
     {
         public string Label
         {
@@ -25,7 +25,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Add(Container);
         }
 
-        public abstract void SetVisibility(T dataSource, bool hideIfEmpty);
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (!(evt is HideCollectionEvent hideEvent))
+            {
+                return;
+            }
+
+            hideEvent.PropagateToChildren(Container);
+        }
 
         public abstract void Update(T data);
     }

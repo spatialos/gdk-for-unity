@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedListView<TElement, TData> : VisualElement, IConcealable<List<TData>>
+    public class PaginatedListView<TElement, TData> : ConcealableElement
         where TElement : VisualElement
     {
         private const string UxmlPath =
@@ -15,8 +15,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private List<TData> data;
 
+        protected sealed override VisualElement Container { get; }
         private readonly Action<int, TData, TElement> bindElement;
-        private readonly VisualElement container;
         private readonly ElementPool<TElement> elementPool;
         private readonly int elementsPerPage;
 
@@ -28,8 +28,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private int currentPage = 0;
         private int numPages = 0;
 
-        private bool hideEmptyCollections;
-
         public PaginatedListView(string label, Func<TElement> makeElement, Action<int, TData, TElement> bindElement, int elementsPerPage = 5)
         {
             this.bindElement = bindElement;
@@ -39,7 +37,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             template.CloneTree(this);
 
             this.Q<Label>(name: "list-name").text = label;
-            container = this.Q<VisualElement>(className: "user-defined-type-container-data");
+            Container = this.Q<VisualElement>(className: "user-defined-type-container-data");
 
             controlsContainer = this.Q<VisualElement>(className: "paginated-list-controls");
             pageCounter = this.Q<Label>(name: "page-counter");
@@ -51,28 +49,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
             elementPool = new ElementPool<TElement>(makeElement);
-        }
-
-        public void SetVisibility(List<TData> dataSource, bool hideIfEmpty)
-        {
-            hideEmptyCollections = hideIfEmpty;
-            Update(dataSource);
-            if (dataSource.Count == 0 && hideIfEmpty)
-            {
-                AddToClassList("hidden");
-            }
-            else
-            {
-                RemoveFromClassList("hidden");
-            }
-
-            foreach (var i in Enumerable.Range(0, container.childCount))
-            {
-                if (container.ElementAt(i) is IConcealable<TData> element)
-                {
-                    element.SetVisibility(this.data[i], hideIfEmpty);
-                }
-            }
         }
 
         public void Update(List<TData> newData)
@@ -90,6 +66,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             CalculatePages();
             RefreshView();
+            SetVisibility(data.Count == 0 && HideIfEmpty);
         }
 
         internal void ChangePageCount(int diff)
@@ -119,14 +96,14 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             // If the child count is less, add the requisite number.
             // If the child count is more, pop elements off the end.
 
-            var diff = container.childCount - length;
+            var diff = Container.childCount - length;
 
             if (diff > 0)
             {
                 for (var i = 0; i < diff; i++)
                 {
-                    var element = container.ElementAt(container.childCount - 1);
-                    container.RemoveAt(container.childCount - 1);
+                    var element = Container.ElementAt(Container.childCount - 1);
+                    Container.RemoveAt(Container.childCount - 1);
                     elementPool.Return((TElement) element);
                 }
             }
@@ -134,13 +111,13 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 for (var i = diff; i < 0; i++)
                 {
-                    container.Add(elementPool.GetOrCreate());
+                    Container.Add(elementPool.GetOrCreate());
                 }
             }
 
             // At this point, container.Children() has the same length as the slice.
             var elementIndex = firstIndex;
-            foreach (var child in container.Children())
+            foreach (var child in Container.Children())
             {
                 bindElement(elementIndex, data[elementIndex], (TElement) child);
                 elementIndex++;

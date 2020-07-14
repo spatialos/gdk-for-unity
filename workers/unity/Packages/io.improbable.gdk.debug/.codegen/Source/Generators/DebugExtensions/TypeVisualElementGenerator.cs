@@ -39,7 +39,6 @@ namespace Improbable.Gdk.CodeGenerator
                     type.TextList(details.FieldDetails.Select(fieldTypeHandler.ToFieldDeclaration));
 
                     GenerateConstructor(type, details);
-                    GenerateVisibilityMethod(type, details);
                     GenerateUpdateMethod(type, details);
 
                     foreach (var nestedType in details.ChildTypes)
@@ -57,15 +56,6 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     mb.TextList(fieldTypeHandler.ToFieldInitialisation(field, "Container"));
                 }
-            });
-        }
-
-        private void GenerateVisibilityMethod(TypeBlock typeBlock, UnityTypeDetails details)
-        {
-            var booleanArg = "hideIfEmpty";
-            typeBlock.Method($"public override void SetVisibility({details.FullyQualifiedName} data, bool {booleanArg})", mb =>
-            {
-                mb.TextList(details.FieldDetails.Select(fd => fieldTypeHandler.ToSetCollectionVisibility(fd, "data", booleanArg)).Where(str => !string.IsNullOrEmpty(str)));
             });
         }
 

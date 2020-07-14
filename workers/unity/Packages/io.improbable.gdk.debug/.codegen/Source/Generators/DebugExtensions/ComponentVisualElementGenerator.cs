@@ -35,7 +35,6 @@ namespace Improbable.Gdk.CodeGenerator
                         type.TextList(details.FieldDetails.Select(typeGenerator.ToFieldDeclaration));
 
                         GenerateConstructor(type, details);
-                        GenerateVisibilityMethod(type, details);
                         GenerateUpdateMethod(type, details);
                         GenerateDebugMethod(type, details);
                     });
@@ -56,18 +55,6 @@ namespace Improbable.Gdk.CodeGenerator
                 }
 
                 mb.Line($"InjectComponentIcon(\"{GetComponentIcon(details)}\");");
-            });
-        }
-
-        private void GenerateVisibilityMethod(TypeBlock typeBlock, UnityComponentDetails details)
-        {
-            var booleanArg = "hideIfEmpty";
-            typeBlock.Method($"public override void UpdateCollectionVisibility(EntityManager manager, Entity entity, bool {booleanArg})", mb =>
-            {
-                mb.Line($"AuthoritativeToggle.value = manager.HasComponent<{details.Name}.HasAuthority>(entity);");
-                mb.Line($"var component = manager.GetComponentData<{details.Name}.Component>(entity);");
-
-                mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToSetCollectionVisibility(fd, "component", booleanArg)).Where(str => !string.IsNullOrEmpty(str)));
             });
         }
 

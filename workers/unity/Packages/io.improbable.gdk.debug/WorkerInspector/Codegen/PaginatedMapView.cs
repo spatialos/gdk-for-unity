@@ -4,13 +4,14 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : VisualElement, IConcealable<Dictionary<TKeyData, TValueData>>
+    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : ConcealableElement
         where TKeyElement : VisualElement
         where TValueElement : VisualElement
     {
         private readonly PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>> list;
         private readonly List<KeyValuePair<TKeyData, TValueData>> listData = new List<KeyValuePair<TKeyData, TValueData>>();
         private readonly Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
+        protected sealed override VisualElement Container => list;
 
         public PaginatedMapView(string label, Func<TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
             Func<TValueElement> makeValue, Action<TValueData, TValueElement> bindValue)
@@ -22,21 +23,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             Add(list);
         }
 
-        public void SetVisibility(Dictionary<TKeyData, TValueData> dataSource, bool hideIfEmpty)
-        {
-            Update(dataSource);
-            if (listData.Count == 0 && hideIfEmpty)
-            {
-                AddToClassList("hidden");
-            }
-            else
-            {
-                RemoveFromClassList("hidden");
-            }
-
-            list.SetVisibility(listData, hideIfEmpty);
-        }
-
         public void Update(Dictionary<TKeyData, TValueData> data)
         {
             listData.Clear();
@@ -44,9 +30,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             listData.Sort((first, second) => comparer.Compare(first.Key, second.Key));
 
             list.Update(listData);
+            SetVisibility(listData.Count == 0 && HideIfEmpty);
         }
 
-        private class KeyValuePairElement : VisualElement, IConcealable<KeyValuePair<TKeyData, TValueData>>
+        private class KeyValuePairElement : VisualElement
         {
             private readonly TKeyElement keyElement;
             private readonly TValueElement valueElement;
@@ -68,17 +55,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 AddToClassList("map-view__item");
             }
 
-            public void SetVisibility(KeyValuePair<TKeyData, TValueData> dataSource, bool hideIfEmpty)
+            protected override void ExecuteDefaultActionAtTarget(EventBase evt)
             {
-                if (keyElement is IConcealable<TKeyData> key)
+                base.ExecuteDefaultActionAtTarget(evt);
+                if (!(evt is HideCollectionEvent hideEvent))
                 {
-                    key.SetVisibility(dataSource.Key, hideIfEmpty);
+                    return;
                 }
 
-                if (valueElement is IConcealable<TValueData> value)
-                {
-                    value.SetVisibility(dataSource.Value, hideIfEmpty);
-                }
+                hideEvent.PropagateToTarget(keyElement);
+                hideEvent.PropagateToTarget(valueElement);
             }
 
             public void Update(KeyValuePair<TKeyData, TValueData> keyValuePair)
