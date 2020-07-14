@@ -13,8 +13,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public UnityEnumDetails(string package, string path, EnumDefinition rawEnumDefinition)
-            : base(package, path, rawEnumDefinition)
+        public UnityEnumDetails(string package, string schemaPath, EnumDefinition rawEnumDefinition)
+            : base(package, schemaPath, rawEnumDefinition)
         {
             var min = rawEnumDefinition.Values.Select(list => list.Value).Min();
             EnumMinimums[FullyQualifiedName] = min;

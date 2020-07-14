@@ -36,9 +36,9 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         /// </summary>
         public readonly string SchemaFilePath;
 
-        protected GeneratorInputDetails(string package, string path, QualifiedDefinition qualifiedDefinition) : base(qualifiedDefinition)
+        protected GeneratorInputDetails(string package, string schemaPath, QualifiedDefinition qualifiedDefinition) : base(qualifiedDefinition)
         {
-            SchemaFilePath = path;
+            SchemaFilePath = schemaPath;
             Namespace = Formatting.CapitaliseQualifiedNameParts(package);
             NamespacePath = Formatting.GetNamespacePath(package);
 
