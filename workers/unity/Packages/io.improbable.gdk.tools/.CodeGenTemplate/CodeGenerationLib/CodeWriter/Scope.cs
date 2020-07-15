@@ -71,7 +71,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new MethodBlock(declaration, populate, new List<string> { annotation });
         }
 
-        public static MethodBlock AnnotatedMethod(List<string> annotations, string declaration, Action<MethodBlock> populate)
+        public static MethodBlock AnnotatedMethod(IEnumerable<string> annotations, string declaration, Action<MethodBlock> populate)
         {
             return new MethodBlock(declaration, populate, annotations);
         }
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new MethodBlock(declaration, populate, new List<string> { annotation });
         }
 
-        public static MethodBlock AnnotatedMethod(List<string> annotations, string declaration, Func<IEnumerable<string>> populate)
+        public static MethodBlock AnnotatedMethod(IEnumerable<string> annotations, string declaration, Func<IEnumerable<string>> populate)
         {
             return new MethodBlock(declaration, populate, annotations);
         }
@@ -101,7 +101,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new EnumBlock(declaration, populate, new List<string> { annotation });
         }
 
-        public static EnumBlock AnnotatedEnum(List<string> annotations, string declaration, Func<IEnumerable<string>> populate)
+        public static EnumBlock AnnotatedEnum(IEnumerable<string> annotations, string declaration, Func<IEnumerable<string>> populate)
         {
             return new EnumBlock(declaration, populate, annotations);
         }
@@ -116,7 +116,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
             return new TypeBlock(declaration, populate, new List<string> { annotation });
         }
 
-        public static TypeBlock AnnotatedType(List<string> annotations, string declaration, Action<TypeBlock> populate)
+        public static TypeBlock AnnotatedType(IEnumerable<string> annotations, string declaration, Action<TypeBlock> populate)
         {
             return new TypeBlock(declaration, populate, annotations);
         }

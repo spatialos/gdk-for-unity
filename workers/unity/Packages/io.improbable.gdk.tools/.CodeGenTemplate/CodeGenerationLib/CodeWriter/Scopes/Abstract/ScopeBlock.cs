@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         private readonly List<ICodeBlock> content = new List<ICodeBlock>();
 
-        protected List<string> Annotations;
+        protected IEnumerable<string> Annotations;
         private readonly Text declaration;
 
         protected ScopeBlock(string declaration)

@@ -6,16 +6,16 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     public class MethodBlock : ScopeBody
     {
-        internal MethodBlock(string declaration, Action<MethodBlock> populate, List<string> annotation = null) : base(declaration)
+        internal MethodBlock(string declaration, Action<MethodBlock> populate, IEnumerable<string> annotations = null) : base(declaration)
         {
-            Annotations = annotation;
+            Annotations = annotations;
             populate(this);
         }
 
-        internal MethodBlock(string declaration, Func<IEnumerable<string>> populate, List<string> annotation = null) : base(
+        internal MethodBlock(string declaration, Func<IEnumerable<string>> populate, IEnumerable<string> annotations = null) : base(
             declaration)
         {
-            Annotations = annotation;
+            Annotations = annotations;
 
             var methodBody = populate().ToList();
             if (methodBody.Count > 0)
