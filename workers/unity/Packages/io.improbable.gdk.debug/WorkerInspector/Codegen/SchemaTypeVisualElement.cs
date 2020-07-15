@@ -28,12 +28,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         protected override void ExecuteDefaultActionAtTarget(EventBase evt)
         {
             base.ExecuteDefaultActionAtTarget(evt);
-            if (!(evt is HideCollectionEvent hideEvent))
+            if (evt is HideCollectionEvent hideEvent)
             {
-                return;
+                hideEvent.PropagateToChildren(Container);
             }
-
-            hideEvent.PropagateToChildren(Container);
         }
 
         public abstract void Update(T data);

@@ -48,10 +48,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     public class OptionalVisualElementBase<TElement, TData> : VisualElement where TElement : VisualElement
     {
         private readonly VisualElement container;
-        private readonly IConcealable concealer;
+        private readonly TElement innerElement;
         private readonly Label isEmptyLabel;
         private readonly Action<TElement, TData> applyData;
-        private readonly TElement innerElement;
+        private readonly IConcealable concealer;
 
         protected OptionalVisualElementBase(string label, TElement innerElement, Action<TElement, TData> applyData)
         {

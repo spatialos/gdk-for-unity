@@ -30,7 +30,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             if (evt is HideCollectionEvent hideEvent)
             {
                 concealer.HandleSettingChange(hideEvent);
-                hideEvent.PropagateToChildren(list);
+                hideEvent.PropagateToTarget(list);
             }
         }
 
@@ -69,13 +69,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             protected override void ExecuteDefaultActionAtTarget(EventBase evt)
             {
                 base.ExecuteDefaultActionAtTarget(evt);
-                if (!(evt is HideCollectionEvent hideEvent))
+                if (evt is HideCollectionEvent hideEvent)
                 {
-                    return;
+                    hideEvent.PropagateToTarget(keyElement);
+                    hideEvent.PropagateToTarget(valueElement);
                 }
-
-                hideEvent.PropagateToTarget(keyElement);
-                hideEvent.PropagateToTarget(valueElement);
             }
 
             public void Update(KeyValuePair<TKeyData, TValueData> keyValuePair)
