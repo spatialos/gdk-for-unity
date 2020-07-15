@@ -44,7 +44,6 @@ linux: &linux
     - "platform=linux"  # if you need a different platform, configure this: macos|linux|windows.
     - "queue=v4-20-07-06-120608-bk13080-eb89af6c"
     - "scaler_version=2"
-    - "maximum_instances=12"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
