@@ -18,7 +18,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly VisualElement container;
         private readonly ElementPool<TElement> elementPool;
         private readonly int elementsPerPage;
-        private readonly IConcealable concealer;
+        private readonly VisualElementConcealer concealer;
 
         private readonly VisualElement controlsContainer;
         private readonly Button forwardButton;

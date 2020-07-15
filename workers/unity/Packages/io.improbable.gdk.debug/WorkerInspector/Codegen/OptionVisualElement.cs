@@ -51,7 +51,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly TElement innerElement;
         private readonly Label isEmptyLabel;
         private readonly Action<TElement, TData> applyData;
-        private readonly IConcealable concealer;
+        private readonly VisualElementConcealer concealer;
 
         protected OptionalVisualElementBase(string label, TElement innerElement, Action<TElement, TData> applyData)
         {

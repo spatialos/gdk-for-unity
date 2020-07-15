@@ -8,7 +8,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
     {
         [TestCase(false)]
         [TestCase(true)]
-        public void HideCollectionEventSetsHideProperty(bool value)
+        public void HideCollectionEvent_sets_HideIfEmpty(bool value)
         {
             var vis = new VisualElement();
             var stub = new VisualElementConcealer(vis);
@@ -17,46 +17,46 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
         }
 
         [Test]
-        public void ConcealerHidesElementIfHideSettingAndIsHiddenIsTrue()
+        public void SetVisibility_adds_hidden_when_HideIfEmpty_and_IsEmptyAreTrue()
         {
             var vis = new VisualElement();
             var stub = new VisualElementConcealer(vis);
             stub.HandleSettingChange(new HideCollectionEvent().WithValue(true).WithTarget(vis));
             stub.SetVisibility(true);
-            Assert.True(vis.ClassListContains("hidden"));
+            Assert.IsTrue(vis.ClassListContains("hidden"));
         }
 
         [Test]
-        public void ConcealerUnhidesElementIfHideSettingIsFalseAndIsHiddenIsTrue()
+        public void SetVisibility_removes_hidden_when_HideIfEmptyIsFalse_and_IsEmptyIsTrue()
         {
             var vis = new VisualElement();
             vis.AddToClassList("hidden");
             var stub = new VisualElementConcealer(vis);
             stub.HandleSettingChange(new HideCollectionEvent().WithValue(false).WithTarget(vis));
             stub.SetVisibility(true);
-            Assert.False(vis.ClassListContains("hidden"));
+            Assert.IsFalse(vis.ClassListContains("hidden"));
         }
 
         [Test]
-        public void ConcealerUnhidesElementIfHideSettingIsTrueAndIsHiddenIsFalse()
+        public void SetVisibility_removes_hidden_when_HideIfEmptyIsTrue_and_IsEmptyIsFalse()
         {
             var vis = new VisualElement();
             vis.AddToClassList("hidden");
             var stub = new VisualElementConcealer(vis);
             stub.HandleSettingChange(new HideCollectionEvent().WithValue(true).WithTarget(vis));
             stub.SetVisibility(false);
-            Assert.False(vis.ClassListContains("hidden"));
+            Assert.IsFalse(vis.ClassListContains("hidden"));
         }
 
         [Test]
-        public void ConcealerUnhidesElementIfHideSettingAndIsHiddenIsFalse()
+        public void SetVisibility_removes_hidden_when_HideIfEmpty_and_IsEmptyAreFalse()
         {
             var vis = new VisualElement();
             vis.AddToClassList("hidden");
             var stub = new VisualElementConcealer(vis);
             stub.HandleSettingChange(new HideCollectionEvent().WithValue(false).WithTarget(vis));
             stub.SetVisibility(false);
-            Assert.False(vis.ClassListContains("hidden"));
+            Assert.IsFalse(vis.ClassListContains("hidden"));
         }
     }
 }

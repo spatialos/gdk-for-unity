@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class VisualElementConcealer : IConcealable
+    public class VisualElementConcealer
     {
         private VisualElement Element { get; }
 
@@ -19,9 +19,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             HideIfEmpty = evt.HideIfEmpty;
         }
 
-        public void SetVisibility(bool isHidden)
+        public void SetVisibility(bool isEmpty)
         {
-            if (isHidden && HideIfEmpty)
+            if (isEmpty && HideIfEmpty)
             {
                 Element.AddToClassList("hidden");
             }
