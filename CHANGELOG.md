@@ -22,6 +22,7 @@
 - Added `Allow Debug` toggle to the Build Configuration UI. [#1413](https://github.com/spatialos/gdk-for-unity/pull/1413)
     - Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player.
 - Added `Authority` type field to `IComponentMetaclass`. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
+- Added info button on the component details in the Worker Inspector Window that prints ComponentID and schema filepath to log [#1423](https://github.com/spatialos/gdk-for-unity/pull/1423)
 
 ### Changed
 
