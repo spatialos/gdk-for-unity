@@ -7,13 +7,13 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     {
         public bool HideIfEmpty { get; private set; }
 
-        private HideCollectionEvent WithValue(bool value)
+        public HideCollectionEvent WithValue(bool value)
         {
             HideIfEmpty = value;
             return this;
         }
 
-        private HideCollectionEvent WithTarget(IEventHandler handler)
+        public HideCollectionEvent WithTarget(IEventHandler handler)
         {
             target = handler;
             return this;

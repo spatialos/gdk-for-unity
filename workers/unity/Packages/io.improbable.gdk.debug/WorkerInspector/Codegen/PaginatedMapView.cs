@@ -4,14 +4,14 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : ConcealableElement
+    public class PaginatedMapView<TKeyElement, TKeyData, TValueElement, TValueData> : VisualElement
         where TKeyElement : VisualElement
         where TValueElement : VisualElement
     {
         private readonly PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>> list;
         private readonly List<KeyValuePair<TKeyData, TValueData>> listData = new List<KeyValuePair<TKeyData, TValueData>>();
         private readonly Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
-        protected sealed override VisualElement Container => list;
+        private readonly IConcealable concealer;
 
         public PaginatedMapView(string label, Func<TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
             Func<TValueElement> makeValue, Action<TValueData, TValueElement> bindValue)
@@ -21,6 +21,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 (index, kvp, element) => element.Update(kvp));
 
             Add(list);
+            concealer = new VisualElementConcealer(this);
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                concealer.HandleSettingChange(hideEvent);
+                hideEvent.PropagateToChildren(list);
+            }
         }
 
         public void Update(Dictionary<TKeyData, TValueData> data)
@@ -30,7 +41,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             listData.Sort((first, second) => comparer.Compare(first.Key, second.Key));
 
             list.Update(listData);
-            SetVisibility(listData.Count == 0 && HideIfEmpty);
+            concealer.SetVisibility(listData.Count == 0);
         }
 
         private class KeyValuePairElement : VisualElement

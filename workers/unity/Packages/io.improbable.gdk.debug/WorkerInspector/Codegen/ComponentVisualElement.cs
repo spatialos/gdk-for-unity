@@ -30,12 +30,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         protected override void ExecuteDefaultActionAtTarget(EventBase evt)
         {
             base.ExecuteDefaultActionAtTarget(evt);
-            if (!(evt is HideCollectionEvent hideEvent))
+            if (evt is HideCollectionEvent hideEvent)
             {
-                return;
+                hideEvent.PropagateToChildren(ComponentFoldout);
             }
-
-            hideEvent.PropagateToChildren(ComponentFoldout);
         }
 
         protected void InjectComponentIcon(string iconName)
@@ -67,46 +65,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         }
 
         protected abstract void WriteDebugInfo();
-
-        private void RemoveCollectionIfPresent(VisualElement collection)
-        {
-            if (ComponentFoldout.Contains(collection))
-            {
-                ComponentFoldout.Remove(collection);
-            }
-        }
-
-        private void AddCollectionIfNotPresent(VisualElement collection)
-        {
-            if (!ComponentFoldout.Contains(collection))
-            {
-                ComponentFoldout.Add(collection);
-            }
-        }
-
-        protected void SetVisibility(ICollection collection, VisualElement element)
-        {
-            if (collection.Count == 0 && hideIfEmpty)
-            {
-                RemoveCollectionIfPresent(element);
-            }
-            else
-            {
-                AddCollectionIfNotPresent(element);
-            }
-        }
-
-        protected void SetVisibility<T>(T? opt, VisualElement element) where T : struct
-        {
-            if (!opt.HasValue && hideIfEmpty)
-            {
-                RemoveCollectionIfPresent(element);
-            }
-            else
-            {
-                AddCollectionIfNotPresent(element);
-            }
-        }
 
         public abstract ComponentType ComponentType { get; }
 

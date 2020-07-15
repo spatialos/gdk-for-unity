@@ -21,8 +21,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 UpdateWithoutData();
             }
-
-            SetVisibility(!data.HasValue && HideIfEmpty);
         }
     }
 
@@ -44,14 +42,13 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 UpdateWithoutData();
             }
-
-            SetVisibility(!data.HasValue && HideIfEmpty);
         }
     }
 
-    public class OptionalVisualElementBase<TElement, TData> : ConcealableElement where TElement : VisualElement
+    public class OptionalVisualElementBase<TElement, TData> : VisualElement where TElement : VisualElement
     {
-        protected sealed override VisualElement Container { get; }
+        private readonly VisualElement container;
+        private readonly IConcealable concealer;
         private readonly Label isEmptyLabel;
         private readonly Action<TElement, TData> applyData;
         private readonly TElement innerElement;
@@ -61,36 +58,49 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             AddToClassList("user-defined-type-container");
             Add(new Label(label));
 
-            Container = new VisualElement();
-            Container.AddToClassList("user-defined-type-container-data");
-            Add(Container);
+            container = new VisualElement();
+            container.AddToClassList("user-defined-type-container-data");
+            Add(container);
 
             isEmptyLabel = new Label("Option is empty.");
             isEmptyLabel.AddToClassList("label-empty-option");
 
             this.innerElement = innerElement;
             this.applyData = applyData;
+            concealer = new VisualElementConcealer(this);
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                concealer.HandleSettingChange(hideEvent);
+                hideEvent.PropagateToTarget(innerElement);
+            }
         }
 
         protected void UpdateWithData(TData data)
         {
             RemoveIfPresent(isEmptyLabel);
-            Container.Add(innerElement);
+            container.Add(innerElement);
 
             applyData(innerElement, data);
+            concealer.SetVisibility(false);
         }
 
         protected void UpdateWithoutData()
         {
             RemoveIfPresent(innerElement);
-            Container.Add(isEmptyLabel);
+            container.Add(isEmptyLabel);
+            concealer.SetVisibility(true);
         }
 
         private void RemoveIfPresent(VisualElement element)
         {
-            if (Container.Contains(element))
+            if (container.Contains(element))
             {
-                Container.Remove(element);
+                container.Remove(element);
             }
         }
     }
