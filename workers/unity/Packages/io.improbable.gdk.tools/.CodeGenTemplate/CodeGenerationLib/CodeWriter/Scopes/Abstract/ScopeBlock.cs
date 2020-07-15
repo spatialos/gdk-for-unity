@@ -40,7 +40,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             var scopeAnnotation = string.Empty;
             if (Annotations != null)
             {
-                var annotationsList = Annotations.Where(string.IsNullOrEmpty)
+                var annotationsList = Annotations.Where(!string.IsNullOrEmpty)
                     .Select(annotation => $"{indent}[{annotation}]{Environment.NewLine}");
                 scopeAnnotation = string.Join(string.Empty, annotationsList);
             }
