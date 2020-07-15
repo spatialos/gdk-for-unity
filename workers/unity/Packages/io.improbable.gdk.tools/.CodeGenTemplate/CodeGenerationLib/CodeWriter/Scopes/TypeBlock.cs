@@ -8,9 +8,9 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 {
     public class TypeBlock : ScopeBlock
     {
-        internal TypeBlock(string declaration, Action<TypeBlock> populate, string annotation = "") : base(declaration)
+        internal TypeBlock(string declaration, Action<TypeBlock> populate, List<string> annotation = null) : base(declaration)
         {
-            Annotation = annotation;
+            Annotations = annotation;
             populate(this);
         }
 

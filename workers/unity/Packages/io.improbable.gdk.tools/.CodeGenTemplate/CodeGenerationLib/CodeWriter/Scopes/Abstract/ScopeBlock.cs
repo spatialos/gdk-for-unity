@@ -14,7 +14,7 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
 
         private readonly List<ICodeBlock> content = new List<ICodeBlock>();
 
-        protected string Annotation;
+        protected List<string> Annotations;
         private readonly Text declaration;
 
         protected ScopeBlock(string declaration)
@@ -38,9 +38,11 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
             var indent = CommonGeneratorUtils.GetIndentSpaces(indentLevel);
 
             var scopeAnnotation = string.Empty;
-            if (!string.IsNullOrEmpty(Annotation))
+            if (Annotations != null)
             {
-                scopeAnnotation = $"{indent}[{Annotation}]{Environment.NewLine}";
+                var annotationsList = Annotations.Where(string.IsNullOrEmpty)
+                    .Select(annotation => $"{indent}[{annotation}]{Environment.NewLine}");
+                scopeAnnotation = string.Join(string.Empty, annotationsList);
             }
 
             var scopeDeclaration = string.Empty;
