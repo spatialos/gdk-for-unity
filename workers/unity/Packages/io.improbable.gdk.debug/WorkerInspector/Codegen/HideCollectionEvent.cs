@@ -1,4 +1,3 @@
-﻿using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen

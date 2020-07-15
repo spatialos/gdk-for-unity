@@ -1,4 +1,4 @@
-﻿using UnityEngine.UIElements;
+using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {

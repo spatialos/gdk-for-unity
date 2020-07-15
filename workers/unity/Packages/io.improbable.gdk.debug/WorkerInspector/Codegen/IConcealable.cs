@@ -1,5 +1,3 @@
-﻿using UnityEngine.UIElements;
-
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
     public interface IConcealable

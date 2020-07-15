@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             Assert.AreEqual(value, stub.HideIfEmpty);
         }
 
+        [Test]
         public void ConcealerHidesElementIfHideSettingAndIsHiddenIsTrue()
         {
             var vis = new VisualElement();
@@ -25,6 +26,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             Assert.True(vis.ClassListContains("hidden"));
         }
 
+        [Test]
         public void ConcealerUnhidesElementIfHideSettingIsFalseAndIsHiddenIsTrue()
         {
             var vis = new VisualElement();
@@ -35,6 +37,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             Assert.False(vis.ClassListContains("hidden"));
         }
 
+        [Test]
         public void ConcealerUnhidesElementIfHideSettingIsTrueAndIsHiddenIsFalse()
         {
             var vis = new VisualElement();
@@ -45,6 +48,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             Assert.False(vis.ClassListContains("hidden"));
         }
 
+        [Test]
         public void ConcealerUnhidesElementIfHideSettingAndIsHiddenIsFalse()
         {
             var vis = new VisualElement();
