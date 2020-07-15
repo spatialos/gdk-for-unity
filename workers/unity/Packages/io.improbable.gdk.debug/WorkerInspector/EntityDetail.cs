@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http.Headers;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Debug.WorkerInspector.Codegen;
 using Unity.Collections;
