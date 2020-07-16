@@ -45,7 +45,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         }
 
         /// <summary>
-        ///     Checks whether the field is a custom schema type
+        ///     Checks whether the field is a custom schema type.
         /// </summary>
         public bool IsCustomType()
         {
