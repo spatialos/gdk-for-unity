@@ -27,6 +27,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             SetInfoButton();
         }
 
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                hideEvent.PropagateToChildren(ComponentFoldout);
+            }
+        }
+
         protected void InjectComponentIcon(string iconName)
         {
             var iconContent = EditorGUIUtility.IconContent(iconName);
@@ -56,7 +65,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         }
 
         protected abstract void WriteDebugInfo();
+
         public abstract ComponentType ComponentType { get; }
+
         public abstract void Update(EntityManager manager, Entity entity);
     }
 }

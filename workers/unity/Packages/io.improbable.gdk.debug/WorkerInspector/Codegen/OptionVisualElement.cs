@@ -51,6 +51,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly TElement innerElement;
         private readonly Label isEmptyLabel;
         private readonly Action<TElement, TData> applyData;
+        private readonly VisualElementConcealer concealer;
 
         protected OptionalVisualElementBase(string label, TElement innerElement, Action<TElement, TData> applyData)
         {
@@ -66,6 +67,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             this.innerElement = innerElement;
             this.applyData = applyData;
+            concealer = new VisualElementConcealer(this);
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                concealer.HandleSettingChange(hideEvent);
+                hideEvent.PropagateToTarget(innerElement);
+            }
         }
 
         protected void UpdateWithData(TData data)
@@ -74,12 +86,14 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             container.Add(innerElement);
 
             applyData(innerElement, data);
+            concealer.SetVisibility(false);
         }
 
         protected void UpdateWithoutData()
         {
             RemoveIfPresent(innerElement);
             container.Add(isEmptyLabel);
+            concealer.SetVisibility(true);
         }
 
         private void RemoveIfPresent(VisualElement element)
