@@ -69,7 +69,7 @@ namespace Improbable.Gdk.Core.Commands
             return responseStorage.Slice();
         }
 
-        public MessagesSpan<TResponse> GetResponse(CommandRequestId requestId)
+        public TResponse? GetResponse(CommandRequestId requestId)
         {
             if (!responsesSorted)
             {
@@ -78,9 +78,7 @@ namespace Improbable.Gdk.Core.Commands
             }
 
             var responseIndex = responseStorage.GetResponseIndex(requestId);
-            return responseIndex.HasValue
-                ? responseStorage.Slice(responseIndex.Value, 1)
-                : MessagesSpan<TResponse>.Empty();
+            return responseIndex.HasValue ? responseStorage[responseIndex.Value] : (TResponse?) null;
         }
 
         private sealed class RequestComparer<T> : IComparer<T> where T : struct, IReceivedCommandRequest
