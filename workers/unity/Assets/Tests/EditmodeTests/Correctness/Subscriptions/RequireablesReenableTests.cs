@@ -29,7 +29,7 @@ namespace Improbable.Gdk.EditmodeTests
                     world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step(world =>
                 {
-                    var (_, behaviour) = world.CreateGameObject<CommandSenderTestBehaviour>(EntityId);
+                    var (_, behaviour) = world.CreateGameObject<CommandSenderReceiverTestBehaviour>(EntityId);
                     return behaviour;
                 })
                 .Step((world, behaviour) =>
@@ -66,7 +66,7 @@ namespace Improbable.Gdk.EditmodeTests
                     world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step(world =>
                 {
-                    var (_, behaviour) = world.CreateGameObject<ReaderTestBehaviour>(EntityId);
+                    var (_, behaviour) = world.CreateGameObject<ReaderWriterTestBehaviour>(EntityId);
                     return behaviour;
                 })
                 .Step((world, behaviour) =>
@@ -102,13 +102,13 @@ namespace Improbable.Gdk.EditmodeTests
             return template;
         }
 
-        private class CommandSenderTestBehaviour : MonoBehaviour
+        private class CommandSenderReceiverTestBehaviour : MonoBehaviour
         {
             [Require] public TestCommandsCommandReceiver CommandReceiver;
             [Require] public PlayerHeartbeatClientCommandSender CommandSender;
         }
 
-        private class ReaderTestBehaviour : MonoBehaviour
+        private class ReaderWriterTestBehaviour : MonoBehaviour
         {
             [Require] public TestCommandsWriter Writer;
             [Require] public TestCommandsReader Reader;
