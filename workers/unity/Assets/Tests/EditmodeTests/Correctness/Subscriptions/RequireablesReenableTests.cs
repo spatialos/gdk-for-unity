@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.Test;
@@ -9,9 +6,7 @@ using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
-using Empty = Improbable.Gdk.Core.Empty;
-using Entity = Unity.Entities.Entity;
+
 
 namespace Improbable.Gdk.EditmodeTests
 {
