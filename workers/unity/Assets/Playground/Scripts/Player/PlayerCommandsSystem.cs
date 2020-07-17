@@ -109,6 +109,8 @@ namespace Playground
 #if UNITY_EDITOR
                 lastId = commandSystem.SendCommand(request, entities[0]);
                 Debug.Log($"Launching {lastId.Value.Raw}");
+#else
+                commandSystem.SendCommand(request, entities[0]);
 #endif
             }
         }
