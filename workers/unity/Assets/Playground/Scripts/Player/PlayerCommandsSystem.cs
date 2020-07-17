@@ -23,11 +23,13 @@ namespace Playground
 
         private const float LargeEnergy = 50.0f;
         private const float SmallEnergy = 10.0f;
-        private CommandRequestId? lastId;
 
         private CommandSystem commandSystem;
         private EntityQuery launchGroup;
 
+#if UNITY_EDITOR
+        private CommandRequestId? lastId;
+#endif
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -41,6 +43,7 @@ namespace Playground
 
         protected override void OnUpdate()
         {
+#if UNITY_EDITOR
             if (lastId.HasValue)
             {
                 var response = commandSystem.GetResponse<Launcher.LaunchEntity.ReceivedResponse>(lastId.Value);
@@ -54,6 +57,7 @@ namespace Playground
                     Debug.Log($"Could not find response for Launch {lastId.Value.Raw}");
                 }
             }
+#endif
 
             using (var entities = launchGroup.ToEntityArray(Allocator.TempJob))
             using (var spatialIdData = launchGroup.ToComponentDataArray<SpatialEntityId>(Allocator.TempJob))
@@ -102,9 +106,10 @@ namespace Playground
                         command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
                         playerId
                     ));
-
+#if UNITY_EDITOR
                 lastId = commandSystem.SendCommand(request, entities[0]);
                 Debug.Log($"Launching {lastId.Value.Raw}");
+#endif
             }
         }
     }
