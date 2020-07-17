@@ -33,6 +33,7 @@ namespace Improbable.Gdk.CodeGenerator
                         {
                             evm.Line($@"
 private WorkerSystem workerSystem;
+private ComponentSystem lookupSystem;
 private EntityManager entityManager;
 
 private readonly ComponentType[] initialComponents = new ComponentType[]
@@ -63,7 +64,7 @@ public void ApplyDiff(ViewDiff diff)
     }
 
     var updates = diffStorage.GetUpdates();
-    var dataFromEntity = workerSystem.GetComponentDataFromEntity<Component>();
+    var dataFromEntity = lookupSystem.GetComponentDataFromEntity<Component>();
     for (int i = 0; i < updates.Count; ++i)
     {
         ApplyUpdate(in updates[i], dataFromEntity);
@@ -91,6 +92,13 @@ public void Init(World world)
     if (workerSystem == null)
     {
         throw new ArgumentException(""World instance is not running a valid SpatialOS worker"");
+    }
+
+    lookupSystem = world.GetExistingSystem<SpatialOSReceiveSystem>();
+
+    if (lookupSystem == null)
+    {
+        throw new ArgumentException(""Could not find SpatialOS Receive System in the current world instance"");
     }
 }
 ");
