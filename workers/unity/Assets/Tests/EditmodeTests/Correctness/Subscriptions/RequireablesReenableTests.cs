@@ -104,14 +104,18 @@ namespace Improbable.Gdk.EditmodeTests
 
         private class CommandSenderReceiverTestBehaviour : MonoBehaviour
         {
+#pragma warning disable 649
             [Require] public TestCommandsCommandReceiver CommandReceiver;
             [Require] public PlayerHeartbeatClientCommandSender CommandSender;
+#pragma warning restore 649
         }
 
         private class ReaderWriterTestBehaviour : MonoBehaviour
         {
+#pragma warning disable 649
             [Require] public TestCommandsWriter Writer;
             [Require] public TestCommandsReader Reader;
+#pragma warning restore 649
         }
     }
 }
