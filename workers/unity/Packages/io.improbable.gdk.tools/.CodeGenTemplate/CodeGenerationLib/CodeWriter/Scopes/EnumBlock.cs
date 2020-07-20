@@ -8,15 +8,15 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter.Scopes
     {
         private static readonly string EnumMemberSeparator = $",{Environment.NewLine}";
 
-        internal EnumBlock(string declaration, Action<EnumBlock> populate, string annotation = "") : base(declaration)
+        internal EnumBlock(string declaration, Action<EnumBlock> populate, IEnumerable<string> annotations = null) : base(declaration)
         {
-            Annotation = annotation;
+            Annotations = annotations;
             populate(this);
         }
 
-        internal EnumBlock(string declaration, Func<IEnumerable<string>> populate, string annotation = "") : base(declaration)
+        internal EnumBlock(string declaration, Func<IEnumerable<string>> populate, IEnumerable<string> annotations = null) : base(declaration)
         {
-            Annotation = annotation;
+            Annotations = annotations;
             foreach (var member in populate())
             {
                 Member(member);
