@@ -50,6 +50,13 @@ namespace Improbable.Gdk.CodeGenerator
                                 {
                                     $@"MenuBuildCloud(new[] {{ {workerTypeString} }});"
                                 });
+
+                            buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                                .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                                .Method($"public static bool BuildMenuValidator{workerType}()", () => new[]
+                                {
+                                    "return CanMenuBuild();"
+                                });
                         }
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
@@ -63,6 +70,13 @@ namespace Improbable.Gdk.CodeGenerator
                             {
                                 "MenuBuildCloud(AllWorkers);"
                             });
+                        
+                        buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                            .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                                .Method($"public static bool BuildAllMenuValidator{workerType}()", () => new[]
+                                {
+                                    "return CanMenuBuild();"
+                                });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void Clean()", () => new[]
@@ -84,6 +98,11 @@ namespace Improbable.Gdk.CodeGenerator
                         {
                             "WorkerBuilder.Clean();",
                             "Debug.Log(\"Clean completed\");"
+                        });
+
+                        buildWorkerMenu.Method("private static bool CanMenuBuild()", () => new[]
+                        {
+                            "return !BuildSupportChecker.EditorHasCompileErrors()"
                         });
                     });
                 });
