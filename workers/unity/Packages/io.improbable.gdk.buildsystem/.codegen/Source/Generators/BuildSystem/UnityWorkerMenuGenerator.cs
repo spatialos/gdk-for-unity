@@ -102,7 +102,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         buildWorkerMenu.Method("private static bool CanMenuBuild()", () => new[]
                         {
-                            "return !BuildSupportChecker.EditorHasCompileErrors()"
+                            "return !BuildSupportChecker.EditorHasCompileErrors();"
                         });
                     });
                 });
