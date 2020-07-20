@@ -18,6 +18,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly VisualElement container;
         private readonly ElementPool<TElement> elementPool;
         private readonly int elementsPerPage;
+        private readonly VisualElementConcealer concealer;
 
         private readonly VisualElement controlsContainer;
         private readonly Button forwardButton;
@@ -48,6 +49,18 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
             elementPool = new ElementPool<TElement>(makeElement);
+
+            concealer = new VisualElementConcealer(this);
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                concealer.HandleSettingChange(hideEvent);
+                hideEvent.PropagateToChildren(container);
+            }
         }
 
         public void Update(List<TData> newData)
@@ -57,10 +70,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             if (data.Count == 0)
             {
                 controlsContainer.AddToClassList("hidden");
+                concealer.SetVisibility(true);
             }
             else
             {
                 controlsContainer.RemoveFromClassList("hidden");
+                concealer.SetVisibility(false);
             }
 
             CalculatePages();

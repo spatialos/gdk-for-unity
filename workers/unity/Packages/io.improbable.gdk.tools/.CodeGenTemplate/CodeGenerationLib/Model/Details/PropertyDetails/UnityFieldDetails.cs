@@ -45,6 +45,15 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         }
 
         /// <summary>
+        ///     Checks whether the field is a custom schema type.
+        /// </summary>
+        public bool IsCustomType()
+        {
+            return RawFieldDefinition.SingularType != null &&
+                RawFieldDefinition.SingularType.Type.ValueTypeSelector == ValueType.Type;
+        }
+
+        /// <summary>
         ///     Helper function that returns a (multi-line) string that represents the C# code required to serialize
         ///     this field.
         /// </summary>
