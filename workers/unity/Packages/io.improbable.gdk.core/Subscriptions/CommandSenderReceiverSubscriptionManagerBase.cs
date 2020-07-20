@@ -7,16 +7,12 @@ using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public interface ICommandSender
+    public interface ICommandSender : IRequireable
     {
-        bool IsValid { get; set; }
-        void RemoveAllCallbacks();
     }
 
-    public interface ICommandReceiver
+    public interface ICommandReceiver : IRequireable
     {
-        bool IsValid { get; set; }
-        void RemoveAllCallbacks();
     }
 
     public abstract class CommandSenderSubscriptionManagerBase<T> : SubscriptionManager<T>

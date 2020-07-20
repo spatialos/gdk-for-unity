@@ -20,6 +20,7 @@ windows: &windows
     - "machine_type=quad"
     - "experiment_normalised_upload_paths=true"
     - "health_check_enabled=false"
+    - "maximum_instances=12"
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
@@ -57,6 +58,7 @@ linux: &linux
 #    - "permission_set=builder"
 #    - "platform=macos"
 #    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
+#    - "maximum_instances=12"
 #  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
 #  retry:
 #    automatic:

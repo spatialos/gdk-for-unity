@@ -6,6 +6,7 @@ using Improbable.Gdk.Debug.WorkerInspector.Codegen;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEditor;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector
@@ -19,6 +20,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private World world;
         private EntityData? selected;
         private readonly List<ComponentVisualElement> visualElements = new List<ComponentVisualElement>();
+        private bool hideIfEmpty;
 
         public EntityDetail()
         {
@@ -29,12 +31,45 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             entityName = this.Q<Label>("entity-name");
             entityId = this.Q<Label>("entity-id");
             componentContainer = this.Q<ScrollView>();
+            RegisterCallback<MouseUpEvent>(HandleMouseUp);
+        }
+
+        private void HandleMouseUp(MouseUpEvent evt)
+        {
+            if (evt.button != (int) MouseButton.RightMouse)
+            {
+                return;
+            }
+
+            evt.StopImmediatePropagation();
+
+            var contextMenu = new GenericMenu();
+            contextMenu.AddItem(new GUIContent("Hide Empty Collections"), hideIfEmpty, () =>
+            {
+                hideIfEmpty = !hideIfEmpty;
+                if (!selected.HasValue || world == null || !world.EntityManager.Exists(selected.Value.Entity))
+                {
+                    return;
+                }
+
+                DispatchHideChangeEvent();
+            });
+            contextMenu.ShowAsContext();
+        }
+
+        private void DispatchHideChangeEvent()
+        {
+            foreach (var handler in visualElements)
+            {
+                HideCollectionEvent.SendToTarget(hideIfEmpty, handler);
+            }
         }
 
         public void SetSelectedEntity(EntityData entityData)
         {
             selected = entityData;
             Update();
+            DispatchHideChangeEvent();
         }
 
         public void SetWorld(World world)

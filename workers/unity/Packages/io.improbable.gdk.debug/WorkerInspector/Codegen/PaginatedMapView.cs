@@ -11,6 +11,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>> list;
         private readonly List<KeyValuePair<TKeyData, TValueData>> listData = new List<KeyValuePair<TKeyData, TValueData>>();
         private readonly Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
+        private readonly VisualElementConcealer concealer;
 
         public PaginatedMapView(string label, Func<TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
             Func<TValueElement> makeValue, Action<TValueData, TValueElement> bindValue)
@@ -20,6 +21,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 (index, kvp, element) => element.Update(kvp));
 
             Add(list);
+            concealer = new VisualElementConcealer(this);
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                concealer.HandleSettingChange(hideEvent);
+                hideEvent.PropagateToTarget(list);
+            }
         }
 
         public void Update(Dictionary<TKeyData, TValueData> data)
@@ -29,6 +41,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             listData.Sort((first, second) => comparer.Compare(first.Key, second.Key));
 
             list.Update(listData);
+            concealer.SetVisibility(listData.Count == 0);
         }
 
         private class KeyValuePairElement : VisualElement
@@ -51,6 +64,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 Add(valueElement);
 
                 AddToClassList("map-view__item");
+            }
+
+            protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+            {
+                base.ExecuteDefaultActionAtTarget(evt);
+                if (evt is HideCollectionEvent hideEvent)
+                {
+                    hideEvent.PropagateToTarget(keyElement);
+                    hideEvent.PropagateToTarget(valueElement);
+                }
             }
 
             public void Update(KeyValuePair<TKeyData, TValueData> keyValuePair)
