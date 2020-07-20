@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
+
 ## `0.3.8` - 2020-07-20
 
 ### Breaking Changes

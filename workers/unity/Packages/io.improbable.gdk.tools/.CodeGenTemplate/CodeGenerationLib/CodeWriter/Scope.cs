@@ -68,12 +68,22 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         public static MethodBlock AnnotatedMethod(string annotation, string declaration, Action<MethodBlock> populate)
         {
-            return new MethodBlock(declaration, populate, annotation);
+            return new MethodBlock(declaration, populate, new List<string> { annotation });
+        }
+
+        public static MethodBlock AnnotatedMethod(IEnumerable<string> annotations, string declaration, Action<MethodBlock> populate)
+        {
+            return new MethodBlock(declaration, populate, annotations);
         }
 
         public static MethodBlock AnnotatedMethod(string annotation, string declaration, Func<IEnumerable<string>> populate)
         {
-            return new MethodBlock(declaration, populate, annotation);
+            return new MethodBlock(declaration, populate, new List<string> { annotation });
+        }
+
+        public static MethodBlock AnnotatedMethod(IEnumerable<string> annotations, string declaration, Func<IEnumerable<string>> populate)
+        {
+            return new MethodBlock(declaration, populate, annotations);
         }
 
         public static EnumBlock Enum(string declaration, Action<EnumBlock> populate)
@@ -88,12 +98,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         public static EnumBlock AnnotatedEnum(string annotation, string declaration, Action<EnumBlock> populate)
         {
-            return new EnumBlock(declaration, populate, annotation);
+            return new EnumBlock(declaration, populate, new List<string> { annotation });
         }
 
-        public static EnumBlock AnnotatedEnum(string annotation, string declaration, Func<IEnumerable<string>> populate)
+        public static EnumBlock AnnotatedEnum(IEnumerable<string> annotations, string declaration, Func<IEnumerable<string>> populate)
         {
-            return new EnumBlock(declaration, populate, annotation);
+            return new EnumBlock(declaration, populate, annotations);
         }
 
         public static TypeBlock Type(string declaration, Action<TypeBlock> populate)
@@ -103,7 +113,12 @@ namespace Improbable.Gdk.CodeGeneration.CodeWriter
 
         public static TypeBlock AnnotatedType(string annotation, string declaration, Action<TypeBlock> populate)
         {
-            return new TypeBlock(declaration, populate, annotation);
+            return new TypeBlock(declaration, populate, new List<string> { annotation });
+        }
+
+        public static TypeBlock AnnotatedType(IEnumerable<string> annotations, string declaration, Action<TypeBlock> populate)
+        {
+            return new TypeBlock(declaration, populate, annotations);
         }
 
         public static NamespaceBlock Namespace(string declaration, Action<NamespaceBlock> populate)
