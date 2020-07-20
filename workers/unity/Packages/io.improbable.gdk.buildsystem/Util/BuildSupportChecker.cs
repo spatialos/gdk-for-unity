@@ -39,11 +39,6 @@ public static class BuildSupportChecker
             || target == BuildTarget.StandaloneLinux64;
     }
 
-    public static bool EditorHasCompileErrors()
-    {
-        return EditorUtility.scriptCompilationFailed;
-    }
-
     private static bool CheckForBuildSupport(BuildTarget target)
     {
         var editorDirectory = Directory.GetParent(EditorApplication.applicationPath);

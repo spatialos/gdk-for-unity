@@ -34,6 +34,9 @@ namespace Improbable.Gdk.CodeGenerator
                             return workerTypes.Select(workerType => $@"""{workerType}""");
                         });
 
+                        var allMenuOptionValidators = buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})")
+                            .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})");
+
                         for (var i = 0; i < workerTypes.Count; i++)
                         {
                             var workerType = workerTypes[i];
@@ -51,13 +54,14 @@ namespace Improbable.Gdk.CodeGenerator
                                     $@"MenuBuildCloud(new[] {{ {workerTypeString} }});"
                                 });
 
-                            buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
-                                .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
-                                .Method($"public static bool BuildMenuValidator{workerType}()", () => new[]
-                                {
-                                    "return CanMenuBuild();"
-                                });
+                            allMenuOptionValidators.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                                .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})");
                         }
+
+                        allMenuOptionValidators.Method("public static bool ValidateEditorCompile()", () => new[]
+                            {
+                                "return !EditorUtility.scriptCompilationFailed;"
+                            });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void BuildLocalAll()", () => new[]
@@ -71,12 +75,6 @@ namespace Improbable.Gdk.CodeGenerator
                                 "MenuBuildCloud(AllWorkers);"
                             });
 
-                        buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})")
-                            .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})")
-                            .Method($"public static bool BuildAllMenuValidatorAllWorkers()", () => new[]
-                            {
-                                "return CanMenuBuild();"
-                            });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void Clean()", () => new[]
@@ -98,11 +96,6 @@ namespace Improbable.Gdk.CodeGenerator
                         {
                             "WorkerBuilder.Clean();",
                             "Debug.Log(\"Clean completed\");"
-                        });
-
-                        buildWorkerMenu.Method("private static bool CanMenuBuild()", () => new[]
-                        {
-                            "return !BuildSupportChecker.EditorHasCompileErrors();"
                         });
                     });
                 });
