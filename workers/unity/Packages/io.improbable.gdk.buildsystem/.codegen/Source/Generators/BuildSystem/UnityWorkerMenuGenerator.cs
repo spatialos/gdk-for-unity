@@ -73,10 +73,10 @@ namespace Improbable.Gdk.CodeGenerator
                         
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
                             .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
-                                .Method($"public static bool BuildAllMenuValidator{workerType}()", () => new[]
-                                {
-                                    "return CanMenuBuild();"
-                                });
+                            .Method($"public static bool BuildAllMenuValidator{workerType}()", () => new[]
+                            {
+                                "return CanMenuBuild();"
+                            });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void Clean()", () => new[]
