@@ -36,6 +36,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         GenerateConstructor(type, details);
                         GenerateUpdateMethod(type, details);
+                        GenerateDebugMethod(type, details);
                     });
                 });
             });
@@ -65,6 +66,14 @@ namespace Improbable.Gdk.CodeGenerator
                 mb.Line($"var component = manager.GetComponentData<{details.Name}.Component>(entity);");
 
                 mb.TextList(details.FieldDetails.Select(fd => typeGenerator.ToUiFieldUpdate(fd, "component")));
+            });
+        }
+
+        private void GenerateDebugMethod(TypeBlock typeBlock, UnityComponentDetails details)
+        {
+            typeBlock.Method("protected override void WriteDebugInfo()", mb =>
+            {
+                mb.Line($"UnityEngine.Debug.Log(\"{details.Name} generated from '{details.SchemaFilePath}' with Component ID '{details.ComponentId}'\");");
             });
         }
 

@@ -61,12 +61,12 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 foreach (var rawEnum in file.Enums)
                 {
-                    enums.Add(rawEnum.QualifiedName, new UnityEnumDetails(file.Package.Name, rawEnum));
+                    enums.Add(rawEnum.QualifiedName, new UnityEnumDetails(file.Package.Name, file.CanonicalPath, rawEnum));
                 }
 
                 foreach (var type in file.Types)
                 {
-                    var typeDetails = new UnityTypeDetails(file.Package.Name, type);
+                    var typeDetails = new UnityTypeDetails(file.Package.Name, file.CanonicalPath, type);
 
                     if (overrideMap.TryGetValue(typeDetails.FullyQualifiedName, out var staticClassFqn))
                     {
@@ -79,7 +79,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 foreach (var component in file.Components)
                 {
-                    components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, component, this));
+                    components.Add(component.QualifiedName, new UnityComponentDetails(file.Package.Name, file.CanonicalPath, component, this));
                 }
 
                 Logger.Trace($"Enums added: {file.Enums.Count}.");

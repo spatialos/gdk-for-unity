@@ -20,6 +20,20 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             ComponentFoldout = this.Q<Foldout>(className: "component-foldout");
             AuthoritativeToggle = this.Q<Toggle>(className: "is-auth-toggle");
+
+            // This assignment forces the generation of the text element
+            // This prevents the text element from generating after the button which aligns the text element to the right.
+            ComponentFoldout.text = "Component";
+            SetInfoButton();
+        }
+
+        protected override void ExecuteDefaultActionAtTarget(EventBase evt)
+        {
+            base.ExecuteDefaultActionAtTarget(evt);
+            if (evt is HideCollectionEvent hideEvent)
+            {
+                hideEvent.PropagateToChildren(ComponentFoldout);
+            }
         }
 
         protected void InjectComponentIcon(string iconName)
@@ -34,7 +48,26 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             foldoutToggle.Insert(1, iconVisualElement);
         }
 
+        private void SetInfoButton()
+        {
+            var iconContent = EditorGUIUtility.IconContent("console.infoicon.sml");
+            var infoButton = new Button();
+            infoButton.style.backgroundImage = new StyleBackground((Texture2D) iconContent.image);
+            infoButton.AddToClassList("component-info-icon");
+            infoButton.clicked += WriteDebugInfo;
+
+            var buttonContainer = new VisualElement();
+            buttonContainer.AddToClassList("component-info-container");
+            buttonContainer.Add(infoButton);
+
+            var foldoutToggle = ComponentFoldout.Q<VisualElement>(className: "unity-toggle__input");
+            foldoutToggle.Add(buttonContainer);
+        }
+
+        protected abstract void WriteDebugInfo();
+
         public abstract ComponentType ComponentType { get; }
+
         public abstract void Update(EntityManager manager, Entity entity);
     }
 }
