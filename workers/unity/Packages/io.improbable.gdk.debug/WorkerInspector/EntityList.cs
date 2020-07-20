@@ -70,7 +70,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         public void SetWorld(World world)
         {
             entitySystem = world?.GetExistingSystem<EntitySystem>();
-            lastViewVersion = 0;
+            lastViewVersion = entitySystem?.ViewVersion - 1 ?? 0;
             selectedEntity = null;
 
             entities.SetNewWorld(world);
