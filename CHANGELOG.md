@@ -5,6 +5,9 @@
 ### Added
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
+
+### Changed
+
 - Upgrade to Worker SDK v14.7.0. [#1434](https://github.com/spatialos/gdk-for-unity/pull/1434)
 
 ## `0.3.8` - 2020-07-20
