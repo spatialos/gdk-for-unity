@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
+- Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem` [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
 
 ## `0.3.8` - 2020-07-20
 
