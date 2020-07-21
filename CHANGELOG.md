@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The `GetResponse<T>(CommandRequestId)` method in the `IDiffCommandResponseStorage` and `CommandSystem` now returns a `T?` instead of `MessageSpan<T>` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
+
 ### Added
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
@@ -10,6 +14,10 @@
 ### Fixed
 
 - Fixed a bug where the entity list in the Worker Inspector does not refresh when switching to a worker with no entities checked out [#1432](https://github.com/spatialos/gdk-for-unity/pull/1432)
+
+### Changed
+
+- Upgrade to Worker SDK v14.7.0. [#1434](https://github.com/spatialos/gdk-for-unity/pull/1434)
 
 ## `0.3.8` - 2020-07-20
 
@@ -22,7 +30,6 @@
     - See the [upgrade guide](UPGRADE_GUIDE.md) for detailed upgrade instructions for this breaking change.
     - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.
     - `GameObjectCreationHelper.EnableStandardGameObjectCreation` now requires a non-null `EntityRepresentationMapping` to be passed in.
-- The `GetResponse<T>(CommandRequestId)` method in the `IDiffCommandResponseStorage` and `CommandSystem` now returns a `T?` instead of `MessageSpan<T>` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
 
 ### Added
 
