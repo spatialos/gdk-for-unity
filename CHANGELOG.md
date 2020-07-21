@@ -6,6 +6,10 @@
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
 
+### Fixed
+
+- Fixed a bug where the entity list in the Worker Inspector does not refresh when switching to a worker with no entities checked out [#1432](https://github.com/spatialos/gdk-for-unity/pull/1432)
+
 ## `0.3.8` - 2020-07-20
 
 ### Breaking Changes
