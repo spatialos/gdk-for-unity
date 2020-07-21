@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
+
+## `0.3.8` - 2020-07-20
+
 ### Breaking Changes
 
 - All generated C# enums will now start from 0, being shifted to schema values on serialization and shifted back to C# values on deserialization. [#1412](https://github.com/spatialos/gdk-for-unity/pull/1412)
@@ -24,6 +30,7 @@
     - Enabling the option allows .NET debuggers (Rider/Visual Studio) to use breakpoints while in the Unity Player.
 - Added `Authority` type field to `IComponentMetaclass`. [#1393](https://github.com/spatialos/gdk-for-unity/pull/1393)
 - Added info button on the component details in the Worker Inspector Window that prints ComponentID and schema filepath to log [#1423](https://github.com/spatialos/gdk-for-unity/pull/1423)
+- Added an option to hide empty collections in worker inspector through a context menu (right-click). [#1417](https://github.com/spatialos/gdk-for-unity/pull/1417)
 
 ### Changed
 
@@ -33,6 +40,7 @@
 
 - Fixed a bug in the Worker Inspector where component foldouts were being rendered too often, causing poor performance when the entity had many components or very complex components. [#1403](https://github.com/spatialos/gdk-for-unity/pull/1403)
 - Fixed minor indentation issue in generated code caused by newline formatting. [#1424](https://github.com/spatialos/gdk-for-unity/pull/1424)
+- Fixed a bug where `CommandSender` objects would not be made valid again after being _re-injected_. [#1429](https://github.com/spatialos/gdk-for-unity/pull/1429)
 
 ### Internal
 
