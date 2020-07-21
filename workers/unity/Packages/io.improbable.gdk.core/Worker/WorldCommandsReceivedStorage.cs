@@ -84,8 +84,7 @@ namespace Improbable.Gdk.Core
             return entityQueryResponses.Slice();
         }
 
-        MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>
-            IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
+        WorldCommands.CreateEntity.ReceivedResponse? IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!createEntitySorted)
             {
@@ -95,11 +94,11 @@ namespace Improbable.Gdk.Core
 
             var responseIndex = createEntityResponses.GetResponseIndex(requestId);
             return responseIndex.HasValue
-                ? createEntityResponses.Slice(responseIndex.Value, 1)
-                : MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>.Empty();
+                ? createEntityResponses[responseIndex.Value]
+                : (WorldCommands.CreateEntity.ReceivedResponse?) null;
         }
 
-        MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>
+        WorldCommands.DeleteEntity.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!deleteEntitySorted)
@@ -110,11 +109,11 @@ namespace Improbable.Gdk.Core
 
             var responseIndex = deleteEntityResponses.GetResponseIndex(requestId);
             return responseIndex.HasValue
-                ? deleteEntityResponses.Slice(responseIndex.Value, 1)
-                : MessagesSpan<WorldCommands.DeleteEntity.ReceivedResponse>.Empty();
+                ? deleteEntityResponses[responseIndex.Value]
+                : (WorldCommands.DeleteEntity.ReceivedResponse?) null;
         }
 
-        MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>
+        WorldCommands.ReserveEntityIds.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!reserveEntityIdsSorted)
@@ -125,11 +124,11 @@ namespace Improbable.Gdk.Core
 
             var responseIndex = reserveEntityIdsResponses.GetResponseIndex(requestId);
             return responseIndex.HasValue
-                ? reserveEntityIdsResponses.Slice(responseIndex.Value, 1)
-                : MessagesSpan<WorldCommands.ReserveEntityIds.ReceivedResponse>.Empty();
+                ? reserveEntityIdsResponses[responseIndex.Value]
+                : (WorldCommands.ReserveEntityIds.ReceivedResponse?) null;
         }
 
-        MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>
+        WorldCommands.EntityQuery.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
             if (!entityQueriesSorted)
@@ -140,8 +139,8 @@ namespace Improbable.Gdk.Core
 
             var responseIndex = entityQueryResponses.GetResponseIndex(requestId);
             return responseIndex.HasValue
-                ? entityQueryResponses.Slice(responseIndex.Value, 1)
-                : MessagesSpan<WorldCommands.EntityQuery.ReceivedResponse>.Empty();
+                ? entityQueryResponses[responseIndex.Value]
+                : (WorldCommands.EntityQuery.ReceivedResponse?) null;
         }
 
         private class Comparer : IComparer<WorldCommands.CreateEntity.ReceivedResponse>,

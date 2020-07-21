@@ -40,7 +40,7 @@ namespace Improbable.Gdk.Core
             return manager.GetResponses();
         }
 
-        public MessagesSpan<T> GetResponse<T>(CommandRequestId requestId) where T : struct, IReceivedCommandResponse
+        public T? GetResponse<T>(CommandRequestId requestId) where T : struct, IReceivedCommandResponse
         {
             var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
             return manager.GetResponse(requestId);
