@@ -104,6 +104,18 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        public void AddCommandResponse<TResponse>(TResponse response, uint componentId, uint commandId)
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            CurrentDiff.AddCommandResponse(response, componentId, commandId);
+        }
+
+        public void AddCommandRequest<TRequest>(TRequest response, uint componentId, uint commandId)
+            where TRequest : struct, IReceivedCommandRequest
+        {
+            CurrentDiff.AddCommandRequest(response, componentId, commandId);
+        }
+
         // TODO: Commands
 
         #region IConnectionHandler implementation
