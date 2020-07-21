@@ -75,7 +75,6 @@ namespace Improbable.Gdk.CodeGenerator
                                 "MenuBuildCloud(AllWorkers);"
                             });
 
-
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void Clean()", () => new[]
                             {
