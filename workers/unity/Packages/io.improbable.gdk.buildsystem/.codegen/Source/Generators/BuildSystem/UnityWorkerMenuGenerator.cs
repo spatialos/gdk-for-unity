@@ -34,6 +34,9 @@ namespace Improbable.Gdk.CodeGenerator
                             return workerTypes.Select(workerType => $@"""{workerType}""");
                         });
 
+                        var allMenuOptionValidators = buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})")
+                            .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", true, EditorConfig.MenuOffset + {workerTypes.Count})");
+
                         for (var i = 0; i < workerTypes.Count; i++)
                         {
                             var workerType = workerTypes[i];
@@ -50,7 +53,15 @@ namespace Improbable.Gdk.CodeGenerator
                                 {
                                     $@"MenuBuildCloud(new[] {{ {workerTypeString} }});"
                                 });
+
+                            allMenuOptionValidators.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
+                                .Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})");
                         }
+
+                        allMenuOptionValidators.Method("public static bool ValidateEditorCompile()", () => new[]
+                            {
+                                "return !EditorUtility.scriptCompilationFailed;"
+                            });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void BuildLocalAll()", () => new[]
