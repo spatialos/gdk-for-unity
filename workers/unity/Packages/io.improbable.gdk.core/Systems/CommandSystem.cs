@@ -3,10 +3,36 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
+    public interface ICoreCommandSender
+    {
+        long NextRequestId { get; }
+        CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest;
+    }
+
+    internal class CommandSender : ICoreCommandSender
+    {
+        public CommandSender(WorkerSystem worker)
+        {
+            Worker = worker;
+        }
+
+        public long NextRequestId { get; private set; } = 1;
+
+        private WorkerSystem Worker { get; }
+
+        public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
+        {
+            var requestId = new CommandRequestId(NextRequestId++);
+            Worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
+            return requestId;
+        }
+    }
+
     [DisableAutoCreation]
     public class CommandSystem : ComponentSystem
     {
         internal IOutgoingCommandHandler OutgoingHandler { get; set; }
+        private ICoreCommandSender sender;
         private WorkerSystem worker;
 
         public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
@@ -47,7 +73,11 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreate();
             worker = World.GetExistingSystem<WorkerSystem>();
+<<<<<<< HEAD
             OutgoingHandler = new OutgoingCommandHandler(worker);
+=======
+            sender = new CommandSender(worker);
+>>>>>>> Created mock command sender
             Enabled = false;
         }
 
