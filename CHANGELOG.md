@@ -6,6 +6,10 @@
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
 
+### Fixed
+
+- Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
+
 ## `0.3.8` - 2020-07-20
 
 ### Breaking Changes
