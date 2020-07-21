@@ -9,6 +9,7 @@
 ### Added
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
+- Prevent building workers with Unity Editor compile errors. [#1425](https://github.com/spatialos/gdk-for-unity/pull/1425)
 
 ## `0.3.8` - 2020-07-20
 
