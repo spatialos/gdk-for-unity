@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
+- Prevent building workers with Unity Editor compile errors. [#1425](https://github.com/spatialos/gdk-for-unity/pull/1425)
 
 ### Fixed
 
@@ -21,6 +22,7 @@
     - See the [upgrade guide](UPGRADE_GUIDE.md) for detailed upgrade instructions for this breaking change.
     - `IEntityGameObjectCreator.PopulateEntityTypeExpectations` now only needs to specify what SpatialOS components it needs for spawning an entity, such as `Position`.
     - `GameObjectCreationHelper.EnableStandardGameObjectCreation` now requires a non-null `EntityRepresentationMapping` to be passed in.
+- The `GetResponse<T>(CommandRequestId)` method in the `IDiffCommandResponseStorage` and `CommandSystem` now returns a `T?` instead of `MessageSpan<T>` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
 
 ### Added
 

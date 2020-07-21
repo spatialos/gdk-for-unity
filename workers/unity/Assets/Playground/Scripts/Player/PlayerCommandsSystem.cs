@@ -1,6 +1,7 @@
 using System;
 using Improbable;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Playground.Scripts.UI;
 using Unity.Collections;
 using Unity.Entities;
@@ -26,6 +27,9 @@ namespace Playground
         private CommandSystem commandSystem;
         private EntityQuery launchGroup;
 
+#if UNITY_EDITOR
+        private CommandRequestId? lastId;
+#endif
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -39,6 +43,22 @@ namespace Playground
 
         protected override void OnUpdate()
         {
+#if UNITY_EDITOR
+            if (lastId.HasValue)
+            {
+                var response = commandSystem.GetResponse<Launcher.LaunchEntity.ReceivedResponse>(lastId.Value);
+                if (response.HasValue)
+                {
+                    Debug.Log($"Launch {response.Value.RequestId.Raw} successful, with response {response.Value}");
+                    lastId = null;
+                }
+                else
+                {
+                    Debug.Log($"Could not find response for Launch {lastId.Value.Raw}");
+                }
+            }
+#endif
+
             using (var entities = launchGroup.ToEntityArray(Allocator.TempJob))
             using (var spatialIdData = launchGroup.ToComponentDataArray<SpatialEntityId>(Allocator.TempJob))
             {
@@ -86,8 +106,12 @@ namespace Playground
                         command == PlayerCommand.LaunchLarge ? LargeEnergy : SmallEnergy,
                         playerId
                     ));
-
+#if UNITY_EDITOR
+                lastId = commandSystem.SendCommand(request, entities[0]);
+                Debug.Log($"Launching {lastId.Value.Raw}");
+#else
                 commandSystem.SendCommand(request, entities[0]);
+#endif
             }
         }
     }

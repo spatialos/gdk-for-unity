@@ -73,6 +73,6 @@ namespace Improbable.Gdk.Core
     {
         void AddResponse(T response);
         MessagesSpan<T> GetResponses();
-        MessagesSpan<T> GetResponse(CommandRequestId requestId);
+        T? GetResponse(CommandRequestId requestId);
     }
 }
