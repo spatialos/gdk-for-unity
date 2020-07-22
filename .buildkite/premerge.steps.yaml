@@ -94,12 +94,13 @@ steps:
     artifact_paths:
       - logs/**/*
 
- - label: ":darwin: ~ test"
-   id: "test-darwin"
-   command: bash -c ci/test.sh
-   <<: *macos
-   artifact_paths:
-     - logs/**/*
+  - label: ":darwin: ~ test"
+    id: "test-darwin"
+    command: bash -c ci/test.sh
+    soft_fail: true
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
 
   - label: ":debian: ~ annotate :windows: test results :pencil2:"
     depends_on:
@@ -185,15 +186,16 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
 
- - label: ":darwin: ~ build :ios:"
-   command: bash -c .shared-ci/scripts/build-worker.sh
-   <<: *macos
-   artifact_paths:
-     - logs/**/*
-   env:
-     <<: *macos-env
-     WORKER_TYPE: "MobileClient"
-     BUILD_ENVIRONMENT: "local"
-     BUILD_TARGET_FILTER: "ios"
-     SCRIPTING_BACKEND: "il2cpp"
-     TARGET_IOS_SDK: "simulator"
+  - label: ":darwin: ~ build :ios:"
+    command: bash -c .shared-ci/scripts/build-worker.sh
+    soft_fail: true
+    <<: *macos
+    artifact_paths:
+      - logs/**/*
+    env:
+      <<: *macos-env
+      WORKER_TYPE: "MobileClient"
+      BUILD_ENVIRONMENT: "local"
+      BUILD_TARGET_FILTER: "ios"
+      SCRIPTING_BACKEND: "il2cpp"
+      TARGET_IOS_SDK: "simulator"
