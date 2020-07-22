@@ -19,6 +19,10 @@
 
 - Upgrade to Worker SDK v14.7.0. [#1434](https://github.com/spatialos/gdk-for-unity/pull/1434)
 
+### Fixed
+
+- Build targets which are marked as 'Build', but not 'Required' are now properly skipped if build support is not installed. [#1435](https://github.com/spatialos/gdk-for-unity/pull/1435)
+
 ## `0.3.8` - 2020-07-20
 
 ### Breaking Changes
