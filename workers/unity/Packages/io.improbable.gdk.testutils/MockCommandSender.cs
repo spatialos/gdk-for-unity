@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
@@ -26,6 +27,11 @@ namespace Packages.io.improbable.gdk.testutils
         public void Setup<TRequest>(uint componentId)
         {
             componentIds.Add(typeof(TRequest), componentId);
+        }
+
+        public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
+        {
+            return requestIds[typeof(TRequest)]?.OrderBy(num => num);
         }
 
         public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
