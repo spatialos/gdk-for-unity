@@ -56,6 +56,11 @@ namespace Improbable.Gdk.TestUtils
             CommandSender.Setup<TRequest>(componentId);
         }
 
+        public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
+        {
+            return CommandSender.GetOutboundCommandRequestIds<TRequest>();
+        }
+
         public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
