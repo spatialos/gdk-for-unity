@@ -58,7 +58,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     Debug.LogWarning(
                         $"Skipping ({targetNames}) because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
 
-                    targetConfigs.RemoveAll(t => missingTargets.Contains(t));
+                    supportedTargets.RemoveAll(t => missingTargets.Contains(t));
                 }
 
                 result.AddRange(supportedTargets.Select(targetConfig => new BuildContext
