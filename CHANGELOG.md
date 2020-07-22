@@ -11,6 +11,10 @@
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
 - Prevent building workers with Unity Editor compile errors. [#1425](https://github.com/spatialos/gdk-for-unity/pull/1425)
 
+### Fixed
+
+- Fixed a bug where the entity list in the Worker Inspector does not refresh when switching to a worker with no entities checked out [#1432](https://github.com/spatialos/gdk-for-unity/pull/1432)
+
 ### Changed
 
 - Upgrade to Worker SDK v14.7.0. [#1434](https://github.com/spatialos/gdk-for-unity/pull/1434)
