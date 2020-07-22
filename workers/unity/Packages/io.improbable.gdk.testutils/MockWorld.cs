@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
-using NUnit.Framework;
+using Packages.io.improbable.gdk.testutils;
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils
@@ -22,10 +21,10 @@ namespace Improbable.Gdk.TestUtils
 
         public WorkerInWorld Worker { get; private set; }
         public MockConnectionHandler Connection { get; private set; }
-
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
+        private MockCommandSender CommandSender { get; set; }
 
         public static MockWorld Create(Options options)
         {
@@ -33,7 +32,7 @@ namespace Improbable.Gdk.TestUtils
 
             var connectionBuilder = new MockConnectionHandlerBuilder(options.EnableSerialization);
             mockWorld.Connection = connectionBuilder.ConnectionHandler;
-
+            mockWorld.CommandSender = new MockCommandSender(mockWorld);
             mockWorld.Worker = WorkerInWorld
                 .CreateWorkerInWorldAsync(connectionBuilder,
                     options.WorkerType ?? "TestWorkerType",
@@ -45,9 +44,31 @@ namespace Improbable.Gdk.TestUtils
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 
+            mockWorld.GetSystem<CommandSystem>().SetSender(mockWorld.CommandSender);
+
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
             return mockWorld;
+        }
+
+        public void Setup<TRequest>(uint componentId)
+        {
+            CommandSender.Setup<TRequest>(componentId);
+        }
+
+        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            CommandSender.GenerateResponses(creator);
+        }
+
+        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id,
+            Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            CommandSender.GenerateResponse(id, creator);
         }
 
         public T GetSystem<T>() where T : ComponentSystemBase

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
@@ -10,40 +9,67 @@ namespace Packages.io.improbable.gdk.testutils
 {
     public class MockCommandSender : ICoreCommandSender
     {
+        private readonly MockWorld world;
         public long NextRequestId { get; private set; } = 1;
 
         private readonly Dictionary<Type, uint> componentIds = new Dictionary<Type, uint>();
 
-        private Dictionary<long, ICommandRequest> requests = new Dictionary<long, ICommandRequest>();
+        private readonly Dictionary<Type, HashSet<long>> requestIds = new Dictionary<Type, HashSet<long>>();
+
+        private readonly Dictionary<long, ICommandRequest> outboundRequests = new Dictionary<long, ICommandRequest>();
+
+        internal MockCommandSender(MockWorld world)
+        {
+            this.world = world;
+        }
 
         public void Setup<TRequest>(uint componentId)
         {
             componentIds.Add(typeof(TRequest), componentId);
         }
 
-        public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
+        public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
         {
-            if (!componentIds.ContainsKey(typeof(T)))
+            if (!requestIds.ContainsKey(typeof(TRequest)))
             {
-                throw new AggregateException($"Component ID of {typeof(T)} must be set up");
+                requestIds.Add(typeof(TRequest), new HashSet<long>());
             }
 
-            requests.Add(NextRequestId, request);
+            if (!componentIds.ContainsKey(typeof(TRequest)))
+            {
+                throw new AggregateException($"Could not retrieve Component ID of the {typeof(TRequest)} command");
+            }
+
+            requestIds[typeof(TRequest)].Add(NextRequestId);
+            outboundRequests.Add(NextRequestId, request);
             return new CommandRequestId(NextRequestId++);
         }
 
-        public void FlushResponses<TRequest, TResponse>(MockWorld world,
-            Func<TRequest, CommandRequestId, TResponse> creator)
+        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
         {
-            var filteredRequests = requests.Where(pair => pair.Value.GetType() == typeof(TRequest)).ToArray();
-            foreach (var request in filteredRequests)
+            var ids = requestIds[typeof(TRequest)];
+            var componentId = componentIds[typeof(TRequest)];
+            foreach (var id in ids)
             {
-                world.Connection.AddCommandResponse(creator((TRequest) request.Value, new CommandRequestId(request.Key)), componentIds[typeof(TRequest)], (uint) request.Key);
+                var request = outboundRequests[id];
+                world.Connection.AddCommandResponse(creator(new CommandRequestId(id), (TRequest) request), componentId, (uint) id);
+                outboundRequests.Remove(id);
             }
 
-            requests = (Dictionary<long, ICommandRequest>) requests.Except(filteredRequests);
+            ids.Clear();
+        }
+
+        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id, Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            var componentId = componentIds[typeof(TRequest)];
+            var request = outboundRequests[id.Raw];
+            world.Connection.AddCommandResponse(creator(id, (TRequest) request), componentId, (uint) id.Raw);
+            requestIds[typeof(TRequest)].Remove(id.Raw);
+            outboundRequests.Remove(id.Raw);
         }
     }
 }

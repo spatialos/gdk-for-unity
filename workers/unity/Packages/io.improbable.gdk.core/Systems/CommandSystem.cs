@@ -79,5 +79,10 @@ namespace Improbable.Gdk.Core
         protected override void OnUpdate()
         {
         }
+
+        internal void SetSender(ICoreCommandSender newSender)
+        {
+            sender = newSender;
+        }
     }
 }

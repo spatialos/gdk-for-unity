@@ -116,8 +116,6 @@ namespace Improbable.Gdk.Core
             CurrentDiff.AddCommandRequest(response, componentId, commandId);
         }
 
-        // TODO: Commands
-
         #region IConnectionHandler implementation
 
         public string GetWorkerId()
