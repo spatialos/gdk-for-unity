@@ -73,11 +73,7 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreate();
             worker = World.GetExistingSystem<WorkerSystem>();
-<<<<<<< HEAD
             OutgoingHandler = new OutgoingCommandHandler(worker);
-=======
-            sender = new CommandSender(worker);
->>>>>>> Created mock command sender
             Enabled = false;
         }
 

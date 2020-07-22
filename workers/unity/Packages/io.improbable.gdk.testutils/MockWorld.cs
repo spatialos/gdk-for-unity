@@ -1,7 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
+<<<<<<< HEAD
+=======
+using Packages.io.improbable.gdk.testutils;
+>>>>>>> Inject mock command sender for tests
 using Unity.Entities;
 using UnityEngine;
 
@@ -22,6 +27,7 @@ namespace Improbable.Gdk.TestUtils
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
+        private MockCommandSender CommandSender { get; set; }
 
         public static MockWorld Create(Options options)
         {
@@ -39,12 +45,31 @@ namespace Improbable.Gdk.TestUtils
             options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
-
             mockWorld.GetSystem<CommandSystem>().OutgoingHandler = mockWorld.Connection.OutgoingCommandHandler;
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
             return mockWorld;
+        }
+
+        public void Setup<TRequest>(uint componentId)
+        {
+            CommandSender.Setup<TRequest>(componentId);
+        }
+
+        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            CommandSender.GenerateResponses(creator);
+        }
+
+        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id,
+            Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            CommandSender.GenerateResponse(id, creator);
         }
 
         public T GetSystem<T>() where T : ComponentSystemBase
