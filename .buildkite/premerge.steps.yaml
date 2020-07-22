@@ -51,22 +51,22 @@ linux: &linux
       - exit_status: -1
         limit: 3
 
-#macos: &macos
-#  agents:
-#    - "capable_of_building=gdk-for-unity"
-#    - "environment=production"
-#    - "permission_set=builder"
-#    - "platform=macos"
-#    - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
-#    - "maximum_instances=12"
-#  timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
-#  retry:
-#    automatic:
-#        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
-#      - exit_status: -1
-#        limit: 3
-#  env: &macos-env
-#    ACCELERATOR_ENDPOINT: "172.16.100.150"
+macos: &macos
+ agents:
+   - "capable_of_building=gdk-for-unity"
+   - "environment=production"
+   - "permission_set=builder"
+   - "platform=macos"
+   - "queue=${DARWIN_BUILDER_QUEUE:-v4-1582049359-33db24b626f71fa8}"
+   - "maximum_instances=12"
+ timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
+ retry:
+   automatic:
+       # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+     - exit_status: -1
+       limit: 3
+ env: &macos-env
+   ACCELERATOR_ENDPOINT: "172.16.100.150"
 
 # NOTE: step labels turn into commit-status names like {org}/{repo}/{pipeline}/{step-label}, lower-case and hyphenated.
 # These are then relied on to have stable names by other things, so once named, please beware renaming has consequences.
@@ -74,50 +74,50 @@ linux: &linux
 dag: true
 
 steps:
-  - label: ":debian: ~ lint :lint-roller:"
-    command: bash -c ci/lint.sh
-    <<: *linux
+  # - label: ":debian: ~ lint :lint-roller:"
+  #   command: bash -c ci/lint.sh
+  #   <<: *linux
 
-  - label: ":windows: ~ perf test"
-    id: "perftest-windows"
-    # ci/perf-test.sh expects 4 jobs.
-    parallelism: 4
-    command: bash -c ci/perf-test.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-      - perftest-results/**/*
+  # - label: ":windows: ~ perf test"
+  #   id: "perftest-windows"
+  #   # ci/perf-test.sh expects 4 jobs.
+  #   parallelism: 4
+  #   command: bash -c ci/perf-test.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #     - perftest-results/**/*
 
-  - label: ":windows: ~ test"
-    id: "test-windows"
-    command: bash -c ci/test.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
+  # - label: ":windows: ~ test"
+  #   id: "test-windows"
+  #   command: bash -c ci/test.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
 
-#  - label: ":darwin: ~ test"
-#    id: "test-darwin"
-#    command: bash -c ci/test.sh
-#    <<: *macos
-#    artifact_paths:
-#      - logs/**/*
+ - label: ":darwin: ~ test"
+   id: "test-darwin"
+   command: bash -c ci/test.sh
+   <<: *macos
+   artifact_paths:
+     - logs/**/*
 
-  - label: ":debian: ~ annotate :windows: test results :pencil2:"
-    depends_on:
-      - step: "test-windows"
-        allow_failure: true
-      - step: "perftest-windows"
-        allow_failure: true
-    plugins:
-      - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
-          inputs:
-            - label: ":octagonal_sign: :windows: Test failures "
-              artifact_path: "logs/nunit/*.xml"
-              type: nunit
-          formatter:
-            type: details
-          context: test-summary-windows
-    <<: *linux
+  # - label: ":debian: ~ annotate :windows: test results :pencil2:"
+  #   depends_on:
+  #     - step: "test-windows"
+  #       allow_failure: true
+  #     - step: "perftest-windows"
+  #       allow_failure: true
+  #   plugins:
+  #     - improbable/test-summary#ea146cdfbbc0db1ce8a8f93131f3f4a382d912a1:
+  #         inputs:
+  #           - label: ":octagonal_sign: :windows: Test failures "
+  #             artifact_path: "logs/nunit/*.xml"
+  #             type: nunit
+  #         formatter:
+  #           type: details
+  #         context: test-summary-windows
+  #   <<: *linux
 
 #  - label: ":debian: ~ annotate :darwin: test results :pencil2:"
 #    depends_on:
@@ -134,57 +134,57 @@ steps:
 #          context: test-summary-darwin
 #    <<: *linux
 
-  - label: ":windows: ~ build deployment launcher :rocket:"
-    command: bash -c ci/build-deployment-launcher.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
+  # - label: ":windows: ~ build deployment launcher :rocket:"
+  #   command: bash -c ci/build-deployment-launcher.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
 
-  - label: ":windows: ~ build :android:"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-      - workers/unity/build/worker/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "MobileClient"
-      BUILD_ENVIRONMENT: "local"
-      BUILD_TARGET_FILTER: "android"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build :android:"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #     - workers/unity/build/worker/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "MobileClient"
+  #     BUILD_ENVIRONMENT: "local"
+  #     BUILD_TARGET_FILTER: "android"
+  #     SCRIPTING_BACKEND: "mono"
 
-  - label: ":windows: ~ build UnityClient mono"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityClient"
-      BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build UnityClient mono"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityClient"
+  #     BUILD_ENVIRONMENT: "cloud"
+  #     SCRIPTING_BACKEND: "mono"
 
-  - label: ":windows: ~ build UnityClient il2cpp"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityClient"
-      BUILD_ENVIRONMENT: "local"
-      SCRIPTING_BACKEND: "il2cpp"
+  # - label: ":windows: ~ build UnityClient il2cpp"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityClient"
+  #     BUILD_ENVIRONMENT: "local"
+  #     SCRIPTING_BACKEND: "il2cpp"
 
-  - label: ":windows: ~ build UnityGameLogic mono"
-    command: bash -c .shared-ci/scripts/build-worker.sh
-    <<: *windows
-    artifact_paths:
-      - logs/**/*
-    env:
-      <<: *windows-env
-      WORKER_TYPE: "UnityGameLogic"
-      BUILD_ENVIRONMENT: "cloud"
-      SCRIPTING_BACKEND: "mono"
+  # - label: ":windows: ~ build UnityGameLogic mono"
+  #   command: bash -c .shared-ci/scripts/build-worker.sh
+  #   <<: *windows
+  #   artifact_paths:
+  #     - logs/**/*
+  #   env:
+  #     <<: *windows-env
+  #     WORKER_TYPE: "UnityGameLogic"
+  #     BUILD_ENVIRONMENT: "cloud"
+  #     SCRIPTING_BACKEND: "mono"
 
 #  - label: ":darwin: ~ build :ios:"
 #    command: bash -c .shared-ci/scripts/build-worker.sh
