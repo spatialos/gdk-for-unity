@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
@@ -90,8 +90,8 @@ namespace Improbable.Gdk.EditmodeTests.Core
         private static Launcher.LaunchEntity.Request GetRequest()
         {
             return new Launcher.LaunchEntity.Request(new EntityId(EntityId), new LaunchCommandRequest(new EntityId(LaunchedId),
-                new Vector3f(1,0,1),
-                new Vector3f(0,1,0),5, new EntityId(EntityId)));
+                new Vector3f(1, 0, 1),
+                new Vector3f(0, 1, 0), 5, new EntityId(EntityId)));
         }
     }
 }
