@@ -22,9 +22,9 @@ namespace Improbable.Gdk.TestUtils
             this.world = world;
         }
 
-        public IEnumerable<(long, TRequest)> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
+        public IEnumerable<(CommandRequestId, TRequest)> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
         {
-            return requestIds[typeof(TRequest)].Select(id => (id, (TRequest) outboundRequests[id]));
+            return requestIds[typeof(TRequest)].Select(id => (new CommandRequestId(id), (TRequest) outboundRequests[id]));
         }
 
         public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
