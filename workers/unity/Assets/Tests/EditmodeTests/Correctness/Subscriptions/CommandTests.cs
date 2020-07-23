@@ -1,18 +1,12 @@
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Gdk.Subscriptions;
-<<<<<<< HEAD
 using Improbable.Gdk.Test;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
-=======
-using Improbable.Worker.CInterop;
-using NUnit.Framework;
-using UnityEngine;
-using Playground;
 using Unity.Entities;
->>>>>>> extract subscription test inot new file
+
 
 namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 {
