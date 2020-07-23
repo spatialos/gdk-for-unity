@@ -65,10 +65,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 new Vector3f(1, 0, 1),
                 new Vector3f(0, 1, 0), 5, new EntityId(EntityId)));
         }
-
+#pragma warning disable 649
         private class LaunchCommander : MonoBehaviour
         {
             [Require] public LauncherCommandSender sender;
         }
+#pragma warning restore 649
     }
 }
