@@ -299,7 +299,7 @@ namespace Improbable.Gdk
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_Item_Create")]
-        public static extern Item* ItemCreate(CIO.IoStorage storage, Item* item);
+        public static extern Item* ItemCreate(CIO.Storage storage, Item* item);
 
         /**
          * Returns a pointer to a thread-local trace item.
@@ -342,7 +342,7 @@ namespace Improbable.Gdk
         // TODO: Check where Io_Storage_GetLastError exists
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SerializeItemToStream")]
-        public static extern Int8 SerializeItemToStream(CIO.IoStream stream, Item* item, Uint32 size);
+        public static extern Int8 SerializeItemToStream(CIO.Stream stream, Item* item, Uint32 size);
 
         /**
          * Get the serialized size, in bytes, of the next serialized trace item to be read from the stream.
@@ -354,7 +354,7 @@ namespace Improbable.Gdk
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_GetNextSerializedItemSize")]
-        public static extern Uint32 GetNextSerializedItemSize(CIO.IoStream stream);
+        public static extern Uint32 GetNextSerializedItemSize(CIO.Stream stream);
 
         /**
          * Deserialize the next trace item from the stream.
@@ -378,7 +378,7 @@ namespace Improbable.Gdk
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_DeserializeItemFromStream")]
-        public static extern Int8 DeserializeItemFromStream(CIO.IoStream stream, Item* item, Uint32 size);
+        public static extern Int8 DeserializeItemFromStream(CIO.Stream stream, Item* item, Uint32 size);
 
         /**
          * Returns the last error which occurred during a trace API method call. Returns nullptr if no
