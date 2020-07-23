@@ -4,6 +4,7 @@ namespace Improbable.Gdk.Core.Commands
 {
     public interface ICommandMetaclass
     {
+        uint ComponentId { get; }
         uint CommandIndex { get; }
         string Name { get; }
 
@@ -13,5 +14,10 @@ namespace Improbable.Gdk.Core.Commands
         Type MetaDataStorage { get; }
         Type SendStorage { get; }
         Type DiffStorage { get; }
+
+        Type Response { get; }
+        Type ReceivedResponse { get; }
+        Type Request { get; }
+        Type ReceivedRequest { get; }
     }
 }

@@ -13,6 +13,8 @@ namespace Improbable.Gdk.Core
 
         private static Dictionary<Type, uint> SnapshotsToIds { get; }
 
+        private static Dictionary<Type, ICommandMetaclass> RequestsToCommandMetaclass { get; }
+
         static ComponentDatabase()
         {
             Metaclasses = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass))
@@ -21,6 +23,9 @@ namespace Improbable.Gdk.Core
 
             ComponentsToIds = Metaclasses.ToDictionary(pair => pair.Value.Data, pair => pair.Key);
             SnapshotsToIds = Metaclasses.ToDictionary(pair => pair.Value.Snapshot, pair => pair.Key);
+            RequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
+                .SelectMany(pair => pair.Value.Commands.Select(cmd => new KeyValuePair<Type, ICommandMetaclass>(cmd.Request, cmd)))
+                .ToDictionary(kv => kv.Key, kv => kv.Value);
         }
 
         public static IComponentMetaclass GetMetaclass(uint componentId)
@@ -61,6 +66,16 @@ namespace Improbable.Gdk.Core
             }
 
             return id;
+        }
+
+        public static ICommandMetaclass GetRequestCommandMetaclass<T>() where T : ICommandRequest
+        {
+            if (!RequestsToCommandMetaclass.TryGetValue(typeof(T), out var metaclass))
+            {
+                throw new ArgumentException($"Can not find ID for unregistered SpatialOS command request {nameof(T)}.");
+            }
+
+            return metaclass;
         }
     }
 }

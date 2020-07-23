@@ -76,6 +76,7 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
                 commandMetaclass =>
                 {
                     commandMetaclass.Line($@"
+public uint ComponentId => {rootNamespace}.ComponentId;
 public uint CommandIndex => {command.CommandIndex};
 public string Name => ""{command.PascalCaseName}"";
 
@@ -85,6 +86,11 @@ public Type Serializer {{ get; }} = typeof({rootNamespace}.{command.PascalCaseNa
 public Type MetaDataStorage {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}CommandMetaDataStorage);
 public Type SendStorage {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}CommandsToSendStorage);
 public Type DiffStorage {{ get; }} = typeof({rootNamespace}.Diff{command.PascalCaseName}CommandStorage);
+
+public Type Response {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}.Response);
+public Type ReceivedResponse {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}.ReceivedResponse);
+public Type Request {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}.Request);
+public Type ReceivedRequest {{ get; }} = typeof({rootNamespace}.{command.PascalCaseName}.ReceivedRequest);
 ");
                 });
         }

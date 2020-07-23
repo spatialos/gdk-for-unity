@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Gdk.Subscriptions;
@@ -14,27 +15,30 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         private const long EntityId = 101;
         private const long LaunchedId = 102;
 
+        private MockWorld SetupWorld()
+        {
+            return World.Step(world =>
+            {
+                world.Connection.CreateEntity(EntityId, GetTemplate());
+            });
+        }
+
         [Test]
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
             var pass = false;
-            World.Setup<Launcher.LaunchEntity.Request>(Launcher.ComponentId);
-            World.Step(world =>
-                {
-                    world.Connection.CreateEntity(EntityId, GetTemplate());
-                })
-                .Step(world =>
-                {
-                    var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
-                    return commander.sender;
-                }).Step((world, sender) =>
-                {
-                    sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
-                    world.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
-                }).Step(world =>
-                {
-                    Assert.IsTrue(pass);
-                });
+            SetupWorld().Step(world =>
+            {
+                var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
+                return commander.sender;
+            }).Step((world, sender) =>
+            {
+                sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
+                world.CommandSender.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
+            }).Step(world =>
+            {
+                Assert.IsTrue(pass);
+            });
         }
 
         private static Launcher.LaunchEntity.ReceivedResponse ResponseGenerator(CommandRequestId id, Launcher.LaunchEntity.Request request)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
-using Packages.io.improbable.gdk.testutils;
 using Unity.Entities;
 using UnityEngine;
 
@@ -24,7 +23,7 @@ namespace Improbable.Gdk.TestUtils
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
-        private MockCommandSender CommandSender { get; set; }
+        public MockCommandSender CommandSender { get; private set; }
 
         public static MockWorld Create(Options options)
         {
@@ -44,36 +43,11 @@ namespace Improbable.Gdk.TestUtils
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 
-            mockWorld.GetSystem<CommandSystem>().SetSender(mockWorld.CommandSender);
+            mockWorld.GetSystem<CommandSystem>().Sender = mockWorld.CommandSender;
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
             return mockWorld;
-        }
-
-        public void Setup<TRequest>(uint componentId)
-        {
-            CommandSender.Setup<TRequest>(componentId);
-        }
-
-        public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
-        {
-            return CommandSender.GetOutboundCommandRequestIds<TRequest>();
-        }
-
-        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
-            where TRequest : ICommandRequest
-            where TResponse : struct, IReceivedCommandResponse
-        {
-            CommandSender.GenerateResponses(creator);
-        }
-
-        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id,
-            Func<CommandRequestId, TRequest, TResponse> creator)
-            where TRequest : ICommandRequest
-            where TResponse : struct, IReceivedCommandResponse
-        {
-            CommandSender.GenerateResponse(id, creator);
         }
 
         public T GetSystem<T>() where T : ComponentSystemBase

@@ -1,18 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.TestUtils;
 using Unity.Entities;
 
-namespace Packages.io.improbable.gdk.testutils
+namespace Improbable.Gdk.TestUtils
 {
     public class MockCommandSender : ICoreCommandSender
     {
         private readonly MockWorld world;
-        public long NextRequestId { get; private set; } = 1;
 
-        private readonly Dictionary<Type, uint> componentIds = new Dictionary<Type, uint>();
+        private long nextRequestId = 1;
 
         private readonly Dictionary<Type, SortedSet<long>> requestIds = new Dictionary<Type, SortedSet<long>>();
 
@@ -23,14 +22,9 @@ namespace Packages.io.improbable.gdk.testutils
             this.world = world;
         }
 
-        public void Setup<TRequest>(uint componentId)
+        public IEnumerable<(long, TRequest)> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
         {
-            componentIds.Add(typeof(TRequest), componentId);
-        }
-
-        public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
-        {
-            return requestIds[typeof(TRequest)];
+            return requestIds[typeof(TRequest)].Select(id => (id, (TRequest) outboundRequests[id]));
         }
 
         public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
@@ -40,26 +34,30 @@ namespace Packages.io.improbable.gdk.testutils
                 requestIds.Add(typeof(TRequest), new SortedSet<long>());
             }
 
-            if (!componentIds.ContainsKey(typeof(TRequest)))
-            {
-                throw new AggregateException($"Could not retrieve Component ID of the {typeof(TRequest)} command");
-            }
-
-            requestIds[typeof(TRequest)].Add(NextRequestId);
-            outboundRequests.Add(NextRequestId, request);
-            return new CommandRequestId(NextRequestId++);
+            requestIds[typeof(TRequest)].Add(nextRequestId);
+            outboundRequests.Add(nextRequestId, request);
+            return new CommandRequestId(nextRequestId++);
         }
 
         public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
         {
-            var ids = requestIds[typeof(TRequest)];
-            var componentId = componentIds[typeof(TRequest)];
+            if (!requestIds.TryGetValue(typeof(TRequest), out var ids))
+            {
+                throw new ArgumentException($"Cannot generate {typeof(TResponse)} without first sending a {typeof(TRequest)}");
+            }
+
+            var commandClass = ComponentDatabase.GetRequestCommandMetaclass<TRequest>();
+            if (typeof(TResponse) != commandClass.ReceivedResponse)
+            {
+                throw new ArgumentException($"Invalid response type {typeof(TResponse)}, expected {commandClass.ReceivedResponse}");
+            }
+
             foreach (var id in ids)
             {
                 var request = outboundRequests[id];
-                world.Connection.AddCommandResponse(creator(new CommandRequestId(id), (TRequest) request), componentId, (uint) id);
+                world.Connection.AddCommandResponse(creator(new CommandRequestId(id), (TRequest) request), commandClass.ComponentId, commandClass.CommandIndex);
                 outboundRequests.Remove(id);
             }
 
@@ -70,9 +68,18 @@ namespace Packages.io.improbable.gdk.testutils
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
         {
-            var componentId = componentIds[typeof(TRequest)];
-            var request = outboundRequests[id.Raw];
-            world.Connection.AddCommandResponse(creator(id, (TRequest) request), componentId, (uint) id.Raw);
+            if (!outboundRequests.TryGetValue(id.Raw, out var request))
+            {
+                throw new ArgumentException($"Could not find a request with request id {id}");
+            }
+
+            var commandClass = ComponentDatabase.GetRequestCommandMetaclass<TRequest>();
+            if (typeof(TResponse) != commandClass.ReceivedResponse)
+            {
+                throw new ArgumentException($"Invalid response type {typeof(TResponse)}, expected {commandClass.ReceivedResponse}");
+            }
+
+            world.Connection.AddCommandResponse(creator(id, (TRequest) request), commandClass.ComponentId, commandClass.CommandIndex);
             requestIds[typeof(TRequest)].Remove(id.Raw);
             outboundRequests.Remove(id.Raw);
         }

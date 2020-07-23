@@ -15,33 +15,29 @@ namespace Improbable.Gdk.EditmodeTests.Core
         [Test]
         public void ReceivedResponse_isNull_when_Response_is_not_received()
         {
-            World.Setup<Launcher.LaunchEntity.Request>(Launcher.ComponentId);
             World.Step(world =>
             {
                 world.Connection.CreateEntity(EntityId, GetTemplate());
             }).Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest())).Step((world, id) =>
             {
-                Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id)
-                    .HasValue);
+                Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
             });
         }
 
         [Test]
         public void ReceivedResponse_isNotNull_when_Response_is_received()
         {
-            World.Setup<Launcher.LaunchEntity.Request>(Launcher.ComponentId);
             World.Step(world =>
             {
                 world.Connection.CreateEntity(EntityId, GetTemplate());
             }).Step(world =>
             {
                 var id = world.GetSystem<CommandSystem>().SendCommand(GetRequest());
-                world.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
+                world.CommandSender.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
                 return id;
             }).Step((world, id) =>
             {
-                Assert.IsTrue(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id)
-                    .HasValue);
+                Assert.IsTrue(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
             });
         }
 
