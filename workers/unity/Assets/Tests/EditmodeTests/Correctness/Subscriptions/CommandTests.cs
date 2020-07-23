@@ -5,7 +5,6 @@ using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
 using Playground;
-using Unity.Entities;
 
 namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 {

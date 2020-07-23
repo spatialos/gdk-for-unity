@@ -1,11 +1,9 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
-using Improbable.Gdk.Subscriptions;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using Playground;
-using UnityEngine;
 
 namespace Improbable.Gdk.EditmodeTests.Core
 {
