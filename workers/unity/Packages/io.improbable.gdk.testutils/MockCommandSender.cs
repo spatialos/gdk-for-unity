@@ -15,7 +15,7 @@ namespace Packages.io.improbable.gdk.testutils
 
         private readonly Dictionary<Type, uint> componentIds = new Dictionary<Type, uint>();
 
-        private readonly Dictionary<Type, HashSet<long>> requestIds = new Dictionary<Type, HashSet<long>>();
+        private readonly Dictionary<Type, SortedSet<long>> requestIds = new Dictionary<Type, SortedSet<long>>();
 
         private readonly Dictionary<long, ICommandRequest> outboundRequests = new Dictionary<long, ICommandRequest>();
 
@@ -31,14 +31,14 @@ namespace Packages.io.improbable.gdk.testutils
 
         public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
         {
-            return requestIds[typeof(TRequest)]?.OrderBy(num => num);
+            return requestIds[typeof(TRequest)];
         }
 
         public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
         {
             if (!requestIds.ContainsKey(typeof(TRequest)))
             {
-                requestIds.Add(typeof(TRequest), new HashSet<long>());
+                requestIds.Add(typeof(TRequest), new SortedSet<long>());
             }
 
             if (!componentIds.ContainsKey(typeof(TRequest)))
