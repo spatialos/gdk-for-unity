@@ -4,9 +4,12 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 using Packages.io.improbable.gdk.testutils;
 >>>>>>> Inject mock command sender for tests
+=======
+>>>>>>> implement pr suggestions
 using Unity.Entities;
 using UnityEngine;
 
@@ -27,7 +30,7 @@ namespace Improbable.Gdk.TestUtils
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
-        private MockCommandSender CommandSender { get; set; }
+        public MockCommandSender CommandSender { get; private set; }
 
         public static MockWorld Create(Options options)
         {
@@ -45,36 +48,16 @@ namespace Improbable.Gdk.TestUtils
             options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
+<<<<<<< HEAD
             mockWorld.GetSystem<CommandSystem>().OutgoingHandler = mockWorld.Connection.OutgoingCommandHandler;
+=======
+
+            mockWorld.GetSystem<CommandSystem>().Sender = mockWorld.CommandSender;
+>>>>>>> implement pr suggestions
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
             return mockWorld;
-        }
-
-        public void Setup<TRequest>(uint componentId)
-        {
-            CommandSender.Setup<TRequest>(componentId);
-        }
-
-        public IEnumerable<long> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
-        {
-            return CommandSender.GetOutboundCommandRequestIds<TRequest>();
-        }
-
-        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
-            where TRequest : ICommandRequest
-            where TResponse : struct, IReceivedCommandResponse
-        {
-            CommandSender.GenerateResponses(creator);
-        }
-
-        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id,
-            Func<CommandRequestId, TRequest, TResponse> creator)
-            where TRequest : ICommandRequest
-            where TResponse : struct, IReceivedCommandResponse
-        {
-            CommandSender.GenerateResponse(id, creator);
         }
 
         public T GetSystem<T>() where T : ComponentSystemBase

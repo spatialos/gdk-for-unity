@@ -1,3 +1,4 @@
+using System;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Gdk.Subscriptions;
@@ -15,10 +16,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     {
         private const long EntityId = 101;
 
+        private MockWorld SetupWorld()
+        {
+            return World.Step(world =>
+            {
+                world.Connection.CreateEntity(EntityId, GetTemplate());
+            });
+        }
+
         [Test]
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
             var pass = false;
+<<<<<<< HEAD
 
             World.Step(world =>
                 {
@@ -41,6 +51,20 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 {
                     Assert.IsTrue(pass);
                 });
+=======
+            SetupWorld().Step(world =>
+            {
+                var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
+                return commander.sender;
+            }).Step((world, sender) =>
+            {
+                sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
+                world.CommandSender.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
+            }).Step(world =>
+            {
+                Assert.IsTrue(pass);
+            });
+>>>>>>> implement pr suggestions
         }
 
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)

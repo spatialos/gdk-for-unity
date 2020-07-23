@@ -5,7 +5,6 @@ namespace Improbable.Gdk.Core
 {
     public interface ICoreCommandSender
     {
-        long NextRequestId { get; }
         CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest;
     }
 
@@ -16,13 +15,13 @@ namespace Improbable.Gdk.Core
             Worker = worker;
         }
 
-        public long NextRequestId { get; private set; } = 1;
+        private long nextRequestId = 1;
 
         private WorkerSystem Worker { get; }
 
         public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
         {
-            var requestId = new CommandRequestId(NextRequestId++);
+            var requestId = new CommandRequestId(nextRequestId++);
             Worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
             return requestId;
         }
@@ -32,7 +31,6 @@ namespace Improbable.Gdk.Core
     public class CommandSystem : ComponentSystem
     {
         internal IOutgoingCommandHandler OutgoingHandler { get; set; }
-        private ICoreCommandSender sender;
         private WorkerSystem worker;
 
         public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
