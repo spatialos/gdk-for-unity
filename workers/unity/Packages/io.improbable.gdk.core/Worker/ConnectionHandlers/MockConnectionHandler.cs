@@ -178,7 +178,6 @@ namespace Improbable.Gdk.Core
             outgoingRequests.Remove(id.Raw);
         }
 
-<<<<<<< HEAD
         public void AddCommandRequest<TRequest>(TRequest receivedRequest)
             where TRequest : struct, IReceivedCommandRequest
         {
@@ -186,8 +185,6 @@ namespace Improbable.Gdk.Core
             CurrentDiff.AddCommandRequest(receivedRequest, commandClass.ComponentId, commandClass.CommandIndex);
         }
 
-=======
->>>>>>> Inject mock command sender for tests
         #region IConnectionHandler implementation
 
         public string GetWorkerId()
