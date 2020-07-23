@@ -1,13 +1,11 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Gdk.Test;
 using Improbable.Gdk.TestUtils;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using Playground;
 using UnityEngine;
-using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.EditmodeTests.Core
 {
@@ -49,29 +47,6 @@ namespace Improbable.Gdk.EditmodeTests.Core
             });
         }
 
-        [Test]
-        public void SubscriptionSystem_invokes_callback_on_receiving_response()
-        {
-            var pass = false;
-            World.Setup<Launcher.LaunchEntity.Request>(Launcher.ComponentId);
-            World.Step(world =>
-                {
-                    world.Connection.CreateEntity(EntityId, GetTemplate());
-                })
-                .Step(world =>
-                {
-                    var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
-                    return commander.Sender;
-                }).Step((world, sender) =>
-                {
-                    sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
-                    world.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
-                }).Step(world =>
-                {
-                    Assert.IsTrue(pass);
-                });
-        }
-
         private static Launcher.LaunchEntity.ReceivedResponse ResponseGenerator(CommandRequestId id, Launcher.LaunchEntity.Request request)
         {
             return new Launcher.LaunchEntity.ReceivedResponse(
@@ -99,11 +74,6 @@ namespace Improbable.Gdk.EditmodeTests.Core
             return new Launcher.LaunchEntity.Request(new EntityId(EntityId), new LaunchCommandRequest(new EntityId(LaunchedId),
                 new Vector3f(1, 0, 1),
                 new Vector3f(0, 1, 0), 5, new EntityId(EntityId)));
-        }
-
-        private class LaunchCommander : MonoBehaviour
-        {
-            [Require] public LauncherCommandSender Sender;
         }
     }
 }
