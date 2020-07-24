@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.9` - 2020-07-24
+
 ### Breaking Changes
 
 - The `GetResponse<T>(CommandRequestId)` method in the `IDiffCommandResponseStorage` and `CommandSystem` now returns a `T?` instead of `MessageSpan<T>` [#1428](https://github.com/spatialos/gdk-for-unity/pull/1428)
