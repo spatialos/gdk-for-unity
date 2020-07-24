@@ -44,7 +44,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         private static void PreprocessPrefabs()
         {
-            var resolvers = AssetDatabase.FindAssets("t:EntityLinkerDatabase")
+            var resolvers = AssetDatabase.FindAssets($"t:{typeof(EntityRepresentationMapping)}")
                 .Select(AssetDatabase.GUIDToAssetPath)
                 .Select(AssetDatabase.LoadAssetAtPath<EntityRepresentationMapping>)
                 .SelectMany(mapping => mapping.EntityRepresentationResolvers)
