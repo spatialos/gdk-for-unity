@@ -42,11 +42,7 @@ namespace Improbable.Gdk.Core
 
         internal MockConnectionHandler()
         {
-<<<<<<< HEAD
             OutgoingCommandHandler = new MockOutgoingCommandHandler(this);
-=======
-            OutgoingCommandHandler = new MockOutgoingCommandHandler(OnSendCommand);
->>>>>>> Adjust access modifiers
         }
 
         private uint updateId;
@@ -326,9 +322,13 @@ namespace Improbable.Gdk.Core
             public void SendResponse<T>(T response) where T : ICommandResponse
             {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 throw new NotImplementedException("Not implemented yet");
 =======
 >>>>>>> Adjust access modifiers
+=======
+                // Do nothing
+>>>>>>> comment
             }
         }
 
