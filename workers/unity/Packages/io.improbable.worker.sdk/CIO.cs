@@ -10,11 +10,6 @@ namespace Improbable.Worker.CInterop.Internal
 {
     internal unsafe class CIO
     {
-#if UNITY_IOS
-        private const string WorkerLibrary = "__Internal";
-#else
-        private const string WorkerLibrary = "improbable_worker";
-#endif
         public class Storage : CptrHandle
         {
             protected override bool ReleaseHandle()
@@ -48,12 +43,12 @@ namespace Improbable.Worker.CInterop.Internal
          * Memory stored in a given storage object remains valid until either the storage object is cleared
          * or it is destroyed.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Storage_Create")]
         public static extern Storage StorageCreate();
 
         /* Destroys the trace storage. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Storage_Destroy")]
         public static extern void StorageDestroy(IntPtr storage);
 
@@ -64,7 +59,7 @@ namespace Improbable.Worker.CInterop.Internal
          * but does not actually free the memory. This leads to fewer allocations than, for example, using
          * a new storage object each time.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Storage_Clear")]
         public static extern void StorageClear(IntPtr storage);
 
@@ -80,7 +75,7 @@ namespace Improbable.Worker.CInterop.Internal
          *
          * Returns a pointer to a valid ring buffer stream. Never returns NULL.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateRingBufferStream")]
         public static extern Stream CreateRingBufferStream(Uint32 capacityBytes);
 
@@ -97,12 +92,12 @@ namespace Improbable.Worker.CInterop.Internal
          * Returns a pointer to a file stream. Never returns NULL. Call StreamGetLastError to check
          * if an error occurred during file stream creation.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
         public static extern Stream CreateFileStream(Char* filename, OpenMode openMode);
 
         /* Destroys the I/O stream. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Destroy")]
         public static extern void StreamDestroy(IntPtr storage);
 
@@ -114,7 +109,7 @@ namespace Improbable.Worker.CInterop.Internal
          *
          * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Write")]
         public static extern Int64 StreamWrite(Stream stream, Uint8* bytes, Uint32 length);
 
@@ -124,7 +119,7 @@ namespace Improbable.Worker.CInterop.Internal
          * Returns the maximum value for stream implementations with conceptually infinite capacity, like
          * file streams, regardless of how much data has previously been written.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_GetRemainingWriteCapacityBytes")]
         public static extern Uint32 StreamGetRemainingWriteCapacityBytes(Stream stream);
 
@@ -136,7 +131,7 @@ namespace Improbable.Worker.CInterop.Internal
          *
          * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Read")]
         public static extern Uint64 StreamRead(Stream stream, Uint8* bytes, Uint32 length);
 
@@ -149,7 +144,7 @@ namespace Improbable.Worker.CInterop.Internal
          *
          * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Peek")]
         public static extern Int64 StreamPeek(Stream stream, Uint8* bytes, Uint32 length);
 
@@ -162,7 +157,7 @@ namespace Improbable.Worker.CInterop.Internal
          *
          * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Ignore")]
         public static extern Int64 StreamIgnore(Stream stream, Uint32 length);
 
@@ -170,7 +165,7 @@ namespace Improbable.Worker.CInterop.Internal
          * Returns the last error which occurred during an API call on this stream. Returns nullptr if no
          * such error has occurred.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_GetLastError")]
         public static extern Char* StreamGetLastError(Stream stream);
     }
