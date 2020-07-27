@@ -168,8 +168,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                                 tooltip = "Missing build support for one or more build targets."
                             };
                     }
-                    else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(NeedsAndroidSdk) ||
-                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(NeedsAndroidSdk))
+                    else if (configurationForWorker.CloudBuildConfig.BuildTargets.Any(IsMissingAndroidSdk) ||
+                        configurationForWorker.LocalBuildConfig.BuildTargets.Any(IsMissingAndroidSdk))
                     {
                         foldoutState.Icon =
                             new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
@@ -862,9 +862,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         }
 
 
-        private static bool NeedsAndroidSdk(BuildTargetConfig t)
+        private static bool IsMissingAndroidSdk(BuildTargetConfig t)
         {
-            return t.Enabled && t.Target == BuildTarget.Android && string.IsNullOrEmpty(EditorPrefs.GetString("AndroidSdkRoot"));
+            if (!t.Enabled || t.Target != BuildTarget.Android)
+            {
+                return false;
+            }
+
+            return string.IsNullOrEmpty(EditorPrefs.GetString("AndroidSdkRoot")) && !Directory.Exists(Path.Combine(BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None), "SDK"));
         }
     }
 }
