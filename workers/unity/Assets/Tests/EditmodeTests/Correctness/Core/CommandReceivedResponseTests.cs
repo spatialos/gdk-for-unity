@@ -16,6 +16,7 @@ namespace Improbable.Gdk.EditmodeTests.Core
         public void ReceivedResponse_isNull_when_Response_is_not_received()
         {
             World.Step(world =>
+<<<<<<< HEAD
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
                 })
@@ -28,12 +29,21 @@ namespace Improbable.Gdk.EditmodeTests.Core
                     Assert.IsFalse(world.GetSystem<CommandSystem>()
                         .GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
                 });
+=======
+            {
+                world.Connection.CreateEntity(EntityId, GetTemplate());
+            }).Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest())).Step((world, id) =>
+            {
+                Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
+            });
+>>>>>>> Adjust access modifiers
         }
 
         [Test]
         public void ReceivedResponse_isNotNull_when_Response_is_received()
         {
             World.Step(world =>
+<<<<<<< HEAD
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
                 })
@@ -56,6 +66,19 @@ namespace Improbable.Gdk.EditmodeTests.Core
                     Assert.AreEqual(response.Value.EntityId, GetRequest().TargetEntityId);
                     Assert.AreEqual(response.Value.RequestPayload, GetRequest().Payload);
                 });
+=======
+            {
+                world.Connection.CreateEntity(EntityId, GetTemplate());
+            }).Step(world =>
+            {
+                var id = world.GetSystem<CommandSystem>().SendCommand(GetRequest());
+                world.Connection.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
+                return id;
+            }).Step((world, id) =>
+            {
+                Assert.IsTrue(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
+            });
+>>>>>>> Adjust access modifiers
         }
 
         private static Launcher.LaunchEntity.ReceivedResponse ResponseGenerator(CommandRequestId id, Launcher.LaunchEntity.Request request)

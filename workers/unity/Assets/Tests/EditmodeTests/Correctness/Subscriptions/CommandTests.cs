@@ -1,4 +1,3 @@
-using System;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Gdk.Subscriptions;
@@ -16,18 +15,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     {
         private const long EntityId = 101;
 
-        private MockWorld SetupWorld()
-        {
-            return World.Step(world =>
-            {
-                world.Connection.CreateEntity(EntityId, GetTemplate());
-            });
-        }
-
         [Test]
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
             var pass = false;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
             World.Step(world =>
@@ -53,13 +45,19 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 });
 =======
             SetupWorld().Step(world =>
+=======
+            World.Step(world =>
+            {
+                world.Connection.CreateEntity(EntityId, GetTemplate());
+            }).Step(world =>
+>>>>>>> Adjust access modifiers
             {
                 var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
-                return commander.sender;
+                return commander.Sender;
             }).Step((world, sender) =>
             {
                 sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
-                world.CommandSender.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
+                world.Connection.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
             }).Step(world =>
             {
                 Assert.IsTrue(pass);
@@ -96,7 +94,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 #pragma warning disable 649
         private class CommandStub : MonoBehaviour
         {
+<<<<<<< HEAD
             [Require] public TestCommandsCommandSender Sender;
+=======
+            [Require] public LauncherCommandSender Sender;
+>>>>>>> Adjust access modifiers
         }
 #pragma warning restore 649
     }

@@ -42,7 +42,11 @@ namespace Improbable.Gdk.Core
 
         internal MockConnectionHandler()
         {
+<<<<<<< HEAD
             OutgoingCommandHandler = new MockOutgoingCommandHandler(this);
+=======
+            OutgoingCommandHandler = new MockOutgoingCommandHandler(OnSendCommand);
+>>>>>>> Adjust access modifiers
         }
 
         private uint updateId;
@@ -294,22 +298,37 @@ namespace Improbable.Gdk.Core
         {
             private long nextRequestId = 1;
 
+<<<<<<< HEAD
             private readonly MockConnectionHandler connectionHandler;
 
             internal MockOutgoingCommandHandler(MockConnectionHandler connectionHandler)
             {
                 this.connectionHandler = connectionHandler;
+=======
+            private readonly Action<long, Type, ICommandRequest> onSendCommand;
+
+            internal MockOutgoingCommandHandler(Action<long, Type, ICommandRequest> onSendCommand)
+            {
+                this.onSendCommand = onSendCommand;
+>>>>>>> Adjust access modifiers
             }
 
             public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
             {
+<<<<<<< HEAD
                 connectionHandler.OnSendCommand(nextRequestId, typeof(TRequest), request);
+=======
+                onSendCommand(nextRequestId, typeof(TRequest), request);
+>>>>>>> Adjust access modifiers
                 return new CommandRequestId(nextRequestId++);
             }
 
             public void SendResponse<T>(T response) where T : ICommandResponse
             {
+<<<<<<< HEAD
                 throw new NotImplementedException("Not implemented yet");
+=======
+>>>>>>> Adjust access modifiers
             }
         }
 

@@ -15,11 +15,9 @@ namespace Improbable.Gdk.Core
 
         private static Dictionary<Type, ICommandMetaclass> RequestsToCommandMetaclass { get; }
 
-<<<<<<< HEAD
         private static Dictionary<Type, ICommandMetaclass> ReceivedRequestsToCommandMetaclass { get; }
 
-=======
->>>>>>> implement pr suggestions
+
         static ComponentDatabase()
         {
             Metaclasses = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass))
@@ -28,18 +26,18 @@ namespace Improbable.Gdk.Core
 
             ComponentsToIds = Metaclasses.ToDictionary(pair => pair.Value.Data, pair => pair.Key);
             SnapshotsToIds = Metaclasses.ToDictionary(pair => pair.Value.Snapshot, pair => pair.Key);
-<<<<<<< HEAD
             RequestsToCommandMetaclass = Metaclasses
                 .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.Request, cmd)))
                 .ToDictionary(pair => pair.Request, pair => pair.cmd);
             ReceivedRequestsToCommandMetaclass = Metaclasses
                 .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.ReceivedRequest, cmd)))
                 .ToDictionary(pair => pair.ReceivedRequest, pair => pair.cmd);
-=======
             RequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
-                .SelectMany(pair => pair.Value.Commands.Select(cmd => new KeyValuePair<Type, ICommandMetaclass>(cmd.Request, cmd)))
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
->>>>>>> implement pr suggestions
+                .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.Request, cmd)))
+                .ToDictionary(pair => pair.Request, pair => pair.cmd);
+            ReceivedRequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
+                .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.ReceivedRequest, cmd)))
+                .ToDictionary(pair => pair.ReceivedRequest, pair => pair.cmd);
         }
 
         public static IComponentMetaclass GetMetaclass(uint componentId)
@@ -82,11 +80,7 @@ namespace Improbable.Gdk.Core
             return id;
         }
 
-<<<<<<< HEAD
         public static ICommandMetaclass GetCommandMetaclassFromRequest<T>() where T : ICommandRequest
-=======
-        public static ICommandMetaclass GetRequestCommandMetaclass<T>() where T : ICommandRequest
->>>>>>> implement pr suggestions
         {
             if (!RequestsToCommandMetaclass.TryGetValue(typeof(T), out var metaclass))
             {
@@ -95,7 +89,6 @@ namespace Improbable.Gdk.Core
 
             return metaclass;
         }
-<<<<<<< HEAD
 
         public static ICommandMetaclass GetCommandMetaclassFromReceivedRequest<T>() where T : IReceivedCommandRequest
         {
@@ -106,7 +99,5 @@ namespace Improbable.Gdk.Core
 
             return metaclass;
         }
-=======
->>>>>>> implement pr suggestions
     }
 }

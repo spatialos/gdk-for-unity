@@ -3,30 +3,6 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public interface ICoreCommandSender
-    {
-        CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest;
-    }
-
-    internal class CommandSender : ICoreCommandSender
-    {
-        public CommandSender(WorkerSystem worker)
-        {
-            Worker = worker;
-        }
-
-        private long nextRequestId = 1;
-
-        private WorkerSystem Worker { get; }
-
-        public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
-        {
-            var requestId = new CommandRequestId(nextRequestId++);
-            Worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
-            return requestId;
-        }
-    }
-
     [DisableAutoCreation]
     public class CommandSystem : ComponentSystem
     {

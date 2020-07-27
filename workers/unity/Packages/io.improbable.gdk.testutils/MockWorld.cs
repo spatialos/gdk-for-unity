@@ -2,13 +2,6 @@ using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-using Packages.io.improbable.gdk.testutils;
->>>>>>> Inject mock command sender for tests
-=======
->>>>>>> implement pr suggestions
 using Unity.Entities;
 using UnityEngine;
 
@@ -29,7 +22,6 @@ namespace Improbable.Gdk.TestUtils
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
-        public MockCommandSender CommandSender { get; private set; }
 
         public static MockWorld Create(Options options)
         {
@@ -47,13 +39,7 @@ namespace Improbable.Gdk.TestUtils
             options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
-<<<<<<< HEAD
             mockWorld.GetSystem<CommandSystem>().OutgoingHandler = mockWorld.Connection.OutgoingCommandHandler;
-=======
-
-            mockWorld.GetSystem<CommandSystem>().Sender = mockWorld.CommandSender;
->>>>>>> implement pr suggestions
-
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
             return mockWorld;
