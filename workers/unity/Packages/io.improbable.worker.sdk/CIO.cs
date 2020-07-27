@@ -83,7 +83,7 @@ namespace Improbable.Gdk
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateRingBufferStream")]
-        public static extern Stream CreateRingBufferStream(Uint32 capacity_bytes);
+        public static extern Stream CreateRingBufferStream(Uint32 capacityBytes);
 
         /**
          * Creates an I/O stream implemented as a read/write file.
@@ -95,12 +95,12 @@ namespace Improbable.Gdk
          * initialized to read from the beginning of the file and append to the end, regardless of whether
          * it previously existed or not.
          *
-         * Returns a pointer to a file stream. Never returns NULL. Call Io_Stream_GetLastError to check
+         * Returns a pointer to a file stream. Never returns NULL. Call StreamGetLastError to check
          * if an error occurred during file stream creation.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
-        public static extern Stream CreateFileStream(Char* filename, OpenMode open_mode);
+        public static extern Stream CreateFileStream(Char* filename, OpenMode openMode);
 
         /* Destroys the I/O stream. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -135,7 +135,7 @@ namespace Improbable.Gdk
          * Returns the actual number of bytes read. This may be less than the given length iff the stream
          * has less data than the requested amount.
          *
-         * Returns -1 on error. Call Io_Stream_GetLastError to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Read")]
@@ -161,7 +161,7 @@ namespace Improbable.Gdk
          * has advanced. This may be less than the given length iff the stream has less data than the
          * requested amount.
          *
-         * Returns -1 on error. Call Io_Stream_GetLastError() to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Ignore")]

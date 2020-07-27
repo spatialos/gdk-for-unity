@@ -82,7 +82,7 @@ namespace Improbable.Gdk
         /** Returns a hash of the the given span ID. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SpanId_Hash")]
-        public static extern Uint8 SpanIdHash(SpanId span_id);
+        public static extern Uint8 SpanIdHash(SpanId spanId);
 
 
         /** Data for adding a span, used by EventTracerAddSpan. */
@@ -130,7 +130,7 @@ namespace Improbable.Gdk
 
         /**
          * Returns all the key value pairs in the event data object. keys and values must have capacity for
-         * at least Trace_EventData_GetFieldCount(data) elements. This method is provided to discover key
+         * at least EventDataGetFieldCount(data) elements. This method is provided to discover key
          * value pairs of unknown event schema data, therefore the ordering of key value pairs is entirely
          * arbitrary.
          */
@@ -152,7 +152,7 @@ namespace Improbable.Gdk
             public Char* Message;
             public Char* Type;
 
-            // Use the Trace_EventData_* methods to read the data.
+            // Use the EventData* methods to read the data.
             public EventData Data;
         }
 
@@ -173,11 +173,11 @@ namespace Improbable.Gdk
         }
 
         /**
-         * The callback type for spans or events added to the Trace_EventTracer. The Trace_Item will
+         * The callback type for spans or events added to the EventTracer. The Item will
          * only be valid for the duration of the callback.
          */
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-        public delegate void TraceCallback(void* user_data, Item* item);
+        public delegate void TraceCallback(void* userData, Item* item);
 
         /** Parameters for configuring the event-tracer. */
         [StructLayout(LayoutKind.Sequential)]
@@ -192,38 +192,38 @@ namespace Improbable.Gdk
 
         /** Creates an event-tracer. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "Trace_EventTracer_Create")]
+            EntryPoint = "EventTracerCreate")]
         public static extern EventTracer EventTracerCreate(EventTracerParameters* parameters);
 
         /** Frees resources for an event-tracer. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "Trace_EventTracer_Destroy")]
-        public static extern void EventTracerDestroy(IntPtr event_tracer);
+            EntryPoint = "EventTracerDestroy")]
+        public static extern void EventTracerDestroy(IntPtr eventTracer);
 
         /**
          * Enables the event-tracer. When adding spans to the event-tracer, a non-null span ID will be
          * returned and the provided TraceCallback will be invoked.
          * Note that the TraceCallback will NOT be invoked for events added with a null span ID. If a span
-         * was added while the event-tracer was disabled, the Trace_Callback will NOT be invoked for any
+         * was added while the event-tracer was disabled, the TraceCallback will NOT be invoked for any
          * events added to the span (even if the event-tracer is enabled).
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_Enable")]
-        public static extern void EventTracerEnable(EventTracer event_tracer);
+        public static extern void EventTracerEnable(EventTracer eventTracer);
 
         /**
          * Disables the EventTracer. When adding spans to the event-tracer, a null span ID will be
-         * returned and the provided Trace_Callback will NOT be invoked.
-         * Note that the Trace_Callback will be invoked for events added with a non-null span ID. If a span
+         * returned and the provided TraceCallback will NOT be invoked.
+         * Note that the TraceCallback will be invoked for events added with a non-null span ID. If a span
          * was added while the event-tracer was enabled, the Trace_Callback will be invoked for any events
          * added to the span (even if the event-tracer is disabled).
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_Disable")]
-        public static extern void EventTracerDisable(EventTracer event_tracer);
+        public static extern void EventTracerDisable(EventTracer eventTracer);
 
         /**
-         * Sets the per thread active span ID for the Trace_EventTracer. This ID may be used internally by
+         * Sets the per thread active span ID for the EventTracer. This ID may be used internally by
          * the Worker API. For example, subsequent calls to Worker_Connection_Send* will attach the set ID
          * to the internal messages. Calling this function when there is already a non-null span ID active
          * is safe and will overwrite the existing active span ID with the given ID. We recommend unsetting
@@ -232,59 +232,43 @@ namespace Improbable.Gdk
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_SetActiveSpanId")]
-        public static extern void EventTracerSetActiveSpanId(EventTracer event_tracer, SpanId span_id);
+        public static extern void EventTracerSetActiveSpanId(EventTracer eventTracer, SpanId spanId);
 
         /**
          * Unsets the active span ID on the event-tracer for the current thread.
-         * Trace_EventTracer_GetActiveSpanId will return a null span ID.
+         * EventTracerGetActiveSpanId will return a null span ID.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_UnsetActiveSpanId")]
-        public static extern void EventTracerUnsetActiveSpanId(EventTracer event_tracer);
+        public static extern void EventTracerUnsetActiveSpanId(EventTracer eventTracer);
 
         /** Gets the active span ID on the event-tracer. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_GetActiveSpanId")]
-        public static extern SpanId EventTracerGetActiveSpanId(EventTracer event_tracer);
+        public static extern SpanId EventTracerGetActiveSpanId(EventTracer eventTracer);
 
         /** Adds a span to the event-tracer. */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_AddSpan")]
-        public static extern SpanId EventTracerAddSpan(EventTracer event_tracer, SpanId* causes, Uint32 cause_count);
+        public static extern SpanId EventTracerAddSpan(EventTracer eventTracer, SpanId* causes, Uint32 causeCount);
 
         /**
-         * Adds an event to the event-tracer. Note that the `unix_timestamp_millis` field in the event will
+         * Adds an event to the event-tracer. Note that the `UnixTimestampMillis` field in the event will
          * be ignored. Ownership of the event is NOT taken by the event-tracer, it is up to the user to
-         * free Trace_Event.
+         * free TraceEvent.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_AddEvent")]
-        public static extern void EventTracerAddEvent(EventTracer event_tracer, Event @event);
+        public static extern void EventTracerAddEvent(EventTracer eventTracer, Event @event);
 
         /**
-         * Returns true if the given (partial) event object should be sampled. Currently, only the `span_id`
+         * Returns true if the given (partial) event object should be sampled. Currently, only the `spanId`
          * field of the event is considered. This method is useful if generation of the event's message or
-         * data is expensive, e.g. if it involves allocation. Example usage:
-         *
-         *  Trace_Event event{span_id, 0u, nullptr, "event_data_type", nullptr};
-         *  if (Trace_EventTracer_ShouldSampleEvent(event_tracer, &event)) {
-         *    event.message = "received component update";
-         *
-         *    Trace_EventData* event_data = Trace_EventData_Create();
-         *    const char* key = "update_data";
-         *    const char* value = UpdateToString(update);
-         *    Trace_EventData_AddStringFields(event_data, 1u, &key, &value);
-         *
-         *    event.data = event_data;
-         *    Trace_EventTracer_AddEvent(event_tracer, &event);
-         *    Trace_EventData_Destroy(event_data);
-         *    free(value);
-         *  }
-         *
+         * data is expensive, e.g. if it involves allocation.
          */
         [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_ShouldSampleEvent")]
-        public static extern Uint8 EventTracerShouldSampleEvent(EventTracer event_tracer, Event @event);
+        public static extern Uint8 EventTracerShouldSampleEvent(EventTracer eventTracer, Event @event);
 
         /**
          * Create a new trace item from the memory owned by this storage. The item will be valid as long
@@ -293,7 +277,7 @@ namespace Improbable.Gdk
          * The item is initialized by copying the provided item; pass a NULL item argument to create an
          * item in an uninitialized state.
          *
-         * Directly creating a Trace_Item object (on the stack or the heap) by other means than calling this
+         * Directly creating a TraceItem object (on the stack or the heap) by other means than calling this
          * method is discouraged as it will lead to undefined behaviour when passing that item to certain
          * trace API methods (e.g. SerializeItemToStream).
          */
@@ -314,7 +298,7 @@ namespace Improbable.Gdk
         /**
          * Get the serialized size of the trace item in bytes.
          *
-         * Note that each call to Trace_GetSerializedItemSize invalidates the internal state necessary to
+         * Note that each call to GetSerializedItemSize invalidates the internal state necessary to
          * serialize the previous item. Therefore, you must call SerializeItemToStream with one item
          * before calling GetSerializedItemSize with the next item.
          *
