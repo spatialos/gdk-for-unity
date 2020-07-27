@@ -22,7 +22,6 @@ namespace Improbable.Gdk.TestUtils
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
-        public MockCommandSender CommandSender { get; private set; }
 
         public static MockWorld Create(Options options)
         {
@@ -30,7 +29,6 @@ namespace Improbable.Gdk.TestUtils
 
             var connectionBuilder = new MockConnectionHandlerBuilder(options.EnableSerialization);
             mockWorld.Connection = connectionBuilder.ConnectionHandler;
-            mockWorld.CommandSender = new MockCommandSender(mockWorld);
             mockWorld.Worker = WorkerInWorld
                 .CreateWorkerInWorldAsync(connectionBuilder,
                     options.WorkerType ?? "TestWorkerType",
@@ -42,7 +40,7 @@ namespace Improbable.Gdk.TestUtils
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
 
-            mockWorld.GetSystem<CommandSystem>().Sender = mockWorld.CommandSender;
+            mockWorld.GetSystem<CommandSystem>().OutgoingHandler = mockWorld.Connection.OutgoingCommandHandler;
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 

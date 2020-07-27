@@ -7,7 +7,7 @@ using Playground;
 
 namespace Improbable.Gdk.EditmodeTests.Core
 {
-    public class NullableResponseTests : MockBase
+    public class CommandReceivedResponseTests : MockBase
     {
         private const long EntityId = 101;
         private const long LaunchedId = 102;
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.EditmodeTests.Core
             }).Step(world =>
             {
                 var id = world.GetSystem<CommandSystem>().SendCommand(GetRequest());
-                world.CommandSender.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
+                world.Connection.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
                 return id;
             }).Step((world, id) =>
             {

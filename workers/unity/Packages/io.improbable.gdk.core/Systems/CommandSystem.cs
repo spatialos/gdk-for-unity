@@ -3,44 +3,20 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core
 {
-    public interface ICoreCommandSender
-    {
-        CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest;
-    }
-
-    internal class CommandSender : ICoreCommandSender
-    {
-        public CommandSender(WorkerSystem worker)
-        {
-            Worker = worker;
-        }
-
-        private long nextRequestId = 1;
-
-        private WorkerSystem Worker { get; }
-
-        public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
-        {
-            var requestId = new CommandRequestId(nextRequestId++);
-            Worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
-            return requestId;
-        }
-    }
-
     [DisableAutoCreation]
     public class CommandSystem : ComponentSystem
     {
-        internal ICoreCommandSender Sender { get; set; }
+        internal IOutgoingCommandHandler OutgoingHandler { get; set; }
         private WorkerSystem worker;
 
         public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
         {
-            return Sender.SendCommand(request, sendingEntity);
+            return OutgoingHandler.SendCommand(request, sendingEntity);
         }
 
         public void SendResponse<T>(T response) where T : ICommandResponse
         {
-            worker.MessagesToSend.AddCommandResponse(response);
+            OutgoingHandler.SendResponse(response);
         }
 
         public MessagesSpan<T> GetRequests<T>() where T : struct, IReceivedCommandRequest
@@ -71,12 +47,36 @@ namespace Improbable.Gdk.Core
         {
             base.OnCreate();
             worker = World.GetExistingSystem<WorkerSystem>();
-            Sender = new CommandSender(worker);
+            OutgoingHandler = new OutgoingCommandHandler(worker);
             Enabled = false;
         }
 
         protected override void OnUpdate()
         {
+        }
+
+        private class OutgoingCommandHandler : IOutgoingCommandHandler
+        {
+            public OutgoingCommandHandler(WorkerSystem worker)
+            {
+                Worker = worker;
+            }
+
+            private long nextRequestId = 1;
+
+            private WorkerSystem Worker { get; }
+
+            public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
+            {
+                var requestId = new CommandRequestId(nextRequestId++);
+                Worker.MessagesToSend.AddCommandRequest(request, sendingEntity, requestId);
+                return requestId;
+            }
+
+            public void SendResponse<T>(T response) where T : ICommandResponse
+            {
+                Worker.MessagesToSend.AddCommandResponse(response);
+            }
         }
     }
 }
