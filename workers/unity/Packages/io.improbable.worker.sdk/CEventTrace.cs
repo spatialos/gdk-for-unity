@@ -315,7 +315,7 @@ namespace Improbable.Worker.CInterop.Internal
          * The caller is responsible for ensuring that the provided stream has sufficient remaining capacity
          * to hold the serialized item.
          *
-         * Returns 1 on success, 0 on error. Call StorageGetLastError to get the associated error
+         * Returns 1 on success, 0 on error. Call GetLastError to get the associated error
          * message.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
