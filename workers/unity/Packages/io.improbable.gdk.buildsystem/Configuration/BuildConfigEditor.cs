@@ -41,6 +41,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         private WorkerChoicePopup workerChooser;
         private UIStateManager stateManager = new UIStateManager();
         private readonly Dictionary<int, int> toolbarMapping = new Dictionary<int, int>();
+        private BuildEnvironmentConfig lastEnvironmentConfig;
 
         private static string[] allWorkers;
 
@@ -635,9 +636,12 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         {
             // Build a mapping from the 'build target' position in the toolbar to it's position in the 'BuildTargets' array.
             // We do this since sometimes there are different number of targets in the BuildTargets array and those
-            // in the toolbar as some targets are deprecated
-            if (toolbarMapping.Count == 0)
+            // in the toolbar as some targets are deprecated.
+            // We need to build this when the BuildEnvironmentConfig has changed.
+            if (toolbarMapping.Count == 0 || lastEnvironmentConfig != env)
             {
+                toolbarMapping.Clear();
+                lastEnvironmentConfig = env;
                 var toolbarIndex = 0;
                 for (var buildTargetIndex = 0; buildTargetIndex < env.BuildTargets.Count; buildTargetIndex++)
                 {
