@@ -24,7 +24,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Logging
         public void ForwardsCorrectMessageTypes(LogType logType)
         {
             LogAssert.Expect(logType, $"Message with type: {logType}");
-            logDispatcher.HandleLog(logType, new LogEvent($"Message with type: {logType}"));
+            logDispatcher.HandlZeLog(logType, new LogEvent($"Message with type: {logType}"));
         }
 
         [Test]
