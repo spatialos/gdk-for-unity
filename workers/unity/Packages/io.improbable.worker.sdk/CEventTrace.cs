@@ -1,6 +1,4 @@
-using System;
 using System.Runtime.InteropServices;
-using Improbable.Worker.CInterop.Internal;
 using Uint64 = System.UInt64;
 using Uint32 = System.UInt32;
 using Uint16 = System.UInt16;
@@ -12,16 +10,10 @@ using IntPtr = System.IntPtr;
 
 // This file must match the C API (/worker_sdk/c/include/improbable/c_trace.h) *exactly*!
 // Current Worker SDK Version: 14.7.0
-namespace Improbable.Gdk
+namespace Improbable.Worker.CInterop.Internal
 {
     internal unsafe class CEventTrace
     {
-#if UNITY_IOS
-        private const string WorkerLibrary = "__Internal";
-#else
-        private const string WorkerLibrary = "improbable_worker";
-#endif
-
         /**
          * Data for an event. This is a collection of key-value pairs (fields). Use EventData* functions to
          * read or write fields.
@@ -64,23 +56,23 @@ namespace Improbable.Gdk
          * Returns a span ID representing a special null ID. This can be used to indicate that a span
          * should not be actively traced.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SpanId_Null")]
         public static extern SpanId SpanIdNull();
 
         /** Returns a randomly generated span ID. This should only be used for testing purposes.  */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SpanId_GenerateTestSpanId")]
         public static extern SpanId GenerateTestSpanId();
 
 
         /** Returns whether the given span IDs are equal. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SpanId_Equal")]
         public static extern Uint8 SpanIdEqual(SpanId a, SpanId b);
 
         /** Returns a hash of the the given span ID. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SpanId_Hash")]
         public static extern Uint8 SpanIdHash(SpanId spanId);
 
@@ -106,12 +98,12 @@ namespace Improbable.Gdk
          * Creates an empty event data object. This should be populated with EventDataAddStringField
          * before being added to the event-tracer.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_Create")]
         public static extern EventData EventDataCreate();
 
         /** Frees resources for the event data object.*/
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_Destroy")]
         public static extern void EventDataDestroy(IntPtr data);
 
@@ -119,12 +111,12 @@ namespace Improbable.Gdk
          * Adds the key value pair as a field to the given event data object. Note that this may invalidate
          * any keys or values retrieved with EventData_Get*.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_AddStringFields")]
         public static extern void EventDataAddStringFields(EventData data, Uint32 count, Char** keys, Char** values);
 
         /** Returns the number of fields on the given event data object. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldCount")]
         public static extern Uint32 EventDataGetFieldCount(EventData data);
 
@@ -134,12 +126,12 @@ namespace Improbable.Gdk
          * value pairs of unknown event schema data, therefore the ordering of key value pairs is entirely
          * arbitrary.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetStringFields")]
         public static extern void EventDataGetStringFields(EventData data, Char** keys, Char** values);
 
         /** Returns the value for the given key. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldValue")]
         public static extern Char* EventDataGetFieldValue(EventData data, Char* key);
 
@@ -153,7 +145,7 @@ namespace Improbable.Gdk
             public Char* Type;
 
             // Use the EventData* methods to read the data.
-            public EventData Data;
+            public IntPtr Data;
         }
 
         /** An item added to the event-tracer. */
@@ -162,6 +154,9 @@ namespace Improbable.Gdk
         {
             /** The type of the item, defined using ItemType. */
             public Uint8 ItemType;
+
+            /** An item can either be a Span or an Event. */
+            public Union ItemUnion;
 
             [StructLayout(LayoutKind.Explicit)]
             public struct Union
@@ -191,12 +186,12 @@ namespace Improbable.Gdk
         }
 
         /** Creates an event-tracer. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "EventTracerCreate")]
         public static extern EventTracer EventTracerCreate(EventTracerParameters* parameters);
 
         /** Frees resources for an event-tracer. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "EventTracerDestroy")]
         public static extern void EventTracerDestroy(IntPtr eventTracer);
 
@@ -207,7 +202,7 @@ namespace Improbable.Gdk
          * was added while the event-tracer was disabled, the TraceCallback will NOT be invoked for any
          * events added to the span (even if the event-tracer is enabled).
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_Enable")]
         public static extern void EventTracerEnable(EventTracer eventTracer);
 
@@ -218,7 +213,7 @@ namespace Improbable.Gdk
          * was added while the event-tracer was enabled, the Trace_Callback will be invoked for any events
          * added to the span (even if the event-tracer is disabled).
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_Disable")]
         public static extern void EventTracerDisable(EventTracer eventTracer);
 
@@ -230,7 +225,7 @@ namespace Improbable.Gdk
          * the active span ID when no longer needed to avoid creating causal relationships between
          * unrelated spans.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_SetActiveSpanId")]
         public static extern void EventTracerSetActiveSpanId(EventTracer eventTracer, SpanId spanId);
 
@@ -238,17 +233,17 @@ namespace Improbable.Gdk
          * Unsets the active span ID on the event-tracer for the current thread.
          * EventTracerGetActiveSpanId will return a null span ID.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_UnsetActiveSpanId")]
         public static extern void EventTracerUnsetActiveSpanId(EventTracer eventTracer);
 
         /** Gets the active span ID on the event-tracer. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_GetActiveSpanId")]
         public static extern SpanId EventTracerGetActiveSpanId(EventTracer eventTracer);
 
         /** Adds a span to the event-tracer. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_AddSpan")]
         public static extern SpanId EventTracerAddSpan(EventTracer eventTracer, SpanId* causes, Uint32 causeCount);
 
@@ -257,7 +252,7 @@ namespace Improbable.Gdk
          * be ignored. Ownership of the event is NOT taken by the event-tracer, it is up to the user to
          * free TraceEvent.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_AddEvent")]
         public static extern void EventTracerAddEvent(EventTracer eventTracer, Event @event);
 
@@ -266,7 +261,7 @@ namespace Improbable.Gdk
          * field of the event is considered. This method is useful if generation of the event's message or
          * data is expensive, e.g. if it involves allocation.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventTracer_ShouldSampleEvent")]
         public static extern Uint8 EventTracerShouldSampleEvent(EventTracer eventTracer, Event @event);
 
@@ -281,7 +276,7 @@ namespace Improbable.Gdk
          * method is discouraged as it will lead to undefined behaviour when passing that item to certain
          * trace API methods (e.g. SerializeItemToStream).
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_Item_Create")]
         public static extern Item* ItemCreate(CIO.Storage storage, Item* item);
 
@@ -291,7 +286,7 @@ namespace Improbable.Gdk
          * The item is initially uninitialized, but successive calls to this method on the same thread
          * always returns the same item, which may have been modified by previous usage.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_Item_GetThreadLocal")]
         public static extern Item* ItemGetThreadLocal();
 
@@ -305,7 +300,7 @@ namespace Improbable.Gdk
          * Returns 0 on error. You can call GetLastError to get the associated error message,
          * but it is safe to pass 0 as the size to a subsequent call to SerializeItemToStream.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_GetSerializedItemSize")]
         public static extern Uint32 GetSerializedItemSize(Item* item);
 
@@ -320,11 +315,10 @@ namespace Improbable.Gdk
          * The caller is responsible for ensuring that the provided stream has sufficient remaining capacity
          * to hold the serialized item.
          *
-         * Returns 1 on success, 0 on error. Call Io_Storage_GetLastError to get the associated error
+         * Returns 1 on success, 0 on error. Call StorageGetLastError to get the associated error
          * message.
          */
-        // TODO: Check where Io_Storage_GetLastError exists
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SerializeItemToStream")]
         public static extern Int8 SerializeItemToStream(CIO.Stream stream, Item* item, Uint32 size);
 
@@ -336,7 +330,7 @@ namespace Improbable.Gdk
          * message, but it is safe to pass 0 as the size to a subsequent call to
          * DeserializeItemFromStream.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_GetNextSerializedItemSize")]
         public static extern Uint32 GetNextSerializedItemSize(CIO.Stream stream);
 
@@ -360,7 +354,7 @@ namespace Improbable.Gdk
          * Returns -1 if there was an error during serialization. Call GetLastError to get the
          * associated error message.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_DeserializeItemFromStream")]
         public static extern Int8 DeserializeItemFromStream(CIO.Stream stream, Item* item, Uint32 size);
 
@@ -368,12 +362,12 @@ namespace Improbable.Gdk
          * Returns the last error which occurred during a trace API method call. Returns nullptr if no
          * such error has occurred.
          */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_GetLastError")]
         public static extern Char* GetLastError();
 
         /* Clears the current error such that the next call to GetLastError returns nullptr. */
-        [DllImport(WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_ClearError")]
         public static extern void ClearError();
     }
