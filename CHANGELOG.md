@@ -21,6 +21,7 @@
 
 - Added support for multiple annotations in Code Writer API. [#1427](https://github.com/spatialos/gdk-for-unity/pull/1427)
 - Prevent building workers with Unity Editor compile errors. [#1425](https://github.com/spatialos/gdk-for-unity/pull/1425)
+- Added capability to test commands through the `MockConnectionHandler` [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
 
 ### Changed
 
