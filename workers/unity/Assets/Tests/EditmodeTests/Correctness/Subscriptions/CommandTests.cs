@@ -19,9 +19,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
             var pass = false;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
             World.Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
@@ -43,26 +40,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 {
                     Assert.IsTrue(pass);
                 });
-=======
-            SetupWorld().Step(world =>
-=======
-            World.Step(world =>
-            {
-                world.Connection.CreateEntity(EntityId, GetTemplate());
-            }).Step(world =>
->>>>>>> Adjust access modifiers
-            {
-                var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
-                return commander.Sender;
-            }).Step((world, sender) =>
-            {
-                sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
-                world.Connection.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
-            }).Step(world =>
-            {
-                Assert.IsTrue(pass);
-            });
->>>>>>> implement pr suggestions
+
         }
 
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)
@@ -94,11 +72,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 #pragma warning disable 649
         private class CommandStub : MonoBehaviour
         {
-<<<<<<< HEAD
+
             [Require] public TestCommandsCommandSender Sender;
-=======
-            [Require] public LauncherCommandSender Sender;
->>>>>>> Adjust access modifiers
         }
 #pragma warning restore 649
     }
