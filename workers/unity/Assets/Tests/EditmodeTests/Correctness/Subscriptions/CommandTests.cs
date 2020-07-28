@@ -41,6 +41,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 });
         }
 
+        [Test]
+        public void SubscriptionSystem_does_not_invoke_callback_when_receiver_becomes_invalid()
+        {
+        }
+
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)
         {
             return new TestCommands.Test.ReceivedResponse(
@@ -72,6 +77,28 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         {
 
             [Require] public TestCommandsCommandSender Sender;
+        }
+
+        private class StubWithLog : MonoBehaviour
+        {
+            [Require] public TestCommandsCommandSender Sender;
+            [Require] public WorldCommandSender CommandSender;
+            [Require] public ILogDispatcher Logger;
+
+            public static LogEvent MakeEvent(EntityId? id, string message)
+            {
+                return new LogEvent("CreateEntity failed.")
+                    .WithField(LoggingUtils.EntityId, id)
+                    .WithField("Reason", message);
+            }
+
+            public void OnEntityCreated(WorldCommands.CreateEntity.ReceivedResponse response)
+            {
+                if (response.StatusCode != StatusCode.Success)
+                {
+                    Logger.HandleLog(LogType.Error, MakeEvent(response.RequestPayload.EntityId, response.Message));
+                }
+            }
         }
 #pragma warning restore 649
     }
