@@ -1,6 +1,7 @@
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.TestUtils;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Gdk.Test;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
@@ -23,11 +24,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 world.Connection.CreateEntity(EntityId, GetTemplate());
             }).Step(world =>
             {
-                var (_, commander) = world.CreateGameObject<LaunchCommander>(EntityId);
+                var (_, commander) = world.CreateGameObject<CommandStub>(EntityId);
                 return commander.Sender;
             }).Step((world, sender) =>
             {
-                sender.SendLaunchEntityCommand(GetRequest(), response => pass = true);
+                sender.SendTestCommand(GetRequest(), response => pass = true);
                 world.Connection.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
             }).Step(world =>
             {
@@ -35,9 +36,9 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
             });
         }
 
-        private static Launcher.LaunchEntity.ReceivedResponse ResponseGenerator(CommandRequestId id, Launcher.LaunchEntity.Request request)
+        private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)
         {
-            return new Launcher.LaunchEntity.ReceivedResponse(
+            return new TestCommands.Test.ReceivedResponse(
                 default,
                 request.TargetEntityId,
                 null,
@@ -57,16 +58,14 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
             return template;
         }
 
-        private static Launcher.LaunchEntity.Request GetRequest()
+        private static TestCommands.Test.Request GetRequest()
         {
-            return new Launcher.LaunchEntity.Request(new EntityId(EntityId), new LaunchCommandRequest(new EntityId(LaunchedId),
-                new Vector3f(1, 0, 1),
-                new Vector3f(0, 1, 0), 5, new EntityId(EntityId)));
+            return new TestCommands.Test.Request(new EntityId(EntityId), new Empty());
         }
 #pragma warning disable 649
-        private class LaunchCommander : MonoBehaviour
+        private class CommandStub : MonoBehaviour
         {
-            [Require] public LauncherCommandSender Sender;
+            [Require] public TestCommandsCommandSender Sender;
         }
 #pragma warning restore 649
     }
