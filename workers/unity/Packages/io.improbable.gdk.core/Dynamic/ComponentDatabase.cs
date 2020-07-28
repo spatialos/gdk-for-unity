@@ -25,10 +25,10 @@ namespace Improbable.Gdk.Core
 
             ComponentsToIds = Metaclasses.ToDictionary(pair => pair.Value.Data, pair => pair.Key);
             SnapshotsToIds = Metaclasses.ToDictionary(pair => pair.Value.Snapshot, pair => pair.Key);
-            RequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
+            RequestsToCommandMetaclass = Metaclasses
                 .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.Request, cmd)))
                 .ToDictionary(pair => pair.Request, pair => pair.cmd);
-            ReceivedRequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
+            ReceivedRequestsToCommandMetaclass = Metaclasses
                 .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.ReceivedRequest, cmd)))
                 .ToDictionary(pair => pair.ReceivedRequest, pair => pair.cmd);
         }

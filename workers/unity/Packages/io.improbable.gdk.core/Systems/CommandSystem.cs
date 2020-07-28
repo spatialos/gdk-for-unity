@@ -57,14 +57,14 @@ namespace Improbable.Gdk.Core
 
         private class OutgoingCommandHandler : IOutgoingCommandHandler
         {
+            private long nextRequestId = 1;
+
+            private WorkerSystem Worker { get; }
+
             public OutgoingCommandHandler(WorkerSystem worker)
             {
                 Worker = worker;
             }
-
-            private long nextRequestId = 1;
-
-            private WorkerSystem Worker { get; }
 
             public CommandRequestId SendCommand<T>(T request, Entity sendingEntity = default) where T : ICommandRequest
             {

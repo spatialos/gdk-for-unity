@@ -18,21 +18,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
             var pass = false;
-            World.Step(world =>
-            {
-                world.Connection.CreateEntity(EntityId, GetTemplate());
-            }).Step(world =>
-            {
-                var (_, commander) = world.CreateGameObject<CommandStub>(EntityId);
-                return commander.Sender;
-            }).Step((world, sender) =>
-            {
-                sender.SendTestCommand(GetRequest(), response => pass = true);
-                world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator);
-            }).Step(world =>
-            {
-                Assert.IsTrue(pass);
-            });
+            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
+                .Step(world => world.CreateGameObject<CommandStub>(EntityId).Item2.Sender)
+                .Step((world, sender) => sender.SendTestCommand(GetRequest(), response => pass = true))
+                .Step(world => world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator))
+                .Step(world => Assert.IsTrue(pass));
         }
 
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)

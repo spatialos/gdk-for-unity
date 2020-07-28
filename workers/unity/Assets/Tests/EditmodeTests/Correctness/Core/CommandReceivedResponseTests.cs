@@ -15,30 +15,31 @@ namespace Improbable.Gdk.EditmodeTests.Core
         [Test]
         public void ReceivedResponse_isNull_when_Response_is_not_received()
         {
-            World.Step(world =>
-            {
-                world.Connection.CreateEntity(EntityId, GetTemplate());
-            }).Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest())).Step((world, id) =>
-            {
-                Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
-            });
+            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
+                .Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest()))
+                .Step((world, id) => Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue));
         }
 
         [Test]
         public void ReceivedResponse_isNotNull_when_Response_is_received()
         {
-            World.Step(world =>
-            {
-                world.Connection.CreateEntity(EntityId, GetTemplate());
-            }).Step(world =>
-            {
-                var id = world.GetSystem<CommandSystem>().SendCommand(GetRequest());
-                world.Connection.GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id, ResponseGenerator);
-                return id;
-            }).Step((world, id) =>
-            {
-                Assert.IsTrue(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
-            });
+            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
+                .Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest()))
+                .Step((world, id) =>
+                {
+                    world.Connection
+                        .GenerateResponse<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(id,
+                            ResponseGenerator);
+                    return id;
+                })
+                .Step((world, id) =>
+                {
+                    var response = world.GetSystem<CommandSystem>()
+                        .GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id);
+                    Assert.IsTrue(response.HasValue);
+                    Assert.AreEqual(response.Value.EntityId, GetRequest().TargetEntityId);
+                    Assert.AreEqual(response.Value.RequestPayload, GetRequest().Payload);
+                });
         }
 
         private static Launcher.LaunchEntity.ReceivedResponse ResponseGenerator(CommandRequestId id, Launcher.LaunchEntity.Request request)

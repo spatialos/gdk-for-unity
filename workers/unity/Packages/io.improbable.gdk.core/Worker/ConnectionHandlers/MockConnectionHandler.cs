@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
 
         internal MockConnectionHandler()
         {
-            OutgoingCommandHandler = new MockOutgoingCommandHandler(OnSendCommand);
+            OutgoingCommandHandler = new MockOutgoingCommandHandler(this);
         }
 
         private uint updateId;
@@ -294,16 +294,16 @@ namespace Improbable.Gdk.Core
         {
             private long nextRequestId = 1;
 
-            private readonly Action<long, Type, ICommandRequest> onSendCommand;
+            private readonly MockConnectionHandler connectionHandler;
 
-            internal MockOutgoingCommandHandler(Action<long, Type, ICommandRequest> onSendCommand)
+            internal MockOutgoingCommandHandler(MockConnectionHandler connectionHandler)
             {
-                this.onSendCommand = onSendCommand;
+                this.connectionHandler = connectionHandler;
             }
 
             public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
             {
-                onSendCommand(nextRequestId, typeof(TRequest), request);
+                connectionHandler.OnSendCommand(nextRequestId, typeof(TRequest), request);
                 return new CommandRequestId(nextRequestId++);
             }
 
