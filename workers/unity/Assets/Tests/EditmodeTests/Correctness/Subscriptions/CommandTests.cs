@@ -7,7 +7,6 @@ using NUnit.Framework;
 using UnityEngine;
 using Unity.Entities;
 
-
 namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 {
     [TestFixture]
