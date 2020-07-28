@@ -40,7 +40,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 {
                     Assert.IsTrue(pass);
                 });
-
         }
 
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)
