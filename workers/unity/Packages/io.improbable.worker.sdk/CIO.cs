@@ -3,7 +3,7 @@ using Int64 = System.Int64;
 using Uint64 = System.UInt64;
 using Uint32 = System.UInt32;
 using Uint8 = System.Byte;
-using Char = System.Char;
+using Char = System.Byte;
 using IntPtr = System.IntPtr;
 
 namespace Improbable.Worker.CInterop.Internal
