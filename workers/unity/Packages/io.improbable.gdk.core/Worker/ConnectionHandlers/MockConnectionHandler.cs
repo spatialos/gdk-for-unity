@@ -309,7 +309,7 @@ namespace Improbable.Gdk.Core
 
             public void SendResponse<T>(T response) where T : ICommandResponse
             {
-                // Do nothing
+                throw new NotImplementedException("Not implemented yet");
             }
         }
 
