@@ -13,7 +13,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     public class CommandTests : MockBase
     {
         private const long EntityId = 101;
-        private const long LaunchedId = 102;
 
         [Test]
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
@@ -29,7 +28,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
             }).Step((world, sender) =>
             {
                 sender.SendTestCommand(GetRequest(), response => pass = true);
-                world.Connection.GenerateResponses<Launcher.LaunchEntity.Request, Launcher.LaunchEntity.ReceivedResponse>(ResponseGenerator);
+                world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator);
             }).Step(world =>
             {
                 Assert.IsTrue(pass);
@@ -54,7 +53,7 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new Launcher.Snapshot(), "worker");
+            template.AddComponent(new TestCommands.Snapshot(), "worker");
             return template;
         }
 
