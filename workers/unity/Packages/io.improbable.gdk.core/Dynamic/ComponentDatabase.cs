@@ -32,12 +32,6 @@ namespace Improbable.Gdk.Core
             ReceivedRequestsToCommandMetaclass = Metaclasses
                 .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.ReceivedRequest, cmd)))
                 .ToDictionary(pair => pair.ReceivedRequest, pair => pair.cmd);
-            RequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
-                .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.Request, cmd)))
-                .ToDictionary(pair => pair.Request, pair => pair.cmd);
-            ReceivedRequestsToCommandMetaclass = Metaclasses.Where(pair => pair.Value.Commands.Length > 0)
-                .SelectMany(pair => pair.Value.Commands.Select(cmd => (cmd.ReceivedRequest, cmd)))
-                .ToDictionary(pair => pair.ReceivedRequest, pair => pair.cmd);
         }
 
         public static IComponentMetaclass GetMetaclass(uint componentId)
