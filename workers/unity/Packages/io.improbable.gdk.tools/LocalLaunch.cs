@@ -91,8 +91,9 @@ namespace Improbable.Gdk.Tools
             {
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
+                                     set projectDir to ""{Common.SpatialProjectRootDir}""
                                      activate
-                                     do script ""cd {Common.SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                     do script ""cd "" & quoted form of projectDir & "" && {Common.SpatialBinary} {commandArgs}""
                                      end tell'";
                 unityClientZipName = "UnityClient@Mac.zip";
             }
