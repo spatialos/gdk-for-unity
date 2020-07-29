@@ -46,9 +46,18 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         [Test]
         public void SubscriptionSystem_does_not_invoke_callback_when_sender_is_invalid()
         {
-            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
-                .Step(world => world.CreateGameObject<CommandStub>(EntityId).Item2.Sender)
-                .Step((world, sender) => sender.SendTestCommand(GetRequest(), response => throw new AssertionException("Don't call")))
+            World.Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    return world.CreateGameObject<CommandStub>(EntityId).Item2.Sender;
+                })
+                .Step((world, sender) =>
+                {
+                    sender.SendTestCommand(GetRequest(), response => throw new AssertionException("Don't call"));
+                })
                 .Step((world, sender) =>
                 {
                     world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(
@@ -61,15 +70,27 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         [Test]
         public void SubscriptionSystem_does_not_invoke_callback_when_gameobject_is_unlinked()
         {
-            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
-                .Step(world => world.CreateGameObject<CommandStub>(EntityId).Item2)
-                .Step((world, mono) => mono.Sender.SendTestCommand(GetRequest(), response => throw new AssertionException("Don't call")))
+            World.Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    return world.CreateGameObject<CommandStub>(EntityId).Item2;
+                })
+                .Step((world, mono) =>
+                {
+                    mono.Sender.SendTestCommand(GetRequest(), response => throw new AssertionException("Don't call"));
+                })
                 .Step((world, mono) =>
                 {
                     world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator);
                     world.Linker.UnlinkGameObjectFromEntity(new EntityId(EntityId), mono.gameObject);
                 })
-                .Step((world, mono) => Assert.IsFalse(mono.enabled));
+                .Step((world, mono) =>
+                {
+                    Assert.IsFalse(mono.enabled);
+                });
         }
 
         private static TestCommands.Test.ReceivedResponse ResponseGenerator(CommandRequestId id, TestCommands.Test.Request request)
