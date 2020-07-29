@@ -7,6 +7,10 @@
 - Fixed an `IndexOutOfRangeException` that could be thrown when editing your 'Build Configuration' asset. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - The 'Build Configuration' Inspector window will no longer report your Android SDK installation as missing if you have a completely fresh Unity installation with the bundled Android SDK. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 
+### Added
+
+- Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
+
 ### Internal
 
 - Added C# bindings for C Event Tracing API. [#1440](https://github.com/spatialos/gdk-for-unity/pull/1440)
