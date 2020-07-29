@@ -278,7 +278,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_Item_Create")]
-        public static extern Item* ItemCreate(CIO.Storage storage, Item* item);
+        public static extern Item* ItemCreate(CIO.StorageHandle storage, Item* item);
 
         /**
          * Returns a pointer to a thread-local trace item.
@@ -320,7 +320,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_SerializeItemToStream")]
-        public static extern Int8 SerializeItemToStream(CIO.Stream stream, Item* item, Uint32 size);
+        public static extern Int8 SerializeItemToStream(CIO.StreamHandle stream, Item* item, Uint32 size);
 
         /**
          * Get the serialized size, in bytes, of the next serialized trace item to be read from the stream.
@@ -332,7 +332,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_GetNextSerializedItemSize")]
-        public static extern Uint32 GetNextSerializedItemSize(CIO.Stream stream);
+        public static extern Uint32 GetNextSerializedItemSize(CIO.StreamHandle stream);
 
         /**
          * Deserialize the next trace item from the stream.
@@ -356,7 +356,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_DeserializeItemFromStream")]
-        public static extern Int8 DeserializeItemFromStream(CIO.Stream stream, Item* item, Uint32 size);
+        public static extern Int8 DeserializeItemFromStream(CIO.StreamHandle stream, Item* item, Uint32 size);
 
         /**
          * Returns the last error which occurred during a trace API method call. Returns nullptr if no
