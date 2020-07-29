@@ -15,16 +15,32 @@ namespace Improbable.Gdk.EditmodeTests.Core
         [Test]
         public void ReceivedResponse_isNull_when_Response_is_not_received()
         {
-            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
-                .Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest()))
-                .Step((world, id) => Assert.IsFalse(world.GetSystem<CommandSystem>().GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue));
+            World.Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    return world.GetSystem<CommandSystem>().SendCommand(GetRequest());
+                })
+                .Step((world, id) =>
+                {
+                    Assert.IsFalse(world.GetSystem<CommandSystem>()
+                        .GetResponse<Launcher.LaunchEntity.ReceivedResponse>(id).HasValue);
+                });
         }
 
         [Test]
         public void ReceivedResponse_isNotNull_when_Response_is_received()
         {
-            World.Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
-                .Step(world => world.GetSystem<CommandSystem>().SendCommand(GetRequest()))
+            World.Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, GetTemplate());
+                })
+                .Step(world =>
+                {
+                    return world.GetSystem<CommandSystem>().SendCommand(GetRequest());
+                })
                 .Step((world, id) =>
                 {
                     world.Connection
