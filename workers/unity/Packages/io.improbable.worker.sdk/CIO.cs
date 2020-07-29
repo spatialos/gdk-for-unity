@@ -142,7 +142,7 @@ namespace Improbable.Worker.CInterop.Internal
          * Returns the actual number of bytes read. This may be less than the given length iff the stream
          * has less data than the requested amount.
          *
-         * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Peek")]
@@ -155,7 +155,7 @@ namespace Improbable.Worker.CInterop.Internal
          * has advanced. This may be less than the given length iff the stream has less data than the
          * requested amount.
          *
-         * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Ignore")]
