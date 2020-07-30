@@ -23,3 +23,6 @@
 # Jetbrains
 /Assets/Plugins/Editor/Jetbrains
 /Assets/Plugins/Editor/Jetbrains.meta
+
+# Sonarcube dependency
+global.json
