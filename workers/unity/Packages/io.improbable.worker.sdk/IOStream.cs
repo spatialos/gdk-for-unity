@@ -35,9 +35,6 @@ namespace Improbable.Worker.CInterop
 
         public void Write(byte[] data)
         {
-            // Maybe use StreamGetRemainingWriteCapacityBytes to prevent attempting to write to the stream if
-            // sizeof(data) > remaining capacity
-
             var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(stream);
             if (remainingCapacity < data.Length)
             {
@@ -65,47 +62,58 @@ namespace Improbable.Worker.CInterop
 
         public byte[] Read(uint bytesToRead)
         {
-            var b = new byte[bytesToRead];
-            var c = GCHandle.Alloc(b, GCHandleType.Pinned);
-            var bytesRead = CIO.StreamRead(stream, (byte*) c.AddrOfPinnedObject(), bytesToRead);
+            var streamData = new byte[bytesToRead];
+            var dataHandle = GCHandle.Alloc(streamData, GCHandleType.Pinned);
+            var bytesRead = CIO.StreamRead(stream, (byte*) dataHandle.AddrOfPinnedObject(), bytesToRead);
 
             if (bytesRead == -1)
             {
                 var rawError = CIO.StreamGetLastError(stream);
-                throw new Exception(ApiInterop.FromUtf8Cstr(rawError));
+                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
             }
 
             if (bytesRead != bytesToRead)
             {
-                throw new Exception($"Failed to read {bytesToRead} bytes, only read ${bytesRead}.");
+                throw new IOException($"Failed to read {bytesToRead} bytes, only read {bytesRead}.");
             }
 
-            return c.Target as byte[];
+            return dataHandle.Target as byte[];
         }
 
         public byte[] Peek(uint bytes)
         {
-            var b = new byte[bytes];
-            var c = GCHandle.Alloc(b, GCHandleType.Pinned);
-            var bytesPeeked = CIO.StreamPeek(stream, (byte*) c.AddrOfPinnedObject(), bytes);
+            var streamData = new byte[bytes];
+            var dataHandle = GCHandle.Alloc(streamData, GCHandleType.Pinned);
+            var bytesPeeked = CIO.StreamPeek(stream, (byte*) dataHandle.AddrOfPinnedObject(), bytes);
 
             if (bytesPeeked == -1)
             {
                 var rawError = CIO.StreamGetLastError(stream);
-                throw new Exception(ApiInterop.FromUtf8Cstr(rawError));
+                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
             }
 
             if (bytesPeeked != bytes)
             {
-                throw new Exception($"Failed to read {bytes} bytes, only read ${bytes}.");
+                throw new IOException($"Failed to read {bytes} bytes, only read {bytes}.");
             }
 
-            return c.Target as byte[];
+            return dataHandle.Target as byte[];
         }
 
         public void Ignore(uint bytesToIgnore)
         {
-            CIO.StreamIgnore(stream, bytesToIgnore);
+            var bytesIgnored = CIO.StreamIgnore(stream, bytesToIgnore);
+
+            if (bytesIgnored == -1)
+            {
+                var rawError = CIO.StreamGetLastError(stream);
+                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+            }
+
+            if (bytesIgnored != bytesToIgnore)
+            {
+                throw new IOException($"Failed to ignore {bytesToIgnore} bytes, only ignored {bytesToIgnore}.");
+            }
         }
     }
 }
