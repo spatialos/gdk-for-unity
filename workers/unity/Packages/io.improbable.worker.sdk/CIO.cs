@@ -133,7 +133,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Read")]
-        public static extern Uint64 StreamRead(StreamHandle stream, Uint8* bytes, Uint32 length);
+        public static extern Int64 StreamRead(StreamHandle stream, Uint8* bytes, Uint32 length);
 
         /**
          * Reads as much of the stream's data as possible into the given buffer without advancing the read
