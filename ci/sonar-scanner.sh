@@ -66,6 +66,7 @@ pushd "workers/unity"
     # Wildcards don't appear to play nice with this.
     args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
 
+    dotnet new globaljson --sdk-version 2.2.402 --force 
     traceStart "Execute sonar-scanner :sonarqube:"
         dotnet-sonarscanner begin "${args[@]}"
         dotnet msbuild ./unity.sln -t:Rebuild -nr:false | tee "${PROJECT_DIR}/logs/sonar-msbuild.log"
