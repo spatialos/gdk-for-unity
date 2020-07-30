@@ -91,8 +91,9 @@ namespace Improbable.Gdk.Tools
             {
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
+                                     set projectDir to ""{Common.SpatialProjectRootDir}""
                                      activate
-                                     do script ""cd {Common.SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                     do script ""cd "" & quoted form of projectDir & "" && {Common.SpatialBinary} {commandArgs}""
                                      end tell'";
                 unityClientZipName = "UnityClient@Mac.zip";
             }
@@ -221,7 +222,7 @@ namespace Improbable.Gdk.Tools
             var command = Common.SpatialBinary;
 
 #if UNITY_EDITOR_OSX
-            var commandArgs = $"local launch --enable_pre_run_check=false --snapshot '{toolsConfig.CustomSnapshotPath}' --experimental_runtime={toolsConfig.RuntimeVersion}";
+            var commandArgs = $"local launch --enable_pre_run_check=false --experimental_runtime={toolsConfig.RuntimeVersion}";
 #else
             var commandArgs = $"local launch --enable_pre_run_check=false --snapshot \"{toolsConfig.CustomSnapshotPath}\" --experimental_runtime={toolsConfig.RuntimeVersion}";
 #endif
@@ -237,7 +238,9 @@ namespace Improbable.Gdk.Tools
                 command = "osascript";
                 commandArgs = $@"-e 'tell application ""Terminal""
                                      activate
-                                     do script ""cd {Common.SpatialProjectRootDir} && {Common.SpatialBinary} {commandArgs}""
+                                     set projectDir to ""{Common.SpatialProjectRootDir}""
+                                     set snapshotPath to ""{toolsConfig.CustomSnapshotPath}""
+                                     do script ""cd "" & quoted form of projectDir & "" && {Common.SpatialBinary} {commandArgs} --snapshot "" & quoted form of snapshotPath
                                      end tell'";
             }
 
@@ -245,7 +248,7 @@ namespace Improbable.Gdk.Tools
             {
                 CreateNoWindow = false,
                 UseShellExecute = true,
-                WorkingDirectory = Common.SpatialProjectRootDir
+                WorkingDirectory = Common.SpatialProjectRootDir,
             };
 
             var process = Process.Start(processInfo);
