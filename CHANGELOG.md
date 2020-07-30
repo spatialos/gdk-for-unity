@@ -2,10 +2,15 @@
 
 ## Unreleased
 
+### Added
+
+- Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
+
 ### Fixed
 
 - Fixed an `IndexOutOfRangeException` that could be thrown when editing your 'Build Configuration' asset. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - The 'Build Configuration' Inspector window will no longer report your Android SDK installation as missing if you have a completely fresh Unity installation with the bundled Android SDK. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
+- Fixed a bug where having spaces in the path to your project would cause the 'Local launch' and 'Launch standalone client' menu options to fail on MacOS. [#1442](https://github.com/spatialos/gdk-for-unity/pull/1442)
 
 ### Internal
 

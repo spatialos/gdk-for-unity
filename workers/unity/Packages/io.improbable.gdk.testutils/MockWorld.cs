@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using NUnit.Framework;
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
 
 namespace Improbable.Gdk.TestUtils
@@ -22,7 +19,6 @@ namespace Improbable.Gdk.TestUtils
 
         public WorkerInWorld Worker { get; private set; }
         public MockConnectionHandler Connection { get; private set; }
-
         public EntityGameObjectLinker Linker { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
@@ -33,7 +29,6 @@ namespace Improbable.Gdk.TestUtils
 
             var connectionBuilder = new MockConnectionHandlerBuilder(options.EnableSerialization);
             mockWorld.Connection = connectionBuilder.ConnectionHandler;
-
             mockWorld.Worker = WorkerInWorld
                 .CreateWorkerInWorldAsync(connectionBuilder,
                     options.WorkerType ?? "TestWorkerType",
@@ -44,6 +39,8 @@ namespace Improbable.Gdk.TestUtils
             options.AdditionalSystems?.Invoke(mockWorld.Worker.World);
 
             mockWorld.Linker = new EntityGameObjectLinker(mockWorld.Worker.World);
+
+            mockWorld.GetSystem<CommandSystem>().OutgoingHandler = mockWorld.Connection.OutgoingCommandHandler;
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
