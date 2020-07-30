@@ -83,6 +83,8 @@ traceStart "Testing Unity: Playmode :joystick:"
     popd
 traceEnd
 
-ci/sonar-scanner.sh
+if ! isMacOS; then
+    ci/sonar-scanner.sh
+fi
 
 cleanUnity "$(pwd)/workers/unity"
