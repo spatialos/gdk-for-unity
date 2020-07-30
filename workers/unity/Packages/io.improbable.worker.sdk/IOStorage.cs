@@ -1,7 +1,5 @@
 using System;
-using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
-using Packages.io.improbable.worker.sdk;
 
 namespace Improbable.Worker.CInterop
 {

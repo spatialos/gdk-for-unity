@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
 
-namespace Packages.io.improbable.worker.sdk
+namespace Improbable.Worker.CInterop
 {
     public unsafe class IOStream : IDisposable
     {
