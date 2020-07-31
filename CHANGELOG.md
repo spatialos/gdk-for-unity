@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `test-dotnet3.1` - 2020-07-31
+
 ### Added
 
 - Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)

@@ -1,13 +1,13 @@
 {
   "name": "io.improbable.gdk.transformsynchronization2d",
   "displayName": "SpatialOS GDK Transform Synchronization 2D",
-  "version": "0.3.9",
+  "version": "test-dotnet3.1",
   "unity": "2019.3",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Transform Synchronization Module 2D.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.9",
-    "io.improbable.gdk.transformsynchronization": "0.3.9",
+    "io.improbable.gdk.core": "test-dotnet3.1",
+    "io.improbable.gdk.transformsynchronization": "test-dotnet3.1",
     "com.unity.modules.physics2d": "1.0.0"
   }
 }
