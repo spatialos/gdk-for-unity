@@ -3,7 +3,7 @@ using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
 {
-    public class IOStorage : IDisposable
+    public sealed class IOStorage : IDisposable
     {
         private readonly CIO.StorageHandle storage;
 
