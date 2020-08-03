@@ -24,7 +24,6 @@ namespace Improbable.Worker.CInterop
         public void Dispose()
         {
             stream.Dispose();
-            GC.SuppressFinalize(this);
         }
 
         public static IOStream CreateRingBufferStream(uint capacity)
