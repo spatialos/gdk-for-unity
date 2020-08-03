@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
@@ -62,9 +61,9 @@ namespace Improbable.Worker.CInterop
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
-        public (byte[], long) Read(uint bytesToRead)
+        public long Read(uint bytesToRead, out byte[] streamData)
         {
-            var streamData = new byte[bytesToRead];
+            streamData = new byte[bytesToRead];
 
             var bytesRead = 0L;
             fixed (byte* streamDataPointer = streamData)
@@ -74,7 +73,7 @@ namespace Improbable.Worker.CInterop
 
             if (bytesRead != -1)
             {
-                return (streamData, bytesRead);
+                return bytesRead;
             }
 
             var rawError = CIO.StreamGetLastError(stream);
