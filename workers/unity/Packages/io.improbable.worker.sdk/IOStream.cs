@@ -13,7 +13,7 @@ namespace Improbable.Worker.CInterop
 
     public sealed unsafe class IOStream : IDisposable
     {
-        public readonly CIO.StreamHandle stream;
+        private readonly CIO.StreamHandle stream;
 
         private IOStream(CIO.StreamHandle stream)
         {
