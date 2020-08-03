@@ -11,6 +11,7 @@
 - Fixed an `IndexOutOfRangeException` that could be thrown when editing your 'Build Configuration' asset. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - The 'Build Configuration' Inspector window will no longer report your Android SDK installation as missing if you have a completely fresh Unity installation with the bundled Android SDK. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - Fixed a bug where having spaces in the path to your project would cause the 'Local launch' and 'Launch standalone client' menu options to fail on MacOS. [#1442](https://github.com/spatialos/gdk-for-unity/pull/1442)
+- Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem`. [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
 
 ### Internal
 
@@ -36,10 +37,6 @@
 - Fixed a bug where the entity list in the Worker Inspector does not refresh when switching to a worker with no entities checked out [#1432](https://github.com/spatialos/gdk-for-unity/pull/1432)
 - Build targets which are marked as 'Build', but not 'Required' are now properly skipped if build support is not installed. [#1435](https://github.com/spatialos/gdk-for-unity/pull/1435)
 - The `PrefabPreprocessor` will now correctly find and preprocess your prefabs. [#1438](https://github.com/spatialos/gdk-for-unity/pull/1438)
-
-### Fixed
-
-- Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem` [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
 
 ## `0.3.8` - 2020-07-20
 
