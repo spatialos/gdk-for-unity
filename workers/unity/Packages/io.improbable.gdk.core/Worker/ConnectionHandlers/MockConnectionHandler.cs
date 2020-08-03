@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -33,6 +36,14 @@ namespace Improbable.Gdk.Core
 
         private readonly SerializedMessagesToSend serializedMessagesToSend = new SerializedMessagesToSend();
         private readonly CommandMetaData commandMetaData = new CommandMetaData();
+        private readonly Dictionary<Type, SortedSet<long>> requestIds = new Dictionary<Type, SortedSet<long>>();
+        private readonly Dictionary<long, ICommandRequest> outgoingRequests = new Dictionary<long, ICommandRequest>();
+        internal readonly IOutgoingCommandHandler OutgoingCommandHandler;
+
+        internal MockConnectionHandler()
+        {
+            OutgoingCommandHandler = new MockOutgoingCommandHandler(this);
+        }
 
         private uint updateId;
 
@@ -104,7 +115,75 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        // TODO: Commands
+        private void OnSendCommand(long nextRequestId, Type requestType, ICommandRequest request)
+        {
+            if (!requestIds.ContainsKey(requestType))
+            {
+                requestIds.Add(requestType, new SortedSet<long>());
+            }
+
+            requestIds[requestType].Add(nextRequestId);
+            outgoingRequests.Add(nextRequestId, request);
+        }
+
+        public IEnumerable<CommandRequestId> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
+        {
+            if (!requestIds.TryGetValue(typeof(TRequest), out var ids))
+            {
+                ids = new SortedSet<long>();
+                requestIds.Add(typeof(TRequest), ids);
+            }
+
+            return ids.Select(id => new CommandRequestId(id));
+        }
+
+        public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            var ids = GetOutboundCommandRequests<TRequest>();
+            var commandClass = ComponentDatabase.GetCommandMetaclassFromRequest<TRequest>();
+            if (typeof(TResponse) != commandClass.ReceivedResponse)
+            {
+                throw new ArgumentException($"Invalid response type {typeof(TResponse)}, expected {commandClass.ReceivedResponse}");
+            }
+
+            foreach (var id in ids)
+            {
+                var request = outgoingRequests[id.Raw];
+                CurrentDiff.AddCommandResponse(creator(id, (TRequest) request), commandClass.ComponentId, commandClass.CommandIndex);
+                outgoingRequests.Remove(id.Raw);
+            }
+
+            requestIds[typeof(TRequest)].Clear();
+        }
+
+        public void GenerateResponse<TRequest, TResponse>(CommandRequestId id, Func<CommandRequestId, TRequest, TResponse> creator)
+            where TRequest : ICommandRequest
+            where TResponse : struct, IReceivedCommandResponse
+        {
+            if (!outgoingRequests.TryGetValue(id.Raw, out var request))
+            {
+                throw new ArgumentException($"Could not find a request with request id {id}");
+            }
+
+            var commandClass = ComponentDatabase.GetCommandMetaclassFromRequest<TRequest>();
+            if (typeof(TResponse) != commandClass.ReceivedResponse)
+            {
+                throw new ArgumentException($"Invalid response type {typeof(TResponse)}, expected {commandClass.ReceivedResponse}");
+            }
+
+            CurrentDiff.AddCommandResponse(creator(id, (TRequest) request), commandClass.ComponentId, commandClass.CommandIndex);
+            requestIds[typeof(TRequest)].Remove(id.Raw);
+            outgoingRequests.Remove(id.Raw);
+        }
+
+        public void AddCommandRequest<TRequest>(TRequest receivedRequest)
+            where TRequest : struct, IReceivedCommandRequest
+        {
+            var commandClass = ComponentDatabase.GetCommandMetaclassFromReceivedRequest<TRequest>();
+            CurrentDiff.AddCommandRequest(receivedRequest, commandClass.ComponentId, commandClass.CommandIndex);
+        }
 
         #region IConnectionHandler implementation
 
@@ -208,6 +287,29 @@ namespace Improbable.Gdk.Core
                 {
                     viewDiff.RemoveComponent(entityId, componentId);
                 }
+            }
+        }
+
+        private class MockOutgoingCommandHandler : IOutgoingCommandHandler
+        {
+            private long nextRequestId = 1;
+
+            private readonly MockConnectionHandler connectionHandler;
+
+            internal MockOutgoingCommandHandler(MockConnectionHandler connectionHandler)
+            {
+                this.connectionHandler = connectionHandler;
+            }
+
+            public CommandRequestId SendCommand<TRequest>(TRequest request, Entity sendingEntity = default) where TRequest : ICommandRequest
+            {
+                connectionHandler.OnSendCommand(nextRequestId, typeof(TRequest), request);
+                return new CommandRequestId(nextRequestId++);
+            }
+
+            public void SendResponse<T>(T response) where T : ICommandResponse
+            {
+                throw new NotImplementedException("Not implemented yet");
             }
         }
 
