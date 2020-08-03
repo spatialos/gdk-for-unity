@@ -5,9 +5,15 @@ using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
 {
-    public unsafe class IOStream : IDisposable
+    public enum OpenMode
     {
-        private readonly CIO.StreamHandle stream;
+        /* Opens the stream in the default mode. */
+        OpenModeDefault = 0x00,
+    }
+
+    public sealed unsafe class IOStream : IDisposable
+    {
+        public readonly CIO.StreamHandle stream;
 
         private IOStream(CIO.StreamHandle stream)
         {
@@ -26,15 +32,15 @@ namespace Improbable.Worker.CInterop
             return new IOStream(CIO.CreateRingBufferStream(capacity));
         }
 
-        public static IOStream CreateFileStream(string fileName)
+        public static IOStream CreateFileStream(string fileName, OpenMode openMode)
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, CIO.OpenMode.OpenModeDefault));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode));
             }
         }
 
-        public void Write(byte[] data)
+        public long Write(byte[] data)
         {
             var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(stream);
             if (remainingCapacity < data.Length)
@@ -42,79 +48,88 @@ namespace Improbable.Worker.CInterop
                 throw new IOException("Not enough stream capacity to write data.");
             }
 
+            var bytesWritten = 0L;
             fixed (byte* dataToWrite = data)
             {
-                var bytesWritten = CIO.StreamWrite(stream, dataToWrite, 1);
-
-                if (bytesWritten == -1)
-                {
-                    // The Stream write failed, check the error message
-                    var rawError = CIO.StreamGetLastError(stream);
-                    throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
-                }
-
-                if (bytesWritten != data.Length)
-                {
-                    // Check that the number of bytes we tried to write was the number of bytes written
-                    throw new IOException("Failed to write all data to stream.");
-                }
+                bytesWritten = CIO.StreamWrite(stream, dataToWrite, 1);
             }
+
+            if (bytesWritten != -1)
+            {
+                return bytesWritten;
+            }
+
+            var rawError = CIO.StreamGetLastError(stream);
+            throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
-        public byte[] Read(uint bytesToRead)
+        public (byte[], long) Read(uint bytesToRead)
         {
             var streamData = new byte[bytesToRead];
-            var dataHandle = GCHandle.Alloc(streamData, GCHandleType.Pinned);
-            var bytesRead = CIO.StreamRead(stream, (byte*) dataHandle.AddrOfPinnedObject(), bytesToRead);
 
-            if (bytesRead == -1)
+            var bytesRead = 0L;
+            fixed (byte* streamDataPointer = streamData)
             {
-                var rawError = CIO.StreamGetLastError(stream);
-                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+                bytesRead = CIO.StreamRead(stream, streamDataPointer, bytesToRead);
             }
 
-            if (bytesRead != bytesToRead)
+            if (bytesRead != -1)
             {
-                throw new IOException($"Failed to read {bytesToRead} bytes, only read {bytesRead}.");
+                return (streamData, bytesRead);
             }
 
-            return dataHandle.Target as byte[];
+            var rawError = CIO.StreamGetLastError(stream);
+            throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+        }
+
+        public long Read(byte[] streamData)
+        {
+            var bytesToRead = (uint) streamData.Length;
+            var bytesRead = 0L;
+            fixed (byte* streamDataPointer = streamData)
+            {
+                bytesRead = CIO.StreamRead(stream, streamDataPointer, bytesToRead);
+            }
+
+            if (bytesRead != -1)
+            {
+                return bytesRead;
+            }
+
+            var rawError = CIO.StreamGetLastError(stream);
+            throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
         public byte[] Peek(uint bytes)
         {
             var streamData = new byte[bytes];
-            var dataHandle = GCHandle.Alloc(streamData, GCHandleType.Pinned);
-            var bytesPeeked = CIO.StreamPeek(stream, (byte*) dataHandle.AddrOfPinnedObject(), bytes);
 
-            if (bytesPeeked == -1)
+            var bytesPeeked = 0L;
+            fixed (byte* streamDataPointer = streamData)
             {
-                var rawError = CIO.StreamGetLastError(stream);
-                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+                bytesPeeked = CIO.StreamPeek(stream, streamDataPointer, bytes);
             }
 
-            if (bytesPeeked != bytes)
+            if (bytesPeeked != -1)
             {
-                throw new IOException($"Failed to read {bytes} bytes, only read {bytes}.");
+                return streamData;
             }
 
-            return dataHandle.Target as byte[];
+            var rawError = CIO.StreamGetLastError(stream);
+            throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
         public void Ignore(uint bytesToIgnore)
         {
             var bytesIgnored = CIO.StreamIgnore(stream, bytesToIgnore);
 
-            if (bytesIgnored == -1)
+            if (bytesIgnored != -1)
             {
-                var rawError = CIO.StreamGetLastError(stream);
-                throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+                return;
             }
 
-            if (bytesIgnored != bytesToIgnore)
-            {
-                throw new IOException($"Failed to ignore {bytesToIgnore} bytes, only ignored {bytesToIgnore}.");
-            }
+            var rawError = CIO.StreamGetLastError(stream);
+            throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
     }
 }
