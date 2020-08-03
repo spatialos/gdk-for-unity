@@ -16,6 +16,7 @@ namespace Improbable.Worker.CInterop
         public void Dispose()
         {
             storage.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public void Clear()
