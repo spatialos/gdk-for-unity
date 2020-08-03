@@ -1,12 +1,12 @@
 {
   "name": "io.improbable.gdk.testutils",
   "displayName": "SpatialOS GDK Test Utils",
-  "version": "0.3.9",
+  "version": "test-non-bionic-build",
   "unity": "2019.3",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Test Utils.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.9",
+    "io.improbable.gdk.core": "test-non-bionic-build",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.test-framework": "1.1.14",
     "com.unity.test-framework.performance": "2.2.0-preview"

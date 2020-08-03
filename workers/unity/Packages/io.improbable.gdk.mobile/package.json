@@ -1,13 +1,13 @@
 {
   "name": "io.improbable.gdk.mobile",
   "displayName": "SpatialOS GDK Mobile Support",
-  "version": "0.3.9",
+  "version": "test-non-bionic-build",
   "unity": "2019.3",
   "author": "Improbable Worlds Ltd",
   "description": "SpatialOS GDK Mobile Support Module.",
   "dependencies": {
-    "io.improbable.gdk.core": "0.3.9",
-    "io.improbable.worker.sdk.mobile": "0.3.9",
+    "io.improbable.gdk.core": "test-non-bionic-build",
+    "io.improbable.worker.sdk.mobile": "test-non-bionic-build",
     "com.unity.modules.androidjni": "1.0.0"
   }
 }
