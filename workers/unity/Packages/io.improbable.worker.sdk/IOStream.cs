@@ -40,10 +40,12 @@ namespace Improbable.Worker.CInterop
 
         public long Write(byte[] data)
         {
+            CheckIfStreamClosed();
+
             var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(stream);
             if (remainingCapacity < data.Length)
             {
-                throw new IOException("Not enough stream capacity to write data.");
+                throw new NotSupportedException("Not enough stream capacity to write data.");
             }
 
             var bytesWritten = 0L;
@@ -63,6 +65,8 @@ namespace Improbable.Worker.CInterop
 
         public long Read(uint bytesToRead, out byte[] streamData)
         {
+            CheckIfStreamClosed();
+
             streamData = new byte[bytesToRead];
 
             var bytesRead = 0L;
@@ -82,6 +86,8 @@ namespace Improbable.Worker.CInterop
 
         public long Read(byte[] streamData)
         {
+            CheckIfStreamClosed();
+
             var bytesToRead = (uint) streamData.Length;
             var bytesRead = 0L;
             fixed (byte* streamDataPointer = streamData)
@@ -98,36 +104,53 @@ namespace Improbable.Worker.CInterop
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
-        public byte[] Peek(uint bytes)
+        public long Peek(uint bytesToPeek, out byte[] streamData)
         {
-            var streamData = new byte[bytes];
+            CheckIfStreamClosed();
+
+            streamData = new byte[bytesToPeek];
 
             var bytesPeeked = 0L;
             fixed (byte* streamDataPointer = streamData)
             {
-                bytesPeeked = CIO.StreamPeek(stream, streamDataPointer, bytes);
+                bytesPeeked = CIO.StreamPeek(stream, streamDataPointer, bytesToPeek);
             }
 
             if (bytesPeeked != -1)
             {
-                return streamData;
+                return bytesPeeked;
             }
 
             var rawError = CIO.StreamGetLastError(stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
-        public void Ignore(uint bytesToIgnore)
+        public long Ignore(uint bytesToIgnore)
         {
+            CheckIfStreamClosed();
+
             var bytesIgnored = CIO.StreamIgnore(stream, bytesToIgnore);
 
             if (bytesIgnored != -1)
             {
-                return;
+                return bytesIgnored;
             }
 
             var rawError = CIO.StreamGetLastError(stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
+        }
+
+        public uint GetRemainingCapacity()
+        {
+            return CIO.StreamGetRemainingWriteCapacityBytes(stream);
+        }
+
+        private void CheckIfStreamClosed()
+        {
+            if (stream.IsClosed)
+            {
+                throw new ObjectDisposedException("Cannot access a disposed object.");
+            }
         }
     }
 }
