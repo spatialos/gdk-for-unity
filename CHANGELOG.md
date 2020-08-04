@@ -17,10 +17,6 @@
 - Fixed a bug where having spaces in the path to your project would cause the 'Local launch' and 'Launch standalone client' menu options to fail on MacOS. [#1442](https://github.com/spatialos/gdk-for-unity/pull/1442)
 - Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem`. [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
 
-### Added
-
-- Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
-
 ### Internal
 
 - Added C# bindings for C Event Tracing API. [#1440](https://github.com/spatialos/gdk-for-unity/pull/1440)

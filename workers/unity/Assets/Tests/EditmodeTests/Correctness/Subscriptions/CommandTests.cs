@@ -5,7 +5,6 @@ using Improbable.Gdk.Test;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 using UnityEngine;
-using Unity.Entities;
 
 namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 {
@@ -122,7 +121,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
 #pragma warning disable 649
         private class CommandStub : MonoBehaviour
         {
-
             [Require] public TestCommandsCommandSender Sender;
         }
 #pragma warning restore 649

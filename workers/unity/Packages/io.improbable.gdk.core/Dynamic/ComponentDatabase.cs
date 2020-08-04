@@ -17,7 +17,6 @@ namespace Improbable.Gdk.Core
 
         private static Dictionary<Type, ICommandMetaclass> ReceivedRequestsToCommandMetaclass { get; }
 
-
         static ComponentDatabase()
         {
             Metaclasses = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass))

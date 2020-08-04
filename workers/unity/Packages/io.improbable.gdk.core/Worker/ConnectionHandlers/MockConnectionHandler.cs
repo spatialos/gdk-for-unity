@@ -296,8 +296,6 @@ namespace Improbable.Gdk.Core
 
             private readonly MockConnectionHandler connectionHandler;
 
-            private readonly MockConnectionHandler connectionHandler;
-
             internal MockOutgoingCommandHandler(MockConnectionHandler connectionHandler)
             {
                 this.connectionHandler = connectionHandler;

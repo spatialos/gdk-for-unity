@@ -15,7 +15,6 @@ namespace Improbable.Gdk.EditmodeTests.Core
         [Test]
         public void ReceivedResponse_isNull_when_Response_is_not_received()
         {
-
             World.Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
@@ -35,7 +34,6 @@ namespace Improbable.Gdk.EditmodeTests.Core
         public void ReceivedResponse_isNotNull_when_Response_is_received()
         {
             World.Step(world =>
-
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
                 })
