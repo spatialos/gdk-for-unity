@@ -16,7 +16,7 @@ namespace Playground.MonoBehaviours
 
         private void Update()
         {
-            if (reader.Authority)
+            if (reader.HasAuthority)
             {
                 // Perform sending logic only on non-authoritative workers.
                 return;

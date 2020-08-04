@@ -38,7 +38,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var manager = world.EntityManager;
 
-                if (transformReader.Authority)
+                if (transformReader.HasAuthority)
                 {
                     return manager.GetComponentData<TicksSinceLastTransformUpdate>(entity)
                         .NumberOfTicks + transformReader.Data.PhysicsTick;

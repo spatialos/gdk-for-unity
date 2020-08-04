@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Subscriptions
         protected readonly EntityId EntityId;
 
         private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
-        private static readonly ComponentType ComponentAuthType = ComponentDatabase.Metaclasses[ComponentId].Authority;
+        private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass(ComponentId).Authority;
 
         private Dictionary<Action<Authority>, ulong> authorityCallbackToCallbackKey;
         private Dictionary<Action<TUpdate>, ulong> updateCallbackToCallbackKey;
@@ -37,13 +37,13 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public bool Authority
+        public bool HasAuthority
         {
             get
             {
                 if (!IsValid)
                 {
-                    throw new InvalidOperationException("Cannot read authority when Reader is not valid");
+                    throw new InvalidOperationException($"Cannot read {nameof(HasAuthority)} when Reader is not valid");
                 }
 
                 return EntityManager.HasComponent(Entity, ComponentAuthType);

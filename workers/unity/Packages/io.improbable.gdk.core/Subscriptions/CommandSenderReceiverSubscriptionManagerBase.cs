@@ -136,8 +136,9 @@ namespace Improbable.Gdk.Subscriptions
 
         protected CommandReceiverSubscriptionManagerBase(World world, uint componentId) : base(world)
         {
-            componentType = ComponentDatabase.Metaclasses[componentId].Data;
-            componentAuthType = ComponentDatabase.Metaclasses[componentId].Authority;
+            var componentMetaClass = ComponentDatabase.GetMetaclass(componentId);
+            componentType = componentMetaClass.Data;
+            componentAuthType = componentMetaClass.Authority;
 
             entityManager = world.EntityManager;
 
@@ -199,7 +200,6 @@ namespace Improbable.Gdk.Subscriptions
             }
 
             if (WorkerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent(entity, componentType)
                 && entityManager.HasComponent(entity, componentAuthType))
             {
                 entitiesMatchingRequirements.Add(entityId);
