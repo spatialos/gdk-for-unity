@@ -6,6 +6,10 @@
 
 - Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
 
+### Changed
+
+- Updated the pinned Runtime version to `14.5.4`. [#1446](https://github.com/spatialos/gdk-for-unity/pull/1446)
+
 ### Fixed
 
 - Fixed an `IndexOutOfRangeException` that could be thrown when editing your 'Build Configuration' asset. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
