@@ -40,7 +40,7 @@ namespace Improbable.Worker.CInterop
 
         public long Write(byte[] data)
         {
-            CheckIfStreamClosed();
+            ThrowIfStreamClosed();
 
             var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(stream);
             if (remainingCapacity < data.Length)
@@ -65,7 +65,7 @@ namespace Improbable.Worker.CInterop
 
         public long Read(uint bytesToRead, out byte[] streamData)
         {
-            CheckIfStreamClosed();
+            ThrowIfStreamClosed();
 
             streamData = new byte[bytesToRead];
 
@@ -86,7 +86,7 @@ namespace Improbable.Worker.CInterop
 
         public long Read(byte[] streamData)
         {
-            CheckIfStreamClosed();
+            ThrowIfStreamClosed();
 
             var bytesToRead = (uint) streamData.Length;
             var bytesRead = 0L;
@@ -106,7 +106,7 @@ namespace Improbable.Worker.CInterop
 
         public long Peek(uint bytesToPeek, out byte[] streamData)
         {
-            CheckIfStreamClosed();
+            ThrowIfStreamClosed();
 
             streamData = new byte[bytesToPeek];
 
@@ -127,7 +127,7 @@ namespace Improbable.Worker.CInterop
 
         public long Ignore(uint bytesToIgnore)
         {
-            CheckIfStreamClosed();
+            ThrowIfStreamClosed();
 
             var bytesIgnored = CIO.StreamIgnore(stream, bytesToIgnore);
 
@@ -145,7 +145,7 @@ namespace Improbable.Worker.CInterop
             return CIO.StreamGetRemainingWriteCapacityBytes(stream);
         }
 
-        private void CheckIfStreamClosed()
+        private void ThrowIfStreamClosed()
         {
             if (stream.IsClosed)
             {
