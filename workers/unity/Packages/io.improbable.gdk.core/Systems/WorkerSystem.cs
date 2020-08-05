@@ -30,9 +30,8 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public bool IsConnected => Worker.IsConnected;
 
-        public IReadOnlyDictionary<string, string> WorkerFlags => workerFlags;
+        public IReadOnlyDictionary<string, string> WorkerFlags => Worker.WorkerFlags;
 
-        private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
         internal readonly WorkerInWorld Worker;
@@ -42,7 +41,6 @@ namespace Improbable.Gdk.Core
 
         private ProfilerMarker tickMarker = new ProfilerMarker("WorkerSystem.Tick");
         private ProfilerMarker sendMessagesMarker = new ProfilerMarker("WorkerSystem.SendMessages");
-        private ProfilerMarker applyDiffMarker = new ProfilerMarker("WorkerSystem.ApplyDiff");
 
         public WorkerSystem(WorkerInWorld worker)
         {
@@ -98,11 +96,11 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Gets the value for a given worker flag.
         /// </summary>
-        /// <param name="name">The name of the worker flag.</param>
+        /// <param name="key">The key of the worker flag.</param>
         /// <returns>The value of the flag, if it exists, null otherwise.</returns>
-        public string GetWorkerFlag(string name)
+        public string GetWorkerFlag(string key)
         {
-            return workerFlags.TryGetValue(name, out var value) ? value : null;
+            return Worker.GetWorkerFlag(key);
         }
 
         public void SendMetrics(Metrics metrics)
@@ -123,17 +121,6 @@ namespace Improbable.Gdk.Core
             using (sendMessagesMarker.Auto())
             {
                 Worker.EnsureMessagesFlushed(frameStats);
-            }
-        }
-
-        internal void ApplyDiff(ViewDiff diff)
-        {
-            using (applyDiffMarker.Auto())
-            {
-                foreach (var pair in diff.GetWorkerFlagChanges())
-                {
-                    workerFlags[pair.Item1] = pair.Item2;
-                }
             }
         }
 

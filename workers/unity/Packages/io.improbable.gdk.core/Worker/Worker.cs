@@ -40,12 +40,16 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public bool IsConnected => ConnectionHandler.IsConnected();
 
+        public IReadOnlyDictionary<string, string> WorkerFlags => workerFlags;
+
         protected IConnectionHandler ConnectionHandler;
 
         // todo replace internal with real apis
         internal ViewDiff ViewDiff;
 
         internal MessagesToSend MessagesToSend;
+
+        private readonly Dictionary<string, string> workerFlags = new Dictionary<string, string>();
 
         protected Worker(IConnectionHandler connectionHandler, string workerType, ILogDispatcher logDispatcher)
         {
@@ -85,6 +89,12 @@ namespace Improbable.Gdk.Core
         public void Tick()
         {
             ConnectionHandler.GetMessagesReceived(ref ViewDiff);
+
+            // Update worker flags
+            foreach (var (key, value) in ViewDiff.GetWorkerFlagChanges())
+            {
+                workerFlags[key] = value;
+            }
         }
 
         public void EnsureMessagesFlushed(NetFrameStats frameStats)
@@ -107,6 +117,16 @@ namespace Improbable.Gdk.Core
         public void SendLogMessage(LogLevel logLevel, string message, string loggerName, EntityId? entityId)
         {
             MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+        }
+
+        /// <summary>
+        ///     Gets the value for a given worker flag.
+        /// </summary>
+        /// <param name="key">The key of the worker flag.</param>
+        /// <returns>The value of the flag, if it exists, null otherwise.</returns>
+        public string GetWorkerFlag(string key)
+        {
+            return workerFlags.TryGetValue(key, out var value) ? value : null;
         }
 
         public virtual void Dispose()

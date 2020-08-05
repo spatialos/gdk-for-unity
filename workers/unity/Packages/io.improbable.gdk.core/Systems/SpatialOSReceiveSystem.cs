@@ -34,7 +34,6 @@ namespace Improbable.Gdk.Core
                 workerSystem.Tick();
 
                 var diff = workerSystem.Diff;
-                workerSystem.ApplyDiff(diff);
                 ecsViewSystem.ApplyDiff(diff);
                 entitySystem.ApplyDiff(diff);
                 networkStatisticsSystem.ApplyDiff(diff);
