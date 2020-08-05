@@ -2,8 +2,6 @@
 
 set -e -u -o pipefail
 
-PATH="$(readlink -e workers/unity)"
-
 if [[ -n "${DEBUG-}" ]]; then
     set -x
 fi
@@ -68,7 +66,7 @@ pushd "workers/unity"
     # E.g. - -d:sonar.cs.opencover.reportsPath=./logs/coverage-results/my-first-report.xml,./logs/coverage-results/my-second-report.xml
     # Wildcards don't appear to play nice with this.
     args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
-    trap "rm -f ${PATH}/global.json" EXIT
+    trap "rm -f ${PROJECT_DIR}/workers/unity/global.json" EXIT
     dotnet new globaljson --sdk-version 2.2.402 --force
     traceStart "Execute sonar-scanner :sonarqube:"
         dotnet-sonarscanner begin "${args[@]}"
