@@ -13,8 +13,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
     {
         private const long EntityId = 101;
 
-        private const string WorkerID = "worker";
-
         [Test]
         public void SubscriptionSystem_invokes_callback_on_receiving_response()
         {
@@ -43,30 +41,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         }
 
         [Test]
-        public void SubscriptionSystem_does_not_invoke_callback_when_sender_is_invalid()
-        {
-            World.Step(world =>
-                {
-                    world.Connection.CreateEntity(EntityId, GetTemplate());
-                })
-                .Step(world =>
-                {
-                    return world.CreateGameObject<CommandStub>(EntityId).Item2.Sender;
-                })
-                .Step((world, sender) =>
-                {
-                    sender.SendTestCommand(GetRequest(), response => throw new AssertionException("Don't call"));
-                })
-                .Step((world, sender) =>
-                {
-                    world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(
-                        ResponseGenerator);
-                    sender.IsValid = false;
-                })
-                .Step(world => { });
-        }
-
-        [Test]
         public void SubscriptionSystem_does_not_invoke_callback_when_gameobject_is_unlinked()
         {
             World.Step(world =>
@@ -83,8 +57,11 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
                 })
                 .Step((world, mono) =>
                 {
-                    world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator);
                     world.Linker.UnlinkGameObjectFromEntity(new EntityId(EntityId), mono.gameObject);
+                })
+                .Step(world =>
+                {
+                    world.Connection.GenerateResponses<TestCommands.Test.Request, TestCommands.Test.ReceivedResponse>(ResponseGenerator);
                 })
                 .Step((world, mono) =>
                 {
@@ -109,8 +86,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Subscriptions
         private static EntityTemplate GetTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), WorkerID);
-            template.AddComponent(new TestCommands.Snapshot(), WorkerID);
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new TestCommands.Snapshot());
             return template;
         }
 
