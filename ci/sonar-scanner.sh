@@ -2,6 +2,8 @@
 
 set -e -u -o pipefail
 
+PATH="$(readlink -e workers/unity)"
+
 if [[ -n "${DEBUG-}" ]]; then
     set -x
 fi
@@ -60,13 +62,13 @@ fi
 #
 # To enable this to work with Unity, we first need to generate the `.sln` and `.csproj` files in order to build them with `msbuild`
 # For ease of use, we execute msbuild through `dotnet`!
+
 pushd "workers/unity"
     # This finds all .xml files in the logs/ directory and concatentates their relative path together, separated by comma:
     # E.g. - -d:sonar.cs.opencover.reportsPath=./logs/coverage-results/my-first-report.xml,./logs/coverage-results/my-second-report.xml
     # Wildcards don't appear to play nice with this.
     args+=("-d:sonar.cs.opencover.reportsPaths=$(find ./logs -name "*.xml" | paste -sd "," -)")
-
-    trap "rm -f global.json" EXIT
+    trap "rm -f ${PATH}/global.json" EXIT
     dotnet new globaljson --sdk-version 2.2.402 --force
     traceStart "Execute sonar-scanner :sonarqube:"
         dotnet-sonarscanner begin "${args[@]}"
