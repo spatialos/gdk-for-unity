@@ -131,13 +131,11 @@ namespace Improbable.Gdk.Subscriptions
         private HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        private readonly ComponentType componentType;
         private readonly ComponentType componentAuthType;
 
         protected CommandReceiverSubscriptionManagerBase(World world, uint componentId) : base(world)
         {
             var componentMetaClass = ComponentDatabase.GetMetaclass(componentId);
-            componentType = componentMetaClass.Data;
             componentAuthType = componentMetaClass.Authority;
 
             entityManager = world.EntityManager;

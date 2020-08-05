@@ -43,6 +43,16 @@ namespace Improbable.Gdk.Core
             return metaclass;
         }
 
+        public static IComponentMetaclass GetMetaclass<T>() where T : ISpatialComponentData
+        {
+            if (!ComponentsToIds.TryGetValue(typeof(T), out var id))
+            {
+                throw new ArgumentException($"Can not find Metaclass for unregistered SpatialOS component {nameof(T)}.");
+            }
+
+            return Metaclasses[id];
+        }
+
         public static uint GetComponentId<T>() where T : ISpatialComponentData
         {
             if (!ComponentsToIds.TryGetValue(typeof(T), out var id))

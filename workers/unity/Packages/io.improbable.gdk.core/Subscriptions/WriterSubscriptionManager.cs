@@ -16,8 +16,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
         private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
-        private static readonly ComponentType ComponentType = ComponentDatabase.GetMetaclass(ComponentId).Data;
-        private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass(ComponentId).Authority;
+        private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass<TComponent>().Authority;
 
         protected WriterSubscriptionManager(World world) : base(world)
         {

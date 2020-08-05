@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground.MonoBehaviours
