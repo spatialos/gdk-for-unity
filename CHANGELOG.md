@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `test-build` - 2020-08-05
+
 ### Added
 
 - Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
