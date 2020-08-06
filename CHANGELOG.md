@@ -20,6 +20,7 @@
 ### Internal
 
 - Added C# bindings for C Event Tracing API. [#1440](https://github.com/spatialos/gdk-for-unity/pull/1440)
+- Added native classes for IO operations in Event Tracing API. [#1444](https://github.com/spatialos/gdk-for-unity/pull/1444)
 
 ## `0.3.9` - 2020-07-24
 

@@ -10,7 +10,7 @@ namespace Improbable.Worker.CInterop.Internal
 {
     internal unsafe class CIO
     {
-        public class Storage : CptrHandle
+        public class StorageHandle : CptrHandle
         {
             protected override bool ReleaseHandle()
             {
@@ -19,7 +19,7 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public class Stream : CptrHandle
+        public class StreamHandle : CptrHandle
         {
             protected override bool ReleaseHandle()
             {
@@ -45,7 +45,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Storage_Create")]
-        public static extern Storage StorageCreate();
+        public static extern StorageHandle StorageCreate();
 
         /* Destroys the trace storage. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -61,7 +61,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Storage_Clear")]
-        public static extern void StorageClear(IntPtr storage);
+        public static extern void StorageClear(StorageHandle storage);
 
         /**
          * Creates an I/O stream implemented as a ring buffer.
@@ -77,7 +77,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateRingBufferStream")]
-        public static extern Stream CreateRingBufferStream(Uint32 capacityBytes);
+        public static extern StreamHandle CreateRingBufferStream(Uint32 capacityBytes);
 
         /**
          * Creates an I/O stream implemented as a read/write file.
@@ -94,7 +94,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
-        public static extern Stream CreateFileStream(Char* filename, OpenMode openMode);
+        public static extern StreamHandle CreateFileStream(Char* filename, OpenMode openMode);
 
         /* Destroys the I/O stream. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -111,7 +111,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Write")]
-        public static extern Int64 StreamWrite(Stream stream, Uint8* bytes, Uint32 length);
+        public static extern Int64 StreamWrite(StreamHandle stream, Uint8* bytes, Uint32 length);
 
         /**
          * Gets the remaining write capacity in bytes.
@@ -121,7 +121,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_GetRemainingWriteCapacityBytes")]
-        public static extern Uint32 StreamGetRemainingWriteCapacityBytes(Stream stream);
+        public static extern Uint32 StreamGetRemainingWriteCapacityBytes(StreamHandle stream);
 
         /**
          * Reads as much of the stream's data as possible into the given buffer.
@@ -133,7 +133,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Read")]
-        public static extern Uint64 StreamRead(Stream stream, Uint8* bytes, Uint32 length);
+        public static extern Int64 StreamRead(StreamHandle stream, Uint8* bytes, Uint32 length);
 
         /**
          * Reads as much of the stream's data as possible into the given buffer without advancing the read
@@ -142,11 +142,11 @@ namespace Improbable.Worker.CInterop.Internal
          * Returns the actual number of bytes read. This may be less than the given length iff the stream
          * has less data than the requested amount.
          *
-         * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Peek")]
-        public static extern Int64 StreamPeek(Stream stream, Uint8* bytes, Uint32 length);
+        public static extern Int64 StreamPeek(StreamHandle stream, Uint8* bytes, Uint32 length);
 
         /**
          * Extracts the given number of bytes from the stream and discards them.
@@ -155,11 +155,11 @@ namespace Improbable.Worker.CInterop.Internal
          * has advanced. This may be less than the given length iff the stream has less data than the
          * requested amount.
          *
-         * Returns -1 on error. Call StreamGetLastError() to get the associated error message.
+         * Returns -1 on error. Call StreamGetLastError to get the associated error message.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_Ignore")]
-        public static extern Int64 StreamIgnore(Stream stream, Uint32 length);
+        public static extern Int64 StreamIgnore(StreamHandle stream, Uint32 length);
 
         /**
          * Returns the last error which occurred during an API call on this stream. Returns nullptr if no
@@ -167,6 +167,6 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_GetLastError")]
-        public static extern Char* StreamGetLastError(Stream stream);
+        public static extern Char* StreamGetLastError(StreamHandle stream);
     }
 }
