@@ -16,7 +16,7 @@ The `WorkerSystem` and `ComponentDatabase` can be used to convert from `entityId
 ### Readers and Writers Authority
 
 The `Reader` and `Writer` classes have had their `Authority` property changed to `HasAuthority`.
-Instead of returning an Enum, they now return a boolean indicating if you have authority over the given component or not.
+Instead of returning an Enum, they now return a boolean indicating whether you have authority over the given component or not.
 
 ## From `0.3.7` to `0.3.8`
 
