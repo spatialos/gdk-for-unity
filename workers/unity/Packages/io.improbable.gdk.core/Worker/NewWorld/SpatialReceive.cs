@@ -9,33 +9,6 @@ using Unity.Profiling;
 namespace Improbable.Gdk.Core.NewWorld
 {
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    [UpdateBefore(typeof(WorkerSystem))]
-    public class NetworkStatisticsSystem : ComponentSystem
-    {
-        private NetworkStatistics statistics;
-        private readonly NetFrameStats lastIncomingData = new NetFrameStats();
-        private readonly NetFrameStats lastOutgoingData = new NetFrameStats();
-        private ProfilerMarker applyDiffMarker = new ProfilerMarker("NetworkStatisticsSystem.ApplyDiff");
-
-        private float lastFrameTime;
-
-        protected override void OnCreate()
-        {
-            statistics = World.GetWorker().NetworkStatistics;
-#if !UNITY_EDITOR
-            Enabled = false;
-#endif
-        }
-
-        protected override void OnUpdate()
-        {
-            statistics.FinishFrame(lastFrameTime);
-            lastFrameTime = Time.DeltaTime;
-        }
-    }
-
-    [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     public class WorkerSystem : ComponentSystem
@@ -43,6 +16,7 @@ namespace Improbable.Gdk.Core.NewWorld
         private SpatialOSWorker worker;
         private EntitySystem entitySystem;
         private ProfilerMarker tickMarker = new ProfilerMarker("WorkerSystem.Tick");
+        private float lastFrameTime;
 
         protected override void OnCreate()
         {
@@ -53,6 +27,10 @@ namespace Improbable.Gdk.Core.NewWorld
 
         protected override void OnUpdate()
         {
+#if UNITY_EDITOR
+            worker.NetworkStatistics.FinishFrame(lastFrameTime);
+            lastFrameTime = Time.DeltaTime;
+#endif
             entitySystem.Clear();
             using (tickMarker.Auto())
             {
