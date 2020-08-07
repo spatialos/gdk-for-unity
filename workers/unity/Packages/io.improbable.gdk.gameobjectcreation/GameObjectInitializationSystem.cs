@@ -26,8 +26,6 @@ namespace Improbable.Gdk.GameObjectCreation
 
         private readonly GameObject workerGameObject;
 
-        private EntitySystem entitySystem;
-
         private EntityQuery newEntitiesQuery;
         private EntityQuery removedEntitiesQuery;
 
@@ -74,8 +72,6 @@ namespace Improbable.Gdk.GameObjectCreation
         {
             base.OnCreate();
 
-            entitySystem = World.GetExistingSystem<EntitySystem>();
-
             Linker = new EntityGameObjectLinker(World);
 
             if (workerGameObject != null)
@@ -107,10 +103,10 @@ namespace Improbable.Gdk.GameObjectCreation
 
             Linker.UnlinkAllGameObjects();
 
-            foreach (var entityId in entitySystem.GetEntitiesInView())
+            Entities.ForEach((ref SpatialEntityId entityId) =>
             {
-                gameObjectCreator.OnEntityRemoved(entityId);
-            }
+                gameObjectCreator.OnEntityRemoved(entityId.EntityId);
+            });
 
             base.OnDestroy();
         }

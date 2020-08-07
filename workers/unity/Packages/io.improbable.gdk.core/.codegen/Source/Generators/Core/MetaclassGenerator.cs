@@ -45,7 +45,6 @@ public Type Serializer {{ get; }} = typeof({rootNamespace}.ComponentSerializer);
 public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.DiffComponentDeserializer);
 
 public Type DiffStorage {{ get; }} = typeof({rootNamespace}.DiffComponentStorage);
-public Type ViewStorage {{ get; }} = typeof({rootNamespace}.{componentDetails.Name}ViewStorage);
 public Type EcsViewManager {{ get; }} = typeof({rootNamespace}.EcsViewManager);
 public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetails.Name}Dynamic);
 ");

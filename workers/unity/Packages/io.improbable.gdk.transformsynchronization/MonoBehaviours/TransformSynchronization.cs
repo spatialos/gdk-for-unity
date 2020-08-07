@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Worker.CInterop;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
@@ -39,7 +38,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
                 var manager = world.EntityManager;
 
-                if (transformReader.Authority != Authority.NotAuthoritative)
+                if (transformReader.HasAuthority)
                 {
                     return manager.GetComponentData<TicksSinceLastTransformUpdate>(entity)
                         .NumberOfTicks + transformReader.Data.PhysicsTick;

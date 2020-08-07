@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The `Authority` field on Readers and Writers has been changed to `HasAuthority`. It now returns a bool to indicate whether you have authority over the component it represents.  [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
+  - This no longer supports AuthorityImminentLoss.
+- ComponentUpdateSystem no longer has the API `GetAuthority`, `GetComponent`, and `HasComponent`. [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
+  - Use the Unity Entities `EntityManager` instead.
+
 ### Added
 
 - Added capability to test commands through the `MockConnectionHandler`. [#1437](https://github.com/spatialos/gdk-for-unity/pull/1437)
@@ -21,6 +28,7 @@
 
 - Added C# bindings for C Event Tracing API. [#1440](https://github.com/spatialos/gdk-for-unity/pull/1440)
 - Added native classes for IO operations in Event Tracing API. [#1444](https://github.com/spatialos/gdk-for-unity/pull/1444)
+- Removed the `View` class and its generated storage classes. [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
 
 ## `0.3.9` - 2020-07-24
 
