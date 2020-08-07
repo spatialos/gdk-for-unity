@@ -18,7 +18,6 @@ namespace Improbable.Gdk.Core
         Type DiffDeserializer { get; }
 
         Type DiffStorage { get; }
-        Type ViewStorage { get; }
         Type EcsViewManager { get; }
         Type DynamicInvokable { get; }
 

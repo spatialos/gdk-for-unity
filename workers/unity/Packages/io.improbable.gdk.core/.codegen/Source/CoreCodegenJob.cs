@@ -56,7 +56,6 @@ namespace Improbable.Gdk.CodeGenerator.Core
                 c => ($"{c.Name}EcsViewManager.cs", UnityEcsViewManagerGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffStorage.cs", ComponentDiffStorageGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffDeserializer.cs", ComponentDiffDeserializerGenerator.Generate),
-                c => ($"{c.Name}ViewStorage.cs", ViewStorageGenerator.Generate),
                 c => ($"{c.Name}Metaclass.cs", MetaclassGenerator.Generate));
 
             Logger.Trace("Adding job targets for commands.");

@@ -1,5 +1,22 @@
 # Upgrade Guide
 
+## From `0.3.9` to `0.3.10`
+
+### ComponentUpdateSystem API changes
+
+The methods `GetAuthority`, `GetComponent`, and `HasComponent` have been removed from the `ComponentUpdateSystem`.
+They can be replaced by similar usage of the `EntityManager`.
+
+* `componentUpdateSystem.GetAuthority(entityId, componentId)` to `EntityManager.HasComponent<ComponentType.Authority>(entity)`.
+* `componentUpdateSystem.GetComponent<ComponentType.Snapshot>(entityId)` to `EntityManager.GetComponentData<ComponentType.Component>(entity)`.
+* `componentUpdateSystem.HasComponent(componentId, entityId)` to `EntityManager.HasComponent<ComponentType.Component>(entity)`
+
+The `WorkerSystem` and `ComponentDatabase` can be used to convert from `entityId` to `entity`, and from `componentId` to a component type.
+
+### Readers and Writers Authority
+
+The `Reader` and `Writer` classes have had their `public Authority Authority` property changed to `public bool HasAuthority`. `HasAuthority` now indicates whether you have authority over the given component or not.
+
 ## From `0.3.7` to `0.3.8`
 
 ### Asset based entity representation

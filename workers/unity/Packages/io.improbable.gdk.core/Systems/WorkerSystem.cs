@@ -30,11 +30,11 @@ namespace Improbable.Gdk.Core
         /// </summary>
         public bool IsConnected => Worker.IsConnected;
 
-        internal readonly View View;
+        public IReadOnlyDictionary<string, string> WorkerFlags => Worker.WorkerFlags;
 
         internal readonly Dictionary<EntityId, Entity> EntityIdToEntity = new Dictionary<EntityId, Entity>();
 
-        internal WorkerInWorld Worker;
+        internal readonly WorkerInWorld Worker;
 
         internal ViewDiff Diff => Worker.ViewDiff;
         internal MessagesToSend MessagesToSend => Worker.MessagesToSend;
@@ -50,7 +50,6 @@ namespace Improbable.Gdk.Core
             WorkerType = worker.WorkerType;
             WorkerId = worker.WorkerId;
             Origin = worker.Origin;
-            View = worker.View;
         }
 
         /// <summary>
@@ -92,6 +91,16 @@ namespace Improbable.Gdk.Core
         public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
         {
             Worker.MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));
+        }
+
+        /// <summary>
+        ///     Gets the value for a given worker flag.
+        /// </summary>
+        /// <param name="key">The key of the worker flag.</param>
+        /// <returns>The value of the flag, if it exists, null otherwise.</returns>
+        public string GetWorkerFlag(string key)
+        {
+            return Worker.GetWorkerFlag(key);
         }
 
         public void SendMetrics(Metrics metrics)
