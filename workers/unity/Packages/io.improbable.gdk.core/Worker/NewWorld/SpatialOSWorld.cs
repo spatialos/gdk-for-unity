@@ -19,6 +19,7 @@ namespace Improbable.Gdk.Core.NewWorld
         private void AddCoreSystems()
         {
             GetOrCreateSystem<UpdateWorldTimeSystem>();
+            GetOrCreateSystem<WorkerSystem>();
             GetOrCreateSystem<CommandSystem>();
             GetOrCreateSystem<ComponentUpdateSystem>();
             GetOrCreateSystem<EntitySystem>();
