@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Improbable.Worker.CInterop;
 using Unity.Entities;
 
 namespace Improbable.Gdk.Core
@@ -12,7 +11,6 @@ namespace Improbable.Gdk.Core
 
         public void SendUpdate<T>(in T update, EntityId entityId) where T : struct, ISpatialComponentUpdate
         {
-            worker.View.UpdateComponent(entityId, in update);
             worker.MessagesToSend.AddComponentUpdate(in update, entityId.Id);
         }
 
@@ -72,24 +70,9 @@ namespace Improbable.Gdk.Core
             return manager.GetComponentsRemoved();
         }
 
-        public Authority GetAuthority(EntityId entityId, uint componentId)
-        {
-            return worker.View.GetAuthority(entityId, componentId);
-        }
-
-        public T GetComponent<T>(EntityId entityId) where T : struct, ISpatialComponentSnapshot
-        {
-            return worker.View.GetComponent<T>(entityId);
-        }
-
         public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
         {
             worker.MessagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);
-        }
-
-        public bool HasComponent(uint componentId, EntityId entityId)
-        {
-            return worker.View.HasComponent(entityId, componentId);
         }
 
         protected override void OnCreate()

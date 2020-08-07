@@ -25,25 +25,24 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static bool IsOwningWorker(EntityId entityId, World workerWorld)
         {
             var worker = workerWorld.GetExistingSystem<WorkerSystem>();
-            var updateSystem = workerWorld.GetExistingSystem<ComponentUpdateSystem>();
-            var entitySystem = workerWorld.GetExistingSystem<EntitySystem>();
+            var entityManager = workerWorld.EntityManager;
 
             if (worker == null)
             {
                 throw new InvalidOperationException("Provided World does not have an associated worker");
             }
 
-            if (!entitySystem.GetEntitiesInView().Contains(entityId))
+            if (!worker.TryGetEntity(entityId, out var entity))
             {
                 return false;
             }
 
-            if (!updateSystem.HasComponent(OwningWorker.ComponentId, entityId))
+            if (!entityManager.HasComponent<OwningWorker.Component>(entity))
             {
                 return false;
             }
 
-            var ownerId = updateSystem.GetComponent<OwningWorker.Snapshot>(entityId).WorkerId;
+            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerId;
             return worker.WorkerId == ownerId;
         }
 

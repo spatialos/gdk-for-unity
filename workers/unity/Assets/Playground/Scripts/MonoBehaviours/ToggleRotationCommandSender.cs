@@ -1,6 +1,5 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
-using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground.MonoBehaviours
@@ -16,7 +15,7 @@ namespace Playground.MonoBehaviours
 
         private void Update()
         {
-            if (reader.Authority != Authority.NotAuthoritative)
+            if (reader.HasAuthority)
             {
                 // Perform sending logic only on non-authoritative workers.
                 return;
