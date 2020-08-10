@@ -1,20 +1,285 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
 
-namespace Packages.io.improbable.worker.sdk
+namespace Improbable.Worker.CInterop
 {
-    public unsafe class EventTracing
+    public interface ITraceItem
     {
-        public struct SpanId
+    }
+
+    public unsafe struct SpanId
+    {
+        public fixed byte Data[16];
+    }
+
+    public struct Span : ITraceItem
+    {
+        public SpanId Id;
+        public int CauseCount;
+        public SpanId[] Causes;
+    }
+
+    public struct Event : ITraceItem
+    {
+        public SpanId Id;
+        public ulong UnixTimestampMillis;
+        public string Message;
+        public string Type;
+        internal CEventTrace.EventData Data;
+    }
+
+    public enum ItemType
+    {
+        Span = 1,
+        Event = 2
+    }
+
+    public struct Item
+    {
+        public ItemType ItemType;
+        public ITraceItem TraceItem;
+    }
+
+    public unsafe delegate void TraceCallback(
+        UIntPtr userData, IntPtr item);
+
+    internal struct EventTracerParameters
+    {
+        public CEventTrace.TraceCallback callback;
+    }
+
+    public static class TraceSpan
+    {
+        public static unsafe byte SpanIdHash(SpanId spanId)
         {
-            public fixed byte Data[16];
+            var nativeSpanId = new CEventTrace.SpanId();
+            nativeSpanId.Data = spanId.Data;
+            return CEventTrace.SpanIdHash(nativeSpanId);
         }
 
-        public struct Span
+        public static unsafe bool SpanIdEqual(SpanId spanId1, SpanId spanId2)
         {
-            public SpanId Id;
-            public UInt32 CauseCount;
-            public SpanId Causes;
+            var nativeSpanId1 = new CEventTrace.SpanId();
+            nativeSpanId1.Data = spanId1.Data;
+
+            var nativeSpanId2 = new CEventTrace.SpanId();
+            nativeSpanId2.Data = spanId2.Data;
+
+            return CEventTrace.SpanIdEqual(nativeSpanId1, nativeSpanId2) > 0;
+        }
+    }
+
+    public unsafe class EventTracer : IDisposable
+    {
+        private readonly CEventTrace.EventTracer eventTracer;
+
+        public EventTracer()
+        {
+            // eventTracer = CEventTrace.EventTracerCreate();
+        }
+
+        public void Dispose()
+        {
+            eventTracer.Dispose();
+        }
+    }
+
+    public unsafe class TraceEventData : IDisposable
+    {
+        private readonly CEventTrace.EventData eventData;
+
+        private readonly GcHandlePool fieldHandles;
+
+        public TraceEventData()
+        {
+            eventData = CEventTrace.EventDataCreate();
+            fieldHandles = new GcHandlePool();
+        }
+
+        public void Dispose()
+        {
+            eventData.Dispose();
+            fieldHandles.Dispose();
+        }
+
+        public void AddCollectionOfFields(Dictionary<string, string> fields)
+        {
+            foreach (var entry in fields)
+            {
+                AddField(entry.Key, entry.Value);
+            }
+        }
+
+        public void AddField(string key, string value)
+        {
+            var pinnedKey = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(key));
+            var pinnedValue = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(value));
+
+            CEventTrace.EventDataAddStringFields(eventData, 1,
+                (byte**) pinnedKey.ToPointer(), (byte**) pinnedValue.ToPointer());
+        }
+
+        public Dictionary<string, string> GetAllFields()
+        {
+            var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData);
+            var nativeKeys = new byte*[numberOfFields];
+            var nativeValues = new byte*[numberOfFields];
+
+            fixed (byte** keys = nativeKeys)
+            fixed (byte** values = nativeValues)
+            {
+                CEventTrace.EventDataGetStringFields(eventData, keys, values);
+            }
+
+            var fields = new Dictionary<string, string>();
+            for (var i = 0; i < numberOfFields; i++)
+            {
+                fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
+            }
+
+            return fields;
+        }
+
+        public string GetFieldValue(string key)
+        {
+            byte* value;
+            fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
+            {
+                value = CEventTrace.EventDataGetFieldValue(eventData, nativeKey);
+            }
+
+            return ApiInterop.FromUtf8Cstr(value);
+        }
+    }
+
+    public unsafe class TraceItem
+    {
+        private readonly CIO.StorageHandle storage;
+        private readonly CIO.StreamHandle stream;
+
+        public TraceItem(IOStorage storageWrapper, IOStream streamWrapper)
+        {
+            storage = storageWrapper.Storage;
+            stream = streamWrapper.Stream;
+        }
+
+        public void AddItem(Item item)
+        {
+            var traceItem = ConvertItem(item);
+            CEventTrace.ItemCreate(storage, traceItem);
+        }
+
+        public void SerializeItemToStream(Item item)
+        {
+            var nativeItem = ConvertItem(item);
+            var itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
+
+            var serializedItemSize = CEventTrace.SerializeItemToStream(stream, nativeItem, itemSize);
+            if (serializedItemSize == 1)
+            {
+                return;
+            }
+
+            var errorMessage = CEventTrace.GetLastError();
+            // Decide on the best type of error to throw in this case
+            throw new NotSupportedException("Failed to deserialize item from stream.");
+        }
+
+        public long GetSerializedItemSizeInBytes(Item item)
+        {
+            var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(item));
+            if (itemSize != 0)
+            {
+                return itemSize;
+            }
+
+            var errorMessage = CEventTrace.GetLastError();
+            // Decide on the best type of error to throw in this case
+            throw new NotSupportedException("Failed to get serialized item size.");
+        }
+
+        public Item DeserializeNextItemFromStream()
+        {
+            var itemContainer = CEventTrace.ItemCreate(storage, null);
+            var itemSize = CEventTrace.GetNextSerializedItemSize(stream);
+
+            var deserializeStatus = CEventTrace.DeserializeItemFromStream(stream, itemContainer, itemSize);
+            if (deserializeStatus == 1)
+            {
+                return new Item();
+            }
+
+            var errorMessage = CEventTrace.GetLastError();
+            // Decide on the best type of error to throw in this case
+            throw new NotSupportedException("Failed to deserialize item from stream.");
+        }
+
+        private CEventTrace.Item* ConvertItem(Item item)
+        {
+            var newItem = CEventTrace.ItemCreate(storage, null);
+            newItem->ItemUnion = new CEventTrace.Item.Union();
+
+            switch (item.ItemType)
+            {
+                case ItemType.Span:
+                    var spanItem = (Span) item.TraceItem;
+                    newItem->ItemUnion.Span = new CEventTrace.Span();
+                    newItem->ItemUnion.Span.Id.Data = spanItem.Id.Data;
+                    newItem->ItemUnion.Span.CauseCount = (uint) spanItem.CauseCount;
+                    for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
+                    {
+                        fixed (byte* spanData = spanItem.Causes[i].Data)
+                        {
+                            newItem->ItemUnion.Span.Causes[i].Data = spanData;
+                        }
+                    }
+
+                    break;
+                case ItemType.Event:
+                    var eventItem = (Event) item.TraceItem;
+                    newItem->ItemUnion.Event = new CEventTrace.Event();
+                    newItem->ItemUnion.Event.Id.Data = eventItem.Id.Data;
+
+                    fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventItem.Type))
+                    fixed (byte* eventMessage = ApiInterop.ToUtf8Cstr(eventItem.Message))
+                    {
+                        newItem->ItemUnion.Event.Type = eventType;
+                        newItem->ItemUnion.Event.Message = eventMessage;
+                    }
+
+                    newItem->ItemUnion.Event.UnixTimestampMillis = eventItem.UnixTimestampMillis;
+
+                    // Todo: Need to wrap the Data (EventData) into a handle
+                    // newItem->ItemUnion.Event.Data = eventItem.Data;
+
+                    break;
+                default:
+                    throw new NotSupportedException("Invalid Item Type provided.");
+            }
+
+            newItem->ItemType = (byte) item.ItemType;
+
+            return newItem;
+        }
+    }
+
+    internal unsafe class CallbackThunkDelegates
+    {
+        public static readonly unsafe CEventTrace.TraceCallback traceCallbackThunkDelegate = TraceCallbackThunk;
+
+        [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
+        private static unsafe void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)
+        {
+            var callbackHandle = GCHandle.FromIntPtr((IntPtr) callbackHandlePtr);
+            var callback = (Action<Item>) callbackHandle.Target;
+
+            var callbackItem = new Item();
+            // Todo: Add logic to convert from internal item to public-facing item
+
+            callback(callbackItem);
         }
     }
 }
