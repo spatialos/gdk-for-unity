@@ -52,7 +52,8 @@ namespace Improbable.Worker.CInterop.Internal
             List<WrappedGcHandle> handles = new List<WrappedGcHandle>(
                 parameters.Length);
 
-            // ConvertTracerParameters(handles, )
+            // ConvertTracerParameters(handles, ...)
+            internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
         }
 
         public static unsafe WrappedGcHandle ConvertTracerParameter(EventTracerParameters parameter, ref CEventTrace.EventTracerParameters internalParameters)
