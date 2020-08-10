@@ -35,9 +35,6 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandsToSendStorage worldCommandStorage = new WorldCommandsToSendStorage();
 
-        private readonly MessageList<EntityComponent> authorityLossAcks =
-            new MessageList<EntityComponent>();
-
         private readonly MessageList<LogMessageToSend> logsToSend = new MessageList<LogMessageToSend>();
 
         private readonly List<Metrics> metricsToSend = new List<Metrics>();
@@ -90,14 +87,8 @@ namespace Improbable.Gdk.Core
                 storage.Clear();
             }
 
-            authorityLossAcks.Clear();
             logsToSend.Clear();
             metricsToSend.Clear();
-        }
-
-        public void AcknowledgeAuthorityLoss(long entityId, uint componentId)
-        {
-            authorityLossAcks.Add(new EntityComponent(entityId, componentId));
         }
 
         public void AddComponentUpdate<T>(in T update, long entityId)
@@ -150,11 +141,6 @@ namespace Improbable.Gdk.Core
         internal List<Metrics> GetMetrics()
         {
             return metricsToSend;
-        }
-
-        internal MessageList<EntityComponent> GetAuthorityLossAcknowledgements()
-        {
-            return authorityLossAcks;
         }
 
         internal IComponentDiffStorage GetComponentDiffStorage(uint componentId)
