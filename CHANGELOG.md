@@ -8,7 +8,7 @@
   - This no longer supports AuthorityImminentLoss.
 - ComponentUpdateSystem no longer has the API `GetAuthority`, `GetComponent`, and `HasComponent`. [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
   - Use the Unity Entities `EntityManager` instead.
-- Tooling (codegen & deployment launcher) now depends on .NET Core v3.1.302 instead of v2.2.402. [#1443](https://github.com/spatialos/gdk-for-unity/pull/1443)
+- The GDK now depends on .NET Core v3.1.3xx instead of v2.2.2xx. [#1443](https://github.com/spatialos/gdk-for-unity/pull/1443)
 
 ### Added
 
