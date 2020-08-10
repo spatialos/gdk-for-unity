@@ -45,22 +45,16 @@ namespace Improbable.Worker.CInterop
 
     public static class TraceSpan
     {
-        public static unsafe byte SpanIdHash(SpanId spanId)
+        public static byte SpanIdHash(SpanId spanId)
         {
-            var nativeSpanId = new CEventTrace.SpanId();
-            nativeSpanId.Data = spanId.Data;
-            return CEventTrace.SpanIdHash(nativeSpanId);
+            return CEventTrace.SpanIdHash(ParameterConversion.ConvertSpanId(spanId));
         }
 
-        public static unsafe bool SpanIdEqual(SpanId spanId1, SpanId spanId2)
+        public static bool SpanIdEqual(SpanId spanId1, SpanId spanId2)
         {
-            var nativeSpanId1 = new CEventTrace.SpanId();
-            nativeSpanId1.Data = spanId1.Data;
-
-            var nativeSpanId2 = new CEventTrace.SpanId();
-            nativeSpanId2.Data = spanId2.Data;
-
-            return CEventTrace.SpanIdEqual(nativeSpanId1, nativeSpanId2) > 0;
+            return CEventTrace.SpanIdEqual(
+                ParameterConversion.ConvertSpanId(spanId1),
+                ParameterConversion.ConvertSpanId(spanId2)) > 0;
         }
     }
 
