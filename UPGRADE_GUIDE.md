@@ -4,9 +4,8 @@
 
 ### AuthorityLossImminent support removed
 
-The GDK for Unity no longer supports the AuthorityLossImminent authority state. If this feature is currently enabled, it will not trigger the authority state for any reader or writer. The methods to `Ack` the authority state has also been removed.
+The GDK for Unity no longer supports the `AuthorityLossImminent` authority state. If this feature is currently enabled, it will not trigger the authority state for any reader or writer. The methods to `Ack` the authority state have also been removed.
 
-If you currently make use of this feature, we recommend using the `MonoBehaviour.OnDisabled` method instead.
 To disable the feature for your worker types, please follow the [documentation](https://documentation.improbable.io/spatialos-overview/docs/component-settings).
 
 ### ComponentUpdateSystem API changes
