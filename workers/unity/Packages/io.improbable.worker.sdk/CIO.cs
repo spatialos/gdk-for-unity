@@ -10,7 +10,7 @@ namespace Improbable.Worker.CInterop.Internal
 {
     internal unsafe class CIO
     {
-        public class StorageHandle : CptrHandle
+        internal class StorageHandle : CptrHandle
         {
             protected override bool ReleaseHandle()
             {
@@ -19,7 +19,7 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public class StreamHandle : CptrHandle
+        internal class StreamHandle : CptrHandle
         {
             protected override bool ReleaseHandle()
             {

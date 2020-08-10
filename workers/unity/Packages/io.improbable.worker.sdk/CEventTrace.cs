@@ -272,7 +272,7 @@ namespace Improbable.Worker.CInterop.Internal
          * The item is initialized by copying the provided item; pass a NULL item argument to create an
          * item in an uninitialized state.
          *
-         * Directly creating a TraceItem object (on the stack or the heap) by other means than calling this
+         * Directly creating a Item object (on the stack or the heap) by other means than calling this
          * method is discouraged as it will lead to undefined behaviour when passing that item to certain
          * trace API methods (e.g. SerializeItemToStream).
          */
