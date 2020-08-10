@@ -43,14 +43,6 @@ namespace Improbable.Worker.CInterop
         public ITraceItem TraceItem;
     }
 
-    public unsafe delegate void TraceCallback(
-        UIntPtr userData, IntPtr item);
-
-    internal struct EventTracerParameters
-    {
-        public CEventTrace.TraceCallback callback;
-    }
-
     public static class TraceSpan
     {
         public static unsafe byte SpanIdHash(SpanId spanId)
@@ -76,14 +68,67 @@ namespace Improbable.Worker.CInterop
     {
         private readonly CEventTrace.EventTracer eventTracer;
 
-        public EventTracer()
+        public bool IsEnabled { get; private set; }
+
+        public EventTracer(EventTracerParameters[] parameters)
         {
-            // eventTracer = CEventTrace.EventTracerCreate();
+            ParameterConversion.ConvertEventTracer(parameters, out var tracerParameters);
+
+            fixed (CEventTrace.EventTracerParameters* fixedParameters = tracerParameters)
+            {
+                CEventTrace.EventTracerCreate(fixedParameters);
+            }
         }
 
         public void Dispose()
         {
             eventTracer.Dispose();
+        }
+
+        public void Enable()
+        {
+            CEventTrace.EventTracerEnable(eventTracer);
+            IsEnabled = true;
+        }
+
+        public void Disable()
+        {
+            CEventTrace.EventTracerDisable(eventTracer);
+            IsEnabled = false;
+        }
+
+        public void SetActiveSpanId(SpanId spanId)
+        {
+            CEventTrace.EventTracerSetActiveSpanId(eventTracer, ParameterConversion.ConvertSpanId(spanId));
+        }
+
+        public void ClearActiveSpanId(SpanId spanId)
+        {
+            // Todo: Uncomment once Worker SDK updated to 14.8.0
+            // CEventTrace.EventTracerClearActiveSpanId(eventTracer, ParameterConversion.ConvertSpanId(spanId));
+        }
+
+        public SpanId GetActiveSpanId()
+        {
+            var nativeSpanId = CEventTrace.EventTracerGetActiveSpanId(eventTracer);
+            return new SpanId { Data = nativeSpanId.Data };
+        }
+
+        // Todo: Return new created span
+        public void AddSpan(int causeCount, SpanId[] causes)
+        {
+            CEventTrace.EventTracerAddSpan(eventTracer, null, (uint) causeCount);
+        }
+
+        public void AddEvent(Event @event)
+        {
+            // CEventTrace.EventTracerAddEvent(eventTracer, ParameterConversion.ConvertEvent(@event));
+        }
+
+        public bool ShouldSampleEvent(Event @event)
+        {
+            // return CEventTrace.EventTracerShouldSampleEvent(eventTracer, ParameterConversion.ConvertEvent(@event)) > 0;
+            return false; // Todo: remove
         }
     }
 
@@ -266,20 +311,12 @@ namespace Improbable.Worker.CInterop
         }
     }
 
-    internal unsafe class CallbackThunkDelegates
+    public unsafe delegate void TraceCallback(
+        UIntPtr userData, IntPtr item);
+
+    public class EventTracerParameters
     {
-        public static readonly unsafe CEventTrace.TraceCallback traceCallbackThunkDelegate = TraceCallbackThunk;
-
-        [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
-        private static unsafe void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)
-        {
-            var callbackHandle = GCHandle.FromIntPtr((IntPtr) callbackHandlePtr);
-            var callback = (Action<Item>) callbackHandle.Target;
-
-            var callbackItem = new Item();
-            // Todo: Add logic to convert from internal item to public-facing item
-
-            callback(callbackItem);
-        }
+        public TraceCallback TraceCallback;
+        public UIntPtr UserData;
     }
 }
