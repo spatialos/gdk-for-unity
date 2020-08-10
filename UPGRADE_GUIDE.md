@@ -19,7 +19,9 @@ The `Reader` and `Writer` classes have had their `public Authority Authority` pr
 
 ### .NET Core Update
 
-Tooling for the GDK, in particular the code generator and deployment launcher, has been updated to use [.NET Core SDK v3.1.302](https://dotnet.microsoft.com/download/dotnet-core/3.1). To update, download and install the new version from the link provided.
+The GDK, in particular the code generator and deployment launcher, has been updated to use [.NET Core SDK v3.1.3xx](https://dotnet.microsoft.com/download/dotnet-core/3.1). 
+
+To update, download and install the new version from the link provided above.
 
 ## From `0.3.7` to `0.3.8`
 
