@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    internal class ComponentAuthorityCallbackManager : IAuthorityCallbackManager
+    internal class ComponentAuthorityCallbackManager : ICallbackManager
     {
         private readonly EntityCallbacks<Authority> callbacks = new EntityCallbacks<Authority>();
         private readonly uint componentId;
@@ -30,18 +30,6 @@ namespace Improbable.Gdk.Subscriptions
                     case Authority.NotAuthoritative:
                         callbacks.InvokeAllReverse(changes[i].EntityId, changes[i].Authority);
                         break;
-                }
-            }
-        }
-
-        public void InvokeLossImminentCallbacks()
-        {
-            var changes = componentUpdateSystem.GetAuthorityChangesReceived(componentId);
-            for (var i = 0; i < changes.Count; ++i)
-            {
-                if (changes[i].Authority == Authority.AuthorityLossImminent)
-                {
-                    callbacks.InvokeAllReverse(changes[i].EntityId, changes[i].Authority);
                 }
             }
         }

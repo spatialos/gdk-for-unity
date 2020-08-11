@@ -42,9 +42,6 @@ namespace Improbable.Gdk.Core
 
         private readonly List<Metrics> metricsToSend = new List<Metrics>();
 
-        private readonly MessageList<EntityComponent> authorityLossAcks =
-            new MessageList<EntityComponent>();
-
         private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
@@ -106,8 +103,6 @@ namespace Improbable.Gdk.Core
 
             messages.GetLogMessages().CopyTo(logMessages);
 
-            messages.GetAuthorityLossAcknowledgements().CopyTo(authorityLossAcks);
-
             foreach (var serializer in componentSerializers)
             {
                 serializer.Serialize(messages, this);
@@ -126,7 +121,6 @@ namespace Improbable.Gdk.Core
             entityQueryRequests.Clear();
             metricsToSend.Clear();
             logMessages.Clear();
-            authorityLossAcks.Clear();
             netFrameStats.Clear();
         }
 
@@ -201,13 +195,6 @@ namespace Improbable.Gdk.Core
                 ref readonly var logMessage = ref logMessages[i];
                 connection.SendLogMessage(logMessage.LogLevel, logMessage.LoggerName, logMessage.Message,
                     logMessage.EntityId);
-            }
-
-            for (var i = 0; i < authorityLossAcks.Count; ++i)
-            {
-                ref readonly var entityComponent = ref authorityLossAcks[i];
-                connection.SendAuthorityLossImminentAcknowledgement(entityComponent.EntityId,
-                    entityComponent.ComponentId);
             }
 
             frameStats.Merge(netFrameStats);
