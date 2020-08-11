@@ -257,13 +257,53 @@ namespace Improbable.Worker.CInterop
             var itemSize = CEventTrace.GetNextSerializedItemSize(stream);
 
             var deserializeStatus = CEventTrace.DeserializeItemFromStream(stream, itemContainer, itemSize);
-            if (deserializeStatus == 1)
+            if (deserializeStatus != 1)
             {
-                return new Item();
+                var errorMessage = CEventTrace.GetLastError();
+                throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
             }
 
-            var errorMessage = CEventTrace.GetLastError();
-            throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
+            var newItem = new Item();
+            switch (itemContainer->ItemType)
+            {
+                case (byte) ItemType.Span:
+                    newItem.ItemType = ItemType.Span;
+                    newItem.TraceItem = new Span();
+                    var newSpan = (Span) newItem.TraceItem;
+
+                    newSpan.Id = new SpanId();
+                    ApiInterop.Memcpy(newSpan.Id.Data, itemContainer->ItemUnion.Span.Id.Data, (UIntPtr) 16);
+
+                    newSpan.CauseCount = (int) itemContainer->ItemUnion.Span.CauseCount;
+                    for (var i = 0; i < newSpan.CauseCount; i++)
+                    {
+                        newSpan.Causes[i] = new SpanId();
+                        fixed (byte* spanIdDest = newSpan.Causes[i].Data)
+                        {
+                            ApiInterop.Memcpy(spanIdDest, itemContainer->ItemUnion.Span.Causes[i].Data, (UIntPtr) 16);
+                        }
+                    }
+
+                    break;
+                case (byte) ItemType.Event:
+                    newItem.ItemType = ItemType.Event;
+                    newItem.TraceItem = new Event();
+                    var newEvent = (Event) newItem.TraceItem;
+
+                    newEvent.Id = new SpanId();
+                    ApiInterop.Memcpy(newEvent.Id.Data, itemContainer->ItemUnion.Event.Id.Data, (UIntPtr) 16);
+
+                    newEvent.UnixTimestampMillis = itemContainer->ItemUnion.Event.UnixTimestampMillis;
+                    newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
+                    newEvent.Message = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Message);
+
+                    newEvent.Data = Marshal.PtrToStructure<TraceEventData>(itemContainer->ItemUnion.Event.Data);
+                    break;
+                default:
+                    throw new NotSupportedException("Invalid Item Type provided.");
+            }
+
+            return newItem;
         }
 
         private CEventTrace.Item* ConvertItem(Item item)
