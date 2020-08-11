@@ -1,6 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
 
@@ -28,7 +28,7 @@ namespace Improbable.Worker.CInterop
         public ulong UnixTimestampMillis;
         public string Message;
         public string Type;
-        internal CEventTrace.EventData Data;
+        public TraceEventData Data;
     }
 
     public enum ItemType
@@ -78,7 +78,7 @@ namespace Improbable.Worker.CInterop
 
             fixed (CEventTrace.EventTracerParameters* fixedParameters = tracerParameters)
             {
-                CEventTrace.EventTracerCreate(fixedParameters);
+                eventTracer = CEventTrace.EventTracerCreate(fixedParameters);
             }
         }
 
@@ -106,7 +106,7 @@ namespace Improbable.Worker.CInterop
 
         public void ClearActiveSpanId(SpanId spanId)
         {
-            // Todo: Uncomment once Worker SDK updated to 14.8.0
+            // Uncomment once Worker SDK updated to 14.8.0 (version where EventTracerClearActiveSpanId is added)
             // CEventTrace.EventTracerClearActiveSpanId(eventTracer, ParameterConversion.ConvertSpanId(spanId));
         }
 
@@ -118,39 +118,42 @@ namespace Improbable.Worker.CInterop
             return spanId;
         }
 
-        // Todo: Return new created span
-        public void AddSpan(int causeCount, SpanId[] causes)
+        public void AddSpanToCauses(int causeCount, SpanId[] causes)
         {
-            CEventTrace.EventTracerAddSpan(eventTracer, null, (uint) causeCount);
+            var createdSpan = CEventTrace.EventTracerAddSpan(eventTracer, null, (uint) causeCount);
         }
 
         public void AddEvent(Event @event)
         {
-            // CEventTrace.EventTracerAddEvent(eventTracer, ParameterConversion.ConvertEvent(@event));
+            CEventTrace.EventTracerAddEvent(eventTracer, ParameterConversion.ConvertEvent(@event));
         }
 
         public bool ShouldSampleEvent(Event @event)
         {
-            // return CEventTrace.EventTracerShouldSampleEvent(eventTracer, ParameterConversion.ConvertEvent(@event)) > 0;
-            return false; // Todo: remove
+            return CEventTrace.EventTracerShouldSampleEvent(eventTracer, ParameterConversion.ConvertEvent(@event)) > 0;
         }
     }
 
     public unsafe class TraceEventData : IDisposable
     {
-        private readonly CEventTrace.EventData eventData;
+        internal GCHandle eventData;
 
         private readonly GcHandlePool fieldHandles;
 
         public TraceEventData()
         {
-            eventData = CEventTrace.EventDataCreate();
+            var internalEventData = CEventTrace.EventDataCreate();
+            eventData = GCHandle.Alloc(internalEventData, GCHandleType.Pinned);
             fieldHandles = new GcHandlePool();
         }
 
         public void Dispose()
         {
-            eventData.Dispose();
+            if (eventData.IsAllocated)
+            {
+                eventData.Free();
+            }
+
             fieldHandles.Dispose();
         }
 
@@ -167,20 +170,20 @@ namespace Improbable.Worker.CInterop
             var pinnedKey = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(key));
             var pinnedValue = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(value));
 
-            CEventTrace.EventDataAddStringFields(eventData, 1,
+            CEventTrace.EventDataAddStringFields(eventData.AddrOfPinnedObject(), 1,
                 (byte**) pinnedKey.ToPointer(), (byte**) pinnedValue.ToPointer());
         }
 
         public Dictionary<string, string> GetAllFields()
         {
-            var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData);
+            var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData.AddrOfPinnedObject());
             var nativeKeys = new byte*[numberOfFields];
             var nativeValues = new byte*[numberOfFields];
 
             fixed (byte** keys = nativeKeys)
             fixed (byte** values = nativeValues)
             {
-                CEventTrace.EventDataGetStringFields(eventData, keys, values);
+                CEventTrace.EventDataGetStringFields(eventData.AddrOfPinnedObject(), keys, values);
             }
 
             var fields = new Dictionary<string, string>();
@@ -197,7 +200,7 @@ namespace Improbable.Worker.CInterop
             byte* value;
             fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
             {
-                value = CEventTrace.EventDataGetFieldValue(eventData, nativeKey);
+                value = CEventTrace.EventDataGetFieldValue(eventData.AddrOfPinnedObject(), nativeKey);
             }
 
             return ApiInterop.FromUtf8Cstr(value);
@@ -233,8 +236,7 @@ namespace Improbable.Worker.CInterop
             }
 
             var errorMessage = CEventTrace.GetLastError();
-            // Decide on the best type of error to throw in this case
-            throw new NotSupportedException("Failed to deserialize item from stream.");
+            throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
         }
 
         public long GetSerializedItemSizeInBytes(Item item)
@@ -246,8 +248,7 @@ namespace Improbable.Worker.CInterop
             }
 
             var errorMessage = CEventTrace.GetLastError();
-            // Decide on the best type of error to throw in this case
-            throw new NotSupportedException("Failed to get serialized item size.");
+            throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
         }
 
         public Item DeserializeNextItemFromStream()
@@ -262,8 +263,7 @@ namespace Improbable.Worker.CInterop
             }
 
             var errorMessage = CEventTrace.GetLastError();
-            // Decide on the best type of error to throw in this case
-            throw new NotSupportedException("Failed to deserialize item from stream.");
+            throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
         }
 
         private CEventTrace.Item* ConvertItem(Item item)
@@ -286,21 +286,7 @@ namespace Improbable.Worker.CInterop
                     break;
                 case ItemType.Event:
                     var eventItem = (Event) item.TraceItem;
-                    newItem->ItemUnion.Event = new CEventTrace.Event();
-                    newItem->ItemUnion.Event.Id = ParameterConversion.ConvertSpanId(eventItem.Id);
-
-                    fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventItem.Type))
-                    fixed (byte* eventMessage = ApiInterop.ToUtf8Cstr(eventItem.Message))
-                    {
-                        newItem->ItemUnion.Event.Type = eventType;
-                        newItem->ItemUnion.Event.Message = eventMessage;
-                    }
-
-                    newItem->ItemUnion.Event.UnixTimestampMillis = eventItem.UnixTimestampMillis;
-
-                    // Todo: Need to wrap the Data (EventData) into a handle
-                    // newItem->ItemUnion.Event.Data = eventItem.Data;
-
+                    newItem->ItemUnion.Event = ParameterConversion.ConvertEvent(eventItem);
                     break;
                 default:
                     throw new NotSupportedException("Invalid Item Type provided.");

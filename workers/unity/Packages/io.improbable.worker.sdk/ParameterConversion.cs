@@ -49,6 +49,23 @@ namespace Improbable.Worker.CInterop.Internal
             return internalSpanId;
         }
 
+        public static unsafe CEventTrace.Event ConvertEvent(Event eventToConvert)
+        {
+            var internalEvent = new CEventTrace.Event();
+            internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
+            internalEvent.Id = ConvertSpanId(eventToConvert.Id);
+            internalEvent.Data = eventToConvert.Data?.eventData.AddrOfPinnedObject() ?? IntPtr.Zero;
+
+            fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventToConvert.Type))
+            fixed (byte* eventMessage = ApiInterop.ToUtf8Cstr(eventToConvert.Message))
+            {
+                internalEvent.Type = eventType;
+                internalEvent.Message = eventMessage;
+            }
+
+            return internalEvent;
+        }
+
         public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, out CEventTrace.EventTracerParameters[] internalParameters)
         {
             List<WrappedGcHandle> handles = new List<WrappedGcHandle>(
