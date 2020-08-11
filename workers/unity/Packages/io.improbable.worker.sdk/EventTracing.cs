@@ -56,6 +56,14 @@ namespace Improbable.Worker.CInterop
                 ParameterConversion.ConvertSpanId(spanId1),
                 ParameterConversion.ConvertSpanId(spanId2)) > 0;
         }
+
+        public static unsafe SpanId GetNullSpanId()
+        {
+            var nativeSpanId = new SpanId();
+            var nullSpanId = CEventTrace.SpanIdNull();
+            ApiInterop.Memcpy(nativeSpanId.Data, nullSpanId.Data, (UIntPtr) 16);
+            return nativeSpanId;
+        }
     }
 
     public unsafe class EventTracer : IDisposable
