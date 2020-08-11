@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Subscriptions
         {
             componentConstraintsCallbackSystem.Invoke();
 
-            componentCallbackSystem.InvokeNoLossImminent();
+            componentCallbackSystem.InvokeCallbacks();
 
             if (behavioursToEnable.Count > 0)
             {
@@ -58,8 +58,6 @@ namespace Improbable.Gdk.Subscriptions
 
                 behavioursToEnable.Clear();
             }
-
-            componentCallbackSystem.InvokeLossImminent();
 
             commandCallbackSystem.InvokeCallbacks();
             workerFlagCallbackSystem.InvokeCallbacks();
