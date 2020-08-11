@@ -44,7 +44,9 @@ namespace Improbable.Worker.CInterop.Internal
 
         public static unsafe CEventTrace.SpanId ConvertSpanId(SpanId spanId)
         {
-            return new CEventTrace.SpanId { Data = spanId.Data };
+            var internalSpanId = new CEventTrace.SpanId();
+            ApiInterop.Memcpy(internalSpanId.Data, spanId.Data, (UIntPtr) 16);
+            return internalSpanId;
         }
 
         public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, out CEventTrace.EventTracerParameters[] internalParameters)

@@ -105,7 +105,9 @@ namespace Improbable.Worker.CInterop
         public SpanId GetActiveSpanId()
         {
             var nativeSpanId = CEventTrace.EventTracerGetActiveSpanId(eventTracer);
-            return new SpanId { Data = nativeSpanId.Data };
+            var spanId = new SpanId();
+            ApiInterop.Memcpy(spanId.Data, nativeSpanId.Data, (UIntPtr) 16);
+            return spanId;
         }
 
         // Todo: Return new created span
@@ -266,21 +268,18 @@ namespace Improbable.Worker.CInterop
                 case ItemType.Span:
                     var spanItem = (Span) item.TraceItem;
                     newItem->ItemUnion.Span = new CEventTrace.Span();
-                    newItem->ItemUnion.Span.Id.Data = spanItem.Id.Data;
+                    newItem->ItemUnion.Span.Id = ParameterConversion.ConvertSpanId(spanItem.Id);
                     newItem->ItemUnion.Span.CauseCount = (uint) spanItem.CauseCount;
                     for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
                     {
-                        fixed (byte* spanData = spanItem.Causes[i].Data)
-                        {
-                            newItem->ItemUnion.Span.Causes[i].Data = spanData;
-                        }
+                        newItem->ItemUnion.Span.Causes[i] = ParameterConversion.ConvertSpanId(spanItem.Causes[i]);
                     }
 
                     break;
                 case ItemType.Event:
                     var eventItem = (Event) item.TraceItem;
                     newItem->ItemUnion.Event = new CEventTrace.Event();
-                    newItem->ItemUnion.Event.Id.Data = eventItem.Id.Data;
+                    newItem->ItemUnion.Event.Id = ParameterConversion.ConvertSpanId(eventItem.Id);
 
                     fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventItem.Type))
                     fixed (byte* eventMessage = ApiInterop.ToUtf8Cstr(eventItem.Message))
