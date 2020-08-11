@@ -258,13 +258,6 @@ public void Send{eventDetails.PascalCaseName}Event({eventDetails.FqnPayloadType}
 }}
 ");
                     }
-
-                    writer.Line($@"
-public void AcknowledgeAuthorityLoss()
-{{
-    ComponentUpdateSystem.AcknowledgeAuthorityLoss(EntityId, {componentDetails.Name}.ComponentId);
-}}
-");
                 });
         }
     }

@@ -168,7 +168,12 @@ namespace Improbable.Gdk.Core
             {
                 throw new ArgumentException(
                     $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
-                    $"Unknown component ID");
+                    "Unknown component ID");
+            }
+
+            if (authority == Authority.AuthorityLossImminent)
+            {
+                return;
             }
 
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(

@@ -70,11 +70,6 @@ namespace Improbable.Gdk.Core
             return manager.GetComponentsRemoved();
         }
 
-        public void AcknowledgeAuthorityLoss(EntityId entityId, uint componentId)
-        {
-            worker.MessagesToSend.AcknowledgeAuthorityLoss(entityId.Id, componentId);
-        }
-
         protected override void OnCreate()
         {
             base.OnCreate();

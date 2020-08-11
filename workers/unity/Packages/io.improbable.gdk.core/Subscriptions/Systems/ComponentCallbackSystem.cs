@@ -74,15 +74,10 @@ namespace Improbable.Gdk.Subscriptions
             return keyAndManager.Item2.UnregisterCallback(keyAndManager.Item1);
         }
 
-        internal void InvokeNoLossImminent()
+        internal void InvokeCallbacks()
         {
             componentCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
             authorityCallbackManagers.InvokeEach(manager => manager.InvokeCallbacks());
-        }
-
-        internal void InvokeLossImminent()
-        {
-            authorityCallbackManagers.InvokeEach(manager => manager.InvokeLossImminentCallbacks());
         }
 
         protected override void OnCreate()
