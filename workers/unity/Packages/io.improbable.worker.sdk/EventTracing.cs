@@ -152,25 +152,16 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        public void AddCollectionOfFields(Dictionary<string, string> fields)
+        public void AddCollectionOfFields(IEnumerable<KeyValuePair<string, string>> fields)
         {
-            foreach (var entry in fields)
+            foreach (var kvp in fields)
             {
-                AddField(entry.Key, entry.Value);
+                fixed (byte* key = ApiInterop.ToUtf8Cstr(kvp.Key))
+                fixed (byte* value = ApiInterop.ToUtf8Cstr(kvp.Value))
+                {
+                    CEventTrace.EventDataAddStringFields(eventData.AddrOfPinnedObject(), 1, &key, &value);
+                }
             }
-        }
-
-        public void AddField(string key, string value)
-        {
-            var pinnedKey = GCHandle.Alloc(ApiInterop.ToUtf8Cstr(key), GCHandleType.Pinned);
-            var pinnedValue = GCHandle.Alloc(ApiInterop.ToUtf8Cstr(value), GCHandleType.Pinned);
-
-            CEventTrace.EventDataAddStringFields(eventData.AddrOfPinnedObject(), 1,
-                (byte**) pinnedKey.AddrOfPinnedObject(), (byte**) pinnedValue.AddrOfPinnedObject());
-
-            // Free the GCHandles, the data is copied into the EventData struct by the C API
-            pinnedKey.Free();
-            pinnedValue.Free();
         }
 
         public Dictionary<string, string> GetAllFields()
