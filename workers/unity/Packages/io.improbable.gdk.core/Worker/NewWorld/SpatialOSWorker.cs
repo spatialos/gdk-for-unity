@@ -21,7 +21,7 @@ namespace Improbable.Gdk.Core.NewWorld
             get => workerEntity;
             internal set
             {
-                EntityIdToEntity.Add(new EntityId(0), value); // this is weird
+                EntityIdToEntity.Add(new EntityId(0), value); // this is a strange way of doing this, probably a better way e.g. store as singleton entity
                 workerEntity = value;
             }
         }
