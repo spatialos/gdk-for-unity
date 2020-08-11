@@ -138,13 +138,10 @@ namespace Improbable.Worker.CInterop
     {
         internal GCHandle eventData;
 
-        private readonly GcHandlePool fieldHandles;
-
         public TraceEventData()
         {
             var internalEventData = CEventTrace.EventDataCreate();
             eventData = GCHandle.Alloc(internalEventData, GCHandleType.Pinned);
-            fieldHandles = new GcHandlePool();
         }
 
         public void Dispose()
@@ -153,8 +150,6 @@ namespace Improbable.Worker.CInterop
             {
                 eventData.Free();
             }
-
-            fieldHandles.Dispose();
         }
 
         public void AddCollectionOfFields(Dictionary<string, string> fields)
@@ -167,11 +162,15 @@ namespace Improbable.Worker.CInterop
 
         public void AddField(string key, string value)
         {
-            var pinnedKey = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(key));
-            var pinnedValue = fieldHandles.Pin(ApiInterop.ToUtf8Cstr(value));
+            var pinnedKey = GCHandle.Alloc(ApiInterop.ToUtf8Cstr(key), GCHandleType.Pinned);
+            var pinnedValue = GCHandle.Alloc(ApiInterop.ToUtf8Cstr(value), GCHandleType.Pinned);
 
             CEventTrace.EventDataAddStringFields(eventData.AddrOfPinnedObject(), 1,
-                (byte**) pinnedKey.ToPointer(), (byte**) pinnedValue.ToPointer());
+                (byte**) pinnedKey.AddrOfPinnedObject(), (byte**) pinnedValue.AddrOfPinnedObject());
+
+            // Free the GCHandles, the data is copied into the EventData struct by the C API
+            pinnedKey.Free();
+            pinnedValue.Free();
         }
 
         public Dictionary<string, string> GetAllFields()
