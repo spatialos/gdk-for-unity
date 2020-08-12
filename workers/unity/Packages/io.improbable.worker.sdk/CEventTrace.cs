@@ -153,7 +153,7 @@ namespace Improbable.Worker.CInterop.Internal
         public struct Item
         {
             /** The type of the item, defined using ItemType. */
-            public Uint8 ItemType;
+            public ItemType ItemType;
 
             /** An item can either be a Span or an Event. */
             public Union ItemUnion;

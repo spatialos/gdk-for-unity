@@ -125,15 +125,12 @@ namespace Improbable.Worker.CInterop.Internal
             public static readonly CEventTrace.TraceCallback traceCallbackThunkDelegate = TraceCallbackThunk;
 
             [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
-            private static unsafe void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)
+            private static void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)
             {
                 var callbackHandle = GCHandle.FromIntPtr((IntPtr) callbackHandlePtr);
                 var callback = (Action<Item>) callbackHandle.Target;
 
-                var callbackItem = new Item();
-                // Todo: Add logic to convert from internal item to public-facing item
-
-                callback(callbackItem);
+                callback(Item.ConvertItem(item));
             }
         }
     }
