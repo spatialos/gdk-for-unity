@@ -113,12 +113,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_AddStringFields")]
-        public static extern void EventDataAddStringFields(IntPtr data, Uint32 count, Char** keys, Char** values);
+        public static extern void EventDataAddStringFields(EventData data, Uint32 count, Char** keys, Char** values);
 
         /** Returns the number of fields on the given event data object. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldCount")]
-        public static extern Uint32 EventDataGetFieldCount(IntPtr data);
+        public static extern Uint32 EventDataGetFieldCount(EventData data);
 
         /**
          * Returns all the key value pairs in the event data object. keys and values must have capacity for
@@ -128,12 +128,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetStringFields")]
-        public static extern void EventDataGetStringFields(IntPtr data, Char** keys, Char** values);
+        public static extern void EventDataGetStringFields(EventData data, Char** keys, Char** values);
 
         /** Returns the value for the given key. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldValue")]
-        public static extern Char* EventDataGetFieldValue(IntPtr data, Char* key);
+        public static extern Char* EventDataGetFieldValue(EventData data, Char* key);
 
         /** Data for an event added to the event-tracer. */
         [StructLayout(LayoutKind.Sequential)]

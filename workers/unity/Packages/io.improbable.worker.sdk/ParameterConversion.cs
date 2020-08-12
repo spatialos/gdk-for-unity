@@ -45,7 +45,7 @@ namespace Improbable.Worker.CInterop.Internal
         public static unsafe CEventTrace.SpanId ConvertSpanId(SpanId spanId)
         {
             var internalSpanId = new CEventTrace.SpanId();
-            ApiInterop.Memcpy(internalSpanId.Data, spanId.Data, (UIntPtr) 16);
+            ApiInterop.Memcpy(internalSpanId.Data, spanId.Data, SpanId.SpanIdSize);
             return internalSpanId;
         }
 
@@ -54,7 +54,10 @@ namespace Improbable.Worker.CInterop.Internal
             var internalEvent = new CEventTrace.Event();
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
-            internalEvent.Data = eventToConvert.Data?.eventData.AddrOfPinnedObject() ?? IntPtr.Zero;
+            if (eventToConvert.Data?.eventData != null)
+            {
+                internalEvent.Data = eventToConvert.Data.eventData.DangerousGetHandle();
+            }
 
             fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventToConvert.Type))
             fixed (byte* eventMessage = ApiInterop.ToUtf8Cstr(eventToConvert.Message))

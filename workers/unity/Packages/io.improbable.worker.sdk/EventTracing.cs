@@ -8,7 +8,8 @@ namespace Improbable.Worker.CInterop
 {
     public struct SpanId
     {
-        public unsafe fixed byte Data[16];
+        internal static UIntPtr SpanIdSize = new UIntPtr(16);
+        public unsafe fixed byte Data[SpanIdSize.ToUInt32()];
 
         public override bool Equals(object obj)
         {
@@ -33,7 +34,7 @@ namespace Improbable.Worker.CInterop
             var nullSpanId = CEventTrace.SpanIdNull();
             unsafe
             {
-                ApiInterop.Memcpy(nativeSpanId.Data, nullSpanId.Data, (UIntPtr) 16);
+                ApiInterop.Memcpy(nativeSpanId.Data, nullSpanId.Data, SpanIdSize);
             }
 
             return nativeSpanId;
@@ -139,7 +140,7 @@ namespace Improbable.Worker.CInterop
                     newItem.Span = new Span();
 
                     var newSpan = newItem.Span.GetValueOrDefault();
-                    ApiInterop.Memcpy(newSpan.Id.Data, itemContainer->ItemUnion.Span.Id.Data, (UIntPtr) 16);
+                    ApiInterop.Memcpy(newSpan.Id.Data, itemContainer->ItemUnion.Span.Id.Data, SpanId.SpanIdSize);
 
                     newSpan.CauseCount = (int) itemContainer->ItemUnion.Span.CauseCount;
                     for (var i = 0; i < newSpan.CauseCount; i++)
@@ -147,7 +148,7 @@ namespace Improbable.Worker.CInterop
                         newSpan.Causes[i] = new SpanId();
                         fixed (byte* spanIdDest = newSpan.Causes[i].Data)
                         {
-                            ApiInterop.Memcpy(spanIdDest, itemContainer->ItemUnion.Span.Causes[i].Data, (UIntPtr) 16);
+                            ApiInterop.Memcpy(spanIdDest, itemContainer->ItemUnion.Span.Causes[i].Data, SpanId.SpanIdSize);
                         }
                     }
 
@@ -157,7 +158,7 @@ namespace Improbable.Worker.CInterop
 
                     var newEvent = newItem.Event.GetValueOrDefault();
                     newEvent.Id = new SpanId();
-                    ApiInterop.Memcpy(newEvent.Id.Data, itemContainer->ItemUnion.Event.Id.Data, (UIntPtr) 16);
+                    ApiInterop.Memcpy(newEvent.Id.Data, itemContainer->ItemUnion.Event.Id.Data, SpanId.SpanIdSize);
 
                     newEvent.UnixTimestampMillis = itemContainer->ItemUnion.Event.UnixTimestampMillis;
                     newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
@@ -251,7 +252,7 @@ namespace Improbable.Worker.CInterop
         {
             var nativeSpanId = CEventTrace.EventTracerGetActiveSpanId(eventTracer);
             var spanId = new SpanId();
-            ApiInterop.Memcpy(spanId.Data, nativeSpanId.Data, (UIntPtr) 16);
+            ApiInterop.Memcpy(spanId.Data, nativeSpanId.Data, SpanId.SpanIdSize);
             return spanId;
         }
 
@@ -271,66 +272,66 @@ namespace Improbable.Worker.CInterop
         }
     }
 
-    public unsafe class TraceEventData : IDisposable
+    public class TraceEventData
     {
-        internal GCHandle eventData;
+        internal CEventTrace.EventData eventData;
 
         public TraceEventData()
         {
-            var internalEventData = CEventTrace.EventDataCreate();
-            eventData = GCHandle.Alloc(internalEventData, GCHandleType.Pinned);
-        }
-
-        public void Dispose()
-        {
-            if (eventData.IsAllocated)
-            {
-                eventData.Free();
-            }
+            eventData = CEventTrace.EventDataCreate();
         }
 
         public void AddFields(IEnumerable<KeyValuePair<string, string>> fields)
         {
-            foreach (var kvp in fields)
+            unsafe
             {
-                fixed (byte* key = ApiInterop.ToUtf8Cstr(kvp.Key))
-                fixed (byte* value = ApiInterop.ToUtf8Cstr(kvp.Value))
+                foreach (var kvp in fields)
                 {
-                    CEventTrace.EventDataAddStringFields(eventData.AddrOfPinnedObject(), 1, &key, &value);
+                    fixed (byte* key = ApiInterop.ToUtf8Cstr(kvp.Key))
+                    fixed (byte* value = ApiInterop.ToUtf8Cstr(kvp.Value))
+                    {
+                        CEventTrace.EventDataAddStringFields(eventData, 1, &key, &value);
+                    }
                 }
             }
         }
 
         public Dictionary<string, string> GetAllFields()
         {
-            var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData.AddrOfPinnedObject());
-            var nativeKeys = new byte*[numberOfFields];
-            var nativeValues = new byte*[numberOfFields];
-
-            var fields = new Dictionary<string, string>();
-            fixed (byte** keys = nativeKeys)
-            fixed (byte** values = nativeValues)
+            unsafe
             {
-                CEventTrace.EventDataGetStringFields(eventData.AddrOfPinnedObject(), keys, values);
+                var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData);
+                var nativeKeys = new byte*[numberOfFields];
+                var nativeValues = new byte*[numberOfFields];
 
-                for (var i = 0; i < numberOfFields; i++)
+                var fields = new Dictionary<string, string>();
+                fixed (byte** keys = nativeKeys)
+                fixed (byte** values = nativeValues)
                 {
-                    fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
-                }
-            }
+                    CEventTrace.EventDataGetStringFields(eventData, keys, values);
 
-            return fields;
+                    for (var i = 0; i < numberOfFields; i++)
+                    {
+                        fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
+                    }
+                }
+
+                return fields;
+            }
         }
 
         public string GetFieldValue(string key)
         {
-            byte* value;
-            fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
+            unsafe
             {
-                value = CEventTrace.EventDataGetFieldValue(eventData.AddrOfPinnedObject(), nativeKey);
-            }
+                byte* value;
+                fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
+                {
+                    value = CEventTrace.EventDataGetFieldValue(eventData, nativeKey);
+                }
 
-            return ApiInterop.FromUtf8Cstr(value);
+                return ApiInterop.FromUtf8Cstr(value);
+            }
         }
     }
 
