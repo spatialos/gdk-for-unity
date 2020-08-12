@@ -9,7 +9,7 @@ namespace Improbable.Worker.CInterop
     public struct SpanId
     {
         internal static UIntPtr SpanIdSize = new UIntPtr(16);
-        public unsafe fixed byte Data[SpanIdSize.ToUInt32()];
+        public unsafe fixed byte Data[16];
 
         public override bool Equals(object obj)
         {
