@@ -274,6 +274,11 @@ namespace Improbable.Worker.CInterop
         {
             unsafe
             {
+                if (causes == null)
+                {
+                    return AddSpan();
+                }
+
                 var causeIds = new CEventTrace.SpanId[causes.Length];
                 for (var i = 0; i < causes.Length; i++)
                 {
@@ -291,6 +296,18 @@ namespace Improbable.Worker.CInterop
 
                 return newSpanId;
             }
+        }
+
+        public SpanId AddSpan()
+        {
+            var newSpanId = new SpanId();
+            unsafe
+            {
+                var createdSpanId = CEventTrace.EventTracerAddSpan(eventTracer, null, 1);
+                ApiInterop.Memcpy(newSpanId.Data, createdSpanId.Data, SpanId.SpanIdSize);
+            }
+
+            return newSpanId;
         }
 
         public void AddEvent(Event @event)
