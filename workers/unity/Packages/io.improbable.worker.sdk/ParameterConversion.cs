@@ -9,7 +9,9 @@ namespace Improbable.Worker.CInterop.Internal
     // when changes upstreamed to Worker SDK
     internal static class ParameterConversion
     {
-        public delegate void EventConversionCallback(CEventTrace.Event internalEvent);
+        public delegate void EventParametersCallback(CEventTrace.Event internalEvent);
+
+        public unsafe delegate void EventTracerParametersCallback(CEventTrace.EventTracerParameters* parameters, List<WrappedGcHandle> handles);
 
         internal class WrappedGcHandle : CriticalFinalizerObject, IDisposable
         {
@@ -51,7 +53,7 @@ namespace Improbable.Worker.CInterop.Internal
             return internalSpanId;
         }
 
-        public static unsafe void ConvertEvent(Event eventToConvert, EventConversionCallback callback)
+        public static unsafe void ConvertEvent(Event eventToConvert, EventParametersCallback callback)
         {
             CEventTrace.Event internalEvent = new CEventTrace.Event();
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
@@ -72,13 +74,15 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, out CEventTrace.EventTracerParameters[] internalParameters)
+        public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, EventTracerParametersCallback callback)
         {
-            List<WrappedGcHandle> handles = new List<WrappedGcHandle>(
-                parameters.Length);
+            var handles = new List<WrappedGcHandle>(parameters.Length);
+            ConvertTracerParameters(handles, parameters, out var internalParameters);
 
-            // ConvertTracerParameters(handles, ...)
-            internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
+            fixed (CEventTrace.EventTracerParameters* parameterBuffer = internalParameters)
+            {
+                callback(parameterBuffer, handles);
+            }
         }
 
         public static unsafe WrappedGcHandle ConvertTracerParameter(EventTracerParameters parameter, ref CEventTrace.EventTracerParameters internalParameters)
@@ -101,28 +105,17 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        private static void ConvertTracerParameters(List<WrappedGcHandle> handles,
-            Dictionary<uint, EventTracerParameters> parameterDict, EventTracerParameters defaultParameters,
-            out CEventTrace.EventTracerParameters[] internalParameters, out CEventTrace.EventTracerParameters internalDefaultParameters)
+        private static void ConvertTracerParameters(List<WrappedGcHandle> handles, EventTracerParameters[] parameters,
+            out CEventTrace.EventTracerParameters[] internalParameters)
         {
-            internalParameters = new CEventTrace.EventTracerParameters[parameterDict.Count];
-            var i = 0;
-            foreach (var parameter in parameterDict)
+            internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
+            for (var i = 0; i < parameters.Length; i++)
             {
-                var parameterHandle = ConvertTracerParameter(parameter.Value, ref internalParameters[i]);
+                var parameterHandle = ConvertTracerParameter(parameters[i], ref internalParameters[i]);
                 if (parameterHandle != null)
                 {
                     handles.Add(parameterHandle);
                 }
-
-                ++i;
-            }
-
-            internalDefaultParameters = new CEventTrace.EventTracerParameters();
-            if (defaultParameters != null)
-            {
-                var defaultParameterHandle = ConvertTracerParameter(defaultParameters, ref internalDefaultParameters);
-                handles.Add(defaultParameterHandle);
             }
         }
 

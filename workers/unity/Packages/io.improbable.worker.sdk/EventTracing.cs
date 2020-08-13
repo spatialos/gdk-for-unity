@@ -210,25 +210,28 @@ namespace Improbable.Worker.CInterop
 
     public class EventTracer : IDisposable
     {
-        private readonly CEventTrace.EventTracer eventTracer;
+        private CEventTrace.EventTracer eventTracer;
+        private List<ParameterConversion.WrappedGcHandle> handleList = null;
 
         public bool IsEnabled { get; private set; }
 
         public EventTracer(EventTracerParameters[] parameters)
         {
-            ParameterConversion.ConvertEventTracer(parameters, out var tracerParameters);
-            unsafe
+            ParameterConversion.ConvertEventTracer(parameters, (internalParameters, handles) =>
             {
-                fixed (CEventTrace.EventTracerParameters* fixedParameters = tracerParameters)
+                unsafe
                 {
-                    eventTracer = CEventTrace.EventTracerCreate(fixedParameters);
+                    eventTracer = CEventTrace.EventTracerCreate(internalParameters);
+                    handleList = handles;
                 }
-            }
+            });
         }
+
 
         public void Dispose()
         {
             eventTracer.Dispose();
+            handleList.ForEach(handle => handle.Dispose());
         }
 
         public void Enable()
