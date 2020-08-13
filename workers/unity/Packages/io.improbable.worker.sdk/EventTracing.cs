@@ -262,9 +262,28 @@ namespace Improbable.Worker.CInterop
             return spanId;
         }
 
-        public void AddSpanToCauses(int causeCount, SpanId[] causes)
+        // Returns the SpanId of the newly-created Span in the EventTracer
+        public SpanId AddSpan(SpanId[] causes)
         {
-            var createdSpan = CEventTrace.EventTracerAddSpan(eventTracer, null, (uint) causeCount);
+            unsafe
+            {
+                var causeIds = new CEventTrace.SpanId[causes.Length];
+                for (var i = 0; i < causes.Length; i++)
+                {
+                    causeIds[i] = ParameterConversion.ConvertSpanId(causes[i]);
+                }
+
+                CEventTrace.SpanId createdSpanId;
+                fixed (CEventTrace.SpanId* fixedCauseIds = causeIds)
+                {
+                    createdSpanId = CEventTrace.EventTracerAddSpan(eventTracer, fixedCauseIds, (uint) causeIds.Length);
+                }
+
+                var newSpanId = new SpanId();
+                ApiInterop.Memcpy(newSpanId.Data, createdSpanId.Data, SpanId.SpanIdSize);
+
+                return newSpanId;
+            }
         }
 
         public void AddEvent(Event @event)
