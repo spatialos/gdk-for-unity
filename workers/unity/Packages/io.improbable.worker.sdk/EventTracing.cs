@@ -217,14 +217,14 @@ namespace Improbable.Worker.CInterop
 
         public EventTracer(EventTracerParameters[] parameters)
         {
-            ParameterConversion.ConvertEventTracer(parameters, (internalParameters, handles) =>
+            unsafe
             {
-                unsafe
+                ParameterConversion.ConvertEventTracer(parameters, (internalParameters, handles) =>
                 {
                     eventTracer = CEventTrace.EventTracerCreate(internalParameters);
                     handleList = handles;
-                }
-            });
+                });
+            }
         }
 
 
