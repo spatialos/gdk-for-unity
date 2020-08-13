@@ -9,6 +9,8 @@ namespace Improbable.Worker.CInterop.Internal
     // when changes upstreamed to Worker SDK
     internal static class ParameterConversion
     {
+        public delegate void EventConversionCallback(CEventTrace.Event internalEvent);
+
         internal class WrappedGcHandle : CriticalFinalizerObject, IDisposable
         {
             private GCHandle handle;
@@ -49,9 +51,9 @@ namespace Improbable.Worker.CInterop.Internal
             return internalSpanId;
         }
 
-        public static unsafe CEventTrace.Event ConvertEvent(Event eventToConvert)
+        public static unsafe void ConvertEvent(Event eventToConvert, EventConversionCallback callback)
         {
-            var internalEvent = new CEventTrace.Event();
+            CEventTrace.Event internalEvent = new CEventTrace.Event();
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
 
@@ -65,9 +67,9 @@ namespace Improbable.Worker.CInterop.Internal
             {
                 internalEvent.Type = eventType;
                 internalEvent.Message = eventMessage;
-            }
 
-            return internalEvent;
+                callback(internalEvent);
+            }
         }
 
         public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, out CEventTrace.EventTracerParameters[] internalParameters)

@@ -194,7 +194,11 @@ namespace Improbable.Worker.CInterop
                     break;
                 case ItemType.Event:
                     var eventItem = item.Event.GetValueOrDefault();
-                    newItem->ItemUnion.Event = ParameterConversion.ConvertEvent(eventItem);
+                    ParameterConversion.ConvertEvent(eventItem, internalEvent =>
+                    {
+                        newItem->ItemUnion.Event = internalEvent;
+                    });
+
                     break;
                 default:
                     throw new NotSupportedException("Invalid Item Type provided.");
@@ -288,12 +292,21 @@ namespace Improbable.Worker.CInterop
 
         public void AddEvent(Event @event)
         {
-            CEventTrace.EventTracerAddEvent(eventTracer, ParameterConversion.ConvertEvent(@event));
+            ParameterConversion.ConvertEvent(@event, internalEvent =>
+            {
+                CEventTrace.EventTracerAddEvent(eventTracer, internalEvent);
+            });
         }
 
         public bool ShouldSampleEvent(Event @event)
         {
-            return CEventTrace.EventTracerShouldSampleEvent(eventTracer, ParameterConversion.ConvertEvent(@event)) > 0;
+            bool shouldSampleEvent = false;
+            ParameterConversion.ConvertEvent(@event, internalEvent =>
+            {
+                shouldSampleEvent = CEventTrace.EventTracerShouldSampleEvent(eventTracer, internalEvent) > 0;
+            });
+
+            return shouldSampleEvent;
         }
     }
 
