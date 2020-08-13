@@ -91,6 +91,8 @@ namespace Improbable.Gdk.Core
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
+            messages.GetSerializedComponentUpdates().CopyTo(updates);
+
             foreach (var serializer in commandSerializers)
             {
                 serializer.Serialize(messages, this, commandMetaData);

@@ -17,6 +17,8 @@ namespace Improbable.Gdk.Core
                 .Select(componentCommands => (componentCommands.Key, componentCommands.Value.Commands.Select(m => m.SendStorage)));
         }
 
+        private readonly MessageList<SerializedMessagesToSend.UpdateToSend> serializedComponentUpdates;
+
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
 
@@ -41,6 +43,8 @@ namespace Improbable.Gdk.Core
 
         public MessagesToSend()
         {
+            serializedComponentUpdates = new MessageList<SerializedMessagesToSend.UpdateToSend>();
+
             foreach (var (componentId, diffStorageType) in MessagesToSendMetadata.ComponentTypes)
             {
                 var instance = (IComponentDiffStorage) Activator.CreateInstance(diffStorageType);
@@ -89,16 +93,12 @@ namespace Improbable.Gdk.Core
 
             logsToSend.Clear();
             metricsToSend.Clear();
+            serializedComponentUpdates.Clear();
         }
 
-        public void AddComponentUpdate<T>(in T update, long entityId)
-            where T : ISpatialComponentUpdate
+        public void AddSerializedComponentUpdate(in SerializedMessagesToSend.UpdateToSend serializedComponentUpdate)
         {
-            var storage = GetComponentDiffStorage(typeof(T));
-
-            // Update ID isn't needed so we set it to 0
-            ((IDiffUpdateStorage<T>) storage).AddUpdate(new ComponentUpdateReceived<T>(update, new EntityId(entityId),
-                0));
+            serializedComponentUpdates.Add(serializedComponentUpdate);
         }
 
         public void AddEvent<T>(T ev, long entityId) where T : IEvent
@@ -131,6 +131,11 @@ namespace Improbable.Gdk.Core
         public void AddMetrics(Metrics metrics)
         {
             metricsToSend.Add(metrics);
+        }
+
+        internal MessageList<SerializedMessagesToSend.UpdateToSend> GetSerializedComponentUpdates()
+        {
+            return serializedComponentUpdates;
         }
 
         internal MessageList<LogMessageToSend> GetLogMessages()

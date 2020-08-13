@@ -82,7 +82,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
     })
     .ScheduleParallel(Dependency);
 
-spatialOsSendSystem.AddReplicationJobProducer(Dependency);
+spatialOsSendSystem.AddReplicationJobProducer(Dependency, dirtyComponents);
 ");
                                 });
                             });

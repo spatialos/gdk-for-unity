@@ -109,20 +109,7 @@ public uint GetComponentId()
                     {
                         m.ProfileScope("serializeMarker", s =>
                         {
-                            s.Line(@"
-var storage = messages.GetComponentDiffStorage(ComponentId);
-
-var updates = ((IDiffUpdateStorage<Update>) storage).GetUpdates();
-
-for (int i = 0; i < updates.Count; ++i)
-{
-    ref readonly var update = ref updates[i];
-    var schemaUpdate = SchemaComponentUpdate.Create();
-    var componentUpdate = new ComponentUpdate(ComponentId, schemaUpdate);
-    Serialization.SerializeUpdate(update.Update, schemaUpdate);
-    serializedMessages.AddComponentUpdate(componentUpdate, update.EntityId.Id);
-}
-");
+                            s.Line("var storage = messages.GetComponentDiffStorage(ComponentId);");
 
                             foreach (var ev in eventDetailsList)
                             {

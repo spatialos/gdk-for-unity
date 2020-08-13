@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using Improbable.Gdk.Core.NetworkStats;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -15,6 +17,7 @@ namespace Improbable.Gdk.Core
         private NetFrameStats netFrameStats = new NetFrameStats();
 
         private NativeList<JobHandle> replicationHandles;
+        private List<NativeQueue<SerializedMessagesToSend.UpdateToSend>> componentQueues;
 
         protected override void OnCreate()
         {
@@ -23,6 +26,7 @@ namespace Improbable.Gdk.Core
             worker = World.GetExistingSystem<WorkerSystem>();
             networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
             replicationHandles = new NativeList<JobHandle>(Allocator.Persistent);
+            componentQueues = new List<NativeQueue<SerializedMessagesToSend.UpdateToSend>>();
         }
 
         protected override void OnUpdate()
@@ -30,14 +34,25 @@ namespace Improbable.Gdk.Core
             JobHandle.CompleteAll(replicationHandles);
             replicationHandles.Clear();
 
+            foreach (var componentQueue in componentQueues)
+            {
+                while (componentQueue.TryDequeue(out var updateToSend))
+                {
+                    worker.MessagesToSend.AddSerializedComponentUpdate(updateToSend);
+                }
+            }
+
             worker.SendMessages(netFrameStats);
             networkStatisticsSystem.AddOutgoingSample(netFrameStats);
             netFrameStats.Clear();
+
+            componentQueues.Clear();
         }
 
-        public void AddReplicationJobProducer(JobHandle job)
+        public void AddReplicationJobProducer(JobHandle job, NativeQueue<SerializedMessagesToSend.UpdateToSend> componentQueue)
         {
             replicationHandles.Add(job);
+            componentQueues.Add(componentQueue);
         }
     }
 }

@@ -14,7 +14,6 @@ namespace Improbable.Gdk.Core
         Type Update { get; }
 
         Type ReplicationSystem { get; }
-        Type ReplicationHandler { get; }
         Type Serializer { get; }
         Type DiffDeserializer { get; }
 
