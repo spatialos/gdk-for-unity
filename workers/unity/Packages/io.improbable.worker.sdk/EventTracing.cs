@@ -204,7 +204,7 @@ namespace Improbable.Worker.CInterop
         }
     }
 
-    public unsafe class EventTracer : IDisposable
+    public class EventTracer : IDisposable
     {
         private readonly CEventTrace.EventTracer eventTracer;
 
@@ -213,10 +213,12 @@ namespace Improbable.Worker.CInterop
         public EventTracer(EventTracerParameters[] parameters)
         {
             ParameterConversion.ConvertEventTracer(parameters, out var tracerParameters);
-
-            fixed (CEventTrace.EventTracerParameters* fixedParameters = tracerParameters)
+            unsafe
             {
-                eventTracer = CEventTrace.EventTracerCreate(fixedParameters);
+                fixed (CEventTrace.EventTracerParameters* fixedParameters = tracerParameters)
+                {
+                    eventTracer = CEventTrace.EventTracerCreate(fixedParameters);
+                }
             }
         }
 
@@ -252,7 +254,11 @@ namespace Improbable.Worker.CInterop
         {
             var nativeSpanId = CEventTrace.EventTracerGetActiveSpanId(eventTracer);
             var spanId = new SpanId();
-            ApiInterop.Memcpy(spanId.Data, nativeSpanId.Data, SpanId.SpanIdSize);
+            unsafe
+            {
+                ApiInterop.Memcpy(spanId.Data, nativeSpanId.Data, SpanId.SpanIdSize);
+            }
+
             return spanId;
         }
 
