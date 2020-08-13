@@ -54,9 +54,10 @@ namespace Improbable.Worker.CInterop.Internal
             var internalEvent = new CEventTrace.Event();
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
-            if (eventToConvert.Data?.eventData != null)
+
+            if (!eventToConvert.Data.eventData.IsClosed && eventToConvert.Data.eventData != null)
             {
-                internalEvent.Data = eventToConvert.Data.eventData.DangerousGetHandle();
+                internalEvent.Data = eventToConvert.Data.eventData.GetUnderlying();
             }
 
             fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventToConvert.Type))
@@ -85,7 +86,7 @@ namespace Improbable.Worker.CInterop.Internal
             internalParameters.UserData = (void*) wrappedParameterObject.Get();
             internalParameters.TraceCallback = parameter.TraceCallback == null
                 ? IntPtr.Zero
-                : Marshal.GetFunctionPointerForDelegate(CallbackThunkDelegates.traceCallbackThunkDelegate);
+                : Marshal.GetFunctionPointerForDelegate(CallbackThunkDelegates.TraceCallbackThunkDelegate);
 
             return wrappedParameterObject;
         }
@@ -103,7 +104,7 @@ namespace Improbable.Worker.CInterop.Internal
             out CEventTrace.EventTracerParameters[] internalParameters, out CEventTrace.EventTracerParameters internalDefaultParameters)
         {
             internalParameters = new CEventTrace.EventTracerParameters[parameterDict.Count];
-            int i = 0;
+            var i = 0;
             foreach (var parameter in parameterDict)
             {
                 var parameterHandle = ConvertTracerParameter(parameter.Value, ref internalParameters[i]);
@@ -125,7 +126,7 @@ namespace Improbable.Worker.CInterop.Internal
 
         private unsafe class CallbackThunkDelegates
         {
-            public static readonly CEventTrace.TraceCallback traceCallbackThunkDelegate = TraceCallbackThunk;
+            public static readonly CEventTrace.TraceCallback TraceCallbackThunkDelegate = TraceCallbackThunk;
 
             [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
             private static void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)

@@ -25,6 +25,11 @@ namespace Improbable.Worker.CInterop.Internal
                 EventDataDestroy(handle);
                 return true;
             }
+
+            internal IntPtr GetUnderlying()
+            {
+                return handle;
+            }
         }
 
         public class EventTracer : CptrHandle
