@@ -6,21 +6,31 @@ using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
 {
-    public struct SpanId
+    public struct SpanId : IEquatable<SpanId>
     {
         internal static UIntPtr SpanIdSize = new UIntPtr(16);
         public unsafe fixed byte Data[16];
 
         public override bool Equals(object obj)
         {
-            if (!(obj is SpanId))
-            {
-                return false;
-            }
+            return obj is SpanId && Equals(obj);
+        }
 
+        public bool Equals(SpanId spanId)
+        {
             return CEventTrace.SpanIdEqual(
                 ParameterConversion.ConvertSpanId(this),
-                ParameterConversion.ConvertSpanId((SpanId) obj)) > 0;
+                ParameterConversion.ConvertSpanId(spanId)) > 0;
+        }
+
+        public static bool operator ==(SpanId lhs, SpanId rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(SpanId lhs, SpanId rhs)
+        {
+            return !lhs.Equals(rhs);
         }
 
         public override int GetHashCode()
@@ -69,17 +79,16 @@ namespace Improbable.Worker.CInterop
         public Span? Span;
         public Event? Event;
 
-
-        public void AddItemToStorage(IOStorage storage)
+        public void AddToStorage(IOStorage storage, Item? item = null)
         {
             unsafe
             {
-                var traceItem = ConvertItem(storage, this);
+                var traceItem = ConvertItem(storage, item ?? this);
                 CEventTrace.ItemCreate(storage.Storage, traceItem);
             }
         }
 
-        public void SerializeItemToStream(IOStorage storage, IOStream stream)
+        public void SerializeToStream(IOStorage storage, IOStream stream)
         {
             unsafe
             {
@@ -97,7 +106,7 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        private long GetSerializedItemSizeInBytes(IOStorage storage)
+        private long GetSerializedSizeInBytes(IOStorage storage)
         {
             unsafe
             {
