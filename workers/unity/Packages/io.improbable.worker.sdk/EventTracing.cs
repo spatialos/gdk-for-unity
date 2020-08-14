@@ -70,20 +70,20 @@ namespace Improbable.Worker.CInterop
         public Event? Event;
 
 
-        public void AddItemToStorage(IOStorage storage, Item item)
+        public void AddItemToStorage(IOStorage storage)
         {
             unsafe
             {
-                var traceItem = ConvertItem(storage, item);
+                var traceItem = ConvertItem(storage, this);
                 CEventTrace.ItemCreate(storage.Storage, traceItem);
             }
         }
 
-        public void SerializeItemToStream(IOStorage storage, IOStream stream, Item item)
+        public void SerializeItemToStream(IOStorage storage, IOStream stream)
         {
             unsafe
             {
-                var nativeItem = ConvertItem(storage, item);
+                var nativeItem = ConvertItem(storage, this);
                 var itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
 
                 var serializedItemSize = CEventTrace.SerializeItemToStream(stream.Stream, nativeItem, itemSize);
@@ -97,11 +97,11 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        public long GetSerializedItemSizeInBytes(IOStorage storage, Item item)
+        private long GetSerializedItemSizeInBytes(IOStorage storage)
         {
             unsafe
             {
-                var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(storage, item));
+                var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(storage, this));
                 if (itemSize != 0)
                 {
                     return itemSize;
@@ -112,7 +112,7 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        public Item DeserializeNextItemFromStream(IOStorage storage, IOStream stream)
+        public static Item DeserializeNextItemFromStream(IOStorage storage, IOStream stream)
         {
             unsafe
             {
@@ -211,7 +211,7 @@ namespace Improbable.Worker.CInterop
     public class EventTracer : IDisposable
     {
         private CEventTrace.EventTracer eventTracer;
-        private List<ParameterConversion.WrappedGcHandle> handleList = null;
+        private List<ParameterConversion.WrappedGcHandle> handleList;
 
         public bool IsEnabled { get; private set; }
 
