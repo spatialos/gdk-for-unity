@@ -11,6 +11,7 @@
 - The GDK now depends on .NET Core v3.1.3xx instead of v2.2.2xx. [#1443](https://github.com/spatialos/gdk-for-unity/pull/1443)
 - Removed APIs for AuthorityLossImminent. [#1451](https://github.com/spatialos/gdk-for-unity/pull/1451)
   - All authority changes to `AuthorityLossImminent` will now be dropped, and callbacks will no longer trigger.
+- Removed the `AuthoritativeEntityResolver`. The implementation was fundamentally flawed.
 
 ### Added
 

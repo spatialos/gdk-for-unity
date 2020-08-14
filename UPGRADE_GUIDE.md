@@ -25,9 +25,25 @@ The `Reader` and `Writer` classes have had their `public Authority Authority` pr
 
 ### .NET Core Update
 
-The GDK, in particular the code generator and deployment launcher, has been updated to use [.NET Core SDK v3.1.3xx](https://dotnet.microsoft.com/download/dotnet-core/3.1). 
+The GDK, in particular the code generator and deployment launcher, has been updated to use [.NET Core SDK v3.1.3xx](https://dotnet.microsoft.com/download/dotnet-core/3.1).
 
 To update, download and install the new version from the link provided above.
+
+### `AuthoritativeEntityResolver` removal
+
+We removed the `AuthoritativeEntityResolver` as the implementation was fundamentally flawed. Depending on how you were using it, there are different replacements:
+
+#### For your player entity
+
+Use the `OwningWorkerEntityResolver` which uses the `OwningWorker` component from the Player Lifecycle Feature Module. Make sure that when you create your player's `EntityTemplate` you add the relevant components with:
+
+```csharp
+PlayerLifecycleHelper.AddPlayerLifecycleComponents(EntityTemplate template, clientWorkerId, serverAccess);
+```
+
+#### For server authoritative entities
+
+If you were using this resolver on the server, we recommend merging the two Prefabs into one and rely on the GDK enabling/disabling behaviours when they are active or not.
 
 ## From `0.3.7` to `0.3.8`
 
@@ -69,7 +85,7 @@ The Scripting Backend defined in the Unity Project Settings is now overwritten b
 
 In [#1376](https://github.com/spatialos/gdk-for-unity/pull/1376), some generated code has changed locations in your project. If you are ignoring these files in your `.gitignore`, you will want to add two new entries:
 
-Before: 
+Before:
 
 ```
 Assets/Generated/Source.meta
