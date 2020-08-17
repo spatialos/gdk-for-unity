@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
-using UnityEngine;
+using static Improbable.Gdk.TransformSynchronization.TransformUtils;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.TransformSynchronization
         internal void RegisterTransformSyncType<T>(ITransformSync<T> impl)
             where T : class
         {
-            var componentQueryDesc = TransformUtils.ConstructEntityQueryDesc<T>(requireAuthority: true, baseComponentTypes);
+            var componentQueryDesc = ConstructEntityQueryDesc<T>(AuthorityRequirements.Require, baseComponentTypes);
             componentQueryDesc.None = baseExcludeComponentTypes;
 
             var entityQuery = GetEntityQuery(componentQueryDesc);
@@ -81,7 +81,7 @@ namespace Improbable.Gdk.TransformSynchronization
 
         private void UpdateTransformQuery()
         {
-            var transformQueryDesc = TransformUtils.ConstructEntityQueryDesc<UnityEngine.Transform>(requireAuthority: true, baseComponentTypes);
+            var transformQueryDesc = ConstructEntityQueryDesc<UnityEngine.Transform>(AuthorityRequirements.Require, baseComponentTypes);
             transformQueryDesc.None = resetAuthorityActions.Keys
                 .Select(ComponentType.ReadOnly)
                 .Concat(baseExcludeComponentTypes)
