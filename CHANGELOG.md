@@ -27,6 +27,7 @@
 - The 'Build Configuration' Inspector window will no longer report your Android SDK installation as missing if you have a completely fresh Unity installation with the bundled Android SDK. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - Fixed a bug where having spaces in the path to your project would cause the 'Local launch' and 'Launch standalone client' menu options to fail on MacOS. [#1442](https://github.com/spatialos/gdk-for-unity/pull/1442)
 - Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem`. [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
+- Fixed a bug where the Transform Sync Feature Module would not correctly apply the `Is Kinematic` option. [#1456](https://github.com/spatialos/gdk-for-unity/pull/1456)
 
 ### Internal
 
