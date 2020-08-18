@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.10` - 2020-08-18
+
 ### Breaking Changes
 
 - The `Authority` field on Readers and Writers has been changed to `HasAuthority`. It now returns a bool to indicate whether you have authority over the component it represents.  [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
