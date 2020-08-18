@@ -225,13 +225,13 @@ namespace Improbable.Worker.CInterop
             switch (item->ItemType)
             {
                 case CEventTrace.ItemType.Span:
-                    item->ItemUnion.Span.Id.Data = null;
+                    item->ItemUnion.Span.Id = CEventTrace.SpanIdNull();
                     item->ItemUnion.Span.Causes = null;
                     item->ItemUnion.Span.CauseCount = 0;
                     break;
                 case CEventTrace.ItemType.Event:
                     item->ItemUnion.Event.Data = IntPtr.Zero;
-                    item->ItemUnion.Event.Id.Data = null;
+                    item->ItemUnion.Event.Id = CEventTrace.SpanIdNull();
                     item->ItemUnion.Event.Message = null;
                     item->ItemUnion.Event.Type = null;
                     break;
