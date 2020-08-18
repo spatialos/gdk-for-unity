@@ -59,7 +59,7 @@ namespace Improbable.Worker.CInterop.Internal
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
 
-            if (!eventToConvert.Data.eventData.IsClosed && eventToConvert.Data.eventData != null)
+            if (eventToConvert.Data.eventData != null && !eventToConvert.Data.eventData.IsClosed)
             {
                 internalEvent.Data = eventToConvert.Data.eventData.GetUnderlying();
             }
@@ -74,7 +74,7 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public static unsafe void ConvertEventTracer(EventTracerParameters[] parameters, EventTracerParametersCallback callback)
+        public static unsafe void ConvertEventTracerParameters(EventTracerParameters[] parameters, EventTracerParametersCallback callback)
         {
             var handles = new List<WrappedGcHandle>(parameters.Length);
             ConvertTracerParameters(handles, parameters, out var internalParameters);
@@ -85,7 +85,7 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public static unsafe WrappedGcHandle ConvertTracerParameter(EventTracerParameters parameter, ref CEventTrace.EventTracerParameters internalParameters)
+        private static unsafe WrappedGcHandle ConvertTracerParameter(EventTracerParameters parameter, ref CEventTrace.EventTracerParameters internalParameters)
         {
             WrappedGcHandle wrappedParameterObject = new WrappedGcHandle(parameter);
 

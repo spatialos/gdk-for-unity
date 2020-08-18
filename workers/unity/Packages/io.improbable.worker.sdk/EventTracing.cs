@@ -54,7 +54,6 @@ namespace Improbable.Worker.CInterop
     public struct Span
     {
         public SpanId Id;
-        public int CauseCount;
         public SpanId[] Causes;
     }
 
@@ -79,24 +78,29 @@ namespace Improbable.Worker.CInterop
         public Span? Span;
         public Event? Event;
 
-        public void AddToStorage(IOStorage storage, Item? item = null)
+        public static Item Create(IOStorage storage, Item? item = null)
         {
             unsafe
             {
-                var traceItem = ConvertItem(storage, item ?? this);
-                CEventTrace.ItemCreate(storage.Storage, traceItem);
+                CEventTrace.Item* traceItem = null;
+                if (item != null)
+                {
+                    traceItem = ConvertItem(item.Value);
+                }
+
+                return ConvertItem(CEventTrace.ItemCreate(storage.Storage, traceItem));
             }
         }
 
-        public void SerializeToStream(IOStorage storage, IOStream stream)
+        public void SerializeToStream(IOStream stream)
         {
             unsafe
             {
-                var nativeItem = ConvertItem(storage, this);
+                var nativeItem = ConvertItem(this);
                 var itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
 
-                var serializedItemSize = CEventTrace.SerializeItemToStream(stream.Stream, nativeItem, itemSize);
-                if (serializedItemSize == 1)
+                var serializedItemResult = CEventTrace.SerializeItemToStream(stream.Stream, nativeItem, itemSize);
+                if (serializedItemResult == 1)
                 {
                     return;
                 }
@@ -106,11 +110,11 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        private long GetSerializedSizeInBytes(IOStorage storage)
+        private long GetSerializedSizeInBytes()
         {
             unsafe
             {
-                var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(storage, this));
+                var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(this));
                 if (itemSize != 0)
                 {
                     return itemSize;
@@ -121,11 +125,11 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        public static Item DeserializeNextItemFromStream(IOStorage storage, IOStream stream)
+        public static Item DeserializeNextItemFromStream(IOStream stream)
         {
             unsafe
             {
-                var itemContainer = CEventTrace.ItemCreate(storage.Storage, null);
+                var itemContainer = GetThreadLocalItem();
                 var itemSize = CEventTrace.GetNextSerializedItemSize(stream.Stream);
 
                 var deserializeStatus = CEventTrace.DeserializeItemFromStream(stream.Stream, itemContainer, itemSize);
@@ -148,13 +152,12 @@ namespace Improbable.Worker.CInterop
                 case ItemType.Span:
                     newItem.Span = new Span();
 
-                    var newSpan = newItem.Span.GetValueOrDefault();
+                    var newSpan = newItem.Span.Value;
                     ApiInterop.Memcpy(newSpan.Id.Data, itemContainer->ItemUnion.Span.Id.Data, SpanId.SpanIdSize);
 
-                    newSpan.CauseCount = (int) itemContainer->ItemUnion.Span.CauseCount;
-                    for (var i = 0; i < newSpan.CauseCount; i++)
+                    newSpan.Causes = new SpanId[(int) itemContainer->ItemUnion.Span.CauseCount];
+                    for (var i = 0; i < newSpan.Causes.Length; i++)
                     {
-                        newSpan.Causes[i] = new SpanId();
                         fixed (byte* spanIdDest = newSpan.Causes[i].Data)
                         {
                             ApiInterop.Memcpy(spanIdDest, itemContainer->ItemUnion.Span.Causes[i].Data, SpanId.SpanIdSize);
@@ -182,19 +185,19 @@ namespace Improbable.Worker.CInterop
             return newItem;
         }
 
-        internal static unsafe CEventTrace.Item* ConvertItem(IOStorage storage, Item item)
+        internal static unsafe CEventTrace.Item* ConvertItem(Item item)
         {
-            var newItem = CEventTrace.ItemCreate(storage.Storage, null);
+            var newItem = GetThreadLocalItem();
+
             newItem->ItemUnion = new CEventTrace.Item.Union();
             newItem->ItemType = (CEventTrace.ItemType) item.ItemType;
-
             switch (item.ItemType)
             {
                 case ItemType.Span:
                     var spanItem = item.Span.GetValueOrDefault();
                     newItem->ItemUnion.Span = new CEventTrace.Span();
                     newItem->ItemUnion.Span.Id = ParameterConversion.ConvertSpanId(spanItem.Id);
-                    newItem->ItemUnion.Span.CauseCount = (uint) spanItem.CauseCount;
+                    newItem->ItemUnion.Span.CauseCount = (uint) spanItem.Causes.Length;
                     for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
                     {
                         newItem->ItemUnion.Span.Causes[i] = ParameterConversion.ConvertSpanId(spanItem.Causes[i]);
@@ -215,6 +218,28 @@ namespace Improbable.Worker.CInterop
 
             return newItem;
         }
+
+        private static unsafe CEventTrace.Item* GetThreadLocalItem()
+        {
+            var item = CEventTrace.ItemGetThreadLocal();
+            switch (item->ItemType)
+            {
+                case CEventTrace.ItemType.Span:
+                    item->ItemUnion.Span.Id.Data = null;
+                    item->ItemUnion.Span.Causes = null;
+                    item->ItemUnion.Span.CauseCount = 0;
+                    break;
+                case CEventTrace.ItemType.Event:
+                    item->ItemUnion.Event.Data = IntPtr.Zero;
+                    item->ItemUnion.Event.Id.Data = null;
+                    item->ItemUnion.Event.Message = null;
+                    item->ItemUnion.Event.Type = null;
+                    break;
+            }
+
+            item->ItemType = 0;
+            return item;
+        }
     }
 
     public class EventTracer : IDisposable
@@ -228,7 +253,7 @@ namespace Improbable.Worker.CInterop
         {
             unsafe
             {
-                ParameterConversion.ConvertEventTracer(parameters, (internalParameters, handles) =>
+                ParameterConversion.ConvertEventTracerParameters(parameters, (internalParameters, handles) =>
                 {
                     eventTracer = CEventTrace.EventTracerCreate(internalParameters);
                     handleList = handles;
@@ -312,7 +337,7 @@ namespace Improbable.Worker.CInterop
             var newSpanId = new SpanId();
             unsafe
             {
-                var createdSpanId = CEventTrace.EventTracerAddSpan(eventTracer, null, 1);
+                var createdSpanId = CEventTrace.EventTracerAddSpan(eventTracer, null, 0);
                 ApiInterop.Memcpy(newSpanId.Data, createdSpanId.Data, SpanId.SpanIdSize);
             }
 
@@ -371,16 +396,16 @@ namespace Improbable.Worker.CInterop
                 var nativeKeys = new byte*[numberOfFields];
                 var nativeValues = new byte*[numberOfFields];
 
-                var fields = new Dictionary<string, string>();
                 fixed (byte** keys = nativeKeys)
                 fixed (byte** values = nativeValues)
                 {
                     CEventTrace.EventDataGetStringFields(eventData, keys, values);
+                }
 
-                    for (var i = 0; i < numberOfFields; i++)
-                    {
-                        fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
-                    }
+                var fields = new Dictionary<string, string>();
+                for (var i = 0; i < numberOfFields; i++)
+                {
+                    fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
                 }
 
                 return fields;
