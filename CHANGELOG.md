@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.3.10` - 2020-08-18
+
 ### Breaking Changes
 
 - The `Authority` field on Readers and Writers has been changed to `HasAuthority`. It now returns a bool to indicate whether you have authority over the component it represents.  [#1364](https://github.com/spatialos/gdk-for-unity/pull/1364)
@@ -11,6 +13,7 @@
 - The GDK now depends on .NET Core v3.1.3xx instead of v2.2.2xx. [#1443](https://github.com/spatialos/gdk-for-unity/pull/1443)
 - Removed APIs for AuthorityLossImminent. [#1451](https://github.com/spatialos/gdk-for-unity/pull/1451)
   - All authority changes to `AuthorityLossImminent` will now be dropped, and callbacks will no longer trigger.
+- Removed the `AuthoritativeEntityResolver`. The implementation was fundamentally flawed. [#1453](https://github.com/spatialos/gdk-for-unity/pull/1453)
 
 ### Added
 
@@ -26,6 +29,7 @@
 - The 'Build Configuration' Inspector window will no longer report your Android SDK installation as missing if you have a completely fresh Unity installation with the bundled Android SDK. [#1441](https://github.com/spatialos/gdk-for-unity/pull/1441)
 - Fixed a bug where having spaces in the path to your project would cause the 'Local launch' and 'Launch standalone client' menu options to fail on MacOS. [#1442](https://github.com/spatialos/gdk-for-unity/pull/1442)
 - Fixed a faulty sync point caused by using `ComponentDataFromEntity` of the `WorkerSystem`. [#1430](https://github.com/spatialos/gdk-for-unity/pull/1430)
+- Fixed a bug where the Transform Sync Feature Module would not correctly apply the `Is Kinematic` option. [#1456](https://github.com/spatialos/gdk-for-unity/pull/1456)
 
 ### Internal
 

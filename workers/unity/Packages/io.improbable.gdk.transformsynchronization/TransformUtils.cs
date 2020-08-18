@@ -70,13 +70,13 @@ namespace Improbable.Gdk.TransformSynchronization
         /// <param name="baseTypes">The base set of types.</param>
         /// <typeparam name="T">The type to add.</typeparam>
         /// <returns>An <see cref="EntityQueryDesc"/> that is the union of <see cref="baseTypes"/> and typeof(<see cref="T"/>)</returns>
-        internal static EntityQueryDesc ConstructEntityQueryDesc<T>(bool requireAuthority, params ComponentType[] baseTypes)
+        internal static EntityQueryDesc ConstructEntityQueryDesc<T>(AuthorityRequirements authorityRequirements, params ComponentType[] baseTypes)
         {
             var componentType = ComponentType.ReadOnly<T>();
             var includedComponentTypes = baseTypes
                 .Append(componentType);
 
-            if (requireAuthority)
+            if (authorityRequirements == AuthorityRequirements.Require)
             {
                 includedComponentTypes = includedComponentTypes
                     .Append(ComponentType.ReadOnly<TransformInternal.HasAuthority>());
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 All = includedComponentTypes.ToArray(),
             };
 
-            if (!requireAuthority)
+            if (authorityRequirements == AuthorityRequirements.Exclude)
             {
                 componentQueryDesc.None = new[]
                 {
@@ -96,6 +96,13 @@ namespace Improbable.Gdk.TransformSynchronization
             }
 
             return componentQueryDesc;
+        }
+
+        internal enum AuthorityRequirements
+        {
+            Exclude,
+            Ignore,
+            Require
         }
     }
 }
