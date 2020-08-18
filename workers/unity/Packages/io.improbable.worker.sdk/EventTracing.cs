@@ -265,7 +265,7 @@ namespace Improbable.Worker.CInterop
         public void Dispose()
         {
             eventTracer.Dispose();
-            handleList.ForEach(handle => handle.Dispose());
+            ParameterConversion.FreeTracerParameterHandles(handleList);
         }
 
         public void Enable()
@@ -366,11 +366,16 @@ namespace Improbable.Worker.CInterop
 
     public class TraceEventData
     {
-        internal CEventTrace.EventData eventData;
+        internal readonly CEventTrace.EventData EventData;
+
+        internal TraceEventData(CEventTrace.EventData eventDataHandle)
+        {
+            EventData = eventDataHandle;
+        }
 
         public TraceEventData()
         {
-            eventData = CEventTrace.EventDataCreate();
+            EventData = CEventTrace.EventDataCreate();
         }
 
         public void AddFields(IEnumerable<KeyValuePair<string, string>> fields)
@@ -382,7 +387,7 @@ namespace Improbable.Worker.CInterop
                     fixed (byte* key = ApiInterop.ToUtf8Cstr(kvp.Key))
                     fixed (byte* value = ApiInterop.ToUtf8Cstr(kvp.Value))
                     {
-                        CEventTrace.EventDataAddStringFields(eventData, 1, &key, &value);
+                        CEventTrace.EventDataAddStringFields(EventData, 1, &key, &value);
                     }
                 }
             }
@@ -392,14 +397,14 @@ namespace Improbable.Worker.CInterop
         {
             unsafe
             {
-                var numberOfFields = CEventTrace.EventDataGetFieldCount(eventData);
+                var numberOfFields = CEventTrace.EventDataGetFieldCount(EventData);
                 var nativeKeys = new byte*[numberOfFields];
                 var nativeValues = new byte*[numberOfFields];
 
                 fixed (byte** keys = nativeKeys)
                 fixed (byte** values = nativeValues)
                 {
-                    CEventTrace.EventDataGetStringFields(eventData, keys, values);
+                    CEventTrace.EventDataGetStringFields(EventData, keys, values);
                 }
 
                 var fields = new Dictionary<string, string>();
@@ -419,7 +424,7 @@ namespace Improbable.Worker.CInterop
                 byte* value;
                 fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
                 {
-                    value = CEventTrace.EventDataGetFieldValue(eventData, nativeKey);
+                    value = CEventTrace.EventDataGetFieldValue(EventData, nativeKey);
                 }
 
                 return ApiInterop.FromUtf8Cstr(value);

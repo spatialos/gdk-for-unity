@@ -59,9 +59,9 @@ namespace Improbable.Worker.CInterop.Internal
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
 
-            if (eventToConvert.Data.eventData != null && !eventToConvert.Data.eventData.IsClosed)
+            if (eventToConvert.Data.EventData != null && !eventToConvert.Data.EventData.IsClosed)
             {
-                internalEvent.Data = eventToConvert.Data.eventData.GetUnderlying();
+                internalEvent.Data = eventToConvert.Data.EventData.GetUnderlying();
             }
 
             fixed (byte* eventType = ApiInterop.ToUtf8Cstr(eventToConvert.Type))
