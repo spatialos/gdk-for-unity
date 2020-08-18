@@ -77,18 +77,25 @@ namespace Improbable.Worker.CInterop
         public ItemType ItemType;
         public Span? Span;
         public Event? Event;
-
-        public static Item Create(IOStorage storage, Item? item = null)
+        
+        public static Item Create(IOStorage storage, Item? itemToConvert = null)
         {
             unsafe
             {
-                CEventTrace.Item* traceItem = null;
-                if (item != null)
+                var newItem = new Item();
+                if (itemToConvert != null)
                 {
-                    traceItem = ConvertItem(item.Value);
+                    ParameterConversion.ConvertItem(itemToConvert.Value, nativeItem =>
+                    {
+                        newItem = ParameterConversion.ConvertItem(CEventTrace.ItemCreate(storage.Storage, nativeItem));
+                    });
+                }
+                else
+                {
+                    newItem = ParameterConversion.ConvertItem(CEventTrace.ItemCreate(storage.Storage, null));
                 }
 
-                return ConvertItem(CEventTrace.ItemCreate(storage.Storage, traceItem));
+                return newItem;
             }
         }
 
@@ -96,10 +103,13 @@ namespace Improbable.Worker.CInterop
         {
             unsafe
             {
-                var nativeItem = ConvertItem(this);
-                var itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
+                var serializedItemResult = 0;
+                ParameterConversion.ConvertItem(this, nativeItem =>
+                {
+                    var itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
+                    serializedItemResult = CEventTrace.SerializeItemToStream(stream.Stream, nativeItem, itemSize);
+                });
 
-                var serializedItemResult = CEventTrace.SerializeItemToStream(stream.Stream, nativeItem, itemSize);
                 if (serializedItemResult == 1)
                 {
                     return;
@@ -114,7 +124,12 @@ namespace Improbable.Worker.CInterop
         {
             unsafe
             {
-                var itemSize = CEventTrace.GetSerializedItemSize(ConvertItem(this));
+                var itemSize = 0L;
+                ParameterConversion.ConvertItem(this, nativeItem =>
+                {
+                    itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
+                });
+
                 if (itemSize != 0)
                 {
                     return itemSize;
@@ -139,87 +154,11 @@ namespace Improbable.Worker.CInterop
                     throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
                 }
 
-                return ConvertItem(itemContainer);
+                return ParameterConversion.ConvertItem(itemContainer);
             }
         }
 
-        internal static unsafe Item ConvertItem(CEventTrace.Item* itemContainer)
-        {
-            var newItem = new Item();
-            newItem.ItemType = (ItemType) itemContainer->ItemType;
-            switch (newItem.ItemType)
-            {
-                case ItemType.Span:
-                    newItem.Span = new Span();
-
-                    var newSpan = newItem.Span.Value;
-                    ApiInterop.Memcpy(newSpan.Id.Data, itemContainer->ItemUnion.Span.Id.Data, SpanId.SpanIdSize);
-
-                    newSpan.Causes = new SpanId[(int) itemContainer->ItemUnion.Span.CauseCount];
-                    for (var i = 0; i < newSpan.Causes.Length; i++)
-                    {
-                        fixed (byte* spanIdDest = newSpan.Causes[i].Data)
-                        {
-                            ApiInterop.Memcpy(spanIdDest, itemContainer->ItemUnion.Span.Causes[i].Data, SpanId.SpanIdSize);
-                        }
-                    }
-
-                    break;
-                case ItemType.Event:
-                    newItem.Event = new Event();
-
-                    var newEvent = newItem.Event.GetValueOrDefault();
-                    newEvent.Id = new SpanId();
-                    ApiInterop.Memcpy(newEvent.Id.Data, itemContainer->ItemUnion.Event.Id.Data, SpanId.SpanIdSize);
-
-                    newEvent.UnixTimestampMillis = itemContainer->ItemUnion.Event.UnixTimestampMillis;
-                    newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
-                    newEvent.Message = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Message);
-
-                    newEvent.Data = Marshal.PtrToStructure<TraceEventData>(itemContainer->ItemUnion.Event.Data);
-                    break;
-                default:
-                    throw new NotSupportedException("Invalid Item Type provided.");
-            }
-
-            return newItem;
-        }
-
-        internal static unsafe CEventTrace.Item* ConvertItem(Item item)
-        {
-            var newItem = GetThreadLocalItem();
-
-            newItem->ItemUnion = new CEventTrace.Item.Union();
-            newItem->ItemType = (CEventTrace.ItemType) item.ItemType;
-            switch (item.ItemType)
-            {
-                case ItemType.Span:
-                    var spanItem = item.Span.GetValueOrDefault();
-                    newItem->ItemUnion.Span = new CEventTrace.Span();
-                    newItem->ItemUnion.Span.Id = ParameterConversion.ConvertSpanId(spanItem.Id);
-                    newItem->ItemUnion.Span.CauseCount = (uint) spanItem.Causes.Length;
-                    for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
-                    {
-                        newItem->ItemUnion.Span.Causes[i] = ParameterConversion.ConvertSpanId(spanItem.Causes[i]);
-                    }
-
-                    break;
-                case ItemType.Event:
-                    var eventItem = item.Event.GetValueOrDefault();
-                    ParameterConversion.ConvertEvent(eventItem, internalEvent =>
-                    {
-                        newItem->ItemUnion.Event = internalEvent;
-                    });
-
-                    break;
-                default:
-                    throw new NotSupportedException("Invalid Item Type provided.");
-            }
-
-            return newItem;
-        }
-
-        private static unsafe CEventTrace.Item* GetThreadLocalItem()
+        internal static unsafe CEventTrace.Item* GetThreadLocalItem()
         {
             var item = CEventTrace.ItemGetThreadLocal();
             switch (item->ItemType)
