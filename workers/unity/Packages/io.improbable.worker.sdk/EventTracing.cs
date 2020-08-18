@@ -77,7 +77,7 @@ namespace Improbable.Worker.CInterop
         public ItemType ItemType;
         public Span? Span;
         public Event? Event;
-        
+
         public static Item Create(IOStorage storage, Item? itemToConvert = null)
         {
             unsafe
