@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
+using Unity.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -14,6 +15,10 @@ namespace Improbable.Gdk.Core
         private readonly CommandMetaData commandMetaData = new CommandMetaData();
 
         private readonly Connection connection;
+
+        private ProfilerMarker serializeFromMarker = new ProfilerMarker("SerializeFrom");
+        private ProfilerMarker sendClearMarker = new ProfilerMarker("SendAndClear");
+        private ProfilerMarker clearMarker = new ProfilerMarker("Clear");
 
         public SpatialOSConnectionHandler(Connection connection)
         {
@@ -57,11 +62,20 @@ namespace Improbable.Gdk.Core
 
         public void PushMessagesToSend(MessagesToSend messages, NetFrameStats frameStats)
         {
-            serializedMessagesToSend.SerializeFrom(messages, commandMetaData);
-            serializedMessagesToSend.SendAndClear(connection, commandMetaData, frameStats);
+            using (serializeFromMarker.Auto())
+            {
+                serializedMessagesToSend.SerializeFrom(messages, commandMetaData);
+            }
 
-            serializedMessagesToSend.Clear();
-            messages.Clear();
+            using (sendClearMarker.Auto())
+            {
+                serializedMessagesToSend.SendAndClear(connection, commandMetaData, frameStats);
+            }
+
+            using (clearMarker.Auto())
+            {
+                messages.Clear();
+            }
         }
 
         public void Dispose()

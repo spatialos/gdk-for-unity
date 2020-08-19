@@ -3,6 +3,7 @@ using Improbable.Gdk.Core.NetworkStats;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using Unity.Profiling;
 using UnityEngine;
 
 namespace Improbable.Gdk.Core
@@ -19,6 +20,8 @@ namespace Improbable.Gdk.Core
         private NativeList<JobHandle> replicationHandles;
         private List<NativeQueue<SerializedMessagesToSend.UpdateToSend>> componentQueues;
 
+        private ProfilerMarker updateQueueMarker = new ProfilerMarker("QueueSerializedMessages");
+
         protected override void OnCreate()
         {
             base.OnCreate();
@@ -34,15 +37,19 @@ namespace Improbable.Gdk.Core
             JobHandle.CompleteAll(replicationHandles);
             replicationHandles.Clear();
 
-            foreach (var componentQueue in componentQueues)
+            using (updateQueueMarker.Auto())
             {
-                while (componentQueue.TryDequeue(out var updateToSend))
+                foreach (var componentQueue in componentQueues)
                 {
-                    worker.MessagesToSend.AddSerializedComponentUpdate(updateToSend);
+                    while (componentQueue.TryDequeue(out var updateToSend))
+                    {
+                        worker.MessagesToSend.AddSerializedComponentUpdate(updateToSend);
+                    }
                 }
             }
 
             worker.SendMessages(netFrameStats);
+
             networkStatisticsSystem.AddOutgoingSample(netFrameStats);
             netFrameStats.Clear();
 
