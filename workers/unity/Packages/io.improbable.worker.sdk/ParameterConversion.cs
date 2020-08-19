@@ -120,21 +120,7 @@ namespace Improbable.Worker.CInterop.Internal
                     // so we can get access to it's fields
                     newEvent.Data = new TraceEventData(itemContainer->ItemUnion.Event.Data);
 
-                    var numberOfFields = CEventTrace.EventDataGetFieldCount(newEvent.Data.EventData);
-                    var nativeKeys = new byte*[numberOfFields];
-                    var nativeValues = new byte*[numberOfFields];
-
-                    // Get a copy of the dictionary inside the 'itemContainer.Event'
-                    var fields = new Dictionary<string, string>();
-                    fixed (byte** keys = nativeKeys)
-                    fixed (byte** values = nativeValues)
-                    {
-                        CEventTrace.EventDataGetStringFields(newEvent.Data.EventData, keys, values);
-                        for (var i = 0; i < numberOfFields; i++)
-                        {
-                            fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
-                        }
-                    }
+                    var fields = newEvent.Data.GetAllFields();
 
                     // Dispose of the copied internalContainer since it is only guaranteed to exist in this function scope
                     newEvent.Data.EventData.Dispose();
