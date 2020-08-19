@@ -224,10 +224,9 @@ namespace Improbable.Worker.CInterop
             CEventTrace.EventTracerSetActiveSpanId(eventTracer, ParameterConversion.ConvertSpanId(spanId));
         }
 
-        public void ClearActiveSpanId(SpanId spanId)
+        public void ClearActiveSpanId()
         {
-            // Uncomment once Worker SDK updated to 14.8.0 (version where EventTracerClearActiveSpanId is added)
-            // CEventTrace.EventTracerClearActiveSpanId(eventTracer, ParameterConversion.ConvertSpanId(spanId));
+            CEventTrace.EventTracerClearActiveSpanId(eventTracer);
         }
 
         public SpanId GetActiveSpanId()

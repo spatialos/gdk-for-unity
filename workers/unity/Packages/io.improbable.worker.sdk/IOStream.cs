@@ -4,10 +4,31 @@ using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
 {
+    [Flags]
     public enum OpenMode
     {
-        /* Opens the stream in the default mode. */
-        OpenModeDefault = 0x00,
+        /**
+         * Allow read operations on the stream. Read operations always occur at the read position, which
+         * is initialized to the beginning of the stream.
+         */
+        OpenModeRead = 1,
+
+        /**
+         * Allow write operations on the stream. Write operations always occur at the write position,
+         * which is initialized to the end of the stream.
+         */
+        OpenModeWrite = 2,
+
+        /**
+         * Truncates any existing content upon opening. If not set, writes are appended to the end of the
+         * stream's existing content.
+         */
+        OpenModeTruncate = 4,
+
+        /**
+         * Specify that writes should be appended to the stream's existing content, if any exists.
+         */
+        OpenModeAppend = 8,
     }
 
     public sealed unsafe class IOStream : IDisposable
@@ -30,11 +51,12 @@ namespace Improbable.Worker.CInterop
             return new IOStream(CIO.CreateRingBufferStream(capacity));
         }
 
-        public static IOStream CreateFileStream(string fileName, OpenMode openMode)
+        public static IOStream CreateFileStream(string fileName,
+            OpenMode? openMode = OpenMode.OpenModeRead | OpenMode.OpenModeWrite | OpenMode.OpenModeTruncate)
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (uint) openMode.GetValueOrDefault()));
             }
         }
 

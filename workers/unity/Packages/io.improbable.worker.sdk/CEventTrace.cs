@@ -244,8 +244,8 @@ namespace Improbable.Worker.CInterop.Internal
          * EventTracerGetActiveSpanId will return a null span ID.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "Trace_EventTracer_UnsetActiveSpanId")]
-        public static extern void EventTracerUnsetActiveSpanId(EventTracer eventTracer);
+            EntryPoint = "Trace_EventTracer_ClearActiveSpanId")]
+        public static extern void EventTracerClearActiveSpanId(EventTracer eventTracer);
 
         /** Gets the active span ID on the event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
