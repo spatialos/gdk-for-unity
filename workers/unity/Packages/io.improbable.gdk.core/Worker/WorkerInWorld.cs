@@ -71,7 +71,6 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateSystem<CommandSystem>();
             World.GetOrCreateSystem<ComponentUpdateSystem>();
             World.GetOrCreateSystem<EntitySystem>();
-            //World.GetOrCreateSystem<ComponentSendSystem>();
             World.GetOrCreateSystem<SpatialOSReceiveSystem>();
             World.GetOrCreateSystem<SpatialOSSendSystem>();
             World.GetOrCreateSystem<EcsViewSystem>();

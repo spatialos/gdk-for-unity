@@ -4,7 +4,6 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
 using Unity.Profiling;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
