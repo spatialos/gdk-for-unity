@@ -32,6 +32,12 @@ namespace Improbable.Gdk.Core
             componentQueues = new List<NativeQueue<SerializedMessagesToSend.UpdateToSend>>();
         }
 
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            replicationHandles.Dispose();
+        }
+
         protected override void OnUpdate()
         {
             JobHandle.CompleteAll(replicationHandles);
@@ -45,6 +51,8 @@ namespace Improbable.Gdk.Core
                     {
                         worker.MessagesToSend.AddSerializedComponentUpdate(updateToSend);
                     }
+
+                    componentQueue.Dispose();
                 }
             }
 

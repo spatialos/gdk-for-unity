@@ -38,7 +38,6 @@ private SpatialOSSendSystem spatialOsSendSystem;
 
 protected override void OnCreate()
 {
-    dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);
     spatialOsSendSystem = World.GetExistingSystem<SpatialOSSendSystem>();
 }
 ");
@@ -46,7 +45,6 @@ protected override void OnCreate()
                                 {
                                     m.Line(new[]
                                     {
-                                        "dirtyComponents.Dispose();",
                                         "dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);",
                                         "var dirtyComponentsWriter = dirtyComponents.AsParallelWriter();",
                                     });
@@ -83,6 +81,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
     .ScheduleParallel(Dependency);
 
 spatialOsSendSystem.AddReplicationJobProducer(Dependency, dirtyComponents);
+dirtyComponents = default;
 ");
                                 });
                             });
