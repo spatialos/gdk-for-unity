@@ -197,12 +197,12 @@ namespace Improbable.Worker.CInterop.Internal
 
         /** Creates an event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "EventTracerCreate")]
+            EntryPoint = "Trace_EventTracer_Create")]
         public static extern EventTracer EventTracerCreate(EventTracerParameters* parameters);
 
         /** Frees resources for an event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "EventTracerDestroy")]
+            EntryPoint = "Trace_EventTracer_Destroy")]
         public static extern void EventTracerDestroy(IntPtr eventTracer);
 
         /**
