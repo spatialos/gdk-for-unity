@@ -20,7 +20,8 @@ namespace Improbable.Gdk.Core
         private NativeList<JobHandle> replicationHandles;
         private List<NativeQueue<SerializedMessagesToSend.UpdateToSend>> componentQueues;
 
-        private ProfilerMarker updateQueueMarker = new ProfilerMarker("QueueSerializedMessages");
+        private ProfilerMarker completingJobsMarker = new ProfilerMarker("SpatialOSSendSystem.CompletingAllJobs");
+        private ProfilerMarker updateQueueMarker = new ProfilerMarker("SpatialOSSendSystem.QueueSerializedMessages");
 
         protected override void OnCreate()
         {
@@ -40,7 +41,11 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            JobHandle.CompleteAll(replicationHandles);
+            using (completingJobsMarker.Auto())
+            {
+                JobHandle.CompleteAll(replicationHandles);
+            }
+
             replicationHandles.Clear();
 
             using (updateQueueMarker.Auto())

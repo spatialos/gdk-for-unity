@@ -17,29 +17,30 @@ namespace Improbable.Gdk.CodeGenerator
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(
-                    "Improbable",
                     "Improbable.Gdk.Core",
                     "Improbable.Worker.CInterop",
                     "Unity.Collections",
                     "Unity.Entities",
-                    "UnityEngine"
+                    "Unity.Profiling"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        partial.Annotate("UpdateInGroup(typeof(SpatialOSSendGroup)), UpdateBefore(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))")
+                        partial.Annotate("DisableAutoCreation, UpdateInGroup(typeof(SpatialOSSendGroup)), UpdateBefore(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))")
                             .Type("internal class ReplicationSystem : SystemBase", system =>
                             {
-                                system.Line(@"
+                                system.Line($@"
 private NativeQueue<SerializedMessagesToSend.UpdateToSend> dirtyComponents;
 private SpatialOSSendSystem spatialOsSendSystem;
 
+private ProfilerMarker foreachMarker = new ProfilerMarker(""{componentDetails.Name}SerializationJob"");
+
 protected override void OnCreate()
-{
+{{
     spatialOsSendSystem = World.GetExistingSystem<SpatialOSSendSystem>();
-}
+}}
 ");
                                 system.Method("protected override void OnUpdate()", m =>
                                 {
@@ -47,6 +48,7 @@ protected override void OnCreate()
                                     {
                                         "dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);",
                                         "var dirtyComponentsWriter = dirtyComponents.AsParallelWriter();",
+                                        "var marker = foreachMarker;",
                                     });
 
                                     m.Line($@"
@@ -62,8 +64,10 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
     .WithChangeFilter<Component>()
     .ForEach((ref Component component, in SpatialEntityId entity) =>
     {
+        marker.Begin();
         if (!component.IsDataDirty())
         {
+            marker.End();
             return;
         }
 
@@ -77,6 +81,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
         var componentUpdate = new ComponentUpdate(ComponentId, schemaUpdate);
         var update = new SerializedMessagesToSend.UpdateToSend(componentUpdate, entity.EntityId.Id);
         dirtyComponentsWriter.Enqueue(update);
+        marker.End();
     })
     .ScheduleParallel(Dependency);
 
