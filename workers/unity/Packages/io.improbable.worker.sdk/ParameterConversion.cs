@@ -116,18 +116,17 @@ namespace Improbable.Worker.CInterop.Internal
                     newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
                     newEvent.Message = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Message);
 
-                    // Temp copy the pointer to the underlying event data structure
-                    // so we can get access to it's fields
+                    // Copy the pointer to the underlying event data structure to get access to it's fields
                     newEvent.Data = new TraceEventData(itemContainer->ItemUnion.Event.Data);
+                    var fields = newEvent.Data.GetAll();
 
-                    var fields = newEvent.Data.GetAllFields();
-
-                    // Dispose of the copied internalContainer since it is only guaranteed to exist in this function scope
+                    // Dispose of the copied internalContainer event data pointer as it's only guaranteed to exist
+                    // in this function scope
                     newEvent.Data.EventData.Dispose();
 
                     // Add the data to the newly initialized event data struct
                     newEvent.Data = new TraceEventData();
-                    newEvent.Data.AddFields(fields);
+                    newEvent.Data.AddAll(fields);
 
                     newItem.Event = newEvent;
                     break;

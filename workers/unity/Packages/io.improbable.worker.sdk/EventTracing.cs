@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
@@ -319,22 +318,23 @@ namespace Improbable.Worker.CInterop
             EventData = CEventTrace.EventDataCreate();
         }
 
-        public void AddFields(IEnumerable<KeyValuePair<string, string>> fields)
+        public string this[string key]
         {
-            unsafe
+            get => GetValue(key);
+            set => AddField(key, value);
+        }
+
+        public int Count => GetFieldCount();
+
+        public void AddAll(IEnumerable<KeyValuePair<string, string>> fields)
+        {
+            foreach (var kvp in fields)
             {
-                foreach (var kvp in fields)
-                {
-                    fixed (byte* key = ApiInterop.ToUtf8Cstr(kvp.Key))
-                    fixed (byte* value = ApiInterop.ToUtf8Cstr(kvp.Value))
-                    {
-                        CEventTrace.EventDataAddStringFields(EventData, 1, &key, &value);
-                    }
-                }
+                AddField(kvp.Key, kvp.Value);
             }
         }
 
-        public Dictionary<string, string> GetAllFields()
+        public Dictionary<string, string> GetAll()
         {
             unsafe
             {
@@ -358,18 +358,46 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-        public string GetFieldValue(string key)
+        private void AddField(string key, string value)
         {
             unsafe
             {
-                byte* value;
-                fixed (byte* nativeKey = ApiInterop.ToUtf8Cstr(key))
+                fixed (byte* keyPointer = ApiInterop.ToUtf8Cstr(key))
+                fixed (byte* valuePointer = ApiInterop.ToUtf8Cstr(value))
                 {
-                    value = CEventTrace.EventDataGetFieldValue(EventData, nativeKey);
+                    CEventTrace.EventDataAddStringFields(EventData, 1, &keyPointer, &valuePointer);
+                }
+            }
+        }
+
+        private string GetValue(string key)
+        {
+            if (key == null)
+            {
+                throw new ArgumentNullException(nameof(key));
+            }
+
+            unsafe
+            {
+                byte* valuePointer;
+                fixed (byte* keyPointer = ApiInterop.ToUtf8Cstr(key))
+                {
+                    valuePointer = CEventTrace.EventDataGetFieldValue(EventData, keyPointer);
                 }
 
-                return ApiInterop.FromUtf8Cstr(value);
+                var value = ApiInterop.FromUtf8Cstr(valuePointer);
+                if (value.Equals("null"))
+                {
+                    throw new KeyNotFoundException($"Key '{key}' is not found.");
+                }
+
+                return value;
             }
+        }
+
+        private int GetFieldCount()
+        {
+            return (int) CEventTrace.EventDataGetFieldCount(EventData);
         }
     }
 
