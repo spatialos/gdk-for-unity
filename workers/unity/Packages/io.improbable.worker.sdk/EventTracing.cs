@@ -305,11 +305,14 @@ namespace Improbable.Worker.CInterop
 
     public class TraceEventData
     {
-        internal readonly CEventTrace.EventData EventData;
+        internal readonly CEventTrace.EventDataHandle EventData;
 
-        internal TraceEventData(CEventTrace.EventData eventDataHandle)
+        internal TraceEventData(IntPtr handle)
         {
-            EventData = eventDataHandle;
+            EventData = CEventTrace.EventDataCreate();
+            var oldHandle = EventData.GetUnderlying();
+            EventData.SetUnderlying(handle);
+            CEventTrace.EventDataDestroy(oldHandle);
         }
 
         public TraceEventData()
@@ -340,16 +343,16 @@ namespace Improbable.Worker.CInterop
                 var nativeKeys = new byte*[numberOfFields];
                 var nativeValues = new byte*[numberOfFields];
 
+                var fields = new Dictionary<string, string>();
                 fixed (byte** keys = nativeKeys)
                 fixed (byte** values = nativeValues)
                 {
                     CEventTrace.EventDataGetStringFields(EventData, keys, values);
-                }
 
-                var fields = new Dictionary<string, string>();
-                for (var i = 0; i < numberOfFields; i++)
-                {
-                    fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
+                    for (var i = 0; i < numberOfFields; i++)
+                    {
+                        fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
+                    }
                 }
 
                 return fields;

@@ -18,12 +18,17 @@ namespace Improbable.Worker.CInterop.Internal
          * Data for an event. This is a collection of key-value pairs (fields). Use EventData* functions to
          * read or write fields.
          */
-        public class EventData : CptrHandle
+        public class EventDataHandle : CptrHandle
         {
             protected override bool ReleaseHandle()
             {
                 EventDataDestroy(handle);
                 return true;
+            }
+
+            internal void SetUnderlying(IntPtr newHandle)
+            {
+                SetHandle(newHandle);
             }
 
             internal IntPtr GetUnderlying()
@@ -105,7 +110,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_Create")]
-        public static extern EventData EventDataCreate();
+        public static extern EventDataHandle EventDataCreate();
 
         /** Frees resources for the event data object.*/
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -118,12 +123,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_AddStringFields")]
-        public static extern void EventDataAddStringFields(EventData data, Uint32 count, Char** keys, Char** values);
+        public static extern void EventDataAddStringFields(EventDataHandle data, Uint32 count, Char** keys, Char** values);
 
         /** Returns the number of fields on the given event data object. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldCount")]
-        public static extern Uint32 EventDataGetFieldCount(EventData data);
+        public static extern Uint32 EventDataGetFieldCount(EventDataHandle data);
 
         /**
          * Returns all the key value pairs in the event data object. keys and values must have capacity for
@@ -133,12 +138,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetStringFields")]
-        public static extern void EventDataGetStringFields(EventData data, Char** keys, Char** values);
+        public static extern void EventDataGetStringFields(EventDataHandle data, Char** keys, Char** values);
 
         /** Returns the value for the given key. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldValue")]
-        public static extern Char* EventDataGetFieldValue(EventData data, Char* key);
+        public static extern Char* EventDataGetFieldValue(EventDataHandle data, Char* key);
 
         /** Data for an event added to the event-tracer. */
         [StructLayout(LayoutKind.Sequential)]

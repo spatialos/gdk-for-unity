@@ -61,7 +61,7 @@ namespace Improbable.Worker.CInterop.Internal
             internalEvent.UnixTimestampMillis = eventToConvert.UnixTimestampMillis;
             internalEvent.Id = ConvertSpanId(eventToConvert.Id);
 
-            if (eventToConvert.Data.EventData != null && !eventToConvert.Data.EventData.IsClosed)
+            if (eventToConvert.Data != null && !eventToConvert.Data.EventData.IsClosed)
             {
                 internalEvent.Data = eventToConvert.Data.EventData.GetUnderlying();
             }
@@ -103,6 +103,7 @@ namespace Improbable.Worker.CInterop.Internal
                         }
                     }
 
+                    newItem.Span = newSpan;
                     break;
                 case ItemType.Event:
                     newItem.Event = new Event();
@@ -115,7 +116,34 @@ namespace Improbable.Worker.CInterop.Internal
                     newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
                     newEvent.Message = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Message);
 
-                    newEvent.Data = Marshal.PtrToStructure<TraceEventData>(itemContainer->ItemUnion.Event.Data);
+                    // Temp copy the pointer to the underlying event data structure
+                    // so we can get access to it's fields
+                    newEvent.Data = new TraceEventData(itemContainer->ItemUnion.Event.Data);
+
+                    var numberOfFields = CEventTrace.EventDataGetFieldCount(newEvent.Data.EventData);
+                    var nativeKeys = new byte*[numberOfFields];
+                    var nativeValues = new byte*[numberOfFields];
+
+                    // Get a copy of the dictionary inside the 'itemContainer.Event'
+                    var fields = new Dictionary<string, string>();
+                    fixed (byte** keys = nativeKeys)
+                    fixed (byte** values = nativeValues)
+                    {
+                        CEventTrace.EventDataGetStringFields(newEvent.Data.EventData, keys, values);
+                        for (var i = 0; i < numberOfFields; i++)
+                        {
+                            fields.Add(ApiInterop.FromUtf8Cstr(nativeKeys[i]), ApiInterop.FromUtf8Cstr(nativeValues[i]));
+                        }
+                    }
+
+                    // Dispose of the copied internalContainer since it is only guaranteed to exist in this function scope
+                    newEvent.Data.EventData.Dispose();
+
+                    // Add the data to the newly initialized event data struct
+                    newEvent.Data = new TraceEventData();
+                    newEvent.Data.AddFields(fields);
+
+                    newItem.Event = newEvent;
                     break;
                 default:
                     throw new NotSupportedException("Invalid Item Type provided.");
