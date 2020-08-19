@@ -5,6 +5,7 @@
 ### Changed
 
 - Upgrade to Worker SDK v14.8.0. [#1458](https://github.com/spatialos/gdk-for-unity/pull/1458)
+- Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 
 ## `0.3.10` - 2020-08-18
 
