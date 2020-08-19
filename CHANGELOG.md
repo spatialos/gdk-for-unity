@@ -8,6 +8,10 @@
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
 
+### Internal
+
+- Multithreaded component serialization through `SystemBase` jobs. [#1454](https://github.com/spatialos/gdk-for-unity/pull/1454)
+
 ## `0.3.10` - 2020-08-18
 
 ### Breaking Changes
