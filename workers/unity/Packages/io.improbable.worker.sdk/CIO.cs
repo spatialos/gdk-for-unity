@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using Int64 = System.Int64;
 using Uint64 = System.UInt64;
@@ -28,7 +29,8 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public enum OpenMode
+        [Flags]
+        public enum OpenMode : Uint32
         {
             /**
              * Allow input operations on the stream. Input operations always occur at the read position, which
@@ -112,7 +114,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
-        public static extern StreamHandle CreateFileStream(Char* filename, Uint32 openMode);
+        public static extern StreamHandle CreateFileStream(Char* filename, OpenMode openMode);
 
         /* Destroys the I/O stream. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
