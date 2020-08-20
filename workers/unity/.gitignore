@@ -3,6 +3,7 @@
 /[Ll]ibrary/
 /[Tt]emp/
 /Logs/
+/UserSettings/
 /ProjectSettings/UnityConnectSettings.asset
 /*.csproj
 /*.sln
