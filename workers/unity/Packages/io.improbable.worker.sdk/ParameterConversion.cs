@@ -182,9 +182,9 @@ namespace Improbable.Worker.CInterop.Internal
 
         private static unsafe WrappedGcHandle ConvertTracerParameter(EventTracerParameters parameter, ref CEventTrace.EventTracerParameters internalParameters)
         {
-            WrappedGcHandle wrappedParameterObject = new WrappedGcHandle(parameter);
+            var wrappedParameterObject = new WrappedGcHandle(parameter);
 
-            internalParameters.UserData = (void*) wrappedParameterObject.Get();
+            internalParameters.UserData = wrappedParameterObject.Get().ToPointer();
             internalParameters.TraceCallback = parameter.TraceCallback == null
                 ? IntPtr.Zero
                 : Marshal.GetFunctionPointerForDelegate(CallbackThunkDelegates.TraceCallbackThunkDelegate);
@@ -219,12 +219,10 @@ namespace Improbable.Worker.CInterop.Internal
             public static readonly CEventTrace.TraceCallback TraceCallbackThunkDelegate = TraceCallbackThunk;
 
             [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
-            private static void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* responseItem)
+            private static void TraceCallbackThunk(void* userData, CEventTrace.Item* responseItem)
             {
-                var callbackHandle = GCHandle.FromIntPtr((IntPtr) callbackHandlePtr);
-                var callback = (Action<Item>) callbackHandle.Target;
-
-                callback(ConvertItem(responseItem));
+                var callbackHandle = (EventTracerParameters) GCHandle.FromIntPtr((IntPtr) userData).Target;
+                callbackHandle.TraceCallback(callbackHandle.UserData, ConvertItem(responseItem));
             }
         }
     }
