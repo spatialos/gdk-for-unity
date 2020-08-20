@@ -116,12 +116,9 @@ namespace Improbable.Worker.CInterop.Internal
                     newEvent.Type = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Type);
                     newEvent.Message = ApiInterop.FromUtf8Cstr(itemContainer->ItemUnion.Event.Message);
 
-                    // Copy the pointer to the underlying event data structure to get access to it's fields
                     newEvent.Data = new TraceEventData(itemContainer->ItemUnion.Event.Data);
                     var fields = newEvent.Data.GetAll();
-
-                    // Dispose of the copied internalContainer event data pointer as it's only guaranteed to exist
-                    // in this function scope
+                    // Release memory allocated to the underlying event data in the itemContainer
                     newEvent.Data.EventData.Dispose();
 
                     // Add the data to the newly initialized event data struct
@@ -153,8 +150,9 @@ namespace Improbable.Worker.CInterop.Internal
                     for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
                     {
                         newItem->ItemUnion.Span.Causes[i] = ConvertSpanId(spanItem.Causes[i]);
-                        callback(newItem);
                     }
+
+                    callback(newItem);
 
                     break;
                 case ItemType.Event:
@@ -221,12 +219,12 @@ namespace Improbable.Worker.CInterop.Internal
             public static readonly CEventTrace.TraceCallback TraceCallbackThunkDelegate = TraceCallbackThunk;
 
             [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
-            private static void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* item)
+            private static void TraceCallbackThunk(void* callbackHandlePtr, CEventTrace.Item* responseItem)
             {
                 var callbackHandle = GCHandle.FromIntPtr((IntPtr) callbackHandlePtr);
                 var callback = (Action<Item>) callbackHandle.Target;
 
-                callback(ConvertItem(item));
+                callback(ConvertItem(responseItem));
             }
         }
     }

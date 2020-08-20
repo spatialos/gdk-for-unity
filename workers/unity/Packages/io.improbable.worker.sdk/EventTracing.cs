@@ -307,10 +307,7 @@ namespace Improbable.Worker.CInterop
 
         internal TraceEventData(IntPtr handle)
         {
-            EventData = CEventTrace.EventDataCreate();
-            var oldHandle = EventData.GetUnderlying();
-            EventData.SetUnderlying(handle);
-            CEventTrace.EventDataDestroy(oldHandle);
+            EventData = new CEventTrace.EventDataHandle(handle);
         }
 
         public TraceEventData()

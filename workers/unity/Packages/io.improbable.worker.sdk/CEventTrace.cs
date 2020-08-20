@@ -20,15 +20,19 @@ namespace Improbable.Worker.CInterop.Internal
          */
         public class EventDataHandle : CptrHandle
         {
+            public EventDataHandle()
+            {
+            }
+
+            internal EventDataHandle(IntPtr handle)
+            {
+                SetHandle(handle);
+            }
+
             protected override bool ReleaseHandle()
             {
                 EventDataDestroy(handle);
                 return true;
-            }
-
-            internal void SetUnderlying(IntPtr newHandle)
-            {
-                SetHandle(newHandle);
             }
 
             internal IntPtr GetUnderlying()

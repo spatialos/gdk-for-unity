@@ -52,11 +52,11 @@ namespace Improbable.Worker.CInterop
         }
 
         public static IOStream CreateFileStream(string fileName,
-            OpenMode? openMode = OpenMode.OpenModeRead | OpenMode.OpenModeWrite | OpenMode.OpenModeTruncate)
+            OpenMode openMode = OpenMode.OpenModeRead | OpenMode.OpenModeWrite | OpenMode.OpenModeTruncate)
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode.GetValueOrDefault()));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode));
             }
         }
 
