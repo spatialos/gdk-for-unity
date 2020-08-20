@@ -56,7 +56,7 @@ namespace Improbable.Worker.CInterop
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) (object) openMode.GetValueOrDefault()));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode.GetValueOrDefault()));
             }
         }
 
