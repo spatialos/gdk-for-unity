@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build;
+using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
@@ -42,6 +44,46 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                         required: false, deprecated: BuildSupportChecker.IsDeprecatedTarget(available)));
                 }
             }
+        }
+
+        public IEnumerable<BuildTargetConfig> GetSupportedTargets(string workerType, BuildContextFilter contextFilter)
+        {
+            // Filter targets for CI
+            var targetConfigs = BuildTargets
+                .Where(t => t.Enabled && (contextFilter.BuildTargetFilter?.Contains(t.Target) ?? true))
+                .ToList();
+
+            // Filter out any deprecated targets
+            var supportedTargets = targetConfigs
+                .Where(c => !c.Deprecated)
+                .ToList();
+
+            // Which build targets are not supported by current install?
+            var missingTargets = supportedTargets
+                .Where(c => !BuildSupportChecker.CanBuildTarget(c.Target))
+                .ToList();
+
+            // Error on missing required build support
+            if (missingTargets.Any(c => c.Required))
+            {
+                var targetNames = string.Join(", ", missingTargets
+                    .Where(c => c.Required)
+                    .Select(c => c.Target.ToString()));
+                throw new BuildFailedException(
+                    $"Build failed for {workerType}. Cannot build for required ({targetNames}) because build support is not installed in the Unity Editor.");
+            }
+
+            // Log builds we're skipping
+            if (missingTargets.Count > 0)
+            {
+                var targetNames = string.Join(", ", missingTargets.Select(c => c.Target.ToString()));
+                Debug.LogWarning(
+                    $"Skipping ({targetNames}) because build support is not installed in the Unity Editor and the build target is not marked as 'Required'.");
+
+                supportedTargets.RemoveAll(t => missingTargets.Contains(t));
+            }
+
+            return supportedTargets;
         }
     }
 }
