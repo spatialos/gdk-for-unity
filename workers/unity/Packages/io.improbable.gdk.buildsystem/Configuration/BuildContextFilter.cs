@@ -1,8 +1,7 @@
 using System.Collections.Generic;
-using Improbable.Gdk.BuildSystem.Configuration;
 using UnityEditor;
 
-namespace Improbable.Gdk.BuildSystem
+namespace Improbable.Gdk.BuildSystem.Configuration
 {
     public struct BuildContextFilter
     {
@@ -23,12 +22,12 @@ namespace Improbable.Gdk.BuildSystem
             IOSSdkVersion = iosSdkVersion;
         }
 
-        public static BuildContextFilter Local(IEnumerable<string> wantedWorkerTypes)
+        public static BuildContextFilter Local(params string[] wantedWorkerTypes)
         {
             return new BuildContextFilter(wantedWorkerTypes, BuildEnvironment.Local);
         }
 
-        public static BuildContextFilter Cloud(IEnumerable<string> wantedWorkerTypes)
+        public static BuildContextFilter Cloud(params string[] wantedWorkerTypes)
         {
             return new BuildContextFilter(wantedWorkerTypes, BuildEnvironment.Cloud);
         }
