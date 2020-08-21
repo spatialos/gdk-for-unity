@@ -22,6 +22,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 var environmentConfig =
                     spatialOsBuildConfiguration.GetEnvironmentConfigForWorker(workerType, contextFilter.BuildEnvironment);
 
+                if (environmentConfig == null)
+                {
+                    continue;
+                }
+
                 var supportedTargets = environmentConfig.GetSupportedTargets(workerType, contextFilter);
 
                 result.AddRange(supportedTargets.Select(targetConfig => new BuildContext
