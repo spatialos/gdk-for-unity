@@ -10,7 +10,21 @@ namespace Improbable.Gdk.BuildSystem.Tests
     public class BuildContextTests
     {
         [Test]
-        public void GetBuildContexts_for_unspecified_worker_type_does_not_throw()
+        public void GetBuildContexts_for_unconfigured_worker_type_does_not_throw_for_local_build()
+        {
+            var buildContextFilter = BuildContextFilter.Local("DummyWorkerType");
+
+            List<BuildContext> buildContexts = null;
+            Assert.DoesNotThrow(() =>
+            {
+                buildContexts = BuildContext.GetBuildContexts(buildContextFilter);
+            });
+
+            Assert.AreEqual(0, buildContexts.Count);
+        }
+
+        [Test]
+        public void GetBuildContexts_for_unconfigured_worker_type_does_not_throw_for_cloud_build()
         {
             var buildContextFilter = BuildContextFilter.Cloud("DummyWorkerType");
 
