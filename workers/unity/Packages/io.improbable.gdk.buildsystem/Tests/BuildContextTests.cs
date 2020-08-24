@@ -93,10 +93,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
 #endif
         public void GetBuildContexts_for_valid_worker_type_without_filter_returns_all_expected_local_contexts(string workerType, params BuildTarget[] expectedTargets)
         {
-            var currentBuildTarget = EditorUserBuildSettings.activeBuildTarget;
-
             var buildContextFilter = BuildContextFilter.Local(workerType);
-            buildContextFilter.BuildTargetFilter = new[] { currentBuildTarget };
 
             List<BuildContext> buildContexts = null;
             Assert.DoesNotThrow(() =>
@@ -104,11 +101,13 @@ namespace Improbable.Gdk.BuildSystem.Tests
                 buildContexts = BuildContext.GetBuildContexts(buildContextFilter);
             });
 
-            Assert.AreEqual(1, buildContexts.Count);
+            Assert.AreEqual(expectedTargets.Length, buildContexts.Count);
 
-            var buildContext = buildContexts[0];
-            Assert.AreEqual(workerType, buildContext.WorkerType);
-            Assert.AreEqual(currentBuildTarget, buildContext.BuildTargetConfig.Target);
+            for (var i = 0; i < buildContexts.Count; i++)
+            {
+                Assert.AreEqual(workerType, buildContexts[i].WorkerType);
+                Assert.AreEqual(expectedTargets[i], buildContexts[i].BuildTargetConfig.Target);
+            }
         }
 
         [TestCase("UnityClient", BuildTarget.StandaloneWindows64, BuildTarget.StandaloneOSX)]

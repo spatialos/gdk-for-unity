@@ -30,22 +30,14 @@ namespace Improbable.Gdk.BuildSystem
                 var args = CommandLineArgs.FromCommandLine();
 
                 // Parse command line arguments
-                var buildContextFilter = new BuildContextFilter
-                {
-                    WantedWorkerTypes = CommandlineParser.GetWorkerTypesToBuild(args),
-                    BuildEnvironment = CommandlineParser.GetBuildEnvironment(args),
-                    ScriptImplementation = CommandlineParser.GetScriptingImplementation(args),
-                    BuildTargetFilter = CommandlineParser.GetBuildTargetFilter(args),
-                    IOSSdkVersion = CommandlineParser.GetTargetIOSSdk(args)
-                };
+                var buildContextFilter = BuildContextFilter.FromCommandLine(args);
 
                 // Create BuildContext for each worker
                 var buildContexts = BuildContext.GetBuildContexts(buildContextFilter);
 
                 if (buildContexts.Count == 0)
                 {
-                    throw new BuildFailedException(
-                        $"Attempted a build with no valid targets!");
+                    throw new BuildFailedException("Attempted a build with no valid targets!");
                 }
 
                 BuildWorkers(buildContexts);

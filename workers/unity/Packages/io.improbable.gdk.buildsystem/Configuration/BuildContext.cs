@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Build;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
@@ -27,7 +28,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     continue;
                 }
 
-                var supportedTargets = environmentConfig.GetSupportedTargets(workerType, contextFilter);
+                IEnumerable<BuildTargetConfig> supportedTargets;
+                try
+                {
+                    supportedTargets = environmentConfig.GetSupportedTargets(contextFilter);
+                }
+                catch (BuildFailedException exception)
+                {
+                    throw new BuildFailedException($"Build failed for {workerType}. {exception.Message}");
+                }
 
                 result.AddRange(supportedTargets.Select(targetConfig => new BuildContext
                 {

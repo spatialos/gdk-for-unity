@@ -46,7 +46,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             }
         }
 
-        public IEnumerable<BuildTargetConfig> GetSupportedTargets(string workerType, BuildContextFilter contextFilter)
+        public IEnumerable<BuildTargetConfig> GetSupportedTargets(BuildContextFilter contextFilter)
         {
             // Filter targets for CI
             var targetConfigs = BuildTargets
@@ -69,8 +69,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 var targetNames = string.Join(", ", missingTargets
                     .Where(c => c.Required)
                     .Select(c => c.Target.ToString()));
-                throw new BuildFailedException(
-                    $"Build failed for {workerType}. Cannot build for required ({targetNames}) because build support is not installed in the Unity Editor.");
+                throw new BuildFailedException($"Cannot build for required ({targetNames}) because build support is not installed in the Unity Editor.");
             }
 
             // Log builds we're skipping
