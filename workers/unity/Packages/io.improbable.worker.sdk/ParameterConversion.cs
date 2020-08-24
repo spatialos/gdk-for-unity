@@ -175,8 +175,7 @@ namespace Improbable.Worker.CInterop.Internal
 
         public static unsafe void ConvertEventTracerParameters(EventTracerParameters[] parameters, EventTracerParametersCallback callback)
         {
-            var handles = new WrappedGcHandle[parameters.Length];
-            ConvertTracerParameters(handles, parameters, out var internalParameters);
+            ConvertTracerParameters(parameters, out var handles, out var internalParameters);
 
             fixed (CEventTrace.EventTracerParameters* parameterBuffer = internalParameters)
             {
@@ -196,9 +195,10 @@ namespace Improbable.Worker.CInterop.Internal
             return wrappedParameterObject;
         }
 
-        private static void ConvertTracerParameters(IList<WrappedGcHandle> handles, EventTracerParameters[] parameters,
+        private static void ConvertTracerParameters(EventTracerParameters[] parameters, out IList<WrappedGcHandle> handles,
             out CEventTrace.EventTracerParameters[] internalParameters)
         {
+            handles = new WrappedGcHandle[parameters.Length];
             internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
