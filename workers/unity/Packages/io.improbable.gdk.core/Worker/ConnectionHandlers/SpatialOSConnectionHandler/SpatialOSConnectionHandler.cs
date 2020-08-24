@@ -16,9 +16,9 @@ namespace Improbable.Gdk.Core
 
         private readonly Connection connection;
 
-        private ProfilerMarker serializeFromMarker = new ProfilerMarker("SerializeFrom");
-        private ProfilerMarker sendClearMarker = new ProfilerMarker("SendAndClear");
-        private ProfilerMarker clearMarker = new ProfilerMarker("Clear");
+        private ProfilerMarker serializeFromMarker = new ProfilerMarker("SpatialOSConnectionHandler.SerializeFrom");
+        private ProfilerMarker sendClearMarker = new ProfilerMarker("SpatialOSConnectionHandler.SendAndClear");
+        private ProfilerMarker clearMarker = new ProfilerMarker("SpatialOSConnectionHandler.Clear");
 
         public SpatialOSConnectionHandler(Connection connection)
         {
