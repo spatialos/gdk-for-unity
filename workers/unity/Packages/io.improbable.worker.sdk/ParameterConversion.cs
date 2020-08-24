@@ -147,12 +147,18 @@ namespace Improbable.Worker.CInterop.Internal
                     newItem->ItemUnion.Span = new CEventTrace.Span();
                     newItem->ItemUnion.Span.Id = ConvertSpanId(spanItem.Id);
                     newItem->ItemUnion.Span.CauseCount = (uint) spanItem.Causes.Length;
+
+                    var causeArrayBytes = spanItem.Causes.Length * Marshal.SizeOf<CEventTrace.SpanId>();
+                    newItem->ItemUnion.Span.Causes = (CEventTrace.SpanId*) Marshal.AllocHGlobal(causeArrayBytes);
+
                     for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
                     {
                         newItem->ItemUnion.Span.Causes[i] = ConvertSpanId(spanItem.Causes[i]);
                     }
 
                     callback(newItem);
+
+                    Marshal.FreeHGlobal((IntPtr) newItem->ItemUnion.Span.Causes);
 
                     break;
                 case ItemType.Event:
@@ -164,8 +170,6 @@ namespace Improbable.Worker.CInterop.Internal
                     });
 
                     break;
-                default:
-                    throw new NotSupportedException("Invalid Item Type provided.");
             }
         }
 
@@ -192,14 +196,6 @@ namespace Improbable.Worker.CInterop.Internal
             return wrappedParameterObject;
         }
 
-        public static void FreeTracerParameterHandles(IEnumerable<WrappedGcHandle> tracerParameterHandles)
-        {
-            foreach (var tracerParameterHandle in tracerParameterHandles)
-            {
-                tracerParameterHandle.Dispose();
-            }
-        }
-
         private static void ConvertTracerParameters(List<WrappedGcHandle> handles, EventTracerParameters[] parameters,
             out CEventTrace.EventTracerParameters[] internalParameters)
         {
@@ -219,9 +215,9 @@ namespace Improbable.Worker.CInterop.Internal
             public static readonly CEventTrace.TraceCallback TraceCallbackThunkDelegate = TraceCallbackThunk;
 
             [MonoPInvokeCallback(typeof(CEventTrace.TraceCallback))]
-            private static void TraceCallbackThunk(void* userData, CEventTrace.Item* responseItem)
+            private static void TraceCallbackThunk(void* callbackPtr, CEventTrace.Item* responseItem)
             {
-                var callbackHandle = (EventTracerParameters) GCHandle.FromIntPtr((IntPtr) userData).Target;
+                var callbackHandle = (EventTracerParameters) GCHandle.FromIntPtr((IntPtr) callbackPtr).Target;
                 callbackHandle.TraceCallback(callbackHandle.UserData, ConvertItem(responseItem));
             }
         }

@@ -10,6 +10,8 @@ namespace Improbable.Worker.CInterop
         internal static UIntPtr SpanIdSize = new UIntPtr(16);
         public unsafe fixed byte Data[16];
 
+        public static SpanId NullSpanId => GetNullSpanId();
+
         public override bool Equals(object obj)
         {
             return obj is SpanId && Equals(obj);
@@ -37,7 +39,7 @@ namespace Improbable.Worker.CInterop
             return CEventTrace.SpanIdHash(ParameterConversion.ConvertSpanId(this));
         }
 
-        public static SpanId GetNullSpanId()
+        private static SpanId GetNullSpanId()
         {
             var nativeSpanId = new SpanId();
             var nullSpanId = CEventTrace.SpanIdNull();
@@ -199,11 +201,10 @@ namespace Improbable.Worker.CInterop
             }
         }
 
-
         public void Dispose()
         {
             eventTracer.Dispose();
-            ParameterConversion.FreeTracerParameterHandles(handleList);
+            handleList.ForEach(handle => handle.Dispose());
         }
 
         public void Enable()
