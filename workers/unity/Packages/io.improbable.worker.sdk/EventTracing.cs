@@ -185,7 +185,7 @@ namespace Improbable.Worker.CInterop
     public class EventTracer : IDisposable
     {
         private CEventTrace.EventTracer eventTracer;
-        private List<ParameterConversion.WrappedGcHandle> handleList;
+        private IList<ParameterConversion.WrappedGcHandle> handleList;
 
         public bool IsEnabled { get; private set; }
 
@@ -204,7 +204,10 @@ namespace Improbable.Worker.CInterop
         public void Dispose()
         {
             eventTracer.Dispose();
-            handleList.ForEach(handle => handle.Dispose());
+            foreach (var handle in handleList)
+            {
+                handle.Dispose();
+            }
         }
 
         public void Enable()
