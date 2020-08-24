@@ -7,15 +7,15 @@ using UnityEngine;
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
-    internal class BuildConfig : SingletonScriptableObject<BuildConfig>
+    public class BuildConfig : SingletonScriptableObject<BuildConfig>
     {
         [SerializeField]
-        public List<WorkerBuildConfiguration> WorkerBuildConfigurations =
+        internal List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
 
         [SerializeField] private bool isInitialised;
 
-        public BuildEnvironmentConfig GetEnvironmentConfigForWorker(string workerType, BuildEnvironment environment)
+        internal BuildEnvironmentConfig GetEnvironmentConfigForWorker(string workerType, BuildEnvironment environment)
         {
             var config = WorkerBuildConfigurations.FirstOrDefault(x => x.WorkerType == workerType);
             if (config == null)

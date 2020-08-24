@@ -13,15 +13,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public ScriptingImplementation ScriptingImplementation;
         public iOSSdkVersion? IOSSdkVersion;
 
-        public static List<BuildContext> GetBuildContexts(BuildContextFilter contextFilter)
+        public static List<BuildContext> GetBuildContexts(BuildConfig buildConfig, BuildContextFilter contextFilter)
         {
-            var spatialOsBuildConfiguration = BuildConfig.GetInstance();
             var result = new List<BuildContext>();
 
             foreach (var workerType in contextFilter.WantedWorkerTypes)
             {
                 var environmentConfig =
-                    spatialOsBuildConfiguration.GetEnvironmentConfigForWorker(workerType, contextFilter.BuildEnvironment);
+                    buildConfig.GetEnvironmentConfigForWorker(workerType, contextFilter.BuildEnvironment);
 
                 if (environmentConfig == null)
                 {

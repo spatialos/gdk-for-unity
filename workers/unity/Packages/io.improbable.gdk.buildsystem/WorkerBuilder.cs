@@ -33,7 +33,8 @@ namespace Improbable.Gdk.BuildSystem
                 var buildContextFilter = BuildContextFilter.FromCommandLine(args);
 
                 // Create BuildContext for each worker
-                var buildContexts = BuildContext.GetBuildContexts(buildContextFilter);
+                var buildConfig = BuildConfig.GetInstance();
+                var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextFilter);
 
                 if (buildContexts.Count == 0)
                 {
@@ -61,7 +62,8 @@ namespace Improbable.Gdk.BuildSystem
             {
                 try
                 {
-                    var buildContexts = BuildContext.GetBuildContexts(buildContextFilter);
+                    var buildConfig = BuildConfig.GetInstance();
+                    var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextFilter);
                     BuildWorkers(buildContexts);
                 }
                 catch (Exception e)
