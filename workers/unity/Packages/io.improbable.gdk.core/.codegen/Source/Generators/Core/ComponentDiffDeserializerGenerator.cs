@@ -125,7 +125,7 @@ for (int i = 0; i < events.Count; ++i)
     var componentUpdate = new ComponentUpdate(ComponentId, schemaUpdate);
     var obj = schemaUpdate.GetEvents().AddObject({ev.EventIndex});
     {ev.FqnPayloadType}.Serialization.Serialize(ev.Event.Payload, obj);
-    serializedMessages.AddComponentUpdate(componentUpdate, ev.EntityId.Id);
+    serializedMessages.AddComponentEvent(componentUpdate, ev.EntityId.Id);
 }}
 "
                                 });
