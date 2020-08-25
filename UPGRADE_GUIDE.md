@@ -4,7 +4,7 @@
 
 ### Unity 2020.1
 
-In order to use the GDK for Unity `0.4.0`, you will need to upgrade your project to Unity 2020.1. We test against 2020.1.2f1, but any version _should_ work.
+In order to use the GDK for Unity `0.4.0`, you will need to upgrade your project to Unity 2020.1. We test against 2020.1.2f1, but any `2020.1.x` version _should_ work.
 
 ## From `0.3.9` to `0.3.10`
 
