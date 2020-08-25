@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
+
 ### Added
 
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
