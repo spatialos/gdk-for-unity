@@ -44,7 +44,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             {
                 ref readonly var response = ref responses[i];
                 var spatialId = response.EntityId;
-                if (!workerSystem.TryGetEntity(spatialId, out var entity) || !heartbeats.Exists(entity))
+                if (!workerSystem.TryGetEntity(spatialId, out var entity) || !heartbeats.HasComponent(entity))
                 {
                     continue;
                 }

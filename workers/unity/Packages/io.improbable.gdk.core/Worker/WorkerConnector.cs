@@ -105,7 +105,7 @@ namespace Improbable.Gdk.Core
 
                 // Update PlayerLoop
                 PlayerLoopUtils.ResolveSystemGroups(Worker.World);
-                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(Worker.World, PlayerLoop.GetCurrentPlayerLoop());
+                ScriptBehaviourUpdateOrder.AddWorldToCurrentPlayerLoop(Worker.World);
             }
             catch (Exception)
             {
@@ -251,7 +251,7 @@ namespace Improbable.Gdk.Core
             {
                 // Remove root systems from the disposing world from the PlayerLoop
                 // This only affects the loop next frame
-                PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
+                ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(Worker.World);
             }
         }
 

@@ -72,38 +72,9 @@ namespace Improbable.Gdk.Core
                     type == typeof(PresentationSystemGroup))
                 {
                     var groupSystem = system as ComponentSystemGroup;
-                    groupSystem.SortSystemUpdateList();
+                    groupSystem.SortSystems();
                 }
             }
-        }
-
-        public static void RemoveFromPlayerLoop(World world)
-        {
-            var playerLoop = PlayerLoop.GetCurrentPlayerLoop();
-
-            //Reflection to get world from PlayerLoopSystem
-            var wrapperType =
-                typeof(ScriptBehaviourUpdateOrder).Assembly.GetType(
-                    "Unity.Entities.ScriptBehaviourUpdateOrder+DummyDelegateWrapper");
-            var systemField = wrapperType.GetField("m_System", BindingFlags.NonPublic | BindingFlags.Instance);
-
-            for (var i = 0; i < playerLoop.subSystemList.Length; ++i)
-            {
-                ref var playerLoopSubSystem = ref playerLoop.subSystemList[i];
-                playerLoopSubSystem.subSystemList = playerLoopSubSystem.subSystemList.Where(s =>
-                {
-                    if (s.updateDelegate != null && s.updateDelegate.Target.GetType() == wrapperType)
-                    {
-                        var targetSystem = systemField.GetValue(s.updateDelegate.Target) as ComponentSystemBase;
-                        return targetSystem.World != world;
-                    }
-
-                    return true;
-                }).ToArray();
-            }
-
-            // Update PlayerLoop
-            ScriptBehaviourUpdateOrder.SetPlayerLoop(playerLoop);
         }
     }
 }
