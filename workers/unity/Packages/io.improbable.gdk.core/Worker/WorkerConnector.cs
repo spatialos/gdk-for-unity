@@ -2,16 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
-using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 namespace Improbable.Gdk.Core
 {
