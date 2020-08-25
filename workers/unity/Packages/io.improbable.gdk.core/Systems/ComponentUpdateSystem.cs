@@ -9,11 +9,6 @@ namespace Improbable.Gdk.Core
     {
         private WorkerSystem worker;
 
-        public void SendUpdate<T>(in T update, EntityId entityId) where T : struct, ISpatialComponentUpdate
-        {
-            worker.MessagesToSend.AddComponentUpdate(in update, entityId.Id);
-        }
-
         public void SendEvent<T>(T eventToSend, EntityId entityId) where T : IEvent
         {
             worker.MessagesToSend.AddEvent(eventToSend, entityId.Id);

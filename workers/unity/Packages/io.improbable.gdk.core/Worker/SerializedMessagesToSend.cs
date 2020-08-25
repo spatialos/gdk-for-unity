@@ -91,6 +91,8 @@ namespace Improbable.Gdk.Core
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
         {
+            messages.GetSerializedComponentUpdates().CopyTo(updates);
+
             foreach (var serializer in commandSerializers)
             {
                 serializer.Serialize(messages, this, commandMetaData);
@@ -130,6 +132,7 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var update = ref updates[i];
                 connection.SendComponentUpdate(update.EntityId, update.Update, UpdateParams);
+                netFrameStats.AddUpdate(update.Update);
             }
 
             for (var i = 0; i < requests.Count; ++i)
@@ -201,10 +204,9 @@ namespace Improbable.Gdk.Core
             Clear();
         }
 
-        public void AddComponentUpdate(ComponentUpdate update, long entityId)
+        public void AddComponentEvent(ComponentUpdate update, long entityId)
         {
             updates.Add(new UpdateToSend(update, entityId));
-            netFrameStats.AddUpdate(update);
         }
 
         public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, CommandRequestId requestId)
@@ -272,7 +274,7 @@ namespace Improbable.Gdk.Core
 
         #region Containers
 
-        private readonly struct UpdateToSend
+        public readonly struct UpdateToSend
         {
             public readonly ComponentUpdate Update;
             public readonly long EntityId;

@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core
         Type Snapshot { get; }
         Type Update { get; }
 
-        Type ReplicationHandler { get; }
+        Type ReplicationSystem { get; }
         Type Serializer { get; }
         Type DiffDeserializer { get; }
 
