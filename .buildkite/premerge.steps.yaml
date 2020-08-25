@@ -34,7 +34,7 @@ windows: &windows
       - exit_status: 128
         limit: 3
   env: &windows-env
-    ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
+    # ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
 linux: &linux
   agents:
