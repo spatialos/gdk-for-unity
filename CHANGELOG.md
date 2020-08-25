@@ -5,6 +5,8 @@
 ### Breaking Changes
 
 - The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
+- Upgraded Unity Entities to 0.14.0-preview.18. [#1463](https://github.com/spatialos/gdk-for-unity/pull/1463)
+  - Projects now require the `Unity Web Request` build-in package to compile for iOS and Android.
 
 ### Added
 
