@@ -173,7 +173,7 @@ public void Init(World world)
                             {
                                 m.Line(@"
 var entity = workerSystem.GetEntity(update.EntityId);
-if (!dataFromEntity.Exists(entity))
+if (!dataFromEntity.HasComponent(entity))
 {
     return;
 }
