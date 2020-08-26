@@ -27,7 +27,7 @@
 
 #entity-list-searchbar {
     flex-grow: 1;
-    width: auto;
+    width: 0;
 }
 
 #entity-detail {

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 using UnityEditor;
@@ -30,7 +31,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             listView = this.Q<ListView>();
             listView.makeItem = () => new Label();
             listView.bindItem = BindItem;
-            listView.onSelectionChanged += OnSelectionChanged;
+            listView.onSelectionChange += OnSelectionChanged;
             listView.itemsSource = entities.FilteredData;
 
             var searchField = this.Q<ToolbarSearchField>();
@@ -83,16 +84,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             label.text = entity.ToString();
         }
 
-        private void OnSelectionChanged(List<object> selections)
+        private void OnSelectionChanged(IEnumerable<object> selections)
         {
-            if (selections.Count != 1)
+            if (selections.Count() != 1)
             {
                 throw new InvalidOperationException("Unexpectedly selected more than one entity.");
             }
 
-            if (!(selections[0] is EntityData entityData))
+            if (!(selections.First() is EntityData entityData))
             {
-                throw new InvalidOperationException($"Unexpected type for selection: {selections[0].GetType()}");
+                throw new InvalidOperationException($"Unexpected type for selection: {selections.First().GetType()}");
             }
 
             if (!selectedEntity.HasValue || selectedEntity.Value != entityData)
