@@ -8,7 +8,7 @@ In order to use the GDK for Unity `0.4.0`, you will need to upgrade your project
 
 ### Unity Entities 0.14
 
-Due to our internal upgrade to Unity Entities 0.14.0-preview.18, your projects are now required to include the `Unity Web Request` build-in package.
+Due to our internal upgrade to Unity Entities 0.14.0-preview.18, your projects are now required to include the `Unity Web Request` built-in package.
 You can find this package in the Unity editor under the `Window -> Package Manager` menu.
 
 ## From `0.3.9` to `0.3.10`
