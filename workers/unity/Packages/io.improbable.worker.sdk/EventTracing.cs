@@ -10,7 +10,7 @@ namespace Improbable.Worker.CInterop
         internal static UIntPtr SpanIdSize = new UIntPtr(16);
         public unsafe fixed byte Data[16];
 
-        public static SpanId NullSpanId => GetNullSpanId();
+        public static SpanId Null => GetNullSpanId();
 
         public override bool Equals(object obj)
         {

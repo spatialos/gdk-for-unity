@@ -143,7 +143,7 @@ namespace Improbable.Worker.CInterop.Internal
             switch (item.ItemType)
             {
                 case ItemType.Span:
-                    var spanItem = item.Span.GetValueOrDefault();
+                    var spanItem = item.Span.Value;
                     newItem->ItemUnion.Span = new CEventTrace.Span();
                     newItem->ItemUnion.Span.Id = ConvertSpanId(spanItem.Id);
                     newItem->ItemUnion.Span.CauseCount = (uint) spanItem.Causes.Length;
@@ -158,7 +158,7 @@ namespace Improbable.Worker.CInterop.Internal
 
                     break;
                 case ItemType.Event:
-                    var eventItem = item.Event.GetValueOrDefault();
+                    var eventItem = item.Event.Value;
                     ConvertEvent(eventItem, internalEvent =>
                     {
                         newItem->ItemUnion.Event = internalEvent;
