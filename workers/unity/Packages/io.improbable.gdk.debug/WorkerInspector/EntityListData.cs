@@ -41,12 +41,16 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         {
             fullData.Clear();
             FilteredData.Clear();
-            query?.Dispose();
+
+            if (query != default)
+            {
+                query.Dispose();
+            }
 
             if (newWorld == null)
             {
                 world = null;
-                query = null;
+                query = default;
                 return;
             }
 
@@ -65,10 +69,10 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             using (refreshDataMarker.Auto())
             {
                 fullData.Clear();
-                var spatialOSComponentType = world.EntityManager.GetArchetypeChunkComponentType<SpatialEntityId>(true);
+                var spatialOSComponentType = world.EntityManager.GetComponentTypeHandle<SpatialEntityId>(true);
                 var metadataComponentType =
-                    world.EntityManager.GetArchetypeChunkComponentType<Metadata.Component>(true);
-                var ecsEntityType = world.EntityManager.GetArchetypeChunkEntityType();
+                    world.EntityManager.GetComponentTypeHandle<Metadata.Component>(true);
+                var ecsEntityType = world.EntityManager.GetEntityTypeHandle();
 
                 using (var chunks = query.CreateArchetypeChunkArray(Allocator.TempJob))
                 {
