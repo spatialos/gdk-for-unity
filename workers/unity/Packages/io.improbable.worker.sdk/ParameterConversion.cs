@@ -13,7 +13,7 @@ namespace Improbable.Worker.CInterop.Internal
 
         public delegate void EventParametersCallback(CEventTrace.Event internalEvent);
 
-        public unsafe delegate void EventTracerParametersCallback(CEventTrace.EventTracerParameters* parameters, IList<WrappedGcHandle> handles);
+        public unsafe delegate void EventTracerParametersCallback(CEventTrace.EventTracerParameters* parameters, WrappedGcHandle[] handles);
 
         internal class WrappedGcHandle : CriticalFinalizerObject, IDisposable
         {
@@ -147,18 +147,14 @@ namespace Improbable.Worker.CInterop.Internal
                     newItem->ItemUnion.Span = new CEventTrace.Span();
                     newItem->ItemUnion.Span.Id = ConvertSpanId(spanItem.Id);
                     newItem->ItemUnion.Span.CauseCount = (uint) spanItem.Causes.Length;
-
-                    var causeArrayBytes = spanItem.Causes.Length * Marshal.SizeOf<CEventTrace.SpanId>();
-                    newItem->ItemUnion.Span.Causes = (CEventTrace.SpanId*) Marshal.AllocHGlobal(causeArrayBytes);
-
+                    var causesPointer = stackalloc CEventTrace.SpanId[spanItem.Causes.Length];
+                    newItem->ItemUnion.Span.Causes = causesPointer;
                     for (var i = 0; i < newItem->ItemUnion.Span.CauseCount; i++)
                     {
                         newItem->ItemUnion.Span.Causes[i] = ConvertSpanId(spanItem.Causes[i]);
                     }
 
                     callback(newItem);
-
-                    Marshal.FreeHGlobal((IntPtr) newItem->ItemUnion.Span.Causes);
 
                     break;
                 case ItemType.Event:
@@ -175,7 +171,7 @@ namespace Improbable.Worker.CInterop.Internal
 
         public static unsafe void ConvertEventTracerParameters(EventTracerParameters[] parameters, EventTracerParametersCallback callback)
         {
-            ConvertTracerParameters(parameters, out var handles, out var internalParameters);
+            var internalParameters = ConvertTracerParameters(parameters, out var handles);
 
             fixed (CEventTrace.EventTracerParameters* parameterBuffer = internalParameters)
             {
@@ -195,11 +191,10 @@ namespace Improbable.Worker.CInterop.Internal
             return wrappedParameterObject;
         }
 
-        private static void ConvertTracerParameters(EventTracerParameters[] parameters, out IList<WrappedGcHandle> handles,
-            out CEventTrace.EventTracerParameters[] internalParameters)
+        private static CEventTrace.EventTracerParameters[] ConvertTracerParameters(EventTracerParameters[] parameters, out WrappedGcHandle[] handles)
         {
             handles = new WrappedGcHandle[parameters.Length];
-            internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
+            var internalParameters = new CEventTrace.EventTracerParameters[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
                 var parameterHandle = ConvertTracerParameter(parameters[i], ref internalParameters[i]);
@@ -208,6 +203,8 @@ namespace Improbable.Worker.CInterop.Internal
                     handles[i] = parameterHandle;
                 }
             }
+
+            return internalParameters;
         }
 
         private unsafe class CallbackThunkDelegates

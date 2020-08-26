@@ -273,6 +273,19 @@ namespace Improbable.Worker.CInterop
             }
         }
 
+        public SpanId AddSpan(SpanId spanId)
+        {
+            var newSpanId = new SpanId();
+            unsafe
+            {
+                var internalSpanId = ParameterConversion.ConvertSpanId(spanId);
+                var createdSpanId = CEventTrace.EventTracerAddSpan(eventTracer, &internalSpanId, 1);
+                ApiInterop.Memcpy(newSpanId.Data, createdSpanId.Data, SpanId.SpanIdSize);
+            }
+
+            return newSpanId;
+        }
+
         public SpanId AddSpan()
         {
             var newSpanId = new SpanId();
