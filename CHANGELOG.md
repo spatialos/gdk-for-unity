@@ -11,6 +11,7 @@
 ### Added
 
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
+- Added tooltips to the GDK tools configuration options. [#1470](https://github.com/spatialos/gdk-for-unity/pull/1470)
 
 ### Changed
 
