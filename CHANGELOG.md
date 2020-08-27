@@ -5,6 +5,8 @@
 ### Breaking Changes
 
 - The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
+- Upgraded Unity Entities to 0.14.0-preview.18. [#1463](https://github.com/spatialos/gdk-for-unity/pull/1463)
+  - Projects now require the `Unity Web Request` built-in package to compile for iOS and Android.
 
 ### Added
 
@@ -16,6 +18,11 @@
 - Upgrade to Worker SDK v14.8.0. [#1458](https://github.com/spatialos/gdk-for-unity/pull/1458)
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 - Multithreaded component serialization through `SystemBase` jobs. [#1454](https://github.com/spatialos/gdk-for-unity/pull/1454)
+- Upgrade Unity Burst to 1.3.5. [#1467](https://github.com/spatialos/gdk-for-unity/pull/1467)
+
+### Fixed
+
+- Fixed an issue where authority changes returned by `ComponentUpdateSystem.GetAuthorityChangesReceived()` were returned in order from newest to oldest. [#1465](https://github.com/spatialos/gdk-for-unity/pull/1465)
 
 ## `0.3.10` - 2020-08-18
 

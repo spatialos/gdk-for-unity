@@ -46,6 +46,7 @@ namespace Improbable.Gdk.Core
         }
 
         private uint updateId;
+        private uint authorityChangeId;
 
         private ViewDiff CurrentDiff => diffs[currentDiffIndex];
 
@@ -64,7 +65,7 @@ namespace Improbable.Gdk.Core
 
         public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
         {
-            CurrentDiff.SetAuthority(entityId, componentId, newAuthority);
+            CurrentDiff.SetAuthority(entityId, componentId, newAuthority, authorityChangeId++);
         }
 
         public void UpdateComponent<T>(long entityId, uint componentId, T update) where T : ISpatialComponentUpdate

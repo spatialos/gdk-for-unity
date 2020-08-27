@@ -131,8 +131,8 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < updates.Count; ++i)
             {
                 ref readonly var update = ref updates[i];
-                connection.SendComponentUpdate(update.EntityId, update.Update, UpdateParams);
                 netFrameStats.AddUpdate(update.Update);
+                connection.SendComponentUpdate(update.EntityId, update.Update, UpdateParams);
             }
 
             for (var i = 0; i < requests.Count; ++i)

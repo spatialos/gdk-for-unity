@@ -79,7 +79,7 @@ namespace Improbable.Gdk.TransformSynchronization
             StopAllCoroutines();
             RemoveStrategies();
 
-            entityManager = null;
+            entityManager = default;
             workerType = null;
             initialised = false;
         }

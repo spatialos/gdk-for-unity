@@ -62,11 +62,13 @@ namespace Improbable.Gdk.Core
     {
         public readonly Authority Authority;
         public readonly EntityId EntityId;
+        public readonly uint AuthorityChangeId;
 
-        public AuthorityChangeReceived(Authority authority, EntityId entityId)
+        public AuthorityChangeReceived(Authority authority, EntityId entityId, uint authorityChangeId)
         {
             Authority = authority;
             EntityId = entityId;
+            AuthorityChangeId = authorityChangeId;
         }
 
         EntityId IReceivedEntityMessage.EntityId => EntityId;
