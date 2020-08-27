@@ -86,7 +86,7 @@ function main {
 }
 
 function anyMatchingTargets {
-    if [[ ! -z "${PERF_BRANCH_OVERRIDE}" ]]; then
+    if ! [[ -z "${PERF_BRANCH_OVERRIDE}" ]]; then
         return 1
     fi
 
