@@ -6,7 +6,14 @@ namespace Improbable.Gdk.Core
     {
         public int Compare(AuthorityChangeReceived x, AuthorityChangeReceived y)
         {
-            return x.EntityId.Id.CompareTo(y.EntityId.Id);
+            var entityIdCompare = x.EntityId.Id.CompareTo(y.EntityId.Id);
+
+            if (entityIdCompare == 0)
+            {
+                return x.AuthorityChangeId.CompareTo(y.AuthorityChangeId);
+            }
+
+            return entityIdCompare;
         }
     }
 }

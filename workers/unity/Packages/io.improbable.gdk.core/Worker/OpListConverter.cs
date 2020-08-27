@@ -10,6 +10,7 @@ namespace Improbable.Gdk.Core
         private readonly ViewDiff viewDiff = new ViewDiff();
 
         private uint componentUpdateId;
+        private uint authorityChangeId;
 
         private bool shouldClear;
 
@@ -86,7 +87,9 @@ namespace Improbable.Gdk.Core
                         break;
                     case OpType.AuthorityChange:
                         var authorityOp = opList.GetAuthorityChangeOp(i);
-                        viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority);
+                        viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority,
+                            authorityChangeId);
+                        authorityChangeId++;
                         break;
                     case OpType.ComponentUpdate:
                         var updateOp = opList.GetComponentUpdateOp(i);
@@ -118,6 +121,7 @@ namespace Improbable.Gdk.Core
         public ViewDiff GetViewDiff()
         {
             componentUpdateId = 1;
+            authorityChangeId = 1;
             shouldClear = true;
             return viewDiff;
         }

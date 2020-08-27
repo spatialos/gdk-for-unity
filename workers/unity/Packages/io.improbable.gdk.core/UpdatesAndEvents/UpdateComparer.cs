@@ -7,6 +7,7 @@ namespace Improbable.Gdk.Core
         public int Compare(ComponentUpdateReceived<T> x, ComponentUpdateReceived<T> y)
         {
             var entityIdCompare = x.EntityId.Id.CompareTo(y.EntityId.Id);
+
             if (entityIdCompare == 0)
             {
                 return x.UpdateId.CompareTo(y.UpdateId);

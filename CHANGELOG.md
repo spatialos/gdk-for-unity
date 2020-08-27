@@ -18,6 +18,10 @@
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 - Multithreaded component serialization through `SystemBase` jobs. [#1454](https://github.com/spatialos/gdk-for-unity/pull/1454)
 
+### Fixed
+
+- Fixed an issue where authority changes returned by `ComponentUpdateSystem.GetAuthorityChangesReceived()` were returned in order from newest to oldest. [#1465](https://github.com/spatialos/gdk-for-unity/pull/1465)
+
 ## `0.3.10` - 2020-08-18
 
 ### Breaking Changes
