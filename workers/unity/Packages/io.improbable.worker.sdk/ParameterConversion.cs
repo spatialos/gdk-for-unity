@@ -122,8 +122,7 @@ namespace Improbable.Worker.CInterop.Internal
                     newEvent.Data.EventData.Dispose();
 
                     // Add the data to the newly initialized event data struct
-                    newEvent.Data = new TraceEventData();
-                    newEvent.Data.AddAll(fields);
+                    newEvent.Data = new TraceEventData(fields);
 
                     newItem.Event = newEvent;
                     break;

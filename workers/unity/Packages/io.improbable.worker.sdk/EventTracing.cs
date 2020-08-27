@@ -332,6 +332,11 @@ namespace Improbable.Worker.CInterop
             EventData = CEventTrace.EventDataCreate();
         }
 
+        public TraceEventData(IEnumerable<KeyValuePair<string, string>> eventData) : this()
+        {
+            AddAll(eventData);
+        }
+
         public string this[string key]
         {
             get => GetValue(key);
