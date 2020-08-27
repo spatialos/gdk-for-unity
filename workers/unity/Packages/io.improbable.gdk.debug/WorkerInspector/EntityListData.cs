@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
             fullData.Clear();
             FilteredData.Clear();
 
-            if (query != default)
+            if (query != default && world.IsCreated)
             {
                 query.Dispose();
             }
