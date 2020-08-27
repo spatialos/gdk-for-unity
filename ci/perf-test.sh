@@ -87,7 +87,7 @@ function main {
 
 function anyMatchingTargets {
     if ! [[ -z "${PERF_BRANCH_OVERRIDE}" ]]; then
-        return 1
+        return 0
     fi
 
     for configId in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
