@@ -86,7 +86,7 @@ function main {
 }
 
 function anyMatchingTargets {
-    if ! [[ -z "${PERF_BRANCH_OVERRIDE}" ]]; then
+    if ! [[ -z "${PERF_BRANCH_OVERRIDE:-}" ]]; then
         return 0
     fi
 
@@ -113,7 +113,7 @@ function runTests {
 
     local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
 
-    if [[ -z "${PERF_BRANCH_OVERRIDE}" ]]; then
+    if [[ -z "${PERF_BRANCH_OVERRIDE:-}" ]]; then
         if ! [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
             echo "Skipping target as current branch does not match regex '${branchFilter}'."
             return
