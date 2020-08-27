@@ -86,6 +86,10 @@ function main {
 }
 
 function anyMatchingTargets {
+    if [[ ! -z "${PERF_BRANCH_OVERRIDE}" ]]; then
+        return 1
+    fi
+
     for configId in `seq ${JOB_ID} ${NUM_JOBS} $((${NUM_CONFIGS}-1))`
     do
         local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
@@ -109,9 +113,11 @@ function runTests {
 
     local branchFilter=$(jq -r .[${configId}].branchFilter ${CONFIG_FILE})
 
-    if ! [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
-        echo "Skipping target as current branch does not match regex '${branchFilter}'."
-        return
+    if [[ -z "${PERF_BRANCH_OVERRIDE}" ]]; then
+        if ! [[ ${BRANCH_NAME} =~ ${branchFilter} ]]; then
+            echo "Skipping target as current branch does not match regex '${branchFilter}'."
+            return
+        fi
     fi
 
     local args=()
