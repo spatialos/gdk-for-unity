@@ -18,6 +18,7 @@
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 - Multithreaded component serialization through `SystemBase` jobs. [#1454](https://github.com/spatialos/gdk-for-unity/pull/1454)
 - Upgrade Unity Burst to 1.3.5. [#1467](https://github.com/spatialos/gdk-for-unity/pull/1467)
+- Removed outline and background around component info button in the Worker Inspector. [#1468](https://github.com/spatialos/gdk-for-unity/pull/1468)
 
 ### Fixed
 
