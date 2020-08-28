@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
@@ -16,7 +15,6 @@ namespace Improbable.Gdk.Tools
     {
         public const string ProjectSettingsPath = "Project/Spatial OS";
 
-        internal const string SchemaStdLibDirLabel = "Standard library";
         internal const string VerboseLoggingLabel = "Verbose logging";
         internal const string CodegenLogOutputDirLabel = "Log output directory";
         internal const string CodegenOutputDirLabel = "C# output directory";
@@ -109,6 +107,8 @@ namespace Improbable.Gdk.Tools
 
                 DrawCodeGenerationOptions();
 
+                DrawDevAuthTokenOptions();
+
                 DrawCustomSnapshotDir();
 
                 if (check.changed)
@@ -152,13 +152,17 @@ namespace Improbable.Gdk.Tools
             GUILayout.Label(GeneralSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
             {
-                toolsConfig.EnvironmentPlatform = EditorGUILayout.TextField("Environment", toolsConfig.EnvironmentPlatform);
+                toolsConfig.EnvironmentPlatform = EditorGUILayout.TextField(new GUIContent("Environment",
+                        "The environment argument to provide to GDK tooling such as the spatial CLI and Deployment Launcher."),
+                    toolsConfig.EnvironmentPlatform);
             }
 
             using (new EditorGUI.IndentLevelScope())
             {
                 toolsConfig.RuntimeVersionOverride =
-                    EditorGUILayout.TextField("Runtime Version Override", toolsConfig.RuntimeVersionOverride);
+                    EditorGUILayout.TextField(new GUIContent("Runtime Version Override",
+                            "Overrides the default runtime version used by the GDK for local and cloud deployments."),
+                        toolsConfig.RuntimeVersionOverride);
 
                 GUILayout.Label($"Current Runtime version: {toolsConfig.RuntimeVersion}", EditorStyles.helpBox);
             }
@@ -177,21 +181,33 @@ namespace Improbable.Gdk.Tools
             using (new EditorGUIUtility.IconSizeScope(new Vector2(12, 12)))
             using (new EditorGUI.IndentLevelScope())
             {
-                toolsConfig.VerboseLogging = EditorGUILayout.Toggle(VerboseLoggingLabel, toolsConfig.VerboseLogging);
+                toolsConfig.VerboseLogging = EditorGUILayout.Toggle(new GUIContent(VerboseLoggingLabel,
+                        "Toggles verbose logging of the code generator."),
+                    toolsConfig.VerboseLogging);
 
                 toolsConfig.CodegenLogOutputDir =
-                    EditorGUILayout.TextField(CodegenLogOutputDirLabel, toolsConfig.CodegenLogOutputDir);
+                    EditorGUILayout.TextField(new GUIContent(CodegenLogOutputDirLabel,
+                            "The directory, relative to the Unity project root, where code generator places its log files."),
+                        toolsConfig.CodegenLogOutputDir);
 
                 toolsConfig.CodegenOutputDir =
-                    EditorGUILayout.TextField(CodegenOutputDirLabel, toolsConfig.CodegenOutputDir);
+                    EditorGUILayout.TextField(new GUIContent(CodegenOutputDirLabel,
+                            "The directory, relative to the Unity project root, where the code generator should place non-Editor generated code."),
+                        toolsConfig.CodegenOutputDir);
 
-                toolsConfig.CodegenEditorOutputDir = EditorGUILayout.TextField(CodegenEditorOutputDirLabel,
+                toolsConfig.CodegenEditorOutputDir = EditorGUILayout.TextField(new GUIContent(CodegenEditorOutputDirLabel,
+                        "The directory, relative to the Unity project root, where the code generator should place Editor-specific generated code."),
                     toolsConfig.CodegenEditorOutputDir);
 
                 toolsConfig.DescriptorOutputDir =
-                    EditorGUILayout.TextField(DescriptorOutputDirLabel, toolsConfig.DescriptorOutputDir);
+                    EditorGUILayout.TextField(new GUIContent(DescriptorOutputDirLabel,
+                            "The directory, relative to the Unity project root, where the code generator should place the generated descriptor."),
+                        toolsConfig.DescriptorOutputDir);
 
-                EditorGUILayout.LabelField($"{SchemaSourceDirsLabel}", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField(new GUIContent($"{SchemaSourceDirsLabel}",
+                        "A list of directories, relative to the Unity project root, containing schema that are not already in a package." +
+                        " Note that the GDK automatically finds and provides paths to any `.schema` folder found inside a package."),
+                    EditorStyles.boldLabel);
                 using (new EditorGUI.IndentLevelScope())
                 {
                     for (var i = 0; i < toolsConfig.SchemaSourceDirs.Count; i++)
@@ -221,16 +237,32 @@ namespace Improbable.Gdk.Tools
                 }
             }
 
+            EditorGUIUtility.labelWidth = previousWidth;
+        }
+
+        private void DrawDevAuthTokenOptions()
+        {
+            var previousWidth = EditorGUIUtility.labelWidth;
+            EditorGUIUtility.labelWidth = 180;
+
             GUILayout.Label(DevAuthTokenSectionLabel, EditorStyles.boldLabel);
             using (new EditorGUI.IndentLevelScope())
             {
                 toolsConfig.DevAuthTokenLifetimeDays =
-                    EditorGUILayout.IntSlider(DevAuthTokenLifetimeLabel, toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
+                    EditorGUILayout.IntSlider(new GUIContent(DevAuthTokenLifetimeLabel,
+                            "Sets the lifetime for requested development authentication tokens, between 1 and 90 days. " +
+                            "Changes made to this setting do not affect existing tokens."),
+                        toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
 
-                toolsConfig.SaveDevAuthTokenToFile = EditorGUILayout.Toggle("Save token to file", toolsConfig.SaveDevAuthTokenToFile);
+                toolsConfig.SaveDevAuthTokenToFile = EditorGUILayout.Toggle(new GUIContent("Save token to file",
+                        "Sets whether to save the development authentication token to a file, instead of in player preferences."),
+                    toolsConfig.SaveDevAuthTokenToFile);
                 using (new EditorGUI.DisabledScope(!toolsConfig.SaveDevAuthTokenToFile))
                 {
-                    toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(DevAuthTokenDirLabel, toolsConfig.DevAuthTokenDir);
+                    toolsConfig.DevAuthTokenDir = EditorGUILayout.TextField(new GUIContent(DevAuthTokenDirLabel,
+                            "The directory, relative to the project's Assets/ folder, where development authentication tokens will be " +
+                            " saved to if saving to file is enabled. The full path is displayed in the window for ease of use."),
+                        toolsConfig.DevAuthTokenDir);
                     GUILayout.Label($"Token filepath: {Path.GetFullPath(toolsConfig.DevAuthTokenFilepath)}", EditorStyles.helpBox);
                 }
             }
@@ -240,13 +272,17 @@ namespace Improbable.Gdk.Tools
 
         private void DrawCustomSnapshotDir()
         {
-            GUILayout.Label(CustomSnapshotPathLabel, EditorStyles.boldLabel);
+            GUILayout.Label(new GUIContent(CustomSnapshotPathLabel,
+                    "The snapshot the GDK will use for local deployments."),
+                EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
             using (new EditorGUILayout.HorizontalScope())
             {
                 using (new EditorGUI.DisabledScope(true))
                 {
-                    EditorGUILayout.TextField(CustomSnapshotPathLabel, toolsConfig.CustomSnapshotPath);
+                    EditorGUILayout.TextField(new GUIContent(CustomSnapshotPathLabel,
+                            "The snapshot the GDK will use for local deployments."),
+                        toolsConfig.CustomSnapshotPath);
                 }
 
                 if (GUILayout.Button("Open", EditorStyles.miniButtonRight, GUILayout.ExpandWidth(false)))
