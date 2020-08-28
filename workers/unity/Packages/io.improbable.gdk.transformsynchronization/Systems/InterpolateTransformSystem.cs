@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.TransformSynchronization
 {
@@ -9,12 +12,15 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class InterpolateTransformSystem : ComponentSystem
     {
+        private WorkerSystem worker;
         private ComponentUpdateSystem updateSystem;
         private EntityQuery interpolationGroup;
 
         protected override void OnCreate()
         {
             base.OnCreate();
+
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             updateSystem = World.GetExistingSystem<ComponentUpdateSystem>();
 
@@ -47,8 +53,24 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformBuffer = EntityManager.GetBuffer<BufferedTransform>(entity);
                     var lastTransformApplied = deferredUpdateTransform.Transform;
 
+                    var trackedSpanId = worker.EventTracer.AddSpan(transformInternal.SpanId.GetValueOrDefault().FromSchema());
+
                     if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                     {
+                        if (worker.EventTracer.IsEnabled)
+                        {
+                            worker.EventTracer.AddEvent(new Worker.CInterop.Event
+                            {
+                                Id = trackedSpanId,
+                                Message = "InterpolateTransform - Buffer length exceeded",
+                                Type = "Transform_Receive",
+                                Data = new TraceEventData(new Dictionary<string, string>
+                                {
+                                    { "MESSAGE", $"Dropped {transformBuffer.Length.ToString()} buffered transforms." }
+                                })
+                            });
+                        }
+
                         transformBuffer.Clear();
                     }
 

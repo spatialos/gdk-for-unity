@@ -3,13 +3,14 @@
     "references": [
         "Improbable.Gdk.Core",
         "Improbable.Gdk.Generated",
+        "Improbable.Worker.Sdk",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false,
+    "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

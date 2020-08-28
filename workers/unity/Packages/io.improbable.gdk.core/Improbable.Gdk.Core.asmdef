@@ -4,7 +4,8 @@
         "Unity.Entities",
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
-        "Unity.Collections"
+        "Unity.Collections",
+        "Improbable.Worker.Sdk"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

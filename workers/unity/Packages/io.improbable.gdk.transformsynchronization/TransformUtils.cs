@@ -1,4 +1,5 @@
 using System.Linq;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 
@@ -34,7 +35,8 @@ namespace Improbable.Gdk.TransformSynchronization
                 Location = FixedPointVector3.FromUnityVector(location),
                 Rotation = CompressedQuaternion.FromUnityQuaternion(rotation),
                 Velocity = FixedPointVector3.FromUnityVector(velocity),
-                TicksPerSecond = 1f / Time.fixedDeltaTime
+                TicksPerSecond = 1f / Time.fixedDeltaTime,
+                SpanId = new SpanId()
             };
         }
 

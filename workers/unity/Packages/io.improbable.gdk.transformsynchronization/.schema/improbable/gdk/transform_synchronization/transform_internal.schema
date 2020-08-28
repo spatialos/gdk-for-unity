@@ -12,6 +12,11 @@ type CompressedQuaternion {
     uint32 data = 1;
 }
 
+type SpanId {
+    sint64 span_id_lower = 1;
+    sint64 span_id_upper = 2;
+}
+
 [improbable.gdk.editor.ComponentIcon("Transform Icon")]
 component TransformInternal {
     id = 11000;
@@ -20,4 +25,5 @@ component TransformInternal {
     FixedPointVector3 velocity = 3;
     uint32 physics_tick = 4;
     float ticks_per_second = 5;
+    option<SpanId> span_id = 6;
 }

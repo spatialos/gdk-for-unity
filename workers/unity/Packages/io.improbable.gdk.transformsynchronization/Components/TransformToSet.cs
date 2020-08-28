@@ -9,5 +9,6 @@ namespace Improbable.Gdk.TransformSynchronization
         public Vector3 Velocity;
         public UnityEngine.Quaternion Orientation;
         public uint ApproximateRemoteTick;
+        public Worker.CInterop.SpanId? SpanId;
     }
 }

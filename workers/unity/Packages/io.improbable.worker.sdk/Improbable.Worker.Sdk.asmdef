@@ -1,9 +1,7 @@
 {
     "name": "Improbable.Worker.Sdk",
     "references": [],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,

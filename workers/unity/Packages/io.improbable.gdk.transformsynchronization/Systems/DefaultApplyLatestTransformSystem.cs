@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 using static Improbable.Gdk.TransformSynchronization.TransformUtils;
@@ -12,6 +13,7 @@ namespace Improbable.Gdk.TransformSynchronization
     [UpdateInGroup(typeof(FixedUpdateSystemGroup))]
     public class DefaultApplyLatestTransformSystem : ComponentSystem
     {
+        private WorkerSystem worker;
         private ComponentType[] baseComponentTypes;
         private EntityQuery transformQuery;
 
@@ -20,6 +22,8 @@ namespace Improbable.Gdk.TransformSynchronization
         protected override void OnCreate()
         {
             base.OnCreate();
+
+            worker = World.GetExistingSystem<WorkerSystem>();
 
             baseComponentTypes = new[]
             {
@@ -73,6 +77,20 @@ namespace Improbable.Gdk.TransformSynchronization
             {
                 transform.localPosition = transformToSet.Position;
                 transform.localRotation = transformToSet.Orientation;
+
+                if (transformToSet.SpanId == null)
+                {
+                    return;
+                }
+
+                var childSpan = worker.EventTracer.AddSpan(transformToSet.SpanId.Value);
+                worker.EventTracer.AddEvent(new Worker.CInterop.Event
+                {
+                    Id = childSpan,
+                    Message = "DefaultApplyTransform receive",
+                    Type = "update",
+                    Data = null
+                });
             });
         }
     }

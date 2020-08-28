@@ -24,6 +24,7 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerType;
         public readonly string WorkerId;
         public readonly Vector3 Origin;
+        public readonly EventTracer EventTracer;
 
         /// <summary>
         ///     Denotes whether the underlying worker is connected or not.
@@ -50,6 +51,20 @@ namespace Improbable.Gdk.Core
             WorkerType = worker.WorkerType;
             WorkerId = worker.WorkerId;
             Origin = worker.Origin;
+
+            var ioStream = IOStream.CreateFileStream($"event_tracer_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.trace");
+
+            var params1 = new EventTracerParameters[1];
+            params1[0] = new EventTracerParameters
+            {
+                TraceCallback = (data, item) =>
+                {
+                    item.SerializeToStream(ioStream);
+                },
+                UserData = 0
+            };
+            EventTracer = new EventTracer(params1);
+            EventTracer.Enable();
         }
 
         /// <summary>

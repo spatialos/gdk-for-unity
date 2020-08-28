@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Worker.CInterop;
 using Unity.Entities;
 using UnityEngine;
 
@@ -76,6 +78,19 @@ namespace Improbable.Gdk.TransformSynchronization
 
                     lastTransformSent.TimeSinceLastUpdate = 0.0f;
                     lastTransformSent.Transform = transform;
+
+                    var newSpanId = worker.EventTracer.AddSpan();
+                    worker.EventTracer.AddEvent(new Worker.CInterop.Event
+                    {
+                        Id = newSpanId,
+                        Message = "RateLimitedTransform - Send",
+                        Type = "Transform_Send",
+                        Data = new TraceEventData(new Dictionary<string, string>
+                        {
+                            { "MESSAGE", $"" }
+                        })
+                    });
+                    transform.SpanId = newSpanId.ToSchema();
 
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate
                     {
