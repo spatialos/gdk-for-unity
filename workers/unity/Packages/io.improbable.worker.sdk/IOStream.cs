@@ -5,7 +5,7 @@ using Improbable.Worker.CInterop.Internal;
 namespace Improbable.Worker.CInterop
 {
     [Flags]
-    public enum OpenMode : UInt32
+    public enum OpenModes : UInt32
     {
         /**
          * Allow read operations on the stream. Read operations always occur at the read position, which
@@ -52,11 +52,11 @@ namespace Improbable.Worker.CInterop
         }
 
         public static IOStream CreateFileStream(string fileName,
-            OpenMode openMode = OpenMode.OpenModeRead | OpenMode.OpenModeWrite | OpenMode.OpenModeTruncate)
+            OpenModes openModes = OpenModes.OpenModeRead | OpenModes.OpenModeWrite | OpenModes.OpenModeTruncate)
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenModes) openModes));
             }
         }
 

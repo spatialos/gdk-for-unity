@@ -30,7 +30,7 @@ namespace Improbable.Worker.CInterop.Internal
         }
 
         [Flags]
-        public enum OpenMode : Uint32
+        public enum OpenModes : Uint32
         {
             /**
              * Allow input operations on the stream. Input operations always occur at the read position, which
@@ -114,7 +114,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
-        public static extern StreamHandle CreateFileStream(Char* filename, OpenMode openMode);
+        public static extern StreamHandle CreateFileStream(Char* filename, OpenModes openModes);
 
         /* Destroys the I/O stream. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
