@@ -18,12 +18,26 @@ namespace Improbable.Worker.CInterop.Internal
          * Data for an event. This is a collection of key-value pairs (fields). Use EventData* functions to
          * read or write fields.
          */
-        public class EventData : CptrHandle
+        public class EventDataHandle : CptrHandle
         {
+            public EventDataHandle()
+            {
+            }
+
+            internal EventDataHandle(IntPtr handle)
+            {
+                SetHandle(handle);
+            }
+
             protected override bool ReleaseHandle()
             {
                 EventDataDestroy(handle);
                 return true;
+            }
+
+            internal IntPtr GetUnderlying()
+            {
+                return handle;
             }
         }
 
@@ -100,7 +114,7 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_Create")]
-        public static extern EventData EventDataCreate();
+        public static extern EventDataHandle EventDataCreate();
 
         /** Frees resources for the event data object.*/
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -113,12 +127,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_AddStringFields")]
-        public static extern void EventDataAddStringFields(EventData data, Uint32 count, Char** keys, Char** values);
+        public static extern void EventDataAddStringFields(EventDataHandle data, Uint32 count, Char** keys, Char** values);
 
         /** Returns the number of fields on the given event data object. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldCount")]
-        public static extern Uint32 EventDataGetFieldCount(EventData data);
+        public static extern Uint32 EventDataGetFieldCount(EventDataHandle data);
 
         /**
          * Returns all the key value pairs in the event data object. keys and values must have capacity for
@@ -128,12 +142,12 @@ namespace Improbable.Worker.CInterop.Internal
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetStringFields")]
-        public static extern void EventDataGetStringFields(EventData data, Char** keys, Char** values);
+        public static extern void EventDataGetStringFields(EventDataHandle data, Char** keys, Char** values);
 
         /** Returns the value for the given key. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Trace_EventData_GetFieldValue")]
-        public static extern Char* EventDataGetFieldValue(EventData data, Char* key);
+        public static extern Char* EventDataGetFieldValue(EventDataHandle data, Char* key);
 
         /** Data for an event added to the event-tracer. */
         [StructLayout(LayoutKind.Sequential)]
@@ -153,7 +167,7 @@ namespace Improbable.Worker.CInterop.Internal
         public struct Item
         {
             /** The type of the item, defined using ItemType. */
-            public Uint8 ItemType;
+            public ItemType ItemType;
 
             /** An item can either be a Span or an Event. */
             public Union ItemUnion;
@@ -187,12 +201,12 @@ namespace Improbable.Worker.CInterop.Internal
 
         /** Creates an event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "EventTracerCreate")]
+            EntryPoint = "Trace_EventTracer_Create")]
         public static extern EventTracer EventTracerCreate(EventTracerParameters* parameters);
 
         /** Frees resources for an event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "EventTracerDestroy")]
+            EntryPoint = "Trace_EventTracer_Destroy")]
         public static extern void EventTracerDestroy(IntPtr eventTracer);
 
         /**
@@ -234,8 +248,8 @@ namespace Improbable.Worker.CInterop.Internal
          * EventTracerGetActiveSpanId will return a null span ID.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
-            EntryPoint = "Trace_EventTracer_UnsetActiveSpanId")]
-        public static extern void EventTracerUnsetActiveSpanId(EventTracer eventTracer);
+            EntryPoint = "Trace_EventTracer_ClearActiveSpanId")]
+        public static extern void EventTracerClearActiveSpanId(EventTracer eventTracer);
 
         /** Gets the active span ID on the event-tracer. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -272,7 +286,7 @@ namespace Improbable.Worker.CInterop.Internal
          * The item is initialized by copying the provided item; pass a NULL item argument to create an
          * item in an uninitialized state.
          *
-         * Directly creating a TraceItem object (on the stack or the heap) by other means than calling this
+         * Directly creating a Item object (on the stack or the heap) by other means than calling this
          * method is discouraged as it will lead to undefined behaviour when passing that item to certain
          * trace API methods (e.g. SerializeItemToStream).
          */

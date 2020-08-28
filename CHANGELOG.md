@@ -11,6 +11,7 @@
 ### Added
 
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
+- Added Event Tracing API. [#1452](https://github.com/spatialos/gdk-for-unity/pull/1452)
 
 ### Changed
 
