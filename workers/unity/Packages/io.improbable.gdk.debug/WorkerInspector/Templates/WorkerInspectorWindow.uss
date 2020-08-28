@@ -91,6 +91,8 @@
     align-self: center;
     margin-right: 10px;
     margin-left: 10px;
+    border-width: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .component-foldout .component-info-container {
