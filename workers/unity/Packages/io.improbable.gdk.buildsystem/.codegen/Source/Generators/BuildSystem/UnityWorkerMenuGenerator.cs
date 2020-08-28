@@ -45,13 +45,13 @@ namespace Improbable.Gdk.CodeGenerator
                             buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})")
                                 .Method($"public static void BuildLocal{workerType}()", () => new[]
                                 {
-                                    $"MenuBuild(BuildContextFilter.Local({workerTypeString}));"
+                                    $"MenuBuild(BuildContextSettings.Local({workerTypeString}));"
                                 });
 
                             buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/{workerType}"", false, EditorConfig.MenuOffset + {i})")
                                 .Method($"public static void BuildCloud{workerType}()", () => new[]
                                 {
-                                    $"MenuBuild(BuildContextFilter.Cloud({workerTypeString}));"
+                                    $"MenuBuild(BuildContextSettings.Cloud({workerTypeString}));"
                                 });
 
                             allMenuOptionValidators.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/{workerType}"", true, EditorConfig.MenuOffset + {i})")
@@ -66,13 +66,13 @@ namespace Improbable.Gdk.CodeGenerator
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + LocalMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void BuildLocalAll()", () => new[]
                             {
-                                "MenuBuild(BuildContextFilter.Local(AllWorkers));"
+                                "MenuBuild(BuildContextSettings.Local(AllWorkers));"
                             });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/"" + CloudMenu + ""/All workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
                             .Method("public static void BuildCloudAll()", () => new[]
                             {
-                                "MenuBuild(BuildContextFilter.Cloud(AllWorkers));"
+                                "MenuBuild(BuildContextSettings.Cloud(AllWorkers));"
                             });
 
                         buildWorkerMenu.Annotate($@"MenuItem(EditorConfig.ParentMenu + ""/Clean all workers"", false, EditorConfig.MenuOffset + {workerTypes.Count})")
@@ -81,9 +81,9 @@ namespace Improbable.Gdk.CodeGenerator
                                 "MenuCleanAll();"
                             });
 
-                        buildWorkerMenu.Method("private static void MenuBuild(BuildContextFilter buildContextFilter)", () => new[]
+                        buildWorkerMenu.Method("private static void MenuBuild(BuildContextSettings buildContextSettings)", () => new[]
                         {
-                            "WorkerBuilder.MenuBuild(buildContextFilter);"
+                            "WorkerBuilder.MenuBuild(buildContextSettings);"
                         });
 
                         buildWorkerMenu.Method("private static void MenuCleanAll()", () => new[]
