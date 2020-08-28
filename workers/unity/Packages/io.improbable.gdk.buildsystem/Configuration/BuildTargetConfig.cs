@@ -1,5 +1,6 @@
 using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
@@ -17,7 +18,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         /// The target to build.
         /// </summary>
-        [NonSerialized] public BuildTarget Target;
+        public BuildTarget Target
+        {
+            get => buildTarget;
+            set
+            {
+                buildTarget = value;
+                if (buildTarget == BuildTarget.iOS)
+                {
+                    scriptingImplementation = ScriptingImplementation.IL2CPP;
+                }
+            }
+        }
 
         /// <summary>
         /// Is this target deprecated?
@@ -38,7 +50,15 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         /// The backend scripting implementation.
         /// </summary>
-        public ScriptingImplementation ScriptingImplementation;
+        public ScriptingImplementation ScriptingImplementation
+        {
+            get => scriptingImplementation;
+            // If build target is iOS then force the Scripting Implementation to be IL2CPP (as Mono is not supported)
+            set => scriptingImplementation = Target == BuildTarget.iOS ? ScriptingImplementation.IL2CPP : value;
+        }
+
+        private BuildTarget buildTarget;
+        [SerializeField] private ScriptingImplementation scriptingImplementation;
 
         internal string Label
         {
@@ -68,17 +88,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// <summary>
         ///     Creates a new instance of a build target and its options.
         /// </summary>
-        public BuildTargetConfig(BuildTarget target, BuildOptions options,
-            bool enabled, bool required, bool deprecated = false, ScriptingImplementation scriptingImplementation = ScriptingImplementation.Mono2x)
+        public BuildTargetConfig(BuildTarget target) : this()
         {
-            Enabled = enabled;
-            Required = required;
-            Target = target;
-            Options = options;
-            Deprecated = deprecated;
+            // Set default settings
+            Options = BuildOptions.None;
+            Enabled = true;
+            Required = false;
+            Deprecated = false;
+            ScriptingImplementation = ScriptingImplementation.Mono2x;
 
-            // If build target is iOS then force the Scripting Implementation to be IL2CPP (as Mono is not supported)
-            ScriptingImplementation = target == BuildTarget.iOS ? ScriptingImplementation.IL2CPP : scriptingImplementation;
+            // Set the build target
+            Target = target;
         }
     }
 }
