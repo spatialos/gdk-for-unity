@@ -2,6 +2,7 @@
     "name": "Improbable.Gdk.EditmodeTests",
     "references": [
         "Improbable.Gdk.Core",
+        "Improbable.Gdk.Core.SceneAuthoring.AuthoringComponents",
         "Improbable.Gdk.Debug",
         "Improbable.Gdk.GameObjectCreation",
         "Improbable.Gdk.Generated",
