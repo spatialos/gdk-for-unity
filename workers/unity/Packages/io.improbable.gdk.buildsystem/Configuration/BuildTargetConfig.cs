@@ -89,7 +89,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         /// </summary>
         public BuildTargetConfig(BuildTarget target) : this()
         {
+            // Set default settings
+            Options = BuildOptions.None;
+            Enabled = true;
+            Required = false;
+            Deprecated = false;
             ScriptingImplementation = ScriptingImplementation.Mono2x;
+
+            // Set the build target
             Target = target;
         }
     }
