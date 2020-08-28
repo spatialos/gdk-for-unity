@@ -30,7 +30,7 @@ namespace Improbable.Gdk.BuildSystem
                 var args = CommandLineArgs.FromCommandLine();
 
                 // Parse command line arguments
-                var buildContextFilter = BuildContextFilter.FromCommandLine(args);
+                var buildContextFilter = BuildContextSettings.FromCommandLine(args);
 
                 // Create BuildContext for each worker
                 var buildConfig = BuildConfig.GetInstance();
@@ -55,7 +55,7 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        internal static void MenuBuild(BuildContextFilter buildContextFilter)
+        internal static void MenuBuild(BuildContextSettings buildContextSettings)
         {
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
@@ -63,7 +63,7 @@ namespace Improbable.Gdk.BuildSystem
                 try
                 {
                     var buildConfig = BuildConfig.GetInstance();
-                    var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextFilter);
+                    var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextSettings);
                     BuildWorkers(buildContexts);
                 }
                 catch (Exception e)

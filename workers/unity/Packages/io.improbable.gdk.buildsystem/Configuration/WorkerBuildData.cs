@@ -113,12 +113,22 @@ namespace Improbable.Gdk.BuildSystem.Configuration
 
         internal static BuildTargetConfig GetCurrentBuildTargetConfig()
         {
-            return new BuildTargetConfig(CurrentBuildPlatform, BuildTargetDefaultOptions[CurrentBuildPlatform], enabled: true, required: false);
+            return new BuildTargetConfig(CurrentBuildPlatform)
+            {
+                Options = BuildTargetDefaultOptions[CurrentBuildPlatform],
+                Enabled = true,
+                Required = false
+            };
         }
 
         internal static BuildTargetConfig GetLinuxBuildTargetConfig()
         {
-            return new BuildTargetConfig(BuildTarget.StandaloneLinux64, BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64], enabled: true, required: false);
+            return new BuildTargetConfig(BuildTarget.StandaloneLinux64)
+            {
+                Options = BuildTargetDefaultOptions[BuildTarget.StandaloneLinux64],
+                Enabled = true,
+                Required = false
+            };
         }
     }
 }

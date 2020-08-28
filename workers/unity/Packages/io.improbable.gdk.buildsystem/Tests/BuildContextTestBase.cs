@@ -28,36 +28,13 @@ namespace Improbable.Gdk.BuildSystem.Tests
 
         internal static readonly BuildConfig ValidBuildConfig = ScriptableObject.CreateInstance<BuildConfig>()
             .AddWorker(ServerType,
-                localConfigs: new[] { CreateTarget(LocalTarget) },
-                cloudConfigs: new[] { CreateTarget(LinuxTarget) })
+                localConfigs: new[] { new BuildTargetConfig(LocalTarget) },
+                cloudConfigs: new[] { new BuildTargetConfig(LinuxTarget) })
             .AddWorker(ClientType,
-                localConfigs: new[] { CreateTarget(LocalTarget) },
-                cloudConfigs: new[] { CreateTarget(WindowsTarget), CreateTarget(MacTarget) })
+                localConfigs: new[] { new BuildTargetConfig(LocalTarget) },
+                cloudConfigs: new[] { new BuildTargetConfig(WindowsTarget), new BuildTargetConfig(MacTarget) })
             .AddWorker(MobileClientType,
-                localConfigs: new[] { CreateTarget(BuildTarget.Android), CreateTarget(BuildTarget.iOS) },
-                cloudConfigs: new[] { CreateTarget(BuildTarget.Android), CreateTarget(BuildTarget.iOS) });
-
-        private static BuildTargetConfig CreateTarget(
-            BuildTarget target,
-            bool development = false,
-            bool headless = false,
-            bool enabled = true,
-            bool required = false,
-            ScriptingImplementation scriptingImplementation = ScriptingImplementation.Mono2x)
-        {
-            var buildOptions = BuildOptions.None;
-
-            if (development)
-            {
-                buildOptions |= BuildOptions.Development;
-            }
-
-            if (headless)
-            {
-                buildOptions |= BuildOptions.EnableHeadlessMode;
-            }
-
-            return new BuildTargetConfig(target, buildOptions, enabled, required, scriptingImplementation: scriptingImplementation);
-        }
+                localConfigs: new[] { new BuildTargetConfig(BuildTarget.Android), new BuildTargetConfig(BuildTarget.iOS) },
+                cloudConfigs: new[] { new BuildTargetConfig(BuildTarget.Android), new BuildTargetConfig(BuildTarget.iOS) });
     }
 }

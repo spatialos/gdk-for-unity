@@ -15,7 +15,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(MobileClientType, 1, IOSTarget)]
         public void GetBuildContexts_for_valid_worker_type_with_valid_filter_returns_expected_number_of_cloud_contexts(string workerType, int expectedContexts, params BuildTarget[] buildTargetFilter)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
             buildContextFilter.BuildTargetFilter = buildTargetFilter;
 
             List<BuildContext> buildContexts = null;
@@ -32,7 +32,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(MobileClientType, LinuxTarget)]
         public void GetBuildContexts_for_valid_worker_type_with_invalid_filter_returns_zero_cloud_contexts(string workerType, params BuildTarget[] buildTargetFilter)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
             buildContextFilter.BuildTargetFilter = buildTargetFilter;
 
             List<BuildContext> buildContexts = null;
@@ -49,7 +49,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(MobileClientType, AndroidTarget, IOSTarget)]
         public void GetBuildContexts_for_valid_worker_type_without_filter_returns_all_expected_cloud_contexts(string workerType, params BuildTarget[] expectedTargets)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
 
             List<BuildContext> buildContexts = null;
             Assert.DoesNotThrow(() =>
@@ -69,7 +69,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(InvalidWorkerType, WindowsTarget, MacTarget, LinuxTarget)]
         public void GetBuildContexts_for_unknown_worker_type_with_valid_filter_returns_zero_cloud_contexts(string workerType, params BuildTarget[] buildTargetFilter)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
             buildContextFilter.BuildTargetFilter = buildTargetFilter;
 
             List<BuildContext> buildContexts = null;
@@ -84,7 +84,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(InvalidWorkerType, LinuxTarget)]
         public void GetBuildContexts_for_unknown_worker_type_with_invalid_filter_returns_zero_cloud_contexts(string workerType, params BuildTarget[] buildTargetFilter)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
             buildContextFilter.BuildTargetFilter = buildTargetFilter;
 
             List<BuildContext> buildContexts = null;
@@ -99,7 +99,7 @@ namespace Improbable.Gdk.BuildSystem.Tests
         [TestCase(InvalidWorkerType)]
         public void GetBuildContexts_for_unknown_worker_type_without_filter_returns_zero_cloud_contexts(string workerType)
         {
-            var buildContextFilter = BuildContextFilter.Cloud(workerType);
+            var buildContextFilter = BuildContextSettings.Cloud(workerType);
 
             List<BuildContext> buildContexts = null;
             Assert.DoesNotThrow(() =>

@@ -39,18 +39,22 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 }
                 else
                 {
-                    BuildTargets.Add(new BuildTargetConfig(available,
-                        WorkerBuildData.BuildTargetDefaultOptions[available], enabled: false,
-                        required: false, deprecated: BuildSupportChecker.IsDeprecatedTarget(available)));
+                    BuildTargets.Add(new BuildTargetConfig(available)
+                    {
+                        Options = WorkerBuildData.BuildTargetDefaultOptions[available],
+                        Enabled = false,
+                        Required = false,
+                        Deprecated = BuildSupportChecker.IsDeprecatedTarget(available)
+                    });
                 }
             }
         }
 
-        public IEnumerable<BuildTargetConfig> GetSupportedTargets(BuildContextFilter contextFilter)
+        public IEnumerable<BuildTargetConfig> GetSupportedTargets(BuildContextSettings contextSettings)
         {
             // Filter targets for CI
             var targetConfigs = BuildTargets
-                .Where(t => t.Enabled && (contextFilter.BuildTargetFilter?.Contains(t.Target) ?? true))
+                .Where(t => t.Enabled && contextSettings.Matches(t.Target))
                 .ToList();
 
             // Filter out any deprecated targets

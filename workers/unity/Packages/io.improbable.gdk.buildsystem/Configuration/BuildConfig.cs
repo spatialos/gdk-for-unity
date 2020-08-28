@@ -9,8 +9,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
     public class BuildConfig : SingletonScriptableObject<BuildConfig>
     {
-        [SerializeField]
-        internal List<WorkerBuildConfiguration> WorkerBuildConfigurations =
+        [SerializeField] internal List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
 
         [SerializeField] private bool isInitialised;
@@ -56,8 +55,18 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                             WorkerBuildData.GetCurrentBuildTargetConfig()),
                     CloudBuildConfig = new BuildEnvironmentConfig(
                         WorkerBuildData.AllBuildTargets,
-                        new BuildTargetConfig(BuildTarget.StandaloneOSX, BuildOptions.Development, enabled: true, required: false),
-                        new BuildTargetConfig(BuildTarget.StandaloneWindows64, BuildOptions.Development, enabled: true, required: false))
+                        new BuildTargetConfig(BuildTarget.StandaloneOSX)
+                        {
+                            Options = BuildOptions.Development,
+                            Enabled = true,
+                            Required = false
+                        },
+                        new BuildTargetConfig(BuildTarget.StandaloneWindows64)
+                        {
+                            Options = BuildOptions.Development,
+                            Enabled = true,
+                            Required = false
+                        })
                 },
                 new WorkerBuildConfiguration
                 {

@@ -13,14 +13,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public ScriptingImplementation ScriptingImplementation;
         public iOSSdkVersion? IOSSdkVersion;
 
-        public static List<BuildContext> GetBuildContexts(BuildConfig buildConfig, BuildContextFilter contextFilter)
+        public static List<BuildContext> GetBuildContexts(BuildConfig buildConfig, BuildContextSettings contextSettings)
         {
             var result = new List<BuildContext>();
 
-            foreach (var workerType in contextFilter.WantedWorkerTypes)
+            foreach (var workerType in contextSettings.WantedWorkerTypes)
             {
                 var environmentConfig =
-                    buildConfig.GetEnvironmentConfigForWorker(workerType, contextFilter.BuildEnvironment);
+                    buildConfig.GetEnvironmentConfigForWorker(workerType, contextSettings.BuildEnvironment);
 
                 if (environmentConfig == null)
                 {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 IEnumerable<BuildTargetConfig> supportedTargets;
                 try
                 {
-                    supportedTargets = environmentConfig.GetSupportedTargets(contextFilter);
+                    supportedTargets = environmentConfig.GetSupportedTargets(contextSettings);
                 }
                 catch (BuildFailedException exception)
                 {
@@ -40,10 +40,10 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 result.AddRange(supportedTargets.Select(targetConfig => new BuildContext
                 {
                     WorkerType = workerType,
-                    BuildEnvironment = contextFilter.BuildEnvironment,
-                    ScriptingImplementation = contextFilter.ScriptImplementation ?? targetConfig.ScriptingImplementation,
+                    BuildEnvironment = contextSettings.BuildEnvironment,
+                    ScriptingImplementation = contextSettings.ScriptImplementation ?? targetConfig.ScriptingImplementation,
                     BuildTargetConfig = targetConfig,
-                    IOSSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? contextFilter.IOSSdkVersion : null
+                    IOSSdkVersion = (targetConfig.Target == BuildTarget.iOS) ? contextSettings.IOSSdkVersion : null
                 }));
             }
 

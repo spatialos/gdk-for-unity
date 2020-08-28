@@ -6,7 +6,7 @@ using UnityEditor;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
-    public struct BuildContextFilter
+    public struct BuildContextSettings
     {
         public IEnumerable<string> WantedWorkerTypes;
         public BuildEnvironment BuildEnvironment;
@@ -14,7 +14,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         public ICollection<BuildTarget> BuildTargetFilter;
         public iOSSdkVersion? IOSSdkVersion;
 
-        public BuildContextFilter(IEnumerable<string> wantedWorkerTypes, BuildEnvironment buildEnvironment,
+        public BuildContextSettings(IEnumerable<string> wantedWorkerTypes, BuildEnvironment buildEnvironment,
             ScriptingImplementation? scriptImplementation = null, ICollection<BuildTarget> buildTargetFilter = null,
             iOSSdkVersion? iosSdkVersion = null)
         {
@@ -25,19 +25,19 @@ namespace Improbable.Gdk.BuildSystem.Configuration
             IOSSdkVersion = iosSdkVersion;
         }
 
-        public static BuildContextFilter Local(params string[] wantedWorkerTypes)
+        public static BuildContextSettings Local(params string[] wantedWorkerTypes)
         {
-            return new BuildContextFilter(wantedWorkerTypes, BuildEnvironment.Local);
+            return new BuildContextSettings(wantedWorkerTypes, BuildEnvironment.Local);
         }
 
-        public static BuildContextFilter Cloud(params string[] wantedWorkerTypes)
+        public static BuildContextSettings Cloud(params string[] wantedWorkerTypes)
         {
-            return new BuildContextFilter(wantedWorkerTypes, BuildEnvironment.Cloud);
+            return new BuildContextSettings(wantedWorkerTypes, BuildEnvironment.Cloud);
         }
 
-        public static BuildContextFilter FromCommandLine(CommandLineArgs args)
+        public static BuildContextSettings FromCommandLine(CommandLineArgs args)
         {
-            return new BuildContextFilter
+            return new BuildContextSettings
             {
                 WantedWorkerTypes = GetWorkerTypesToBuild(args),
                 BuildEnvironment = GetBuildEnvironment(args),
@@ -136,6 +136,11 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                     throw new ArgumentOutOfRangeException(nameof(targetIOSSdkArg), targetIOSSdkArg,
                         "Unknown target iOS SDK");
             }
+        }
+
+        public bool Matches(BuildTarget target)
+        {
+            return BuildTargetFilter?.Contains(target) ?? true;
         }
     }
 }
