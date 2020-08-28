@@ -206,7 +206,7 @@ namespace Improbable.Worker.CInterop.Internal
             return internalParameters;
         }
 
-        private unsafe class CallbackThunkDelegates
+        private static unsafe class CallbackThunkDelegates
         {
             public static readonly CEventTrace.TraceCallback TraceCallbackThunkDelegate = TraceCallbackThunk;
 

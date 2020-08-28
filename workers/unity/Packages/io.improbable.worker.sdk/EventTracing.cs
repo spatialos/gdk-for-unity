@@ -17,11 +17,11 @@ namespace Improbable.Worker.CInterop
             return obj is SpanId && Equals(obj);
         }
 
-        public bool Equals(SpanId spanId)
+        public bool Equals(SpanId other)
         {
             return CEventTrace.SpanIdEqual(
                 ParameterConversion.ConvertSpanId(this),
-                ParameterConversion.ConvertSpanId(spanId)) > 0;
+                ParameterConversion.ConvertSpanId(other)) > 0;
         }
 
         public static bool operator ==(SpanId lhs, SpanId rhs)
@@ -114,26 +114,6 @@ namespace Improbable.Worker.CInterop
                 if (serializedItemResult == 1)
                 {
                     return;
-                }
-
-                var errorMessage = CEventTrace.GetLastError();
-                throw new IOException(ApiInterop.FromUtf8Cstr(errorMessage));
-            }
-        }
-
-        private long GetSerializedSizeInBytes()
-        {
-            unsafe
-            {
-                var itemSize = 0L;
-                ParameterConversion.ConvertItem(this, nativeItem =>
-                {
-                    itemSize = CEventTrace.GetSerializedItemSize(nativeItem);
-                });
-
-                if (itemSize != 0)
-                {
-                    return itemSize;
                 }
 
                 var errorMessage = CEventTrace.GetLastError();
