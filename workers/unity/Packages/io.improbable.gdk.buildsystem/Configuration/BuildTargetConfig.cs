@@ -1,5 +1,6 @@
 using System;
 using UnityEditor;
+using UnityEngine;
 
 namespace Improbable.Gdk.BuildSystem.Configuration
 {
@@ -57,7 +58,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
         }
 
         private BuildTarget buildTarget;
-        private ScriptingImplementation scriptingImplementation;
+        [SerializeField] private ScriptingImplementation scriptingImplementation;
 
         internal string Label
         {
