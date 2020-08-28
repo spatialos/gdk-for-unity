@@ -9,7 +9,8 @@ namespace Improbable.Gdk.BuildSystem.Configuration
     [CreateAssetMenu(fileName = "SpatialOS Build Configuration", menuName = BuildConfigEditor.BuildConfigurationMenu)]
     public class BuildConfig : SingletonScriptableObject<BuildConfig>
     {
-        [SerializeField] internal List<WorkerBuildConfiguration> WorkerBuildConfigurations =
+        [SerializeField]
+        internal List<WorkerBuildConfiguration> WorkerBuildConfigurations =
             new List<WorkerBuildConfiguration>();
 
         [SerializeField] private bool isInitialised;
