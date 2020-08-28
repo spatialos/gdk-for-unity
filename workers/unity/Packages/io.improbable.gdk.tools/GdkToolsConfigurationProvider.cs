@@ -251,11 +251,11 @@ namespace Improbable.Gdk.Tools
                 toolsConfig.DevAuthTokenLifetimeDays =
                     EditorGUILayout.IntSlider(new GUIContent(DevAuthTokenLifetimeLabel,
                             "Sets the lifetime for requested development authentication tokens, between 1 and 90 days. " +
-                            "Changes made to this setting do not affect already requested tokens."),
+                            "Changes made to this setting do not affect existing tokens."),
                         toolsConfig.DevAuthTokenLifetimeDays, 1, 90);
 
                 toolsConfig.SaveDevAuthTokenToFile = EditorGUILayout.Toggle(new GUIContent("Save token to file",
-                        "Sets whether to save the development authentication to a file, instead of in player preferences."),
+                        "Sets whether to save the development authentication token to a file, instead of in player preferences."),
                     toolsConfig.SaveDevAuthTokenToFile);
                 using (new EditorGUI.DisabledScope(!toolsConfig.SaveDevAuthTokenToFile))
                 {
@@ -273,7 +273,7 @@ namespace Improbable.Gdk.Tools
         private void DrawCustomSnapshotDir()
         {
             GUILayout.Label(new GUIContent(CustomSnapshotPathLabel,
-                    "The default snapshot the GDK will use for local deployments."),
+                    "The snapshot the GDK will use for local deployments."),
                 EditorStyles.boldLabel);
             GUILayout.Space(EditorGUIUtility.standardVerticalSpacing);
             using (new EditorGUILayout.HorizontalScope())
@@ -281,7 +281,7 @@ namespace Improbable.Gdk.Tools
                 using (new EditorGUI.DisabledScope(true))
                 {
                     EditorGUILayout.TextField(new GUIContent(CustomSnapshotPathLabel,
-                            "The default snapshot the GDK will use for local deployments."),
+                            "The snapshot the GDK will use for local deployments."),
                         toolsConfig.CustomSnapshotPath);
                 }
 
