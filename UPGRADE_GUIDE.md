@@ -1,5 +1,16 @@
 # Upgrade Guide
 
+## From `0.3.10` to `0.4.0`
+
+### Unity 2020.1
+
+In order to use the GDK for Unity `0.4.0`, you will need to upgrade your project to Unity 2020.1. We test against 2020.1.2f1, but any `2020.1.x` version _should_ work.
+
+### Unity Entities 0.14
+
+Due to our internal upgrade to Unity Entities `0.14.0-preview.18`, your projects are now required to include the `Unity Web Request` built-in package.
+You can find this package in the Unity editor under the `Window -> Package Manager` menu.
+
 ## From `0.3.9` to `0.3.10`
 
 ### AuthorityLossImminent support removed

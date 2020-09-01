@@ -84,8 +84,7 @@ namespace Improbable.Gdk.TransformSynchronization
                         return;
                     }
 
-                    // The first element is actually the latest value!
-                    var auth = changes[0];
+                    var auth = changes[changes.Count - 1];
 
                     authFunc(ref kinematicStateWhenAuth, auth, component);
                 }));

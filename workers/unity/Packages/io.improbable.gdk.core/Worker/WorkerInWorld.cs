@@ -71,7 +71,6 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateSystem<CommandSystem>();
             World.GetOrCreateSystem<ComponentUpdateSystem>();
             World.GetOrCreateSystem<EntitySystem>();
-            World.GetOrCreateSystem<ComponentSendSystem>();
             World.GetOrCreateSystem<SpatialOSReceiveSystem>();
             World.GetOrCreateSystem<SpatialOSSendSystem>();
             World.GetOrCreateSystem<EcsViewSystem>();
@@ -84,6 +83,11 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateSystem<WorkerFlagCallbackSystem>();
             World.GetOrCreateSystem<RequireLifecycleSystem>();
             World.GetOrCreateSystem<SubscriptionSystem>();
+
+            foreach (var component in ComponentDatabase.Metaclasses.Values)
+            {
+                World.CreateSystem(component.ReplicationSystem);
+            }
         }
 
         public override void Dispose()

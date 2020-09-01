@@ -162,7 +162,7 @@ namespace Improbable.Gdk.Core
             storage.RemoveEntityComponent(entityId);
         }
 
-        public void SetAuthority(long entityId, uint componentId, Authority authority)
+        public void SetAuthority(long entityId, uint componentId, Authority authority, uint authorityChangeId)
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
             {
@@ -177,7 +177,7 @@ namespace Improbable.Gdk.Core
             }
 
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
-                new AuthorityChangeReceived(authority, new EntityId(entityId)));
+                new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
 
             // Remove received command requests if authority has been lost
             if (authority == Authority.NotAuthoritative)

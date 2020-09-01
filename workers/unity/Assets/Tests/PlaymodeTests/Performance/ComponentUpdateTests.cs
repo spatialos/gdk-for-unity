@@ -26,11 +26,10 @@ namespace Improbable.Gdk.PlaymodeTests
         {
             var markers = new[]
             {
-                "GatherAllChunks",
-                "ExecuteReplication",
-                "Position.SendUpdates",
+                "SpatialOSSendSystem.CompletingAllJobs",
+                "SpatialOSSendSystem.QueueSerializedMessages",
                 "WorkerSystem.SendMessages",
-                "Position.ComponentSerializer.Serialize"
+                "PositionSerializationJob"
             };
 
             var currentState = World.Step(world =>

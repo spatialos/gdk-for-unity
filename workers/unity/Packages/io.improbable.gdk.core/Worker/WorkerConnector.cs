@@ -2,16 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
-using Improbable.Worker.CInterop.Alpha;
 using Unity.Entities;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 namespace Improbable.Gdk.Core
 {
@@ -105,7 +101,7 @@ namespace Improbable.Gdk.Core
 
                 // Update PlayerLoop
                 PlayerLoopUtils.ResolveSystemGroups(Worker.World);
-                ScriptBehaviourUpdateOrder.UpdatePlayerLoop(Worker.World, PlayerLoop.GetCurrentPlayerLoop());
+                ScriptBehaviourUpdateOrder.AddWorldToCurrentPlayerLoop(Worker.World);
             }
             catch (Exception)
             {
@@ -251,7 +247,7 @@ namespace Improbable.Gdk.Core
             {
                 // Remove root systems from the disposing world from the PlayerLoop
                 // This only affects the loop next frame
-                PlayerLoopUtils.RemoveFromPlayerLoop(Worker.World);
+                ScriptBehaviourUpdateOrder.RemoveWorldFromCurrentPlayerLoop(Worker.World);
             }
         }
 

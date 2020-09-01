@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using Int64 = System.Int64;
 using Uint64 = System.UInt64;
@@ -28,10 +29,31 @@ namespace Improbable.Worker.CInterop.Internal
             }
         }
 
-        public enum OpenMode
+        [Flags]
+        public enum OpenModes : Uint32
         {
-            /* Opens the stream in the default mode. */
-            OpenModeDefault = 0x00,
+            /**
+             * Allow input operations on the stream. Input operations always occur at the read position, which
+             * is initialized to the beginning of the stream.
+             */
+            OpenModeRead = 0x01,
+
+            /**
+             * Allow output operations on the stream. Output operations always occur at the write position,
+             * which is initialized to the end of the stream.
+             */
+            OpenModeWrite = 0x02,
+
+            /**
+             * Truncates any existing content upon opening. If not set, writes are appended to the end of the
+             * stream's existing content.
+             */
+            OpenModeTruncate = 0x04,
+
+            /**
+             * Specify that writes should be appended to the stream's existing content, if any exists.
+             */
+            OpenModeAppend = 0x08,
         }
 
         /**
@@ -85,16 +107,14 @@ namespace Improbable.Worker.CInterop.Internal
          * The file stream has a conceptually infinite capacity; its true capacity depends on the
          * underlying filesystem.
          *
-         * Upon creation of the file stream, the file is created if it does not exist. The file stream is
-         * initialized to read from the beginning of the file and append to the end, regardless of whether
-         * it previously existed or not.
+         * The open_mode argument should be passed as a combination of OpenMode values.
          *
-         * Returns a pointer to a file stream. Never returns NULL. Call StreamGetLastError to check
-         * if an error occurred during file stream creation.
+         * Returns a pointer to a file stream. Never returns NULL. You *must* call Io_Stream_GetLastError to
+         * check if an error occurred during file stream creation.
          */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_CreateFileStream")]
-        public static extern StreamHandle CreateFileStream(Char* filename, OpenMode openMode);
+        public static extern StreamHandle CreateFileStream(Char* filename, OpenModes openModes);
 
         /* Destroys the I/O stream. */
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
@@ -168,5 +188,13 @@ namespace Improbable.Worker.CInterop.Internal
         [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
             EntryPoint = "Io_Stream_GetLastError")]
         public static extern Char* StreamGetLastError(StreamHandle stream);
+
+        /**
+         * Clears the stream's current error such that the next call to Io_Stream_GetLastError returns
+         * nullptr.
+         */
+        [DllImport(Constants.WorkerLibrary, CallingConvention = CallingConvention.Cdecl,
+            EntryPoint = "Io_Stream_ClearError")]
+        public static extern void StreamClearError(StreamHandle stream);
     }
 }

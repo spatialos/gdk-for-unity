@@ -575,13 +575,17 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     foldoutState.Icon =
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInErrorIcon))
-                        { tooltip = "Missing build support for one or more build targets." };
+                        {
+                            tooltip = "Missing build support for one or more build targets."
+                        };
                 }
                 else if (environmentConfiguration.BuildTargets.Any(IsBuildTargetWarning))
                 {
                     foldoutState.Icon =
                         new GUIContent(EditorGUIUtility.IconContent(BuildConfigEditorStyle.BuiltInWarningIcon))
-                        { tooltip = "Missing build support for one or more build targets." };
+                        {
+                            tooltip = "Missing build support for one or more build targets."
+                        };
                 }
                 else
                 {
@@ -721,8 +725,14 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 {
                     RecordUndo("Worker build options");
 
-                    env.BuildTargets[selectedTargetIndex] =
-                        new BuildTargetConfig(buildTarget.Target, options, enabled, required, deprecated: false, scriptingImplementation);
+                    env.BuildTargets[selectedTargetIndex] = new BuildTargetConfig(buildTarget.Target)
+                    {
+                        Options = options,
+                        Enabled = enabled,
+                        Required = required,
+                        Deprecated = false,
+                        ScriptingImplementation = scriptingImplementation
+                    };
 
                     selectedBuildTarget.Choices = null;
                 }

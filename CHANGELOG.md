@@ -2,11 +2,34 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
+- Upgraded Unity Entities to 0.14.0-preview.18. [#1463](https://github.com/spatialos/gdk-for-unity/pull/1463)
+  - Projects now require the `Unity Web Request` built-in package to compile for iOS and Android.
+
+### Added
+
+- Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
+- Added Event Tracing API. [#1452](https://github.com/spatialos/gdk-for-unity/pull/1452)
+- Added tooltips to the SpatialOS Project Settings. [#1470](https://github.com/spatialos/gdk-for-unity/pull/1470)
+
 ### Changed
 
 - Upgrade to Worker SDK v14.8.0. [#1458](https://github.com/spatialos/gdk-for-unity/pull/1458)
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
-- Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
+- Multithreaded component serialization through `SystemBase` jobs. [#1454](https://github.com/spatialos/gdk-for-unity/pull/1454)
+- Upgrade Unity Burst to 1.3.5. [#1467](https://github.com/spatialos/gdk-for-unity/pull/1467)
+- Removed outline and background around component info button in the Worker Inspector. [#1468](https://github.com/spatialos/gdk-for-unity/pull/1468)
+- Refactored the `BuildContext` class. [#1461](https://github.com/spatialos/gdk-for-unity/pull/1461)
+  - Introduced a `BuildContextSettings` struct, which is required by `GetBuildContexts`.
+  - Changed `BuildConfig` class visibility from `internal` to `public`.
+  - Added more testing around `BuildContext`.
+
+### Fixed
+
+- Fixed an issue where authority changes returned by `ComponentUpdateSystem.GetAuthorityChangesReceived()` were returned in order from newest to oldest. [#1465](https://github.com/spatialos/gdk-for-unity/pull/1465)
+- Fixed a bug where the build system would throw a null reference exception if you don't have a configuration for a worker type. [#1461](https://github.com/spatialos/gdk-for-unity/pull/1461)
 
 ### Fixed
 

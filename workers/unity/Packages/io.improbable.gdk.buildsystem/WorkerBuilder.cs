@@ -30,20 +30,15 @@ namespace Improbable.Gdk.BuildSystem
                 var args = CommandLineArgs.FromCommandLine();
 
                 // Parse command line arguments
-                var buildTargetFilter = CommandlineParser.GetBuildTargetFilter(args);
-                var wantedWorkerTypes = CommandlineParser.GetWorkerTypesToBuild(args);
-                var scriptImplementation = CommandlineParser.GetScriptingImplementation(args);
-                var buildEnvironment = CommandlineParser.GetBuildEnvironment(args);
-                var targetIOSSdkVersion = CommandlineParser.GetTargetIOSSdk(args);
+                var buildContextFilter = BuildContextSettings.FromCommandLine(args);
 
                 // Create BuildContext for each worker
-                var buildContexts = BuildContext.GetBuildContexts(wantedWorkerTypes, buildEnvironment, scriptImplementation,
-                    buildTargetFilter, targetIOSSdkVersion);
+                var buildConfig = BuildConfig.GetInstance();
+                var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextFilter);
 
                 if (buildContexts.Count == 0)
                 {
-                    throw new BuildFailedException(
-                        $"Attempted a build with no valid targets!");
+                    throw new BuildFailedException("Attempted a build with no valid targets!");
                 }
 
                 BuildWorkers(buildContexts);
@@ -60,14 +55,15 @@ namespace Improbable.Gdk.BuildSystem
             }
         }
 
-        internal static void MenuBuild(BuildEnvironment environment, params string[] workerTypes)
+        internal static void MenuBuild(BuildContextSettings buildContextSettings)
         {
             // Delaying build by a frame to ensure the editor has re-rendered the UI to avoid odd glitches.
             EditorApplication.delayCall += () =>
             {
                 try
                 {
-                    var buildContexts = BuildContext.GetBuildContexts(workerTypes, environment);
+                    var buildConfig = BuildConfig.GetInstance();
+                    var buildContexts = BuildContext.GetBuildContexts(buildConfig, buildContextSettings);
                     BuildWorkers(buildContexts);
                 }
                 catch (Exception e)

@@ -7,6 +7,7 @@
 /ProjectSettings/UnityConnectSettings.asset
 /*.csproj
 /*.sln
+/Packages/packages-lock.json
 
 # Build artifacts
 /build/

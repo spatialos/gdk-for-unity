@@ -4,25 +4,46 @@ using Improbable.Worker.CInterop.Internal;
 
 namespace Improbable.Worker.CInterop
 {
-    public enum OpenMode
+    [Flags]
+    public enum OpenModes : UInt32
     {
-        /* Opens the stream in the default mode. */
-        OpenModeDefault = 0x00,
+        /**
+         * Allow read operations on the stream. Read operations always occur at the read position, which
+         * is initialized to the beginning of the stream.
+         */
+        OpenModeRead = 1,
+
+        /**
+         * Allow write operations on the stream. Write operations always occur at the write position,
+         * which is initialized to the end of the stream.
+         */
+        OpenModeWrite = 2,
+
+        /**
+         * Truncates any existing content upon opening. If not set, writes are appended to the end of the
+         * stream's existing content.
+         */
+        OpenModeTruncate = 4,
+
+        /**
+         * Specify that writes should be appended to the stream's existing content, if any exists.
+         */
+        OpenModeAppend = 8,
     }
 
     public sealed unsafe class IOStream : IDisposable
     {
-        private readonly CIO.StreamHandle stream;
+        internal readonly CIO.StreamHandle Stream;
 
         private IOStream(CIO.StreamHandle stream)
         {
-            this.stream = stream;
+            Stream = stream;
         }
 
         /// <inheritdoc cref="IDisposable"/>
         public void Dispose()
         {
-            stream.Dispose();
+            Stream.Dispose();
         }
 
         public static IOStream CreateRingBufferStream(uint capacity)
@@ -30,11 +51,12 @@ namespace Improbable.Worker.CInterop
             return new IOStream(CIO.CreateRingBufferStream(capacity));
         }
 
-        public static IOStream CreateFileStream(string fileName, OpenMode openMode)
+        public static IOStream CreateFileStream(string fileName,
+            OpenModes openModes = OpenModes.OpenModeRead | OpenModes.OpenModeWrite | OpenModes.OpenModeTruncate)
         {
             fixed (byte* fileNameBytes = ApiInterop.ToUtf8Cstr(fileName))
             {
-                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenMode) openMode));
+                return new IOStream(CIO.CreateFileStream(fileNameBytes, (CIO.OpenModes) openModes));
             }
         }
 
@@ -42,7 +64,7 @@ namespace Improbable.Worker.CInterop
         {
             ThrowIfStreamClosed();
 
-            var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(stream);
+            var remainingCapacity = CIO.StreamGetRemainingWriteCapacityBytes(Stream);
             if (remainingCapacity < data.Length)
             {
                 throw new NotSupportedException("Not enough stream capacity to write data.");
@@ -51,7 +73,7 @@ namespace Improbable.Worker.CInterop
             var bytesWritten = 0L;
             fixed (byte* dataToWrite = data)
             {
-                bytesWritten = CIO.StreamWrite(stream, dataToWrite, 1);
+                bytesWritten = CIO.StreamWrite(Stream, dataToWrite, 1);
             }
 
             if (bytesWritten != -1)
@@ -59,7 +81,7 @@ namespace Improbable.Worker.CInterop
                 return bytesWritten;
             }
 
-            var rawError = CIO.StreamGetLastError(stream);
+            var rawError = CIO.StreamGetLastError(Stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
@@ -72,7 +94,7 @@ namespace Improbable.Worker.CInterop
             var bytesRead = 0L;
             fixed (byte* streamDataPointer = streamData)
             {
-                bytesRead = CIO.StreamRead(stream, streamDataPointer, bytesToRead);
+                bytesRead = CIO.StreamRead(Stream, streamDataPointer, bytesToRead);
             }
 
             if (bytesRead != -1)
@@ -80,7 +102,7 @@ namespace Improbable.Worker.CInterop
                 return bytesRead;
             }
 
-            var rawError = CIO.StreamGetLastError(stream);
+            var rawError = CIO.StreamGetLastError(Stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
@@ -92,7 +114,7 @@ namespace Improbable.Worker.CInterop
             var bytesRead = 0L;
             fixed (byte* streamDataPointer = streamData)
             {
-                bytesRead = CIO.StreamRead(stream, streamDataPointer, bytesToRead);
+                bytesRead = CIO.StreamRead(Stream, streamDataPointer, bytesToRead);
             }
 
             if (bytesRead != -1)
@@ -100,7 +122,7 @@ namespace Improbable.Worker.CInterop
                 return bytesRead;
             }
 
-            var rawError = CIO.StreamGetLastError(stream);
+            var rawError = CIO.StreamGetLastError(Stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
@@ -113,7 +135,7 @@ namespace Improbable.Worker.CInterop
             var bytesPeeked = 0L;
             fixed (byte* streamDataPointer = streamData)
             {
-                bytesPeeked = CIO.StreamPeek(stream, streamDataPointer, bytesToPeek);
+                bytesPeeked = CIO.StreamPeek(Stream, streamDataPointer, bytesToPeek);
             }
 
             if (bytesPeeked != -1)
@@ -121,7 +143,7 @@ namespace Improbable.Worker.CInterop
                 return bytesPeeked;
             }
 
-            var rawError = CIO.StreamGetLastError(stream);
+            var rawError = CIO.StreamGetLastError(Stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
@@ -129,25 +151,25 @@ namespace Improbable.Worker.CInterop
         {
             ThrowIfStreamClosed();
 
-            var bytesIgnored = CIO.StreamIgnore(stream, bytesToIgnore);
+            var bytesIgnored = CIO.StreamIgnore(Stream, bytesToIgnore);
 
             if (bytesIgnored != -1)
             {
                 return bytesIgnored;
             }
 
-            var rawError = CIO.StreamGetLastError(stream);
+            var rawError = CIO.StreamGetLastError(Stream);
             throw new IOException(ApiInterop.FromUtf8Cstr(rawError));
         }
 
         public uint GetRemainingCapacity()
         {
-            return CIO.StreamGetRemainingWriteCapacityBytes(stream);
+            return CIO.StreamGetRemainingWriteCapacityBytes(Stream);
         }
 
         private void ThrowIfStreamClosed()
         {
-            if (stream.IsClosed)
+            if (Stream.IsClosed)
             {
                 throw new ObjectDisposedException("Cannot access a disposed object.");
             }

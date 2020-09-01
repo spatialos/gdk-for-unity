@@ -62,7 +62,7 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             RequireLifecycleSystem.Update();
 
             Assert.IsFalse(transformSyncBehaviour.enabled);
-            Assert.IsNull(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"));
+            Assert.AreEqual(GetPrivateField<EntityManager>(transformSyncBehaviour, "entityManager"), default(EntityManager));
             Assert.IsFalse(GetPrivateField<bool>(transformSyncBehaviour, "initialised"));
         }
 

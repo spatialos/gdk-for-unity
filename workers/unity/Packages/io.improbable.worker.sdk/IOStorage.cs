@@ -5,22 +5,22 @@ namespace Improbable.Worker.CInterop
 {
     public sealed class IOStorage : IDisposable
     {
-        private readonly CIO.StorageHandle storage;
+        internal readonly CIO.StorageHandle Storage;
 
         public IOStorage()
         {
-            storage = CIO.StorageCreate();
+            Storage = CIO.StorageCreate();
         }
 
         /// <inheritdoc cref="IDisposable"/>
         public void Dispose()
         {
-            storage.Dispose();
+            Storage.Dispose();
         }
 
         public void Clear()
         {
-            CIO.StorageClear(storage);
+            CIO.StorageClear(Storage);
         }
     }
 }

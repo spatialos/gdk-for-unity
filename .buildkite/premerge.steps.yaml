@@ -13,7 +13,7 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-07-30-165418-bk13785-82b83865-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-08-13-090826-bk14267-5f831930-d}"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
@@ -33,8 +33,8 @@ windows: &windows
         # Workaround for flaky Git clones, likely due to - https://github.com/PowerShell/Win32-OpenSSH/issues/1322
       - exit_status: 128
         limit: 3
-  env: &windows-env
-    ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
+  # env: &windows-env
+  #   ACCELERATOR_ENDPOINT: "unity-accelerator.production-intinf-eu1.i8e.io"
 
 linux: &linux
   agents:
@@ -147,7 +147,7 @@ steps:
       - logs/**/*
       - workers/unity/build/worker/**/*
     env:
-      <<: *windows-env
+      # <<: *windows-env
       WORKER_TYPE: "MobileClient"
       BUILD_ENVIRONMENT: "local"
       BUILD_TARGET_FILTER: "android"
@@ -159,7 +159,7 @@ steps:
     artifact_paths:
       - logs/**/*
     env:
-      <<: *windows-env
+      # <<: *windows-env
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
@@ -170,7 +170,7 @@ steps:
     artifact_paths:
       - logs/**/*
     env:
-      <<: *windows-env
+      # <<: *windows-env
       WORKER_TYPE: "UnityClient"
       BUILD_ENVIRONMENT: "local"
       SCRIPTING_BACKEND: "il2cpp"
@@ -181,7 +181,7 @@ steps:
     artifact_paths:
       - logs/**/*
     env:
-      <<: *windows-env
+      # <<: *windows-env
       WORKER_TYPE: "UnityGameLogic"
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"

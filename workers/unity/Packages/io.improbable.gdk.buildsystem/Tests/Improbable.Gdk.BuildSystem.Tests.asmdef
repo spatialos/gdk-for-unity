@@ -1,0 +1,31 @@
+{
+  "name": "Improbable.Gdk.BuildSystem.Tests",
+  "references": [
+    "Improbable.Gdk.Core",
+    "Improbable.Gdk.BuildSystem",
+    "Unity.Entities",
+    "Unity.Entities.Hybrid",
+    "Improbable.Gdk.TestUtils",
+    "Improbable.Gdk.TestUtils.Editor",
+    "Improbable.Gdk.Tools",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner",
+    "Improbable.Gdk.Core.Editor"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll",
+    "Improbable.Worker.CInterop.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
