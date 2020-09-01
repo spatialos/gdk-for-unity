@@ -4,7 +4,9 @@
         "Improbable.Gdk.TransformSynchronization",
         "Unity.Entities",
         "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner"
+        "UnityEditor.TestRunner",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Core"
     ],
     "includePlatforms": [
         "Editor"
@@ -19,5 +21,6 @@
     "defineConstraints": [
         "UNITY_INCLUDE_TESTS"
     ],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
