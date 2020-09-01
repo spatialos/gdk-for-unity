@@ -33,7 +33,7 @@ namespace Improbable.Gdk.Core
                 }
             });
 
-            constraintsSystem.RegisterEntityAddedCallback(entityId =>
+            constraintsSystem.RegisterEntityRemovedCallback(entityId =>
             {
                 if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
                 {

@@ -1,0 +1,389 @@
+{
+  "dependencies": {
+    "com.unity.burst": {
+      "version": "1.3.0-preview.7",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.1.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.collections": {
+      "version": "0.7.1-preview.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework.performance": "1.3.3-preview",
+        "com.unity.burst": "1.3.0-preview.7"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.entities": {
+      "version": "0.9.1-preview.15",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.burst": "1.3.0-preview.7",
+        "com.unity.collections": "0.7.1-preview.3",
+        "com.unity.properties": "1.1.0-preview",
+        "com.unity.mathematics": "1.1.0",
+        "com.unity.test-framework.performance": "1.3.3-preview",
+        "com.unity.serialization": "1.1.0-preview",
+        "nuget.mono-cecil": "0.1.5-preview",
+        "com.unity.jobs": "0.2.8-preview.3",
+        "com.unity.scriptablebuildpipeline": "1.6.4-preview",
+        "com.unity.platforms": "0.2.2-preview.7"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ext.nunit": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ide.rider": {
+      "version": "1.1.4",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.1"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.jobs": {
+      "version": "0.2.8-preview.3",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.collections": "0.7.1-preview.3",
+        "com.unity.mathematics": "1.1.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.mathematics": {
+      "version": "1.1.0",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "2.0.0-preview",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.platforms": {
+      "version": "0.2.2-preview.7",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.properties": "1.1.0-preview",
+        "com.unity.properties.ui": "1.1.0-preview",
+        "com.unity.searcher": "4.0.9",
+        "com.unity.serialization": "1.1.0-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.properties": {
+      "version": "1.1.0-preview",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "nuget.mono-cecil": "0.1.5-preview",
+        "com.unity.test-framework.performance": "1.3.3-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.properties.ui": {
+      "version": "1.1.0-preview",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.properties": "1.1.0-preview",
+        "com.unity.serialization": "1.1.0-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.quicksearch": {
+      "version": "2.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.scriptablebuildpipeline": {
+      "version": "1.6.4-preview",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.searcher": {
+      "version": "4.0.9",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.serialization": {
+      "version": "1.1.0-preview",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.collections": "0.7.0-preview.2",
+        "com.unity.burst": "1.3.0-preview.5",
+        "com.unity.jobs": "0.2.7-preview.11",
+        "com.unity.properties": "1.1.0-preview",
+        "com.unity.test-framework.performance": "1.3.3-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework": {
+      "version": "1.1.16",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.test-framework.performance": {
+      "version": "2.2.0-preview",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.1.0",
+        "com.unity.nuget.newtonsoft-json": "2.0.0-preview"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.testtools.codecoverage": {
+      "version": "0.2.3-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.test-framework": "1.0.16"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.ugui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0"
+      }
+    },
+    "com.unity.ui.builder": {
+      "version": "0.11.2-preview",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "io.improbable.gdk.buildsystem": {
+      "version": "file:io.improbable.gdk.buildsystem",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.core": {
+      "version": "file:io.improbable.gdk.core",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.worker.sdk": "0.3.10",
+        "io.improbable.gdk.tools": "0.3.10",
+        "io.improbable.gdk.testutils": "0.3.10",
+        "com.unity.entities": "0.9.1-preview.15"
+      }
+    },
+    "io.improbable.gdk.debug": {
+      "version": "file:io.improbable.gdk.debug",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.deploymentlauncher": {
+      "version": "file:io.improbable.gdk.deploymentlauncher",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10",
+        "io.improbable.gdk.tools": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.gameobjectcreation": {
+      "version": "file:io.improbable.gdk.gameobjectcreation",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.mobile": {
+      "version": "file:io.improbable.gdk.mobile",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10",
+        "io.improbable.worker.sdk.mobile": "0.3.10",
+        "com.unity.modules.androidjni": "1.0.0"
+      }
+    },
+    "io.improbable.gdk.playerlifecycle": {
+      "version": "file:io.improbable.gdk.playerlifecycle",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.querybasedinteresthelper": {
+      "version": "file:io.improbable.gdk.querybasedinteresthelper",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.testutils": {
+      "version": "file:io.improbable.gdk.testutils",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10",
+        "com.unity.ext.nunit": "1.0.0",
+        "com.unity.test-framework": "1.1.14",
+        "com.unity.test-framework.performance": "2.2.0-preview"
+      }
+    },
+    "io.improbable.gdk.tools": {
+      "version": "file:io.improbable.gdk.tools",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "io.improbable.gdk.transformsynchronization": {
+      "version": "file:io.improbable.gdk.transformsynchronization",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10",
+        "io.improbable.gdk.gameobjectcreation": "0.3.10"
+      }
+    },
+    "io.improbable.gdk.transformsynchronization2d": {
+      "version": "file:io.improbable.gdk.transformsynchronization2d",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.gdk.core": "0.3.10",
+        "io.improbable.gdk.transformsynchronization": "0.3.10",
+        "com.unity.modules.physics2d": "1.0.0"
+      }
+    },
+    "io.improbable.worker.sdk": {
+      "version": "file:io.improbable.worker.sdk",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "io.improbable.worker.sdk.mobile": {
+      "version": "file:io.improbable.worker.sdk.mobile",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "io.improbable.worker.sdk": "0.3.10"
+      }
+    },
+    "nuget.mono-cecil": {
+      "version": "0.1.5-preview",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.modules.androidjni": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.animation": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.assetbundle": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.imgui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.jsonserialize": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.physics": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.physics2d": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.ui": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.modules.uielements": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0",
+        "com.unity.modules.uielementsnative": "1.0.0"
+      }
+    },
+    "com.unity.modules.uielementsnative": {
+      "version": "1.0.0",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.modules.ui": "1.0.0",
+        "com.unity.modules.imgui": "1.0.0",
+        "com.unity.modules.jsonserialize": "1.0.0"
+      }
+    }
+  }
+}
