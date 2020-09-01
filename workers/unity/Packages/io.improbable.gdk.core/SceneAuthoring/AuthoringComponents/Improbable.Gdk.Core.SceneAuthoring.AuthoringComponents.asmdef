@@ -1,0 +1,16 @@
+{
+    "name": "Improbable.Gdk.Core.SceneAuthoring.AuthoringComponents",
+    "references": [
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
