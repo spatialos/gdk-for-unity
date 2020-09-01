@@ -8,6 +8,10 @@
 - Migrated launch configurations to latest game templates. [#1457](https://github.com/spatialos/gdk-for-unity/pull/1457)
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
 
+### Fixed
+
+- Fixed an incorrect callback registration when entities are created/removed request is sent by the `WorldCommandSender`. [#1473](https://github.com/spatialos/gdk-for-unity/pull/1462)
+
 ## `0.3.10` - 2020-08-18
 
 ### Breaking Changes
