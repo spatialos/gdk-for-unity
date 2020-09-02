@@ -55,13 +55,15 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            enabled = value.Split(',').Contains(workerId);
+            enabled = !string.IsNullOrWhiteSpace(value) && value.Split(',').Contains(workerId);
             if (enabled)
             {
+                Debug.Log("Enabling Protocol Logging...");
                 workerSystem.EnableLogging();
             }
             else
             {
+                Debug.Log("Disabling Protocol Logging...");
                 workerSystem.DisableLogging();
             }
         }

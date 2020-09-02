@@ -15,12 +15,12 @@ MonoBehaviour:
   AssemblyConfig:
     ProjectName: unity_gdk
     AssemblyName: playground-protocol-logs
-    ShouldForceUpload: 0
+    ShouldForceUpload: 1
   DeploymentConfigs:
   - ProjectName: unity_gdk
     AssemblyName: playground-protocol-logs
     Deployment:
-      Name: playground
+      Name: af85bfc
       SnapshotPath: snapshots/default.snapshot
       LaunchJson: cloud_launch.json
       Region: 1
