@@ -129,6 +129,18 @@ namespace Improbable.Gdk.Core
             return workerFlags.TryGetValue(key, out var value) ? value : null;
         }
 
+        /// <summary>
+        /// Re-enables all logging. If logging was already enabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        public void EnableLogging() => ConnectionHandler.EnableLogging();
+
+        /// <summary>
+        /// Disables all logging. If logging was already disabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        public void DisableLogging() => ConnectionHandler.DisableLogging();
+
         public virtual void Dispose()
         {
             ConnectionHandler?.Dispose();

@@ -29,6 +29,8 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public WorkerInWorld Worker;
 
+        private ProtocolLogComponent protocolLog;
+
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
         /// <summary>
@@ -145,6 +147,7 @@ namespace Improbable.Gdk.Core
 
         protected virtual void HandleWorkerConnectionEstablished()
         {
+            protocolLog.OnWorkerConnected(Worker.World);
         }
 
         private static async Task<WorkerInWorld> ConnectWithRetries(IConnectionHandlerBuilder connectionHandlerBuilder, int maxAttempts,
@@ -214,6 +217,15 @@ namespace Improbable.Gdk.Core
             };
 
             initializer?.Initialize(@params);
+            return @params;
+        }
+
+        protected ConnectionParameters CreateConnectionParameters(string workerId, string workerType,
+            IConnectionParameterInitializer initializer = null)
+        {
+            protocolLog = new ProtocolLogComponent(workerId);
+            var @params = CreateConnectionParameters(workerType, initializer);
+            @params.Logsinks.Add(protocolLog.LogsinkParameters);
 
             return @params;
         }
@@ -237,6 +249,7 @@ namespace Improbable.Gdk.Core
         public virtual void Dispose()
         {
             RemoveFromPlayerLoop();
+            protocolLog.Dispose();
             Worker?.Dispose();
             Worker = null;
         }

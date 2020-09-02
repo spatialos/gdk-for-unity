@@ -103,6 +103,18 @@ namespace Improbable.Gdk.Core
             return Worker.GetWorkerFlag(key);
         }
 
+        /// <summary>
+        /// Re-enables all logging. If logging was already enabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        public void EnableLogging() => Worker.EnableLogging();
+
+        /// <summary>
+        /// Disables all logging. If logging was already disabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        public void DisableLogging() => Worker.DisableLogging();
+
         public void SendMetrics(Metrics metrics)
         {
             Worker.MessagesToSend.AddMetrics(metrics);

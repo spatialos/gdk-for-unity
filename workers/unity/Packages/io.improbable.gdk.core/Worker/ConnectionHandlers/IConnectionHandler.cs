@@ -49,5 +49,17 @@ namespace Improbable.Gdk.Core
         /// </summary>
         /// <returns>True if the underlying connection is connected, false otherwise.</returns>
         bool IsConnected();
+
+        /// <summary>
+        /// Re-enables all logging. If logging was already enabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        void EnableLogging();
+
+        /// <summary>
+        /// Disables all logging. If logging was already disabled or no logsinks had been configured during
+        /// connecting, does nothing.
+        /// </summary>
+        void DisableLogging();
     }
 }

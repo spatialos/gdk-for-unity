@@ -78,6 +78,10 @@ namespace Improbable.Gdk.Core
             }
         }
 
+        public void EnableLogging() => connection.EnableLogging();
+
+        public void DisableLogging() => connection.DisableLogging();
+
         public void Dispose()
         {
             connection?.Dispose();

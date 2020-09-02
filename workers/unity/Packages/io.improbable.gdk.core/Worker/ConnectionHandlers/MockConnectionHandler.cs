@@ -234,6 +234,16 @@ namespace Improbable.Gdk.Core
             return true;
         }
 
+        public void EnableLogging()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisableLogging()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         private class CreateEntityTemplateDynamicHandler : Dynamic.IHandler

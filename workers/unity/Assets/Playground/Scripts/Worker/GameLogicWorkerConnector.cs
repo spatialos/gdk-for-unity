@@ -1,3 +1,4 @@
+using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Worker.CInterop;
@@ -21,17 +22,18 @@ namespace Playground
 
             IConnectionFlow flow;
             ConnectionParameters connectionParameters;
+            var workerId = CreateNewWorkerId(WorkerUtils.UnityGameLogic);
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
+                flow = new ReceptionistFlow(workerId);
+                connectionParameters = CreateConnectionParameters(workerId, WorkerUtils.UnityGameLogic);
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
+                flow = new ReceptionistFlow(workerId,
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                connectionParameters = CreateConnectionParameters(workerId, WorkerUtils.UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
             }
 
@@ -51,6 +53,7 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
+            base.HandleWorkerConnectionEstablished();
             WorkerUtils.AddGameLogicSystems(Worker.World, entityRepresentationMapping);
         }
 
