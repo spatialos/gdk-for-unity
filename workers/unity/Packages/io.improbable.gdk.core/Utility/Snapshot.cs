@@ -9,6 +9,8 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class Snapshot
     {
+        private const int PersistenceComponentId = 55;
+
         private readonly Dictionary<EntityId, Entity> entities = new Dictionary<EntityId, Entity>();
 
         public int Count => entities.Count;
@@ -50,7 +52,10 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public void AddEntity(EntityId entityId, EntityTemplate entityTemplate)
         {
-            entities[entityId] = entityTemplate.GetEntity();
+            var entity = entityTemplate.GetEntity();
+            // This is a no-op if the entity already has persistence.
+            entity.Add(new ComponentData(PersistenceComponentId, SchemaComponentData.Create()));
+            entities[entityId] = entity;
         }
 
         /// <summary>
