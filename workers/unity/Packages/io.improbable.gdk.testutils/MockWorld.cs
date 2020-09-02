@@ -21,7 +21,7 @@ namespace Improbable.Gdk.TestUtils
         public MockConnectionHandler Connection { get; private set; }
         public EntityGameObjectLinker Linker { get; private set; }
 
-        public ProtocolLogComponent ProtocolLog { get; private set; }
+        public ProtocolLogController ProtocolLog { get; private set; }
 
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
 
@@ -46,7 +46,7 @@ namespace Improbable.Gdk.TestUtils
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
-            mockWorld.ProtocolLog = new ProtocolLogComponent(mockWorld.Worker.WorkerId);
+            mockWorld.ProtocolLog = new ProtocolLogController(mockWorld.Worker.WorkerId);
             mockWorld.ProtocolLog.OnWorkerConnected(mockWorld.Worker.World);
 
             return mockWorld;

@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public WorkerInWorld Worker;
 
-        private ProtocolLogComponent protocolLog;
+        private ProtocolLogController protocolLog;
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
@@ -223,7 +223,7 @@ namespace Improbable.Gdk.Core
         protected ConnectionParameters CreateConnectionParameters(string workerId, string workerType,
             IConnectionParameterInitializer initializer = null)
         {
-            protocolLog = new ProtocolLogComponent(workerId);
+            protocolLog = new ProtocolLogController(workerId);
             var @params = CreateConnectionParameters(workerType, initializer);
             @params.Logsinks.Add(protocolLog.LogsinkParameters);
 

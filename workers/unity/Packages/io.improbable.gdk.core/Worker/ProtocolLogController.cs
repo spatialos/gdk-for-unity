@@ -8,17 +8,17 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class ProtocolLogComponent : IDisposable
+    public class ProtocolLogController : IDisposable
     {
+        private const string ProtocolLoggingFlag = "protocol_logging_enabled";
         private WorkerSystem workerSystem;
         private WorkerFlagCallbackSystem callbackSystem;
         private ulong callbackKey;
-        private const string ProtocolLoggingFlag = "protocol_logging_enabled";
         private bool enabled;
         private readonly string workerId;
         public LogsinkParameters LogsinkParameters { get; }
 
-        public ProtocolLogComponent(string workerId)
+        public ProtocolLogController(string workerId)
         {
             this.workerId = workerId;
             var path = Path.GetDirectoryName(Application.consoleLogPath);
@@ -35,7 +35,7 @@ namespace Improbable.Gdk.Core
                 },
                 RotatingLogFileParameters =
                 {
-                    LogPrefix = Path.Combine(path, $"protocol_{workerId}_")
+                    LogPrefix = Path.Combine(path, $"protocol_{this.workerId}_")
                 }
             };
         }
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.Core
         public void OnWorkerConnected(World world)
         {
             workerSystem = world.GetExistingSystem<WorkerSystem>();
-            callbackSystem = world.GetOrCreateSystem<WorkerFlagCallbackSystem>();
+            callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
             callbackKey = callbackSystem.RegisterWorkerFlagChangeCallback(OnWorkerFlagChanged);
         }
 
