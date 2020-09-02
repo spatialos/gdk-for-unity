@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AssemblyConfig:
     ProjectName: unity_gdk
-    AssemblyName: playground-protocol-logs
+    AssemblyName: 6ae879f6
     ShouldForceUpload: 1
   DeploymentConfigs:
   - ProjectName: unity_gdk
-    AssemblyName: playground-protocol-logs
+    AssemblyName: 6ae879f6
     Deployment:
-      Name: af85bfc
+      Name: playground
       SnapshotPath: snapshots/default.snapshot
       LaunchJson: cloud_launch.json
       Region: 1
