@@ -30,6 +30,7 @@
 
 - Fixed an issue where authority changes returned by `ComponentUpdateSystem.GetAuthorityChangesReceived()` were returned in order from newest to oldest. [#1465](https://github.com/spatialos/gdk-for-unity/pull/1465)
 - Fixed a bug where the build system would throw a null reference exception if you don't have a configuration for a worker type. [#1461](https://github.com/spatialos/gdk-for-unity/pull/1461)
+- Fixed an incorrect callback registration for entity creation/removal in the `WorldCommandSender`. [#1473](https://github.com/spatialos/gdk-for-unity/pull/1462)
 
 ## `0.3.10` - 2020-08-18
 
