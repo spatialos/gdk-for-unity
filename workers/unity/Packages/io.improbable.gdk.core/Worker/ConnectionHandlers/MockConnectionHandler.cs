@@ -39,6 +39,7 @@ namespace Improbable.Gdk.Core
         private readonly Dictionary<Type, SortedSet<long>> requestIds = new Dictionary<Type, SortedSet<long>>();
         private readonly Dictionary<long, ICommandRequest> outgoingRequests = new Dictionary<long, ICommandRequest>();
         internal readonly IOutgoingCommandHandler OutgoingCommandHandler;
+        public bool LoggingEnabled { get; private set; }
 
         internal MockConnectionHandler()
         {
@@ -186,6 +187,11 @@ namespace Improbable.Gdk.Core
             CurrentDiff.AddCommandRequest(receivedRequest, commandClass.ComponentId, commandClass.CommandIndex);
         }
 
+        public void SetWorkerFlag((string, string) pair)
+        {
+            CurrentDiff.SetWorkerFlag(pair.Item1, pair.Item2);
+        }
+
         #region IConnectionHandler implementation
 
         public string GetWorkerId()
@@ -236,12 +242,12 @@ namespace Improbable.Gdk.Core
 
         public void EnableLogging()
         {
-            throw new NotImplementedException();
+            LoggingEnabled = true;
         }
 
         public void DisableLogging()
         {
-            throw new NotImplementedException();
+            LoggingEnabled = false;
         }
 
         #endregion

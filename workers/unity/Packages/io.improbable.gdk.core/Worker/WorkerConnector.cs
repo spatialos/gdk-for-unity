@@ -147,7 +147,7 @@ namespace Improbable.Gdk.Core
 
         protected virtual void HandleWorkerConnectionEstablished()
         {
-            protocolLog.OnWorkerConnected(Worker.World);
+            protocolLog?.OnWorkerConnected(Worker.World);
         }
 
         private static async Task<WorkerInWorld> ConnectWithRetries(IConnectionHandlerBuilder connectionHandlerBuilder, int maxAttempts,
@@ -243,13 +243,14 @@ namespace Improbable.Gdk.Core
             // Remove the world from the loop early, to avoid errors during the delay frame
             RemoveFromPlayerLoop();
             yield return null;
+
             Dispose();
         }
 
         public virtual void Dispose()
         {
             RemoveFromPlayerLoop();
-            protocolLog.Dispose();
+            protocolLog?.Dispose();
             Worker?.Dispose();
             Worker = null;
         }

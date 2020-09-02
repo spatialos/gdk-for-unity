@@ -55,14 +55,14 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(value))
+            enabled = value.Split(',').Contains(workerId);
+            if (enabled)
             {
-                workerSystem.DisableLogging();
+                workerSystem.EnableLogging();
             }
             else
             {
-                workerSystem.EnableLogging();
-                enabled = value.Split(',').Contains(workerId);
+                workerSystem.DisableLogging();
             }
         }
 
