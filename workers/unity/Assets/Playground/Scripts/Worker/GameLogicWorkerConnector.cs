@@ -20,20 +20,20 @@ namespace Playground
         {
             Application.targetFrameRate = 60;
 
-            IConnectionFlow flow;
+            ReceptionistFlow flow;
             ConnectionParameters connectionParameters;
             var workerId = CreateNewWorkerId(WorkerUtils.UnityGameLogic);
 
             if (Application.isEditor)
             {
                 flow = new ReceptionistFlow(workerId);
-                connectionParameters = CreateConnectionParameters(workerId, WorkerUtils.UnityGameLogic);
+                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic);
             }
             else
             {
                 flow = new ReceptionistFlow(workerId,
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(workerId, WorkerUtils.UnityGameLogic,
+                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
             }
 

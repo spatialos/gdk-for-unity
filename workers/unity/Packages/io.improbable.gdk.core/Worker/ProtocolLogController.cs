@@ -56,15 +56,12 @@ namespace Improbable.Gdk.Core
             }
 
             enabled = !string.IsNullOrWhiteSpace(value) && value.Split(',').Contains(workerId);
-            Debug.Log($"Boolean value: {!string.IsNullOrWhiteSpace(value)}, {value?.Split(',').Contains(workerId)}");
             if (enabled)
             {
-                Debug.Log("Enabling Protocol Logging...");
                 workerSystem.EnableLogging();
             }
             else
             {
-                Debug.Log("Disabling Protocol Logging...");
                 workerSystem.DisableLogging();
             }
         }

@@ -67,7 +67,7 @@ namespace Improbable.Gdk.EditmodeTests
                 .Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
                 .Step(world =>
                 {
-                    world.Connection.SetWorkerFlag((ProtocolLoggingFlag, world.Connection.GetWorkerId()));
+                    world.Connection.SetWorkerFlag((ProtocolLoggingFlag, $"{world.Connection.GetWorkerId()}1,{world.Connection.GetWorkerId()},{world.Connection.GetWorkerId()}2"));
                 })
                 .Step(world =>
                 {
