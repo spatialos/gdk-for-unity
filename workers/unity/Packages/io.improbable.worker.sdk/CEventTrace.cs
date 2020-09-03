@@ -60,7 +60,7 @@ namespace Improbable.Worker.CInterop.Internal
             public fixed Char Data[16];
         }
 
-        public enum ItemType
+        public enum ItemType : byte
         {
             Span = 1,
             Event = 2

@@ -52,7 +52,7 @@ namespace Improbable.Gdk.Core
             WorkerId = worker.WorkerId;
             Origin = worker.Origin;
 
-            var ioStream = IOStream.CreateFileStream($"event_tracer_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.trace");
+            var ioStream = IOStream.CreateFileStream($"tracelogs/event_tracer_{DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.trace");
 
             var params1 = new EventTracerParameters[1];
             params1[0] = new EventTracerParameters

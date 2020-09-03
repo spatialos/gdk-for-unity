@@ -84,12 +84,15 @@ namespace Improbable.Gdk.TransformSynchronization
                     {
                         Id = newSpanId,
                         Message = "RateLimitedTransform - Send",
-                        Type = "Transform_Send",
+                        Type = "gdk_transform_send",
                         Data = new TraceEventData(new Dictionary<string, string>
                         {
-                            { "MESSAGE", $"" }
-                        })
+                            { "tps", $"{transform.TicksPerSecond}" },
+                            { "entity_location", $"{transform.Location}" },
+                            { "entity_velocity", $"{transform.Velocity}" }
+                        }),
                     });
+                    worker.EventTracer.SetActiveSpanId(newSpanId);
                     transform.SpanId = newSpanId.ToSchema();
 
                     ticksSinceLastTransformUpdate = new TicksSinceLastTransformUpdate

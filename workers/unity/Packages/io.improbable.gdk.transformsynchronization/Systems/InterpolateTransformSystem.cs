@@ -53,7 +53,7 @@ namespace Improbable.Gdk.TransformSynchronization
                     var transformBuffer = EntityManager.GetBuffer<BufferedTransform>(entity);
                     var lastTransformApplied = deferredUpdateTransform.Transform;
 
-                    var trackedSpanId = worker.EventTracer.AddSpan(transformInternal.SpanId.GetValueOrDefault().FromSchema());
+                    var trackedSpanId = worker.EventTracer.AddSpan(transformInternal.SpanId.Value.FromSchema());
 
                     if (transformBuffer.Length >= config.MaxLoadMatchedBufferSize)
                     {
@@ -63,12 +63,14 @@ namespace Improbable.Gdk.TransformSynchronization
                             {
                                 Id = trackedSpanId,
                                 Message = "InterpolateTransform - Buffer length exceeded",
-                                Type = "Transform_Receive",
+                                Type = "gdk_transform_receive",
                                 Data = new TraceEventData(new Dictionary<string, string>
                                 {
-                                    { "MESSAGE", $"Dropped {transformBuffer.Length.ToString()} buffered transforms." }
+                                    { "message", $"Dropped {transformBuffer.Length.ToString()} buffered transforms." },
+                                    { "entity_id", $"{spatialEntityId.EntityId.ToString()}" },
                                 })
                             });
+                            worker.EventTracer.ClearActiveSpanId();
                         }
 
                         transformBuffer.Clear();
@@ -151,6 +153,20 @@ namespace Improbable.Gdk.TransformSynchronization
 
                         transformBuffer.Add(transformToInterpolateTo);
                     }
+
+                    // if (worker.EventTracer.IsEnabled)
+                    // {
+                    //     worker.EventTracer.AddEvent(new Worker.CInterop.Event
+                    //     {
+                    //         Id = trackedSpanId,
+                    //         Message = "InterpolateTransform - Update receive",
+                    //         Type = "gdk_transform_apply",
+                    //         Data = new TraceEventData(new Dictionary<string, string>
+                    //         {
+                    //             { "MESSAGE", $"Applying {transformBuffer.Length.ToString()} interpolated transforms." }
+                    //         })
+                    //     });
+                    // }
                 });
         }
 
