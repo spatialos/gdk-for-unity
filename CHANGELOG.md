@@ -13,6 +13,7 @@
 - Added `MeansImplicitUse` attribute to `RequireAttribute` to reduce warnings in Rider IDE. [#1462](https://github.com/spatialos/gdk-for-unity/pull/1462)
 - Added Event Tracing API. [#1452](https://github.com/spatialos/gdk-for-unity/pull/1452)
 - Added tooltips to the SpatialOS Project Settings. [#1470](https://github.com/spatialos/gdk-for-unity/pull/1470)
+- Added toggle for protocol logs through worker flags. [#1476](https://github.com/spatialos/gdk-for-unity/pull/1476)
 
 ### Changed
 
