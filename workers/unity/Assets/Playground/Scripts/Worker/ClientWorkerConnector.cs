@@ -57,7 +57,6 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            base.HandleWorkerConnectionEstablished();
             WorkerUtils.AddClientSystems(Worker.World, entityRepresentationMapping);
         }
 
