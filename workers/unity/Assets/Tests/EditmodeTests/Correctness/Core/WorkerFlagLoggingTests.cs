@@ -1,4 +1,4 @@
-﻿using Improbable.Gdk.Core;
+using Improbable.Gdk.Core;
 using Improbable.Gdk.TestUtils;
 using NUnit.Framework;
 
