@@ -46,7 +46,7 @@ namespace Improbable.Gdk.TestUtils
 
             PlayerLoopUtils.ResolveSystemGroups(mockWorld.Worker.World);
 
-            mockWorld.ProtocolLog = new ProtocolLogController(mockWorld.Worker.WorkerId);
+            mockWorld.ProtocolLog = new ProtocolLogController();
             mockWorld.ProtocolLog.OnWorkerConnected(mockWorld.Worker.World);
 
             return mockWorld;

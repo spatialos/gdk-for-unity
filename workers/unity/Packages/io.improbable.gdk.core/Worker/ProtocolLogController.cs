@@ -8,46 +8,18 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public sealed class ProtocolLogController : IDisposable
+    public class ProtocolLogController
     {
         private const string ProtocolLoggingFlag = "protocol_logging_enabled";
         private WorkerSystem workerSystem;
         private WorkerFlagCallbackSystem callbackSystem;
-        private ulong callbackKey;
-        private bool enabled;
-        private readonly string workerId;
-        public LogsinkParameters LogsinkParameters { get; }
-
-        public ProtocolLogController(string workerId)
-        {
-            this.workerId = workerId;
-#if UNITY_EDITOR
-            const string path = "logs/";
-#else
-            var path = Path.GetDirectoryName(Application.consoleLogPath);
-            if (string.IsNullOrEmpty(path))
-            {
-                throw new InvalidOperationException("Current platform does not support log files");
-            }
-#endif
-            LogsinkParameters = new LogsinkParameters
-            {
-                FilterParameters =
-                {
-                    CustomFilter = LogFilter
-                },
-                RotatingLogFileParameters =
-                {
-                    LogPrefix = Path.Combine(path, $"protocol_{this.workerId}_")
-                }
-            };
-        }
+        public bool Enabled { get; private set; }
 
         public void OnWorkerConnected(World world)
         {
             workerSystem = world.GetExistingSystem<WorkerSystem>();
             callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
-            callbackKey = callbackSystem.RegisterWorkerFlagChangeCallback(OnWorkerFlagChanged);
+            callbackSystem.RegisterWorkerFlagChangeCallback(OnWorkerFlagChanged);
         }
 
         private void OnWorkerFlagChanged((string, string) pair)
@@ -58,25 +30,38 @@ namespace Improbable.Gdk.Core
                 return;
             }
 
-            enabled = !string.IsNullOrWhiteSpace(value) && value.Split(',').Contains(workerId);
-            if (enabled)
+            Enabled = !string.IsNullOrWhiteSpace(value) && value.Split(',').Contains(workerSystem.WorkerId);
+            if (Enabled)
             {
                 workerSystem.EnableLogging();
-            }
-            else
-            {
-                workerSystem.DisableLogging();
             }
         }
 
         private bool LogFilter(LogCategory category, LogLevel level)
         {
-            return enabled && (category == LogCategory.NetworkStatus || category.HasFlag(LogCategory.NetworkTraffic)) && level >= LogLevel.Info;
+            var isCategory = category == LogCategory.NetworkStatus || category.HasFlag(LogCategory.NetworkTraffic);
+            return Enabled && isCategory && level >= LogLevel.Info;
         }
 
-        public void Dispose()
+        public LogsinkParameters GetLogsinkParameters(string workerId)
         {
-            callbackSystem.UnregisterWorkerFlagChangeCallback(callbackKey);
+            var logPath = Path.GetDirectoryName(Application.consoleLogPath);
+            if (logPath == null)
+            {
+                throw new InvalidOperationException("This platform does not support log files");
+            }
+
+            return new LogsinkParameters
+            {
+                FilterParameters =
+                {
+                    CustomFilter = LogFilter
+                },
+                RotatingLogFileParameters =
+                {
+                    LogPrefix = Path.Combine(logPath, $"protocol_{workerId}_")
+                }
+            };
         }
     }
 }

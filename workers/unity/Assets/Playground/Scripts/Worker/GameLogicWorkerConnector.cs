@@ -25,14 +25,14 @@ namespace Playground
             if (Application.isEditor)
             {
                 flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic);
+                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                    new ConnectionParameterInitializer(flow.WorkerId, protocolLogController));
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
-                    new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic,
-                    new CommandLineConnectionParameterInitializer());
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic), new CommandLineConnectionFlowInitializer());
+                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                    new ConnectionParameterInitializer(flow.WorkerId, protocolLogController, new CommandLineConnectionParameterInitializer()));
             }
 
             var builder = new SpatialOSConnectionHandlerBuilder()
@@ -51,7 +51,6 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            base.HandleWorkerConnectionEstablished();
             WorkerUtils.AddGameLogicSystems(Worker.World, entityRepresentationMapping);
         }
 
