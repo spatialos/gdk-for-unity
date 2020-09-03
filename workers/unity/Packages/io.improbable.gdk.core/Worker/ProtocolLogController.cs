@@ -12,13 +12,12 @@ namespace Improbable.Gdk.Core
     {
         private const string ProtocolLoggingFlag = "protocol_logging_enabled";
         private WorkerSystem workerSystem;
-        private WorkerFlagCallbackSystem callbackSystem;
         public bool Enabled { get; private set; }
 
         public void OnWorkerConnected(World world)
         {
             workerSystem = world.GetExistingSystem<WorkerSystem>();
-            callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
+            var callbackSystem = world.GetExistingSystem<WorkerFlagCallbackSystem>();
             callbackSystem.RegisterWorkerFlagChangeCallback(OnWorkerFlagChanged);
         }
 
