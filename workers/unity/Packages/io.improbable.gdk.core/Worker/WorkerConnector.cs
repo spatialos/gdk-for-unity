@@ -32,7 +32,7 @@ namespace Improbable.Gdk.Core
         /// <summary>
         ///     Toggles protocol logs during a deployment using the Worker's worker flags
         /// </summary>
-        protected readonly ProtocolLogController protocolLogController = new ProtocolLogController();
+        private readonly ProtocolLogController protocolLogController = new ProtocolLogController();
 
         private List<Action<Worker>> workerConnectedCallbacks = new List<Action<Worker>>();
 
@@ -221,6 +221,14 @@ namespace Improbable.Gdk.Core
 
             initializer?.Initialize(@params);
             return @params;
+        }
+
+        protected ConnectionParameters CreateConnectionParameters(string workerId, string workerType, IConnectionParameterInitializer initializer = null)
+        {
+            var parameters = CreateConnectionParameters(workerType, initializer);
+            parameters.Logsinks.Add(protocolLogController.GetLogsinkParameters(workerId));
+
+            return parameters;
         }
 
         private void OnDisconnected(string reason)

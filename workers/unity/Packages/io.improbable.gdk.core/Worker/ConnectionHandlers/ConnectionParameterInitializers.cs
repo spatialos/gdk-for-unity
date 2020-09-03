@@ -36,27 +36,4 @@ namespace Improbable.Gdk.Core
             connectionParameters.Network.UseExternalIp = commandLineArgs.Contains(RuntimeConfigNames.UseExternalIp);
         }
     }
-
-    public class ConnectionParameterInitializer : IConnectionParameterInitializer
-    {
-        private readonly CommandLineConnectionParameterInitializer clInitializer;
-        private readonly ProtocolLogController protocolLogController;
-        private readonly string workerId;
-
-        public ConnectionParameterInitializer(string workerId, ProtocolLogController protocolLogController, CommandLineConnectionParameterInitializer clInitializer = null)
-        {
-            this.clInitializer = clInitializer;
-            this.protocolLogController = protocolLogController;
-            this.workerId = workerId;
-        }
-
-        public void Initialize(ConnectionParameters connectionParameters)
-        {
-            clInitializer?.Initialize(connectionParameters);
-            if (protocolLogController != null)
-            {
-                connectionParameters.Logsinks.Add(protocolLogController.GetLogsinkParameters(workerId));
-            }
-        }
-    }
 }

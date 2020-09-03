@@ -25,14 +25,12 @@ namespace Playground
             if (Application.isEditor)
             {
                 flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
-                    new ConnectionParameterInitializer(flow.WorkerId, protocolLogController));
+                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic);
             }
             else
             {
                 flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic), new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
-                    new ConnectionParameterInitializer(flow.WorkerId, protocolLogController, new CommandLineConnectionParameterInitializer()));
+                connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic, new CommandLineConnectionParameterInitializer());
             }
 
             var builder = new SpatialOSConnectionHandlerBuilder()
