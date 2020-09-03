@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AssemblyConfig:
     ProjectName: unity_gdk
-    AssemblyName: playground_protocol_logs
-    ShouldForceUpload: 1
+    AssemblyName: playground
+    ShouldForceUpload: 0
   DeploymentConfigs:
   - ProjectName: unity_gdk
-    AssemblyName: playground_protocol_logs
+    AssemblyName: playground
     Deployment:
       Name: playground
       SnapshotPath: snapshots/default.snapshot
