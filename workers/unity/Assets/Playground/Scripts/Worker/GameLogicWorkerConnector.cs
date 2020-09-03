@@ -1,4 +1,3 @@
-using System.IO;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Worker.CInterop;

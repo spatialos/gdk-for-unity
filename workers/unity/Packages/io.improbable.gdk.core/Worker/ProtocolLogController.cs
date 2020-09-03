@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
-    public class ProtocolLogController : IDisposable
+    public sealed class ProtocolLogController : IDisposable
     {
         private const string ProtocolLoggingFlag = "protocol_logging_enabled";
         private WorkerSystem workerSystem;
