@@ -84,5 +84,7 @@ namespace Improbable.Gdk.Core
                 }
             }
         }
+
+        internal Entity this[EntityId entityId] => entities[entityId];
     }
 }
