@@ -40,8 +40,10 @@ namespace Improbable.Gdk.EditmodeTests.SceneAuthoring
             var child = CreateGameObject();
             child.transform.SetParent(gameobject.transform);
 
-            var snapshot = SceneConverter.Convert(new[] { gameobject });
-            Assert.AreEqual(1, snapshot.Count);
+            using (var snapshot = SceneConverter.Convert(new[] { gameobject }))
+            {
+                Assert.AreEqual(1, snapshot.Count);
+            }
         }
 
         [Test]
@@ -54,8 +56,10 @@ namespace Improbable.Gdk.EditmodeTests.SceneAuthoring
             child.transform.SetParent(gameobject.transform);
             grandChild.transform.SetParent(child.transform);
 
-            var snapshot = SceneConverter.Convert(new[] { gameobject }, includeChildren: true);
-            Assert.AreEqual(3, snapshot.Count);
+            using (var snapshot = SceneConverter.Convert(new[] { gameobject }, includeChildren: true))
+            {
+                Assert.AreEqual(3, snapshot.Count);
+            }
         }
 
         [Test]
@@ -77,15 +81,16 @@ namespace Improbable.Gdk.EditmodeTests.SceneAuthoring
                 CreateGameObject(position: restPosition)
             };
 
-            var snapshot = SceneConverter.Convert(gameObjects);
+            using (var snapshot = SceneConverter.Convert(gameObjects))
+            {
+                var firstEntity = snapshot[firstEntityId];
+                var firstEntityPosition = GetPosition(firstEntity).Coords.ToUnityVector();
+                Assert.AreEqual(firstPosition, firstEntityPosition);
 
-            var firstEntity = snapshot[firstEntityId];
-            var firstEntityPosition = GetPosition(firstEntity).Coords.ToUnityVector();
-            Assert.AreEqual(firstPosition, firstEntityPosition);
-
-            var secondEntity = snapshot[secondEntityId];
-            var secondEntityPosition = GetPosition(secondEntity).Coords.ToUnityVector();
-            Assert.AreEqual(secondPosition, secondEntityPosition);
+                var secondEntity = snapshot[secondEntityId];
+                var secondEntityPosition = GetPosition(secondEntity).Coords.ToUnityVector();
+                Assert.AreEqual(secondPosition, secondEntityPosition);
+            }
         }
 
         private static GameObject CreateGameObject(EntityId desiredEntityId = default, Vector3 position = default)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 using UnityEngine;
@@ -7,7 +8,7 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Convenience wrapper around the WorkerSDK Snapshot API.
     /// </summary>
-    public class Snapshot
+    public class Snapshot : IDisposable
     {
         private const int PersistenceComponentId = 55;
 
@@ -81,6 +82,20 @@ namespace Improbable.Gdk.Core
                     {
                         Debug.LogError(e.Message);
                     }
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            foreach (var kvp in entities)
+            {
+                var entity = kvp.Value;
+
+                foreach (var id in entity.GetComponentIds())
+                {
+                    var componentData = entity.Get(id).Value;
+                    componentData.SchemaData?.Destroy();
                 }
             }
         }
