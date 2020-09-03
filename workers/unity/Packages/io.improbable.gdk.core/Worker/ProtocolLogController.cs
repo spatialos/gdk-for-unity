@@ -21,12 +21,15 @@ namespace Improbable.Gdk.Core
         public ProtocolLogController(string workerId)
         {
             this.workerId = workerId;
+#if UNITY_EDITOR
+            const string path = "logs/";
+#else
             var path = Path.GetDirectoryName(Application.consoleLogPath);
             if (string.IsNullOrEmpty(path))
             {
                 throw new InvalidOperationException("Current platform does not support log files");
             }
-
+#endif
             LogsinkParameters = new LogsinkParameters
             {
                 FilterParameters =
