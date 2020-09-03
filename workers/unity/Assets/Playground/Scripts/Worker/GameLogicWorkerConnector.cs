@@ -22,16 +22,15 @@ namespace Playground
 
             ReceptionistFlow flow;
             ConnectionParameters connectionParameters;
-            var workerId = CreateNewWorkerId(WorkerUtils.UnityGameLogic);
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(workerId);
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
                 connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic);
             }
             else
             {
-                flow = new ReceptionistFlow(workerId,
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
                     new CommandLineConnectionFlowInitializer());
                 connectionParameters = CreateConnectionParameters(flow.WorkerId, WorkerUtils.UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
