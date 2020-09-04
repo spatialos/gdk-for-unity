@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public class PaginatedListView<TElement, TData> : VisualElement
+    public class PaginatedListView<TElement, TData> : VisualElement, INotifyValueChanged<List<TData>>
         where TElement : VisualElement
     {
         private const string UxmlPath =
@@ -63,10 +63,8 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             }
         }
 
-        public void Update(List<TData> newData)
+        private void Update()
         {
-            data = newData;
-
             if (data.Count == 0)
             {
                 controlsContainer.AddToClassList("hidden");
@@ -138,6 +136,37 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
             backButton.SetEnabled(currentPage != 0);
             forwardButton.SetEnabled(currentPage != numPages - 1);
+        }
+
+        public void SetValueWithoutNotify(List<TData> newValue)
+        {
+            data = value;
+            Update();
+        }
+
+        public List<TData> value
+        {
+            get => data;
+            set
+            {
+                if (EqualityComparer<List<TData>>.Default.Equals(data, value))
+                {
+                    return;
+                }
+
+                SetValueWithoutNotify(value);
+
+                if (panel == null)
+                {
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<List<TData>>.GetPooled(data, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+            }
         }
     }
 

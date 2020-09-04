@@ -130,7 +130,7 @@ namespace Improbable.Gdk.CodeGenerator
                 case OptionFieldType optionFieldType:
                 case ListFieldType listFieldType:
                 case MapFieldType mapFieldType:
-                    return $"{uiElementName}.Update({fieldParent}.{fieldDetails.PascalCaseName});";
+                    return $"{uiElementName}.SetValueWithoutNotify({fieldParent}.{fieldDetails.PascalCaseName});";
                 default:
                     throw new ArgumentException($"Unexpected field type: {fieldDetails.FieldType.GetType()}");
             }
@@ -166,7 +166,7 @@ namespace Improbable.Gdk.CodeGenerator
             switch (containedType.Category)
             {
                 case ValueType.Enum:
-                    return $"{uiElementName}.value = {fieldAccessor};";
+                    return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor});";
                 case ValueType.Primitive:
                     var primitiveType = containedType.PrimitiveType.Value;
                     switch (primitiveType)
@@ -186,18 +186,18 @@ namespace Improbable.Gdk.CodeGenerator
                         case PrimitiveType.String:
                         case PrimitiveType.EntityId:
                         case PrimitiveType.Entity:
-                            return $"{uiElementName}.value = {fieldAccessor}.ToString();";
+                            return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor}.ToString());";
                         case PrimitiveType.Bytes:
-                            return $"{uiElementName}.value = global::System.Text.Encoding.Default.GetString({fieldAccessor});";
+                            return $"{uiElementName}.SetValueWithoutNotify(global::System.Text.Encoding.Default.GetString({fieldAccessor}));";
                         case PrimitiveType.Bool:
-                            return $"{uiElementName}.value = {fieldAccessor};";
+                            return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor});";
                         case PrimitiveType.Invalid:
                             throw new ArgumentException("Unknown primitive type encountered");
                         default:
                             throw new ArgumentOutOfRangeException();
                     }
                 case ValueType.Type:
-                    return $"{uiElementName}.Update({fieldAccessor});";
+                    return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor});";
                 default:
                     throw new ArgumentOutOfRangeException();
             }

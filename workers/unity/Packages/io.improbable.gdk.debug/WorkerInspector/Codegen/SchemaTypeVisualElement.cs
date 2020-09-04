@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public abstract class SchemaTypeVisualElement<T> : VisualElement
+    public abstract class SchemaTypeVisualElement<T> : VisualElement, INotifyValueChanged<T>
     {
         public string Label
         {
@@ -34,6 +35,39 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             }
         }
 
-        public abstract void Update(T data);
+        protected abstract void Update(T data);
+
+        public virtual T value
+        {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<T>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                SetValueWithoutNotify(value);
+
+                if (panel == null)
+                {
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<T>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+            }
+        }
+
+        private T mValue;
+
+        public void SetValueWithoutNotify(T newValue)
+        {
+            mValue = newValue;
+            Update(newValue);
+        }
     }
 }

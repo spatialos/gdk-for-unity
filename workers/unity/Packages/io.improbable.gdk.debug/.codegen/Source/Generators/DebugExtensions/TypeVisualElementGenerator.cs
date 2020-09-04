@@ -61,7 +61,7 @@ namespace Improbable.Gdk.CodeGenerator
 
         private void GenerateUpdateMethod(TypeBlock typeBlock, UnityTypeDetails details)
         {
-            typeBlock.Method($"public override void Update({details.FullyQualifiedName} data)", mb =>
+            typeBlock.Method($"protected override void Update({details.FullyQualifiedName} data)", mb =>
             {
                 mb.TextList(details.FieldDetails.Select(fd => fieldTypeHandler.ToUiFieldUpdate(fd, "data")));
             });

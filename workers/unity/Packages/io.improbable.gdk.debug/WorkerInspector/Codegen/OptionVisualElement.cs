@@ -1,17 +1,18 @@
 using System;
+using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public sealed class OptionVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>
+    public sealed class OptionVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, INotifyValueChanged<Option<TData>>
         where TElement : VisualElement
     {
         public OptionVisualElement(string label, TElement innerElement, Action<TElement, TData> applyData) : base(label, innerElement, applyData)
         {
         }
 
-        public void Update(Option<TData> data)
+        private void Update(Option<TData> data)
         {
             if (data.HasValue)
             {
@@ -22,9 +23,42 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 UpdateWithoutData();
             }
         }
+
+        public void SetValueWithoutNotify(Option<TData> newValue)
+        {
+            mValue = newValue;
+            Update(newValue);
+        }
+
+        public Option<TData> value
+        {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<Option<TData>>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                SetValueWithoutNotify(value);
+
+                if (panel == null)
+                {
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<Option<TData>>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+            }
+        }
+
+        private Option<TData> mValue;
     }
 
-    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>
+    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, INotifyValueChanged<TData?>
         where TData : struct
         where TElement : VisualElement
     {
@@ -32,7 +66,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
         }
 
-        public void Update(TData? data)
+        private void Update(TData? data)
         {
             if (data.HasValue)
             {
@@ -43,6 +77,39 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 UpdateWithoutData();
             }
         }
+
+        public void SetValueWithoutNotify(TData? newValue)
+        {
+            mValue = newValue;
+            Update(newValue);
+        }
+
+        public TData? value
+        {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<TData?>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                SetValueWithoutNotify(value);
+
+                if (panel == null)
+                {
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<TData?>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+            }
+        }
+
+        private TData? mValue;
     }
 
     public class OptionalVisualElementBase<TElement, TData> : VisualElement where TElement : VisualElement

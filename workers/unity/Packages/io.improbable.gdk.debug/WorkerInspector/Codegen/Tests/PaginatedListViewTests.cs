@@ -164,7 +164,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
 
             public void UpdateData(List<int> data)
             {
-                listView.Update(data);
+                listView.SetValueWithoutNotify(data);
             }
 
             public class DummyElement : VisualElement
