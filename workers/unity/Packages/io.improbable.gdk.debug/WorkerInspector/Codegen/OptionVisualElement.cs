@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using UnityEngine.UIElements;
@@ -6,10 +5,49 @@ using UnityEngine.UIElements;
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
     public sealed class OptionVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, INotifyValueChanged<Option<TData>>
-        where TElement : VisualElement
+        where TElement : VisualElement, INotifyValueChanged<TData>
     {
-        public OptionVisualElement(string label, TElement innerElement, Action<TElement, TData> applyData) : base(label, innerElement, applyData)
+        public Option<TData> value
         {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<Option<TData>>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                if (panel == null)
+                {
+                    SetValueWithoutNotify(value);
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<Option<TData>>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+
+                SetValueWithoutNotify(value);
+            }
+        }
+
+        private Option<TData> mValue;
+
+        public OptionVisualElement(string label, TElement innerElement) : base(label, innerElement)
+        {
+        }
+
+        public void SetValueWithoutNotify(Option<TData> newValue)
+        {
+            mValue = newValue;
+            Update(newValue);
+        }
+
+        protected override void OnInnerChange(ChangeEvent<TData> changeEvent)
+        {
+            value = changeEvent.newValue;
         }
 
         private void Update(Option<TData> data)
@@ -23,47 +61,53 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 UpdateWithoutData();
             }
         }
+    }
 
-        public void SetValueWithoutNotify(Option<TData> newValue)
+    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, INotifyValueChanged<TData?>
+        where TData : struct
+        where TElement : VisualElement, INotifyValueChanged<TData>
+    {
+        public TData? value
+        {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<TData?>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                if (panel == null)
+                {
+                    SetValueWithoutNotify(value);
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<TData?>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+
+                SetValueWithoutNotify(value);
+            }
+        }
+
+        private TData? mValue;
+
+        public NullableVisualElement(string label, TElement innerElement) : base(label, innerElement)
+        {
+        }
+
+        public void SetValueWithoutNotify(TData? newValue)
         {
             mValue = newValue;
             Update(newValue);
         }
 
-        public Option<TData> value
+        protected override void OnInnerChange(ChangeEvent<TData> changeEvent)
         {
-            get => mValue;
-            set
-            {
-                if (EqualityComparer<Option<TData>>.Default.Equals(mValue, value))
-                {
-                    return;
-                }
-
-                SetValueWithoutNotify(value);
-
-                if (panel == null)
-                {
-                    return;
-                }
-
-                using (var pooled = ChangeEvent<Option<TData>>.GetPooled(mValue, value))
-                {
-                    pooled.target = this;
-                    SendEvent(pooled);
-                }
-            }
-        }
-
-        private Option<TData> mValue;
-    }
-
-    public sealed class NullableVisualElement<TElement, TData> : OptionalVisualElementBase<TElement, TData>, INotifyValueChanged<TData?>
-        where TData : struct
-        where TElement : VisualElement
-    {
-        public NullableVisualElement(string label, TElement innerElement, Action<TElement, TData> applyData) : base(label, innerElement, applyData)
-        {
+            value = changeEvent.newValue;
         }
 
         private void Update(TData? data)
@@ -77,50 +121,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
                 UpdateWithoutData();
             }
         }
-
-        public void SetValueWithoutNotify(TData? newValue)
-        {
-            mValue = newValue;
-            Update(newValue);
-        }
-
-        public TData? value
-        {
-            get => mValue;
-            set
-            {
-                if (EqualityComparer<TData?>.Default.Equals(mValue, value))
-                {
-                    return;
-                }
-
-                SetValueWithoutNotify(value);
-
-                if (panel == null)
-                {
-                    return;
-                }
-
-                using (var pooled = ChangeEvent<TData?>.GetPooled(mValue, value))
-                {
-                    pooled.target = this;
-                    SendEvent(pooled);
-                }
-            }
-        }
-
-        private TData? mValue;
     }
 
-    public class OptionalVisualElementBase<TElement, TData> : VisualElement where TElement : VisualElement
+    public abstract class OptionalVisualElementBase<TElement, TData> : VisualElement
+        where TElement : VisualElement, INotifyValueChanged<TData>
     {
         private readonly VisualElement container;
         private readonly TElement innerElement;
         private readonly Label isEmptyLabel;
-        private readonly Action<TElement, TData> applyData;
         private readonly VisualElementConcealer concealer;
 
-        protected OptionalVisualElementBase(string label, TElement innerElement, Action<TElement, TData> applyData)
+        protected OptionalVisualElementBase(string label, TElement innerElement)
         {
             AddToClassList("user-defined-type-container");
             Add(new Label(label));
@@ -133,9 +144,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             isEmptyLabel.AddToClassList("label-empty-option");
 
             this.innerElement = innerElement;
-            this.applyData = applyData;
+            innerElement.RegisterValueChangedCallback(OnInnerChange);
+
             concealer = new VisualElementConcealer(this);
         }
+
+        protected abstract void OnInnerChange(ChangeEvent<TData> changeEvent);
 
         protected override void ExecuteDefaultActionAtTarget(EventBase evt)
         {
@@ -152,7 +166,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             RemoveIfPresent(isEmptyLabel);
             container.Add(innerElement);
 
-            applyData(innerElement, data);
+            innerElement.SetValueWithoutNotify(data);
             concealer.SetVisibility(false);
         }
 

@@ -11,8 +11,35 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             set => labelElement.text = value;
         }
 
+        public T value
+        {
+            get => mValue;
+            set
+            {
+                if (EqualityComparer<T>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
+
+                if (panel == null)
+                {
+                    SetValueWithoutNotify(value);
+                    return;
+                }
+
+                using (var pooled = ChangeEvent<T>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+
+                SetValueWithoutNotify(value);
+            }
+        }
+
         protected readonly VisualElement Container;
         private readonly Label labelElement;
+        private T mValue;
 
         protected SchemaTypeVisualElement(string label)
         {
@@ -36,33 +63,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         }
 
         protected abstract void Update(T data);
-
-        public virtual T value
-        {
-            get => mValue;
-            set
-            {
-                if (EqualityComparer<T>.Default.Equals(mValue, value))
-                {
-                    return;
-                }
-
-                SetValueWithoutNotify(value);
-
-                if (panel == null)
-                {
-                    return;
-                }
-
-                using (var pooled = ChangeEvent<T>.GetPooled(mValue, value))
-                {
-                    pooled.target = this;
-                    SendEvent(pooled);
-                }
-            }
-        }
-
-        private T mValue;
 
         public void SetValueWithoutNotify(T newValue)
         {

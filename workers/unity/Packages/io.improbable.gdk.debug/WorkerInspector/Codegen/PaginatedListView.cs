@@ -7,16 +7,45 @@ using UnityEngine.UIElements;
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
     public class PaginatedListView<TElement, TData> : VisualElement, INotifyValueChanged<List<TData>>
-        where TElement : VisualElement
+        where TElement : VisualElement, INotifyValueChanged<TData>
     {
         private const string UxmlPath =
             "Packages/io.improbable.gdk.debug/WorkerInspector/Templates/PaginatedListView.uxml";
 
-        private List<TData> data;
+        public List<TData> value
+        {
+            get => mValue;
+            set
+            {
+                // TODO: Will this always be true due to reference equality?
+                if (EqualityComparer<List<TData>>.Default.Equals(mValue, value))
+                {
+                    return;
+                }
 
+                SetValueWithoutNotify(value);
+
+                if (panel == null)
+                {
+                    return;
+                }
+
+                // NOTE: Due to copy-by-reference, the previous value and the new value will always be the same.
+                using (var pooled = ChangeEvent<List<TData>>.GetPooled(mValue, value))
+                {
+                    pooled.target = this;
+                    SendEvent(pooled);
+                }
+            }
+        }
+
+        private List<TData> mValue;
+
+        // TODO: Can I get rid of this and use `INotifyValueChanged<TData>.SetValueWithoutNotify` instead?
         private readonly Action<int, TData, TElement> bindElement;
         private readonly VisualElement container;
         private readonly ElementPool<TElement> elementPool;
+        private readonly Dictionary<TElement, int> elementToIndex = new Dictionary<TElement, int>();
         private readonly int elementsPerPage;
         private readonly VisualElementConcealer concealer;
 
@@ -65,7 +94,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private void Update()
         {
-            if (data.Count == 0)
+            if (mValue.Count == 0)
             {
                 controlsContainer.AddToClassList("hidden");
                 concealer.SetVisibility(true);
@@ -90,7 +119,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         private void CalculatePages()
         {
-            numPages = Mathf.CeilToInt((float) data.Count / elementsPerPage);
+            numPages = Mathf.CeilToInt((float) mValue.Count / elementsPerPage);
             numPages = Mathf.Clamp(numPages, 1, numPages);
             currentPage = Mathf.Clamp(currentPage, 0, numPages - 1);
 
@@ -101,7 +130,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         {
             // Calculate slice of list to be rendered.
             var firstIndex = currentPage * elementsPerPage;
-            var length = Math.Min(elementsPerPage, data.Count - firstIndex);
+            var length = Math.Min(elementsPerPage, mValue.Count - firstIndex);
 
             // If the child count is the same, don't adjust it.
             // If the child count is less, add the requisite number.
@@ -113,16 +142,18 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             {
                 for (var i = 0; i < diff; i++)
                 {
-                    var element = container.ElementAt(container.childCount - 1);
+                    var element = (TElement) container.ElementAt(container.childCount - 1);
                     container.RemoveAt(container.childCount - 1);
-                    elementPool.Return((TElement) element);
+                    elementPool.Return(element);
                 }
             }
             else if (diff < 0)
             {
                 for (var i = diff; i < 0; i++)
                 {
-                    container.Add(elementPool.GetOrCreate());
+                    var element = elementPool.GetOrCreate();
+                    element.RegisterValueChangedCallback(change => OnElementChange(element, change));
+                    container.Add(element);
                 }
             }
 
@@ -130,7 +161,9 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             var elementIndex = firstIndex;
             foreach (var child in container.Children())
             {
-                bindElement(elementIndex, data[elementIndex], (TElement) child);
+                var element = (TElement) child;
+                elementToIndex[element] = elementIndex;
+                bindElement(elementIndex, mValue[elementIndex], element);
                 elementIndex++;
             }
 
@@ -140,33 +173,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         public void SetValueWithoutNotify(List<TData> newValue)
         {
-            data = value;
+            mValue = newValue;
             Update();
         }
 
-        public List<TData> value
+        private void OnElementChange(TElement element, ChangeEvent<TData> change)
         {
-            get => data;
-            set
-            {
-                if (EqualityComparer<List<TData>>.Default.Equals(data, value))
-                {
-                    return;
-                }
+            var index = elementToIndex[element];
+            value[index] = change.newValue;
 
-                SetValueWithoutNotify(value);
-
-                if (panel == null)
-                {
-                    return;
-                }
-
-                using (var pooled = ChangeEvent<List<TData>>.GetPooled(data, value))
-                {
-                    pooled.target = this;
-                    SendEvent(pooled);
-                }
-            }
+            // Trigger change event.
+            value = value;
         }
     }
 

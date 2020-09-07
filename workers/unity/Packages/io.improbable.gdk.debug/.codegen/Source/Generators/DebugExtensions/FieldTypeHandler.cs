@@ -67,7 +67,7 @@ namespace Improbable.Gdk.CodeGenerator
                     var element = optionFieldType.IsNullable ? "NullableVisualElement" : "OptionVisualElement";
 
                     yield return
-                        $"{fieldDetails.CamelCaseName}Field = new {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", {fieldDetails.CamelCaseName}InnerField, (element, data) => {{ {ContainedTypeToUiFieldUpdate(optionFieldType.ContainedType, "element", "data")} }});";
+                        $"{fieldDetails.CamelCaseName}Field = new {element}<{innerUiType}, {optionFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", {fieldDetails.CamelCaseName}InnerField);";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
                 case ListFieldType listFieldType:
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.CodeGenerator
                         yield return initializer;
                     }
 
-                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.KeyType, "element", "data")} }},";
+                    yield return $"return inner; }},";
 
                     yield return "() => {";
 
@@ -112,7 +112,7 @@ namespace Improbable.Gdk.CodeGenerator
                         yield return initializer;
                     }
 
-                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.ValueType, "element", "data")} }});";
+                    yield return $"return inner; }});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
                 default:
@@ -140,6 +140,21 @@ namespace Improbable.Gdk.CodeGenerator
         {
             var inner = GetUiFieldType(containedType);
 
+            if (containedType.Category == ValueType.Enum)
+            {
+                if (newVariable)
+                {
+                    yield return $"var {uiElementName} = new {inner}(\"{label}\", (enumValue) => enumValue);";
+                }
+                else
+                {
+                    yield return $"{uiElementName} = new {inner}(\"{label}\", (enumValue) => enumValue);";
+                }
+
+                yield return $"{uiElementName}.Init(default({containedType.FqnType}));";
+                yield break;
+            }
+
             if (newVariable)
             {
                 yield return $"var {uiElementName} = new {inner}(\"{label}\");";
@@ -153,11 +168,6 @@ namespace Improbable.Gdk.CodeGenerator
             if (containedType.Category != ValueType.Type)
             {
                 yield return $"{uiElementName}.SetEnabled(false);";
-            }
-
-            if (containedType.Category == ValueType.Enum)
-            {
-                yield return $"{uiElementName}.Init(default({containedType.FqnType}));";
             }
         }
 
@@ -173,22 +183,20 @@ namespace Improbable.Gdk.CodeGenerator
                     {
                         case PrimitiveType.Int32:
                         case PrimitiveType.Int64:
-                        case PrimitiveType.Uint32:
-                        case PrimitiveType.Uint64:
                         case PrimitiveType.Sint32:
                         case PrimitiveType.Sint64:
-                        case PrimitiveType.Fixed32:
-                        case PrimitiveType.Fixed64:
                         case PrimitiveType.Sfixed32:
                         case PrimitiveType.Sfixed64:
                         case PrimitiveType.Float:
                         case PrimitiveType.Double:
-                        case PrimitiveType.String:
                         case PrimitiveType.EntityId:
                         case PrimitiveType.Entity:
-                            return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor}.ToString());";
+                        case PrimitiveType.Uint32:
+                        case PrimitiveType.Uint64:
+                        case PrimitiveType.Fixed32:
+                        case PrimitiveType.Fixed64:
+                        case PrimitiveType.String:
                         case PrimitiveType.Bytes:
-                            return $"{uiElementName}.SetValueWithoutNotify(global::System.Text.Encoding.Default.GetString({fieldAccessor}));";
                         case PrimitiveType.Bool:
                             return $"{uiElementName}.SetValueWithoutNotify({fieldAccessor});";
                         case PrimitiveType.Invalid:
@@ -208,27 +216,36 @@ namespace Improbable.Gdk.CodeGenerator
             switch (type.Category)
             {
                 case ValueType.Enum:
-                    return "EnumField";
+                    return $"TypedEnumField<{type.FqnType}>";
                 case ValueType.Primitive:
                     switch (type.PrimitiveType.Value)
                     {
                         case PrimitiveType.Int32:
-                        case PrimitiveType.Int64:
-                        case PrimitiveType.Uint32:
-                        case PrimitiveType.Uint64:
                         case PrimitiveType.Sint32:
-                        case PrimitiveType.Sint64:
-                        case PrimitiveType.Fixed32:
-                        case PrimitiveType.Fixed64:
                         case PrimitiveType.Sfixed32:
+                            return "IntegerField";
+                        case PrimitiveType.Sint64:
+                        case PrimitiveType.Int64:
                         case PrimitiveType.Sfixed64:
+                            return "LongField";
                         case PrimitiveType.Float:
+                            return "FloatField";
                         case PrimitiveType.Double:
-                        case PrimitiveType.String:
+                            return "DoubleField";
+                        case PrimitiveType.Fixed32:
+                        case PrimitiveType.Uint32:
+                            return "UnsignedIntegerField";
                         case PrimitiveType.EntityId:
-                        case PrimitiveType.Bytes:
+                            return "EntityIdField";
                         case PrimitiveType.Entity:
+                            return "EntitySnapshotField";
+                        case PrimitiveType.Fixed64:
+                        case PrimitiveType.Uint64:
+                            return "UnsignedLongField";
+                        case PrimitiveType.String:
                             return "TextField";
+                        case PrimitiveType.Bytes:
+                            return "BytesField";
                         case PrimitiveType.Bool:
                             return "Toggle";
                         case PrimitiveType.Invalid:

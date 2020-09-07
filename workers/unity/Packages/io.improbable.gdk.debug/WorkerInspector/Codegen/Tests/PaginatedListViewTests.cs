@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
@@ -33,7 +34,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
 
             for (var i = 0; i < elements.Count; i++)
             {
-                Assert.AreEqual(i, ((PaginatedListViewObserver.DummyElement) elements[i]).Index);
+                Assert.AreEqual(i, ((IntegerField) elements[i]).value);
             }
         }
 
@@ -88,7 +89,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             for (var i = 0; i < elements.Count; i++)
             {
                 var expectedIndex = i + 5; // We expect to be on the second page.
-                Assert.AreEqual(expectedIndex, ((PaginatedListViewObserver.DummyElement) elements[i]).Index);
+                Assert.AreEqual(expectedIndex, ((IntegerField) elements[i]).value);
             }
         }
 
@@ -106,7 +107,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
 
             for (var i = 0; i < elements.Count; i++)
             {
-                Assert.AreEqual(i, ((PaginatedListViewObserver.DummyElement) elements[i]).Index);
+                Assert.AreEqual(i, ((IntegerField) elements[i]).value);
             }
         }
 
@@ -126,7 +127,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             for (var i = 0; i < elements.Count; i++)
             {
                 var expectedIndex = i + 5; // We expect to be on the second page.
-                Assert.AreEqual(expectedIndex, ((PaginatedListViewObserver.DummyElement) elements[i]).Index);
+                Assert.AreEqual(expectedIndex, ((IntegerField) elements[i]).value);
             }
         }
 
@@ -140,15 +141,15 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
                     .Q<VisualElement>(className: "user-defined-type-container-data")
                     .Children();
 
-            private readonly PaginatedListView<DummyElement, int> listView;
+            private readonly PaginatedListView<IntegerField, int> listView;
 
             public PaginatedListViewObserver(int elementsPerPage)
             {
-                listView = new PaginatedListView<DummyElement, int>("My List",
-                    () => new DummyElement(),
+                listView = new PaginatedListView<IntegerField, int>("My List",
+                    () => new IntegerField(),
                     (index, _, element) =>
                     {
-                        element.Index = index;
+                        element.value = index;
                     }, elementsPerPage);
             }
 
@@ -165,11 +166,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             public void UpdateData(List<int> data)
             {
                 listView.SetValueWithoutNotify(data);
-            }
-
-            public class DummyElement : VisualElement
-            {
-                public int Index;
             }
         }
 
