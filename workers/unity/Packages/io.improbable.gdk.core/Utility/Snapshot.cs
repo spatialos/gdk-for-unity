@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Improbable.Worker.CInterop;
 using UnityEngine;
@@ -7,10 +8,10 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Convenience wrapper around the WorkerSDK Snapshot API.
     /// </summary>
-    public class Snapshot
+    public class Snapshot : IDisposable
     {
+        private const int PersistenceComponentId = 55;
         private readonly Dictionary<EntityId, Entity> entities = new Dictionary<EntityId, Entity>();
-
         public int Count => entities.Count;
 
         private long nextEntityId = 1;
@@ -21,7 +22,7 @@ namespace Improbable.Gdk.Core
         /// <returns>The next available entity ID.</returns>
         public EntityId GetNextEntityId()
         {
-            while (!IsValid(new EntityId(nextEntityId)))
+            while (Contains(new EntityId(nextEntityId)))
             {
                 nextEntityId++;
             }
@@ -30,13 +31,13 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
-        ///     Checks if an entityId is valid
+        ///     Checks if the snapshot contains an entity ID
         /// </summary>
         /// <param name="entityId">The entity ID to check for</param>
-        /// <returns></returns>
-        public bool IsValid(EntityId entityId)
+        /// <returns> true if the snapshot contains the input entity ID, false otherwise </returns>
+        public bool Contains(EntityId entityId)
         {
-            return !entities.ContainsKey(entityId);
+            return entities.ContainsKey(entityId);
         }
 
         /// <summary>
@@ -67,10 +68,13 @@ namespace Improbable.Gdk.Core
         {
             if (entities.ContainsKey(entityId))
             {
-                Debug.LogWarning($"Overwriting EntityId {entityId.Id} in Snapshot");
+                throw new ArgumentException($"EntityId {entityId} already exists in the snapshot");
             }
 
-            entities[entityId] = entityTemplate.GetEntity();
+            var entity = entityTemplate.GetEntity();
+            // This is a no-op if the entity already has persistence.
+            entity.Add(new ComponentData(PersistenceComponentId, SchemaComponentData.Create()));
+            entities[entityId] = entity;
         }
 
         /// <summary>
@@ -99,5 +103,19 @@ namespace Improbable.Gdk.Core
                 }
             }
         }
+
+        public void Dispose()
+        {
+            foreach (var entity in entities.Values)
+            {
+                foreach (var id in entity.GetComponentIds())
+                {
+                    var componentData = entity.Get(id).Value;
+                    componentData.SchemaData?.Destroy();
+                }
+            }
+        }
+
+        internal Entity this[EntityId entityId] => entities[entityId];
     }
 }
