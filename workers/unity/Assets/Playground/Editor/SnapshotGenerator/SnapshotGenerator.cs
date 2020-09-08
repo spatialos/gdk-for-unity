@@ -23,6 +23,7 @@ namespace Playground.Editor.SnapshotGenerator
 
             Debug.Log($"Writing snapshot to: {arguments.OutputPath}");
             snapshot.WriteToFile(arguments.OutputPath);
+            snapshot.Dispose();
         }
 
         private static Snapshot CreateSnapshot(int cubeCount)
