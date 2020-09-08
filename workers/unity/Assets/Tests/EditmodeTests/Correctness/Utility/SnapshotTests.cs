@@ -26,7 +26,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void IsValid_returns_false_if_entityId_does_not_exists()
+        public void Contains_returns_false_if_entityId_does_not_exists()
         {
             var entityId = snapshot.GetNextEntityId();
             Assert.IsFalse(snapshot.Contains(entityId));
