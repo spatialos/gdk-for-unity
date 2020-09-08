@@ -7,8 +7,7 @@
 - The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
 - Upgraded Unity Entities to 0.14.0-preview.18. [#1463](https://github.com/spatialos/gdk-for-unity/pull/1463)
   - Projects now require the `Unity Web Request` built-in package to compile for iOS and Android.
-- Added new features to the `Snapshot` class [#1479](https://github.com/spatialos/gdk-for-unity/pull/1479)
-  - Adding duplicate entity ID now throws an exception
+- Adding an entity to the `Snapshot` class with a duplicate entity ID now throws an exception. [#1479](https://github.com/spatialos/gdk-for-unity/pull/1479)
 
 ### Added
 
@@ -16,9 +15,9 @@
 - Added Event Tracing API. [#1452](https://github.com/spatialos/gdk-for-unity/pull/1452)
 - Added tooltips to the SpatialOS Project Settings. [#1470](https://github.com/spatialos/gdk-for-unity/pull/1470)
 - Added new features to the `Snapshot` class [#1479](https://github.com/spatialos/gdk-for-unity/pull/1479)
-  - Added method to check if snap shot contains an `EntityId`
-  - Improve search for next available `EntityId`
-  - `Snapshot` auto-adds `Persistence` when adding entities
+  - Added the `Contains(EntityId entityId)` method to check if snapshot already contains an `EntityId`
+  - Improved the search for next available `EntityId`, it will no longer return already used `EntityId`s.
+  - `Snapshot` now auto-adds `Persistence` when adding entities
   - `Snapshot` now implements `IDisposable`
 
 ### Changed
