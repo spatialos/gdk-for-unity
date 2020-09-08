@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -21,6 +23,11 @@ namespace Improbable.Gdk.Core
         /// <returns>The next available entity ID.</returns>
         public EntityId GetNextEntityId()
         {
+            while (!IsValid(new EntityId(nextEntityId)))
+            {
+                nextEntityId++;
+            }
+
             return new EntityId(nextEntityId++);
         }
 
@@ -40,6 +47,16 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
+        ///     Checks if an entityId is valid
+        /// </summary>
+        /// <param name="entityId">The entity ID to check for</param>
+        /// <returns></returns>
+        public bool IsValid(EntityId entityId)
+        {
+            return !entities.ContainsKey(entityId);
+        }
+
+        /// <summary>
         ///     Adds an entity to the snapshot
         /// </summary>
         /// <param name="entityId">The entity ID of the entity to be added to the snapshot</param>
@@ -50,6 +67,11 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public void AddEntity(EntityId entityId, EntityTemplate entityTemplate)
         {
+            if (entities.ContainsKey(entityId))
+            {
+                Debug.LogWarning($"Overwriting EntityId {entityId.Id} in Snapshot");
+            }
+
             entities[entityId] = entityTemplate.GetEntity();
         }
 
