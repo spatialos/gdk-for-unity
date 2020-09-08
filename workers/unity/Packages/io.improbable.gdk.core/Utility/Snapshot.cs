@@ -30,6 +30,16 @@ namespace Improbable.Gdk.Core
         }
 
         /// <summary>
+        ///     Checks if an entityId is valid
+        /// </summary>
+        /// <param name="entityId">The entity ID to check for</param>
+        /// <returns></returns>
+        public bool IsValid(EntityId entityId)
+        {
+            return !entities.ContainsKey(entityId);
+        }
+
+        /// <summary>
         ///     Adds an entity to the snapshot
         /// </summary>
         /// <remarks>
@@ -42,16 +52,6 @@ namespace Improbable.Gdk.Core
             var entityId = GetNextEntityId();
             AddEntity(entityId, entityTemplate);
             return entityId;
-        }
-
-        /// <summary>
-        ///     Checks if an entityId is valid
-        /// </summary>
-        /// <param name="entityId">The entity ID to check for</param>
-        /// <returns></returns>
-        public bool IsValid(EntityId entityId)
-        {
-            return !entities.ContainsKey(entityId);
         }
 
         /// <summary>
