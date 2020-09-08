@@ -8,12 +8,11 @@ namespace Improbable.Gdk.Core
     /// <summary>
     ///     Convenience wrapper around the WorkerSDK Snapshot API.
     /// </summary>
-    public class Snapshot : IDisposable
+    public sealed class Snapshot : IDisposable
     {
         private const int PersistenceComponentId = 55;
         private readonly Dictionary<EntityId, Entity> entities = new Dictionary<EntityId, Entity>();
         public int Count => entities.Count;
-
         private long nextEntityId = 1;
 
         /// <summary>
