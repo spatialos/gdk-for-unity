@@ -51,7 +51,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 foreach (var field in details.FieldDetails)
                 {
-                    mb.TextList(typeGenerator.ToFieldInitialisation(field, "ComponentFoldout"));
+                    mb.TextList(typeGenerator.ToFieldInitialisation(field, "ComponentFoldout", "0"));
                 }
 
                 mb.Line($"InjectComponentIcon(\"{GetComponentIcon(details)}\");");

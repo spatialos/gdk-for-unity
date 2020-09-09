@@ -12,9 +12,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 
         protected readonly VisualElement Container;
         private readonly Label labelElement;
+        protected readonly uint nestingLevel;
 
-        protected SchemaTypeVisualElement(string label)
+        protected SchemaTypeVisualElement(string label, uint nest = 1)
         {
+            nestingLevel = nest;
             AddToClassList("user-defined-type-container");
 
             labelElement = new Label(label);

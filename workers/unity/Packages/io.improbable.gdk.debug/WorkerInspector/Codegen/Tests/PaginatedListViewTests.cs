@@ -145,11 +145,11 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen.EditmodeTests
             public PaginatedListViewObserver(int elementsPerPage)
             {
                 listView = new PaginatedListView<DummyElement, int>("My List",
-                    () => new DummyElement(),
+                    i => new DummyElement(),
                     (index, _, element) =>
                     {
                         element.Index = index;
-                    }, elementsPerPage);
+                    }, 0, elementsPerPage);
             }
 
             public void TryPageForward()
