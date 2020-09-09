@@ -19,10 +19,11 @@ namespace Playground.Editor.SnapshotGenerator
         public static void Generate(Arguments arguments)
         {
             Debug.Log("Generating snapshot.");
-            var snapshot = CreateSnapshot(arguments.NumberEntities);
-
-            Debug.Log($"Writing snapshot to: {arguments.OutputPath}");
-            snapshot.WriteToFile(arguments.OutputPath);
+            using (var snapshot = CreateSnapshot(arguments.NumberEntities))
+            {
+                Debug.Log($"Writing snapshot to: {arguments.OutputPath}");
+                snapshot.WriteToFile(arguments.OutputPath);
+            }
         }
 
         private static Snapshot CreateSnapshot(int cubeCount)
