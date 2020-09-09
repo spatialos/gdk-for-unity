@@ -1,5 +1,5 @@
 package playground;
-
+import "playground/shared.schema";
 import "improbable/gdk/editor/worker_inspector.schema";
 
 enum Color {
@@ -13,10 +13,16 @@ type ColorData {
     Color color = 1;
 }
 
+type VecList {
+    list<playground.Vector3f> c_list = 1;
+}
+
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]
 component CubeColor {
     id = 12000;
     event ColorData change_color;
+    VecList v_list = 1;
+    map<int32, VecList> v_map = 2;
 }
 
 [improbable.gdk.editor.ComponentIcon("PreTextureRGB")]

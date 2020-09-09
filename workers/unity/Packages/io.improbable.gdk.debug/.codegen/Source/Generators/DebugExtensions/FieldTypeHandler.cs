@@ -74,9 +74,9 @@ namespace Improbable.Gdk.CodeGenerator
                     var innerListType = GetUiFieldType(listFieldType.ContainedType);
 
                     yield return
-                        $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", i => {{";
+                        $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", () => {{";
 
-                    foreach (var initializer in GetFieldInitializer(listFieldType.ContainedType, "inner", "", "i"))
+                    foreach (var initializer in GetFieldInitializer(listFieldType.ContainedType, "inner", "", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
@@ -87,7 +87,7 @@ namespace Improbable.Gdk.CodeGenerator
                     var labelBinding = listFieldType.ContainedType.Category == ValueType.Type ? "Label" : "label";
                     yield return $"element.{labelBinding} = $\"Item {{index + 1}}\";";
                     yield return ContainedTypeToUiFieldUpdate(listFieldType.ContainedType, "element", "data");
-                    yield return $"}}, {nestVar});";
+                    yield return $"}});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
                 case MapFieldType mapFieldType:
@@ -96,23 +96,23 @@ namespace Improbable.Gdk.CodeGenerator
 
                     yield return
                         $"{fieldDetails.CamelCaseName}Field = new PaginatedMapView<{innerKeyType}, {mapFieldType.KeyType.FqnType}, {innerValueType}, {mapFieldType.ValueType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\",";
-                    yield return "i => {";
+                    yield return "() => {";
 
-                    foreach (var initializer in GetFieldInitializer(mapFieldType.KeyType, "inner", "Key", "i"))
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.KeyType, "inner", "Key", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
 
                     yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.KeyType, "element", "data")} }},";
 
-                    yield return "i => {";
+                    yield return "() => {";
 
-                    foreach (var initializer in GetFieldInitializer(mapFieldType.ValueType, "inner", "Value", "i"))
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.ValueType, "inner", "Value", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
 
-                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.ValueType, "element", "data")} }}, {nestVar});";
+                    yield return $"return inner; }}, (data, element) => {{ {ContainedTypeToUiFieldUpdate(mapFieldType.ValueType, "element", "data")} }});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
                 default:

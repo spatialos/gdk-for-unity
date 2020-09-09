@@ -24,14 +24,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly Button forwardButton;
         private readonly Button backButton;
         private readonly Label pageCounter;
-        private readonly uint nestingLevel;
 
         private int currentPage = 0;
         private int numPages = 0;
 
-        public PaginatedListView(string label, Func<uint, TElement> makeElement, Action<int, TData, TElement> bindElement, uint nest, int elementsPerPage = 5)
+        public PaginatedListView(string label, Func<TElement> makeElement, Action<int, TData, TElement> bindElement, int elementsPerPage = 5)
         {
-            nestingLevel = nest;
             this.bindElement = bindElement;
             this.elementsPerPage = elementsPerPage;
 
@@ -50,7 +48,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
             forwardButton = this.Q<Button>(name: "forward-button");
             forwardButton.clickable.clicked += () => ChangePageCount(1);
 
-            elementPool = new ElementPool<TElement>(makeElement, nest);
+            elementPool = new ElementPool<TElement>(makeElement);
 
             concealer = new VisualElementConcealer(this);
         }
@@ -146,18 +144,17 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     internal class ElementPool<TElement> where TElement : VisualElement
     {
         private readonly Stack<TElement> pool = new Stack<TElement>();
-        private readonly Func<uint, TElement> makeElement;
+        private readonly Func<TElement> makeElement;
         private readonly uint nestingLevel;
 
-        public ElementPool(Func<uint, TElement> makeElement, uint nest = 0)
+        public ElementPool(Func<TElement> makeElement)
         {
-            nestingLevel = nest;
             this.makeElement = makeElement;
         }
 
         public TElement GetOrCreate()
         {
-            return pool.Count == 0 ? makeElement(nestingLevel + 1) : pool.Pop();
+            return pool.Count == 0 ? makeElement() : pool.Pop();
         }
 
         public void Return(TElement element)

@@ -13,12 +13,12 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly Comparer<TKeyData> comparer = Comparer<TKeyData>.Default;
         private readonly VisualElementConcealer concealer;
 
-        public PaginatedMapView(string label, Func<uint, TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
-            Func<uint, TValueElement> makeValue, Action<TValueData, TValueElement> bindValue, uint nest)
+        public PaginatedMapView(string label, Func<TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
+            Func<TValueElement> makeValue, Action<TValueData, TValueElement> bindValue)
         {
             list = new PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>>(label,
-                i => new KeyValuePairElement(makeKey(i), makeValue(i), bindKey, bindValue),
-                (index, kvp, element) => element.Update(kvp), nest);
+                () => new KeyValuePairElement(makeKey(), makeValue(), bindKey, bindValue),
+                (index, kvp, element) => element.Update(kvp));
 
             Add(list);
             concealer = new VisualElementConcealer(this);
