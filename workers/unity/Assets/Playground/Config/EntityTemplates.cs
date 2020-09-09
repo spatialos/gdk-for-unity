@@ -70,21 +70,7 @@ namespace Playground
             template.AddComponent(new Position.Snapshot(location.ToCoordinates()), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot());
-            template.AddComponent(new CubeColor.Snapshot(new VecList(new List<Vector3f>
-            {
-                new Vector3f(0,1,2),
-                new Vector3f(3,4,5)
-            }), new Dictionary<int, VecList>
-            {
-                {0, new VecList(new List<Vector3f>{
-                    new Vector3f(0,1,2),
-                    new Vector3f(3,4,5)
-                })},
-                {1, new VecList(new List<Vector3f>{
-                    new Vector3f(0,1,2),
-                    new Vector3f(3,4,5)
-                })},
-            }), WorkerUtils.UnityGameLogic);
+            template.AddComponent(new CubeColor.Snapshot(), WorkerUtils.UnityGameLogic);
             template.AddComponent(new CubeTargetVelocity.Snapshot(new Vector3f(-2.0f, 0, 0)),
                 WorkerUtils.UnityGameLogic);
             template.AddComponent(new Launchable.Snapshot(), WorkerUtils.UnityGameLogic);

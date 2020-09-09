@@ -145,7 +145,6 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
     {
         private readonly Stack<TElement> pool = new Stack<TElement>();
         private readonly Func<TElement> makeElement;
-        private readonly uint nestingLevel;
 
         public ElementPool(Func<TElement> makeElement)
         {
