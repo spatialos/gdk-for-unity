@@ -87,7 +87,7 @@ namespace Improbable.Gdk.CodeGenerator
                     var labelBinding = listFieldType.ContainedType.Category == ValueType.Type ? "Label" : "label";
                     yield return $"element.{labelBinding} = $\"Item {{index + 1}}\";";
                     yield return ContainedTypeToUiFieldUpdate(listFieldType.ContainedType, "element", "data");
-                    yield return $"}});";
+                    yield return "});";
                     yield return $"{parentContainer}.Add({fieldDetails.CamelCaseName}Field);";
                     break;
                 case MapFieldType mapFieldType:
