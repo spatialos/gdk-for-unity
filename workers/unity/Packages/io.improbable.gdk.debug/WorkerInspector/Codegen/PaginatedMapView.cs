@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly VisualElementConcealer concealer;
 
         public PaginatedMapView(string label, Func<uint, TKeyElement> makeKey, Action<TKeyData, TKeyElement> bindKey,
-            Func<uint, TValueElement> makeValue, Action<TValueData, TValueElement> bindValue, uint nest = 0)
+            Func<uint, TValueElement> makeValue, Action<TValueData, TValueElement> bindValue, uint nest)
         {
             list = new PaginatedListView<KeyValuePairElement, KeyValuePair<TKeyData, TValueData>>(label,
                 i => new KeyValuePairElement(makeKey(i), makeValue(i), bindKey, bindValue),

@@ -1,4 +1,5 @@
 package playground;
+
 import "improbable/gdk/editor/worker_inspector.schema";
 
 enum Color {

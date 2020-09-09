@@ -29,7 +29,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private int currentPage = 0;
         private int numPages = 0;
 
-        public PaginatedListView(string label, Func<uint, TElement> makeElement, Action<int, TData, TElement> bindElement, uint nest = 0, int elementsPerPage = 5)
+        public PaginatedListView(string label, Func<uint, TElement> makeElement, Action<int, TData, TElement> bindElement, uint nest, int elementsPerPage = 5)
         {
             nestingLevel = nest;
             this.bindElement = bindElement;

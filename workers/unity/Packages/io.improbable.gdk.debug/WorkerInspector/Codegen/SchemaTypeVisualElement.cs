@@ -14,7 +14,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
         private readonly Label labelElement;
         protected readonly uint nestingLevel;
 
-        protected SchemaTypeVisualElement(string label, uint nest = 1)
+        protected SchemaTypeVisualElement(string label, uint nest)
         {
             nestingLevel = nest;
             AddToClassList("user-defined-type-container");
