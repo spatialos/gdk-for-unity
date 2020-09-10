@@ -22,7 +22,6 @@ namespace Improbable.Gdk.Subscriptions
             foreach (var entityId in entitySystem.EntitiesAdded)
             {
                 callbackCollection.InvokeAll(entityId);
-                Debug.Log($"EntityAdded: {entityId}");
             }
         }
 
