@@ -73,10 +73,6 @@ namespace Improbable.Gdk.Core
             bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             removed = new EntityCollection(1);
             added = new EntityCollection(1);
-            var builder = new EntityQueryBuilder()
-                .WithAll<EntitySystemStateComponent>()
-                .WithNone<SpatialEntityId>()
-                .ToEntityQueryDesc();
         }
 
         protected override void OnUpdate()
