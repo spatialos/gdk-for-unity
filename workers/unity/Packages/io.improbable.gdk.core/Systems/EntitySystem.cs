@@ -1,61 +1,130 @@
-using System.Collections.Generic;
+using System;
+using Unity.Collections;
 using Unity.Entities;
-using Unity.Profiling;
+using Unity.Jobs;
 
 namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     [UpdateInGroup(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
-    [UpdateBefore(typeof(SpatialOSReceiveSystem))]
-    public class EntitySystem : ComponentSystem
+    [UpdateAfter(typeof(SpatialOSReceiveSystem))]
+    public class EntitySystem : SystemBase
     {
-        public int ViewVersion { get; private set; }
-
-        private readonly List<EntityId> entitiesAdded = new List<EntityId>();
-        private readonly List<EntityId> entitiesRemoved = new List<EntityId>();
-
-        private ProfilerMarker applyDiffMarker = new ProfilerMarker("EntitySystem.ApplyDiff");
-
-        public List<EntityId> GetEntitiesAdded()
+        private struct EntityCollection : IDisposable
         {
-            return entitiesAdded;
-        }
+            public NativeArray<EntityId> EntityIds { get; private set; }
+            public int EntityCount { get; private set; }
+            public JobHandle JobHandle { get; set; }
 
-        public List<EntityId> GetEntitiesRemoved()
-        {
-            return entitiesRemoved;
-        }
-
-        internal void ApplyDiff(ViewDiff diff)
-        {
-            using (applyDiffMarker.Auto())
+            public EntityCollection(int size)
             {
-                entitiesAdded.Clear();
-                entitiesRemoved.Clear();
+                EntityIds = new NativeArray<EntityId>(size, Allocator.Persistent);
+                EntityCount = 0;
+                JobHandle = default;
+            }
 
-                // todo decide on a container and remove this
-                foreach (var entityId in diff.GetEntitiesAdded())
+            public NativeSlice<EntityId> Slice
+            {
+                get
                 {
-                    entitiesAdded.Add(entityId);
+                    JobHandle.Complete();
+                    return new NativeSlice<EntityId>(EntityIds, 0, EntityCount);
+                }
+            }
+
+            public void EnsureSize(ref EntityQuery query)
+            {
+                EntityCount = query.CalculateEntityCount();
+                if (EntityIds.Length >= EntityCount)
+                {
+                    return;
                 }
 
-                foreach (var entityId in diff.GetEntitiesRemoved())
+                if (EntityIds.IsCreated)
                 {
-                    entitiesRemoved.Add(entityId);
+                    EntityIds.Dispose();
                 }
 
-                if (entitiesAdded.Count != 0 || entitiesRemoved.Count != 0)
+                EntityIds = new NativeArray<EntityId>(EntityCount, Allocator.Persistent);
+            }
+
+            public void Dispose()
+            {
+                if (EntityIds.IsCreated)
                 {
-                    ViewVersion += 1;
+                    EntityIds.Dispose();
                 }
             }
         }
 
+        private EndSimulationEntityCommandBufferSystem bufferSystem;
+        private EntityCollection added;
+        private EntityQuery addedQuery;
+        private EntityCollection removed;
+        private EntityQuery removedQuery;
+        public int ViewVersion { get; private set; }
+        public NativeSlice<EntityId> EntitiesRemoved => removed.Slice;
+        public NativeSlice<EntityId> EntitiesAdded => added.Slice;
+
+        protected override void OnCreate()
+        {
+            base.OnCreate();
+            bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
+            removed = new EntityCollection(1);
+            added = new EntityCollection(1);
+            var builder = new EntityQueryBuilder()
+                .WithAll<EntitySystemStateComponent>()
+                .WithNone<SpatialEntityId>()
+                .ToEntityQueryDesc();
+        }
+
         protected override void OnUpdate()
         {
-            entitiesAdded.Clear();
-            entitiesRemoved.Clear();
+            added.EnsureSize(ref addedQuery);
+            {
+                var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
+                var array = added.EntityIds;
+                added.JobHandle = Entities.WithName("EntitiesAdded")
+                    .WithNone<EntitySystemStateComponent>()
+                    .WithAll<SpatialEntityId>()
+                    .WithStoreEntityQueryInField(ref addedQuery)
+                    .ForEach((int entityInQueryIndex, in Entity entity, in SpatialEntityId entityId) =>
+                    {
+                        buffer.AddComponent(entityInQueryIndex, entity, (EntitySystemStateComponent) entityId);
+                        array[entityInQueryIndex] = entityId.EntityId;
+                    }).ScheduleParallel(Dependency);
+            }
+
+            removed.EnsureSize(ref removedQuery);
+            {
+                var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
+                var array = removed.EntityIds;
+                removed.JobHandle = Entities.WithName("EntitiesRemoved")
+                    .WithAll<EntitySystemStateComponent>()
+                    .WithNone<SpatialEntityId>()
+                    .WithStoreEntityQueryInField(ref removedQuery)
+                    .ForEach((int entityInQueryIndex, in Entity entity, in EntitySystemStateComponent entityId) =>
+                    {
+                        buffer.RemoveComponent<EntitySystemStateComponent>(entityInQueryIndex, entity);
+                        array[entityInQueryIndex] = entityId.EntityId;
+                    }).ScheduleParallel(Dependency);
+            }
+
+            Dependency = JobHandle.CombineDependencies(added.JobHandle, removed.JobHandle);
+            bufferSystem.AddJobHandleForProducer(Dependency);
+
+            if (added.EntityCount != 0 || removed.EntityCount != 0)
+            {
+                ViewVersion += 1;
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+            removed.Dispose();
+            added.Dispose();
         }
     }
 }

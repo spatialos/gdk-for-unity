@@ -18,8 +18,7 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeCallbacks()
         {
-            var entities = entitySystem.GetEntitiesRemoved();
-            foreach (var entityId in entities)
+            foreach (var entityId in entitySystem.EntitiesRemoved)
             {
                 callbackCollection.InvokeAllReverse(entityId);
             }

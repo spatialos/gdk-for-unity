@@ -14,7 +14,6 @@ namespace Improbable.Gdk.Core
     {
         private WorkerSystem workerSystem;
         private EcsViewSystem ecsViewSystem;
-        private EntitySystem entitySystem;
         private NetworkStatisticsSystem networkStatisticsSystem;
 
         protected override void OnCreate()
@@ -23,7 +22,6 @@ namespace Improbable.Gdk.Core
 
             workerSystem = World.GetExistingSystem<WorkerSystem>();
             ecsViewSystem = World.GetOrCreateSystem<EcsViewSystem>();
-            entitySystem = World.GetOrCreateSystem<EntitySystem>();
             networkStatisticsSystem = World.GetOrCreateSystem<NetworkStatisticsSystem>();
         }
 
@@ -32,10 +30,8 @@ namespace Improbable.Gdk.Core
             try
             {
                 workerSystem.Tick();
-
                 var diff = workerSystem.Diff;
                 ecsViewSystem.ApplyDiff(diff);
-                entitySystem.ApplyDiff(diff);
                 networkStatisticsSystem.ApplyDiff(diff);
             }
             catch (Exception e)

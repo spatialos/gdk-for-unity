@@ -1,6 +1,7 @@
 using System;
 using Improbable.Gdk.Core;
 using Unity.Entities;
+using UnityEngine;
 
 namespace Improbable.Gdk.Subscriptions
 {
@@ -18,10 +19,10 @@ namespace Improbable.Gdk.Subscriptions
 
         public void InvokeCallbacks()
         {
-            var entities = entitySystem.GetEntitiesAdded();
-            foreach (var entityId in entities)
+            foreach (var entityId in entitySystem.EntitiesAdded)
             {
                 callbackCollection.InvokeAll(entityId);
+                Debug.Log($"EntityAdded: {entityId}");
             }
         }
 
