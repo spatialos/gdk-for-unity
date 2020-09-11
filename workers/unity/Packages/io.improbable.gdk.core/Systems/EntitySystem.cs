@@ -13,36 +13,25 @@ namespace Improbable.Gdk.Core
     {
         private struct EntityCollection : IDisposable
         {
-            public NativeArray<EntityId> EntityIds { get; private set; }
+            public NativeList<EntityId> EntityIds;
             public int EntityCount { get; private set; }
             public JobHandle JobHandle { get; set; }
 
             public EntityCollection(int size)
             {
-                EntityIds = new NativeArray<EntityId>(size, Allocator.Persistent);
+                EntityIds = new NativeList<EntityId>(size, Allocator.Persistent);
                 EntityCount = 0;
                 JobHandle = default;
             }
 
-            public NativeSlice<EntityId> Slice
+            public void PrepareList(in EntityQuery query)
             {
-                get
-                {
-                    JobHandle.Complete();
-                    return new NativeSlice<EntityId>(EntityIds, 0, EntityCount);
-                }
-            }
-
-            public void EnsureSize(ref EntityQuery query)
-            {
+                EntityIds.Clear();
                 EntityCount = query.CalculateEntityCount();
-                if (EntityIds.Length >= EntityCount)
+                if (EntityIds.Capacity < EntityCount)
                 {
-                    return;
+                    EntityIds.Capacity = EntityCount; // Capacity will be >= EntityCount
                 }
-
-                EntityIds.Dispose();
-                EntityIds = new NativeArray<EntityId>(EntityCount << 1, Allocator.Persistent);
             }
 
             public void Dispose()
@@ -60,8 +49,24 @@ namespace Improbable.Gdk.Core
         private EntityCollection removed;
         private EntityQuery removedQuery; // This query needs to be a member of SystemBase
         public int ViewVersion { get; private set; }
-        public NativeSlice<EntityId> EntitiesRemoved => removed.Slice;
-        public NativeSlice<EntityId> EntitiesAdded => added.Slice;
+
+        public NativeList<EntityId> EntitiesRemoved
+        {
+            get
+            {
+                removed.JobHandle.Complete();
+                return removed.EntityIds;
+            }
+        }
+
+        public NativeList<EntityId> EntitiesAdded
+        {
+            get
+            {
+                added.JobHandle.Complete();
+                return added.EntityIds;
+            }
+        }
 
         protected override void OnCreate()
         {
@@ -73,10 +78,10 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            UpdateEntitiesAdded();
-            UpdateEntitiesRemoved();
+            var addedJob = UpdateEntitiesAdded();
+            var removedJob = UpdateEntitiesRemoved();
 
-            Dependency = JobHandle.CombineDependencies(added.JobHandle, removed.JobHandle);
+            Dependency = JobHandle.CombineDependencies(addedJob, removedJob);
             bufferSystem.AddJobHandleForProducer(Dependency);
 
             if (added.EntityCount != 0 || removed.EntityCount != 0)
@@ -85,36 +90,36 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private void UpdateEntitiesAdded()
+        private JobHandle UpdateEntitiesAdded()
         {
-            added.EnsureSize(ref addedQuery);
+            added.PrepareList(addedQuery);
             var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
-            var array = added.EntityIds;
+            var list = added.EntityIds.AsParallelWriter();
             added.JobHandle = Entities.WithName("EntitiesAdded")
                 .WithNone<EntitySystemStateComponent>()
-                .WithAll<SpatialEntityId>()
                 .WithStoreEntityQueryInField(ref addedQuery)
                 .ForEach((int entityInQueryIndex, in Entity entity, in SpatialEntityId entityId) =>
                 {
                     buffer.AddComponent(entityInQueryIndex, entity, (EntitySystemStateComponent) entityId);
-                    array[entityInQueryIndex] = entityId.EntityId;
+                    list.AddNoResize(entityId.EntityId);
                 }).ScheduleParallel(Dependency);
+            return added.JobHandle;
         }
 
-        private void UpdateEntitiesRemoved()
+        private JobHandle UpdateEntitiesRemoved()
         {
-            removed.EnsureSize(ref removedQuery);
+            removed.PrepareList(removedQuery);
             var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
-            var array = removed.EntityIds;
+            var list = removed.EntityIds.AsParallelWriter();
             removed.JobHandle = Entities.WithName("EntitiesRemoved")
-                .WithAll<EntitySystemStateComponent>()
                 .WithNone<SpatialEntityId>()
                 .WithStoreEntityQueryInField(ref removedQuery)
                 .ForEach((int entityInQueryIndex, in Entity entity, in EntitySystemStateComponent entityId) =>
                 {
                     buffer.RemoveComponent<EntitySystemStateComponent>(entityInQueryIndex, entity);
-                    array[entityInQueryIndex] = entityId.EntityId;
+                    list.AddNoResize(entityId.EntityId);
                 }).ScheduleParallel(Dependency);
+            return removed.JobHandle;
         }
 
         protected override void OnDestroy()

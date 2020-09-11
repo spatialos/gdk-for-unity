@@ -14,7 +14,8 @@
         "Unity.Entities.Hybrid",
         "Unity.PerformanceTesting",
         "UnityEditor.TestRunner",
-        "UnityEngine.TestRunner"
+        "UnityEngine.TestRunner",
+        "Unity.Collections"
     ],
     "includePlatforms": [
         "Editor"

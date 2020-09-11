@@ -10,7 +10,7 @@ namespace Improbable.Gdk.EditmodeTests.Core
     public class EntitySystemTests : MockBase
     {
         [TestCase(1)]
-        [TestCase(4)]
+        [TestCase(5)]
         [TestCase(7)]
         public void EntitiesAdded_contains_all_entities_added(int count)
         {
@@ -24,10 +24,10 @@ namespace Improbable.Gdk.EditmodeTests.Core
                 }
             }).Step(world =>
             {
-                var slice = system.EntitiesAdded;
-                Assert.AreEqual(count, slice.Length);
+                var list = system.EntitiesAdded;
+                Assert.AreEqual(count, list.Length);
                 var set = new HashSet<long>(toAdd);
-                foreach (var entityId in slice)
+                foreach (var entityId in list)
                 {
                     Assert.IsTrue(set.Contains(entityId.Id));
                 }
@@ -55,10 +55,10 @@ namespace Improbable.Gdk.EditmodeTests.Core
                 }
             }).Step(world =>
             {
-                var slice = system.EntitiesRemoved;
-                Assert.AreEqual(count, slice.Length);
+                var list = system.EntitiesRemoved;
+                Assert.AreEqual(count, list.Length);
                 var set = new HashSet<long>(toRemove);
-                foreach (var entityId in slice)
+                foreach (var entityId in list)
                 {
                     Assert.IsTrue(set.Contains(entityId.Id));
                 }
@@ -103,12 +103,12 @@ namespace Improbable.Gdk.EditmodeTests.Core
                 }
             }).Step(world =>
             {
-                var slice = system.EntitiesAdded;
-                Assert.AreEqual(0, slice.Length);
+                var list = system.EntitiesAdded;
+                Assert.AreEqual(0, list.Length);
             }).Step(world =>
             {
-                var slice = system.EntitiesRemoved;
-                Assert.AreEqual(0, slice.Length);
+                var list = system.EntitiesRemoved;
+                Assert.AreEqual(0, list.Length);
             });
         }
 
