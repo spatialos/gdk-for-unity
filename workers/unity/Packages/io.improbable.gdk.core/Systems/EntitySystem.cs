@@ -42,7 +42,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 EntityIds.Dispose();
-                EntityIds = new NativeArray<EntityId>(EntityCount, Allocator.Persistent);
+                EntityIds = new NativeArray<EntityId>(EntityCount << 1, Allocator.Persistent);
             }
 
             public void Dispose()
