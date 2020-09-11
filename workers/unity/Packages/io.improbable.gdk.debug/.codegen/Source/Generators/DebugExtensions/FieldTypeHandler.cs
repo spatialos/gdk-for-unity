@@ -158,7 +158,7 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 builder.Append($"new {inner}(\"{label}\");");
             }
-            
+
             return builder.ToString();
         }
 
