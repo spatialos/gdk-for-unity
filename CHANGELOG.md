@@ -8,6 +8,9 @@
 - Upgraded Unity Entities to 0.14.0-preview.18. [#1463](https://github.com/spatialos/gdk-for-unity/pull/1463)
   - Projects now require the `Unity Web Request` built-in package to compile for iOS and Android.
 - Adding an entity to the `Snapshot` class with a duplicate entity ID now throws an exception. [#1479](https://github.com/spatialos/gdk-for-unity/pull/1479)
+- Refactor `EntitySystem` to use a more Data-Oriented approach. [#1481](https://github.com/spatialos/gdk-for-unity/pull/1481)
+  - Methods `GetEntitiesAdded()` and `GetEntitiesRemoved()` are replaced by properties `EntitiesAdded` and `EntitiesRemoved`
+  - Entities added and removed collections are now `NativeSlice<EntityId>` instead of `List<EntityId>`
 
 ### Added
 
