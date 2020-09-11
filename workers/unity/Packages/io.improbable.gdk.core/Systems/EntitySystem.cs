@@ -2,6 +2,7 @@ using System;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -41,11 +42,7 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
-                if (EntityIds.IsCreated)
-                {
-                    EntityIds.Dispose();
-                }
-
+                EntityIds.Dispose();
                 EntityIds = new NativeArray<EntityId>(EntityCount, Allocator.Persistent);
             }
 
@@ -60,9 +57,9 @@ namespace Improbable.Gdk.Core
 
         private EndSimulationEntityCommandBufferSystem bufferSystem;
         private EntityCollection added;
-        private EntityQuery addedQuery;
+        private EntityQuery addedQuery; // This query needs to be a member of SystemBase
         private EntityCollection removed;
-        private EntityQuery removedQuery;
+        private EntityQuery removedQuery; // This query needs to be a member of SystemBase
         public int ViewVersion { get; private set; }
         public NativeSlice<EntityId> EntitiesRemoved => removed.Slice;
         public NativeSlice<EntityId> EntitiesAdded => added.Slice;
@@ -77,35 +74,8 @@ namespace Improbable.Gdk.Core
 
         protected override void OnUpdate()
         {
-            added.EnsureSize(ref addedQuery);
-            {
-                var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
-                var array = added.EntityIds;
-                added.JobHandle = Entities.WithName("EntitiesAdded")
-                    .WithNone<EntitySystemStateComponent>()
-                    .WithAll<SpatialEntityId>()
-                    .WithStoreEntityQueryInField(ref addedQuery)
-                    .ForEach((int entityInQueryIndex, in Entity entity, in SpatialEntityId entityId) =>
-                    {
-                        buffer.AddComponent(entityInQueryIndex, entity, (EntitySystemStateComponent) entityId);
-                        array[entityInQueryIndex] = entityId.EntityId;
-                    }).ScheduleParallel(Dependency);
-            }
-
-            removed.EnsureSize(ref removedQuery);
-            {
-                var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
-                var array = removed.EntityIds;
-                removed.JobHandle = Entities.WithName("EntitiesRemoved")
-                    .WithAll<EntitySystemStateComponent>()
-                    .WithNone<SpatialEntityId>()
-                    .WithStoreEntityQueryInField(ref removedQuery)
-                    .ForEach((int entityInQueryIndex, in Entity entity, in EntitySystemStateComponent entityId) =>
-                    {
-                        buffer.RemoveComponent<EntitySystemStateComponent>(entityInQueryIndex, entity);
-                        array[entityInQueryIndex] = entityId.EntityId;
-                    }).ScheduleParallel(Dependency);
-            }
+            UpdateEntitiesAdded();
+            UpdateEntitiesRemoved();
 
             Dependency = JobHandle.CombineDependencies(added.JobHandle, removed.JobHandle);
             bufferSystem.AddJobHandleForProducer(Dependency);
@@ -114,6 +84,38 @@ namespace Improbable.Gdk.Core
             {
                 ViewVersion += 1;
             }
+        }
+
+        private void UpdateEntitiesAdded()
+        {
+            added.EnsureSize(ref addedQuery);
+            var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
+            var array = added.EntityIds;
+            added.JobHandle = Entities.WithName("EntitiesAdded")
+                .WithNone<EntitySystemStateComponent>()
+                .WithAll<SpatialEntityId>()
+                .WithStoreEntityQueryInField(ref addedQuery)
+                .ForEach((int entityInQueryIndex, in Entity entity, in SpatialEntityId entityId) =>
+                {
+                    buffer.AddComponent(entityInQueryIndex, entity, (EntitySystemStateComponent) entityId);
+                    array[entityInQueryIndex] = entityId.EntityId;
+                }).ScheduleParallel(Dependency);
+        }
+
+        private void UpdateEntitiesRemoved()
+        {
+            removed.EnsureSize(ref removedQuery);
+            var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
+            var array = removed.EntityIds;
+            removed.JobHandle = Entities.WithName("EntitiesRemoved")
+                .WithAll<EntitySystemStateComponent>()
+                .WithNone<SpatialEntityId>()
+                .WithStoreEntityQueryInField(ref removedQuery)
+                .ForEach((int entityInQueryIndex, in Entity entity, in EntitySystemStateComponent entityId) =>
+                {
+                    buffer.RemoveComponent<EntitySystemStateComponent>(entityInQueryIndex, entity);
+                    array[entityInQueryIndex] = entityId.EntityId;
+                }).ScheduleParallel(Dependency);
         }
 
         protected override void OnDestroy()
