@@ -9,6 +9,7 @@
   - Projects now require the `Unity Web Request` built-in package to compile for iOS and Android.
 - Adding an entity to the `Snapshot` class with a duplicate entity ID now throws an exception. [#1479](https://github.com/spatialos/gdk-for-unity/pull/1479)
 - Refactor `EntitySystem` to use a more Data-Oriented approach. [#1481](https://github.com/spatialos/gdk-for-unity/pull/1481)
+  - The component `NewlyAddedSpatialOSEntity` has been deprecated
   - Methods `GetEntitiesAdded()` and `GetEntitiesRemoved()` are replaced by properties `EntitiesAdded` and `EntitiesRemoved`
   - Entities added and removed collections are now `NativeList<EntityId>` instead of `List<EntityId>`
 
