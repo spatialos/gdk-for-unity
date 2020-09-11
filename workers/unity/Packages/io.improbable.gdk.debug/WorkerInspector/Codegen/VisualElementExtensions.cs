@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace Improbable.Gdk.Debug.WorkerInspector.Codegen
 {
-    public static class VisualElementExtensions
+    internal static class VisualElementExtensions
     {
         public static void ShiftRightMargin(this VisualElement element, uint nest, float offset = -11)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Model;
@@ -136,13 +137,34 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, string nestVar, bool newVariable = true)
+        private string ConstructUiElement(ContainedType containedType, string uiElementName, string label, string nestVar, bool newVariable)
         {
             var inner = GetUiFieldType(containedType);
-            var varDef = newVariable ? "var " : "";
-            var nestParam = containedType.Category == ValueType.Type ? $", {nestVar} + 1" : "";
+            var builder = new StringBuilder();
+            if (newVariable)
+            {
+                builder.Append($"var {uiElementName} = ");
+            }
+            else
+            {
+                builder.Append($"{uiElementName} = ");
+            }
 
-            yield return $"{varDef}{uiElementName} = new {inner}(\"{label}\"{nestParam});";
+            if (containedType.Category == ValueType.Type)
+            {
+                builder.Append($"new {inner}(\"{label}\", {nestVar} + 1);");
+            }
+            else
+            {
+                builder.Append($"new {inner}(\"{label}\");");
+            }
+            
+            return builder.ToString();
+        }
+
+        private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, string nestVar, bool newVariable = true)
+        {
+            yield return ConstructUiElement(containedType, uiElementName, label, nestVar, newVariable);
 
             // These lines are part of the func to create an inner list item.
             if (containedType.Category != ValueType.Type)
