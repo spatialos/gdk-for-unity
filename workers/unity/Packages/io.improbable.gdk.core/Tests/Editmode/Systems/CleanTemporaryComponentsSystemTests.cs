@@ -23,7 +23,6 @@ namespace Improbable.Gdk.Core.EditmodeTests.Systems
         }
 
         [Test]
-        [TestCase(typeof(NewlyAddedSpatialOSEntity))]
         [TestCase(typeof(OnConnected))]
         [TestCase(typeof(OnDisconnected))]
         public void CleanTemporaryComponentsSystem_should_remove_components_when_ticked(Type temporaryComponentType)

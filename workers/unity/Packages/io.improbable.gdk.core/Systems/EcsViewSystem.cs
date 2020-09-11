@@ -16,6 +16,7 @@ namespace Improbable.Gdk.Core
             new Dictionary<uint, IEcsViewManager>();
 
         private WorkerSystem worker;
+        private EndSimulationEntityCommandBufferSystem bufferSystem;
 
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("EcsViewSystem.ApplyDiff");
         private ProfilerMarker addEntityMarker = new ProfilerMarker("EcsViewSystem.OnAddEntity");
@@ -41,9 +42,10 @@ namespace Improbable.Gdk.Core
                     return;
                 }
 
+                var buffer = bufferSystem.CreateCommandBuffer();
                 foreach (var entityId in diff.GetEntitiesAdded())
                 {
-                    AddEntity(entityId);
+                    AddEntity(entityId, buffer);
                 }
 
                 foreach (var manager in managers)
@@ -53,7 +55,7 @@ namespace Improbable.Gdk.Core
 
                 foreach (var entityId in diff.GetEntitiesRemoved())
                 {
-                    RemoveEntity(entityId);
+                    RemoveEntity(entityId, buffer);
                 }
             }
         }
@@ -61,7 +63,7 @@ namespace Improbable.Gdk.Core
         protected override void OnCreate()
         {
             base.OnCreate();
-
+            bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             worker = World.GetExistingSystem<WorkerSystem>();
 
             foreach (var type in ComponentDatabase.Metaclasses.Select(type => type.Value.EcsViewManager))
@@ -90,7 +92,7 @@ namespace Improbable.Gdk.Core
         {
         }
 
-        private void AddEntity(EntityId entityId)
+        private void AddEntity(EntityId entityId, EntityCommandBuffer buffer)
         {
             using (addEntityMarker.Auto())
             {
@@ -106,14 +108,12 @@ namespace Improbable.Gdk.Core
                 {
                     EntityId = entityId
                 });
-
-                EntityManager.AddComponent(entity, ComponentType.ReadWrite<NewlyAddedSpatialOSEntity>());
-
                 worker.EntityIdToEntity.Add(entityId, entity);
+                buffer.AddComponent(entity, new EntitySystemStateComponent(entityId));
             }
         }
 
-        private void RemoveEntity(EntityId entityId)
+        private void RemoveEntity(EntityId entityId, EntityCommandBuffer buffer)
         {
             using (removeEntityMarker.Auto())
             {
@@ -125,6 +125,7 @@ namespace Improbable.Gdk.Core
 
                 EntityManager.DestroyEntity(entity);
                 worker.EntityIdToEntity.Remove(entityId);
+                buffer.RemoveComponent<EntitySystemStateComponent>(entity);
             }
         }
 

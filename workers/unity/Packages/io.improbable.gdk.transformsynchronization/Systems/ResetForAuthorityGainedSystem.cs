@@ -16,7 +16,6 @@ namespace Improbable.Gdk.TransformSynchronization
         private ComponentUpdateSystem updateSystem;
 
         private ComponentType[] baseComponentTypes;
-        private ComponentType[] baseExcludeComponentTypes;
         private EntityQuery transformQuery;
 
         private readonly Dictionary<Type, Action> resetAuthorityActions = new Dictionary<Type, Action>();
@@ -31,14 +30,10 @@ namespace Improbable.Gdk.TransformSynchronization
             baseComponentTypes = new[]
             {
                 ComponentType.ReadOnly<TransformInternal.Component>(),
+                ComponentType.ReadOnly<EntitySystemStateComponent>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.ReadWrite<TicksSinceLastTransformUpdate>(),
                 ComponentType.ReadWrite<BufferedTransform>(),
-            };
-
-            baseExcludeComponentTypes = new[]
-            {
-                ComponentType.ReadOnly<NewlyAddedSpatialOSEntity>()
             };
 
             UpdateTransformQuery();
@@ -50,7 +45,6 @@ namespace Improbable.Gdk.TransformSynchronization
             where T : class
         {
             var componentQueryDesc = ConstructEntityQueryDesc<T>(AuthorityRequirements.Require, baseComponentTypes);
-            componentQueryDesc.None = baseExcludeComponentTypes;
 
             var entityQuery = GetEntityQuery(componentQueryDesc);
 
@@ -84,7 +78,6 @@ namespace Improbable.Gdk.TransformSynchronization
             var transformQueryDesc = ConstructEntityQueryDesc<UnityEngine.Transform>(AuthorityRequirements.Require, baseComponentTypes);
             transformQueryDesc.None = resetAuthorityActions.Keys
                 .Select(ComponentType.ReadOnly)
-                .Concat(baseExcludeComponentTypes)
                 .ToArray();
 
             transformQuery = GetEntityQuery(transformQueryDesc);

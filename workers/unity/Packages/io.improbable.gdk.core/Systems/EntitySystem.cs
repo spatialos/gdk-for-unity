@@ -43,11 +43,11 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        private EndSimulationEntityCommandBufferSystem bufferSystem;
         private EntityCollection added;
         private EntityQuery addedQuery; // This query needs to be a member of SystemBase
         private EntityCollection removed;
         private EntityQuery removedQuery; // This query needs to be a member of SystemBase
+
         public int ViewVersion { get; private set; }
 
         public NativeList<EntityId> EntitiesRemoved
@@ -70,8 +70,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnCreate()
         {
-            base.OnCreate();
-            bufferSystem = World.GetOrCreateSystem<EndSimulationEntityCommandBufferSystem>();
             removed = new EntityCollection(1);
             added = new EntityCollection(1);
         }
@@ -82,7 +80,6 @@ namespace Improbable.Gdk.Core
             var removedJob = UpdateEntitiesRemoved();
 
             Dependency = JobHandle.CombineDependencies(addedJob, removedJob);
-            bufferSystem.AddJobHandleForProducer(Dependency);
 
             if (added.EntityCount != 0 || removed.EntityCount != 0)
             {
@@ -93,14 +90,12 @@ namespace Improbable.Gdk.Core
         private JobHandle UpdateEntitiesAdded()
         {
             added.PrepareList(addedQuery);
-            var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
             var list = added.EntityIds.AsParallelWriter();
             added.JobHandle = Entities.WithName("EntitiesAdded")
                 .WithNone<EntitySystemStateComponent>()
                 .WithStoreEntityQueryInField(ref addedQuery)
                 .ForEach((int entityInQueryIndex, in Entity entity, in SpatialEntityId entityId) =>
                 {
-                    buffer.AddComponent(entityInQueryIndex, entity, (EntitySystemStateComponent) entityId);
                     list.AddNoResize(entityId.EntityId);
                 }).ScheduleParallel(Dependency);
             return added.JobHandle;
@@ -109,14 +104,12 @@ namespace Improbable.Gdk.Core
         private JobHandle UpdateEntitiesRemoved()
         {
             removed.PrepareList(removedQuery);
-            var buffer = bufferSystem.CreateCommandBuffer().AsParallelWriter();
             var list = removed.EntityIds.AsParallelWriter();
             removed.JobHandle = Entities.WithName("EntitiesRemoved")
                 .WithNone<SpatialEntityId>()
                 .WithStoreEntityQueryInField(ref removedQuery)
                 .ForEach((int entityInQueryIndex, in Entity entity, in EntitySystemStateComponent entityId) =>
                 {
-                    buffer.RemoveComponent<EntitySystemStateComponent>(entityInQueryIndex, entity);
                     list.AddNoResize(entityId.EntityId);
                 }).ScheduleParallel(Dependency);
             return removed.JobHandle;
@@ -124,7 +117,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
             removed.Dispose();
             added.Dispose();
         }

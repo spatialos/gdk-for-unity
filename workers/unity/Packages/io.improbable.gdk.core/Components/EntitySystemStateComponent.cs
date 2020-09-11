@@ -6,7 +6,7 @@ namespace Improbable.Gdk.Core
     {
         public readonly EntityId EntityId;
 
-        private EntitySystemStateComponent(in EntityId entityId)
+        public EntitySystemStateComponent(in EntityId entityId)
         {
             EntityId = entityId;
         }
