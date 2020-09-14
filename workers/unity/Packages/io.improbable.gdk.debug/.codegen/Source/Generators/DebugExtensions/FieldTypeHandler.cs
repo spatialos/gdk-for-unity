@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.Model;
@@ -42,14 +43,14 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        public IEnumerable<string> ToFieldInitialisation(UnityFieldDetails fieldDetails, string parentContainer)
+        public IEnumerable<string> ToFieldInitialisation(UnityFieldDetails fieldDetails, string parentContainer, string nestVar)
         {
             switch (fieldDetails.FieldType)
             {
                 case SingularFieldType singularFieldType:
                     var humanReadableName = Formatting.SnakeCaseToHumanReadable(fieldDetails.Name);
 
-                    foreach (var initializer in GetFieldInitializer(singularFieldType.ContainedType, $"{fieldDetails.CamelCaseName}Field", humanReadableName, false))
+                    foreach (var initializer in GetFieldInitializer(singularFieldType.ContainedType, $"{fieldDetails.CamelCaseName}Field", humanReadableName, nestVar, false))
                     {
                         yield return initializer;
                     }
@@ -59,7 +60,7 @@ namespace Improbable.Gdk.CodeGenerator
                 case OptionFieldType optionFieldType:
                     var innerUiType = GetUiFieldType(optionFieldType.ContainedType);
 
-                    foreach (var initializer in GetFieldInitializer(optionFieldType.ContainedType, $"{fieldDetails.CamelCaseName}InnerField", "Value"))
+                    foreach (var initializer in GetFieldInitializer(optionFieldType.ContainedType, $"{fieldDetails.CamelCaseName}InnerField", "Value", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
@@ -76,7 +77,7 @@ namespace Improbable.Gdk.CodeGenerator
                     yield return
                         $"{fieldDetails.CamelCaseName}Field = new PaginatedListView<{innerListType}, {listFieldType.ContainedType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\", () => {{";
 
-                    foreach (var initializer in GetFieldInitializer(listFieldType.ContainedType, "inner", ""))
+                    foreach (var initializer in GetFieldInitializer(listFieldType.ContainedType, "inner", "", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
@@ -98,7 +99,7 @@ namespace Improbable.Gdk.CodeGenerator
                         $"{fieldDetails.CamelCaseName}Field = new PaginatedMapView<{innerKeyType}, {mapFieldType.KeyType.FqnType}, {innerValueType}, {mapFieldType.ValueType.FqnType}>(\"{Formatting.SnakeCaseToHumanReadable(fieldDetails.Name)}\",";
                     yield return "() => {";
 
-                    foreach (var initializer in GetFieldInitializer(mapFieldType.KeyType, "inner", "Key"))
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.KeyType, "inner", "Key", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
@@ -107,7 +108,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                     yield return "() => {";
 
-                    foreach (var initializer in GetFieldInitializer(mapFieldType.ValueType, "inner", "Value"))
+                    foreach (var initializer in GetFieldInitializer(mapFieldType.ValueType, "inner", "Value", $"{nestVar} + 1"))
                     {
                         yield return initializer;
                     }
@@ -136,22 +137,39 @@ namespace Improbable.Gdk.CodeGenerator
             }
         }
 
-        private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, bool newVariable = true)
+        private string ConstructUiElement(ContainedType containedType, string uiElementName, string label, string nestVar, bool newVariable)
         {
             var inner = GetUiFieldType(containedType);
-
+            var builder = new StringBuilder();
             if (newVariable)
             {
-                yield return $"var {uiElementName} = new {inner}(\"{label}\");";
+                builder.Append($"var {uiElementName} = ");
             }
             else
             {
-                yield return $"{uiElementName} = new {inner}(\"{label}\");";
+                builder.Append($"{uiElementName} = ");
             }
+
+            if (containedType.Category == ValueType.Type)
+            {
+                builder.Append($"new {inner}(\"{label}\", {nestVar} + 1);");
+            }
+            else
+            {
+                builder.Append($"new {inner}(\"{label}\");");
+            }
+
+            return builder.ToString();
+        }
+
+        private IEnumerable<string> GetFieldInitializer(ContainedType containedType, string uiElementName, string label, string nestVar, bool newVariable = true)
+        {
+            yield return ConstructUiElement(containedType, uiElementName, label, nestVar, newVariable);
 
             // These lines are part of the func to create an inner list item.
             if (containedType.Category != ValueType.Type)
             {
+                yield return $"{uiElementName}.labelElement.ShiftRightMargin({nestVar});";
                 yield return $"{uiElementName}.SetEnabled(false);";
             }
 

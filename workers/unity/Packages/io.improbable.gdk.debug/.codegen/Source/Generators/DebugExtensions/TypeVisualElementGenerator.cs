@@ -50,11 +50,11 @@ namespace Improbable.Gdk.CodeGenerator
 
         private void GenerateConstructor(TypeBlock typeBlock, UnityTypeDetails details)
         {
-            typeBlock.Method($"public {details.Name}Renderer(string label) : base(label)", mb =>
+            typeBlock.Method($"public {details.Name}Renderer(string label, uint nest) : base(label)", mb =>
             {
                 foreach (var field in details.FieldDetails)
                 {
-                    mb.TextList(fieldTypeHandler.ToFieldInitialisation(field, "Container"));
+                    mb.TextList(fieldTypeHandler.ToFieldInitialisation(field, "Container", "nest"));
                 }
             });
         }
