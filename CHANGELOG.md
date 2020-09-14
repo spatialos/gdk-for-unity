@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## `0.4.0` - 2020-09-14
+
 ### Breaking Changes
 
 - The minimum supported version of Unity is now 2020.1. [#1459](https://github.com/spatialos/gdk-for-unity/pull/1459)
