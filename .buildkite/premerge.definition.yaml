@@ -12,5 +12,5 @@ teams:
 # TODO: normalise team names between orgs otherwise pipelines cannot coexist
 - name: Everyone
   permission: BUILD_AND_READ
-- name: gbu/develop/unity
+- name: gen/team/unity
   permission: MANAGE_BUILD_AND_READ
