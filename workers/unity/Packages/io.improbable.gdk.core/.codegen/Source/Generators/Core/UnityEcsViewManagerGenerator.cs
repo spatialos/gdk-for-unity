@@ -153,17 +153,19 @@ public void Init(World world)
                             {
                                 m.Line(new[]
                                 {
-                                    "var entity = workerSystem.GetEntity(entityId);",
-                                    $"entityManager.RemoveComponent<{componentNamespace}.HasAuthority>(entity);",
+                                    "var entity = workerSystem.GetEntity(entityId);"
                                 });
 
                                 if (!componentDetails.IsBlittable)
                                 {
-                                    m.Line($"var data = entityManager.GetComponentData<{componentNamespace}.Component>(entity);");
-                                    foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
+                                    m.If($"entityManager.HasComponent<{componentNamespace}.Component>(entity)", then =>
                                     {
-                                        m.Line($"data.{fieldDetails.CamelCaseName}Handle.Dispose();");
-                                    }
+                                        then.Line($"var data = entityManager.GetComponentData<{componentNamespace}.Component>(entity);");
+                                        foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd => !fd.IsBlittable))
+                                        {
+                                            then.Line($"data.{fieldDetails.CamelCaseName}Handle.Dispose();");
+                                        }
+                                    });
                                 }
 
                                 m.Line($"entityManager.RemoveComponent<{componentNamespace}.Component>(entity);");

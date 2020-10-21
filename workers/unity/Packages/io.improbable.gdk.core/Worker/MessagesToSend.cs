@@ -37,6 +37,12 @@ namespace Improbable.Gdk.Core
 
         private readonly WorldCommandsToSendStorage worldCommandStorage = new WorldCommandsToSendStorage();
 
+        private readonly MessageList<AddComponentRequestToSend> addComponentRequests =
+            new MessageList<AddComponentRequestToSend>();
+
+        private readonly MessageList<RemoveComponentRequestToSend> removeComponentRequests =
+            new MessageList<RemoveComponentRequestToSend>();
+
         private readonly MessageList<LogMessageToSend> logsToSend = new MessageList<LogMessageToSend>();
 
         private readonly List<Metrics> metricsToSend = new List<Metrics>();
@@ -91,6 +97,8 @@ namespace Improbable.Gdk.Core
                 storage.Clear();
             }
 
+            addComponentRequests.Clear();
+            removeComponentRequests.Clear();
             logsToSend.Clear();
             metricsToSend.Clear();
             serializedComponentUpdates.Clear();
@@ -123,6 +131,16 @@ namespace Improbable.Gdk.Core
             storage.AddResponse(response);
         }
 
+        public void DynamicComponentRequest(AddComponentRequestToSend addComponentRequestToSend)
+        {
+            addComponentRequests.Add(addComponentRequestToSend);
+        }
+
+        public void DynamicComponentRequest(RemoveComponentRequestToSend removeComponentRequestToSend)
+        {
+            removeComponentRequests.Add(removeComponentRequestToSend);
+        }
+
         public void AddLogMessage(in LogMessageToSend log)
         {
             logsToSend.Add(in log);
@@ -136,6 +154,16 @@ namespace Improbable.Gdk.Core
         internal MessageList<SerializedMessagesToSend.UpdateToSend> GetSerializedComponentUpdates()
         {
             return serializedComponentUpdates;
+        }
+
+        internal MessageList<AddComponentRequestToSend> GetAddComponentRequests()
+        {
+            return addComponentRequests;
+        }
+
+        internal MessageList<RemoveComponentRequestToSend> GetRemoveComponentRequests()
+        {
+            return removeComponentRequests;
         }
 
         internal MessageList<LogMessageToSend> GetLogMessages()
