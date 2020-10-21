@@ -28,7 +28,7 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
-                        partial.Annotate("DisableAutoCreation, UpdateInGroup(typeof(SpatialOSSendGroup)), UpdateBefore(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))")
+                        partial.Annotate("DisableAutoCreation, UpdateInGroup(typeof(SpatialOSReplicationGroup))")
                             .Type("internal class ReplicationSystem : SystemBase", system =>
                             {
                                 system.Line($@"

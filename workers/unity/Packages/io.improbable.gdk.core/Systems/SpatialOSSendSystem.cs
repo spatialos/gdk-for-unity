@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core
 {
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    [UpdateInGroup(typeof(SpatialOSSendGroup.InternalSpatialOSSendGroup))]
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
     public class SpatialOSSendSystem : ComponentSystem
     {
         private WorkerSystem worker;

@@ -42,10 +42,7 @@ namespace Improbable.Gdk.CodeGenerator
                                 var eventType = $"{ev.PascalCaseName}.Event";
                                 storage.Line($@"
 private MessageList<ComponentEventReceived<{eventType}>> {ev.CamelCaseName}EventStorage =
-    new MessageList<ComponentEventReceived<{eventType}>>();
-
-private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
-    new EventComparer<{eventType}>();
+    new MessageList<ComponentEventReceived<{eventType}>>(new EventComparer<{eventType}>());
 ");
                             }
 
@@ -78,18 +75,18 @@ private readonly EventComparer<{eventType}> {ev.CamelCaseName}Comparer =
 
                                 storage.Method($"MessagesSpan<ComponentEventReceived<{eventType}>> IDiffEventStorage<{eventType}>.GetEvents(EntityId entityId)", () => new[]
                                 {
-                                    $"var (firstIndex, count) = {ev.CamelCaseName}EventStorage.GetEntityRange(entityId);",
-                                    $"return {ev.CamelCaseName}EventStorage.Slice(firstIndex, count);"
+                                    $"return {ev.CamelCaseName}EventStorage.GetEntityRange(entityId);"
                                 });
 
                                 storage.Method($"MessagesSpan<ComponentEventReceived<{eventType}>> IDiffEventStorage<{eventType}>.GetEvents()", () => new[]
                                 {
+                                    $"{ev.CamelCaseName}EventStorage.Sort();",
                                     $"return {ev.CamelCaseName}EventStorage.Slice();"
                                 });
 
                                 storage.Method($"void IDiffEventStorage<{eventType}>.AddEvent(ComponentEventReceived<{eventType}> ev)", () => new[]
                                 {
-                                    $"{ev.CamelCaseName}EventStorage.InsertSorted(ev, {ev.CamelCaseName}Comparer);",
+                                    $"{ev.CamelCaseName}EventStorage.Add(ev);",
                                     "EntitiesUpdated.Add(ev.EntityId);"
                                 });
                             }

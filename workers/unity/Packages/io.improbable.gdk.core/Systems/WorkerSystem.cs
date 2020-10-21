@@ -88,6 +88,22 @@ namespace Improbable.Gdk.Core
             return EntityIdToEntity.ContainsKey(entityId);
         }
 
+        public void SendAddComponentRequest(EntityId entityId, ISpatialComponentSnapshot snapshot, UpdateParameters? parameters = null)
+        {
+            Worker.MessagesToSend.DynamicComponentRequest(new AddComponentRequestToSend(entityId, snapshot.Serialize(), parameters));
+        }
+
+        public void SendRemoveComponentRequest<T>(EntityId entityId, UpdateParameters? parameters = null) where T : ISpatialComponentData
+        {
+            var componentId = ComponentDatabase.GetComponentId<T>();
+            SendRemoveComponentRequest(entityId, componentId, parameters);
+        }
+
+        public void SendRemoveComponentRequest(EntityId entityId, uint componentId, UpdateParameters? parameters = null)
+        {
+            Worker.MessagesToSend.DynamicComponentRequest(new RemoveComponentRequestToSend(entityId, componentId, parameters));
+        }
+
         public void SendLogMessage(string message, string loggerName, LogLevel logLevel, EntityId? entityId)
         {
             Worker.MessagesToSend.AddLogMessage(new LogMessageToSend(message, loggerName, logLevel, entityId?.Id));

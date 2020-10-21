@@ -9,14 +9,8 @@ namespace Improbable.Gdk.Core.Commands
         where TRequest : struct, IReceivedCommandRequest
         where TResponse : struct, IReceivedCommandResponse
     {
-        private readonly MessageList<TRequest> requestStorage = new MessageList<TRequest>();
-        private readonly MessageList<TResponse> responseStorage = new MessageList<TResponse>();
-
-        private readonly RequestComparer<TRequest> requestComparer = new RequestComparer<TRequest>();
-        private readonly ResponseComparer<TResponse> responseComparer = new ResponseComparer<TResponse>();
-
-        private bool requestsSorted;
-        private bool responsesSorted;
+        private readonly MessageList<TRequest> requestStorage = new MessageList<TRequest>(new RequestComparer<TRequest>());
+        private readonly MessageList<TResponse> responseStorage = new MessageList<TResponse>(new ResponseComparer<TResponse>());
 
         public abstract uint ComponentId { get; }
         public abstract uint CommandId { get; }
@@ -28,8 +22,6 @@ namespace Improbable.Gdk.Core.Commands
         {
             requestStorage.Clear();
             responseStorage.Clear();
-            requestsSorted = false;
-            responsesSorted = false;
         }
 
         public void RemoveRequests(long entityId)
@@ -54,14 +46,7 @@ namespace Improbable.Gdk.Core.Commands
 
         public MessagesSpan<TRequest> GetRequests(EntityId targetEntityId)
         {
-            if (!requestsSorted)
-            {
-                requestStorage.Sort(requestComparer);
-                requestsSorted = true;
-            }
-
-            var (firstIndex, count) = requestStorage.GetEntityRange(targetEntityId);
-            return requestStorage.Slice(firstIndex, count);
+            return requestStorage.GetEntityRange(targetEntityId);
         }
 
         public MessagesSpan<TResponse> GetResponses()
@@ -71,14 +56,7 @@ namespace Improbable.Gdk.Core.Commands
 
         public TResponse? GetResponse(CommandRequestId requestId)
         {
-            if (!responsesSorted)
-            {
-                responseStorage.Sort(responseComparer);
-                responsesSorted = true;
-            }
-
-            var responseIndex = responseStorage.GetResponseIndex(requestId);
-            return responseIndex.HasValue ? responseStorage[responseIndex.Value] : (TResponse?) null;
+            return responseStorage.GetResponseIndex(requestId);
         }
 
         private sealed class RequestComparer<T> : IComparer<T> where T : struct, IReceivedCommandRequest

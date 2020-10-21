@@ -9,7 +9,8 @@ namespace Improbable.Gdk.Core
     ///     Removes components with attribute RemoveAtEndOfTick from all entities
     /// </summary>
     [DisableAutoCreation]
-    [UpdateInGroup(typeof(InternalSpatialOSCleanGroup))]
+    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [UpdateAfter(typeof(SpatialOSSendSystem))]
     public class CleanTemporaryComponentsSystem : ComponentSystem
     {
         private readonly List<(EntityQuery, ComponentType)> componentGroupsToRemove =

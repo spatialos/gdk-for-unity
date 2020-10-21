@@ -10,23 +10,16 @@ namespace Improbable.Gdk.Core
         , IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>
     {
         private readonly MessageList<WorldCommands.CreateEntity.ReceivedResponse> createEntityResponses =
-            new MessageList<WorldCommands.CreateEntity.ReceivedResponse>();
+            new MessageList<WorldCommands.CreateEntity.ReceivedResponse>(new Comparer());
 
         private readonly MessageList<WorldCommands.DeleteEntity.ReceivedResponse> deleteEntityResponses =
-            new MessageList<WorldCommands.DeleteEntity.ReceivedResponse>();
+            new MessageList<WorldCommands.DeleteEntity.ReceivedResponse>(new Comparer());
 
         private readonly MessageList<WorldCommands.ReserveEntityIds.ReceivedResponse> reserveEntityIdsResponses =
-            new MessageList<WorldCommands.ReserveEntityIds.ReceivedResponse>();
+            new MessageList<WorldCommands.ReserveEntityIds.ReceivedResponse>(new Comparer());
 
         private readonly MessageList<WorldCommands.EntityQuery.ReceivedResponse> entityQueryResponses =
-            new MessageList<WorldCommands.EntityQuery.ReceivedResponse>();
-
-        private readonly Comparer comparer = new Comparer();
-
-        private bool createEntitySorted;
-        private bool deleteEntitySorted;
-        private bool reserveEntityIdsSorted;
-        private bool entityQueriesSorted;
+            new MessageList<WorldCommands.EntityQuery.ReceivedResponse>(new Comparer());
 
         public void Clear()
         {
@@ -34,10 +27,6 @@ namespace Improbable.Gdk.Core
             deleteEntityResponses.Clear();
             reserveEntityIdsResponses.Clear();
             entityQueryResponses.Clear();
-            createEntitySorted = false;
-            deleteEntitySorted = false;
-            reserveEntityIdsSorted = false;
-            entityQueriesSorted = false;
         }
 
         public void AddResponse(WorldCommands.CreateEntity.ReceivedResponse response)
@@ -86,61 +75,26 @@ namespace Improbable.Gdk.Core
 
         WorldCommands.CreateEntity.ReceivedResponse? IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            if (!createEntitySorted)
-            {
-                createEntityResponses.Sort(comparer);
-                createEntitySorted = true;
-            }
-
             var responseIndex = createEntityResponses.GetResponseIndex(requestId);
-            return responseIndex.HasValue
-                ? createEntityResponses[responseIndex.Value]
-                : (WorldCommands.CreateEntity.ReceivedResponse?) null;
+            return createEntityResponses.GetResponseIndex(requestId);
         }
 
         WorldCommands.DeleteEntity.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            if (!deleteEntitySorted)
-            {
-                deleteEntityResponses.Sort(comparer);
-                deleteEntitySorted = true;
-            }
-
-            var responseIndex = deleteEntityResponses.GetResponseIndex(requestId);
-            return responseIndex.HasValue
-                ? deleteEntityResponses[responseIndex.Value]
-                : (WorldCommands.DeleteEntity.ReceivedResponse?) null;
+            return deleteEntityResponses.GetResponseIndex(requestId);
         }
 
         WorldCommands.ReserveEntityIds.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            if (!reserveEntityIdsSorted)
-            {
-                reserveEntityIdsResponses.Sort(comparer);
-                reserveEntityIdsSorted = true;
-            }
-
-            var responseIndex = reserveEntityIdsResponses.GetResponseIndex(requestId);
-            return responseIndex.HasValue
-                ? reserveEntityIdsResponses[responseIndex.Value]
-                : (WorldCommands.ReserveEntityIds.ReceivedResponse?) null;
+            return reserveEntityIdsResponses.GetResponseIndex(requestId);
         }
 
         WorldCommands.EntityQuery.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            if (!entityQueriesSorted)
-            {
-                entityQueryResponses.Sort(comparer);
-                entityQueriesSorted = true;
-            }
-
-            var responseIndex = entityQueryResponses.GetResponseIndex(requestId);
-            return responseIndex.HasValue
-                ? entityQueryResponses[responseIndex.Value]
-                : (WorldCommands.EntityQuery.ReceivedResponse?) null;
+            return entityQueryResponses.GetResponseIndex(requestId);
         }
 
         private class Comparer : IComparer<WorldCommands.CreateEntity.ReceivedResponse>,

@@ -14,29 +14,12 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    [UpdateInGroup(typeof(PresentationSystemGroup))]
+    [UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
+    [UpdateAfter(typeof(EndSimulationEntityCommandBufferSystem))]
     [DisableAutoCreation]
-    public class SpatialOSSendGroup : ComponentSystemGroup
+    public class SpatialOSReplicationGroup : ComponentSystemGroup
     {
-        [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [UpdateBefore(typeof(InternalSpatialOSSendGroup))]
-        [DisableAutoCreation]
-        public class CustomSpatialOSSendGroup : ComponentSystemGroup
-        {
-        }
 
-        [UpdateInGroup(typeof(SpatialOSSendGroup))]
-        [DisableAutoCreation]
-        public class InternalSpatialOSSendGroup : ComponentSystemGroup
-        {
-        }
-    }
-
-    [UpdateInGroup(typeof(PresentationSystemGroup))]
-    [UpdateAfter(typeof(SpatialOSSendGroup))]
-    [DisableAutoCreation]
-    public class InternalSpatialOSCleanGroup : ComponentSystemGroup
-    {
     }
 
     [UpdateInGroup(typeof(SimulationSystemGroup))]

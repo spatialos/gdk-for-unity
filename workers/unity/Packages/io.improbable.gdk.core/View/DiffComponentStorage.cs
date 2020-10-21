@@ -13,9 +13,6 @@ namespace Improbable.Gdk.Core
         private readonly List<EntityId> componentsAdded = new List<EntityId>();
         private readonly List<EntityId> componentsRemoved = new List<EntityId>();
 
-        private readonly AuthorityComparer authorityComparer = new AuthorityComparer();
-        private readonly UpdateComparer<TUpdate> updateComparer = new UpdateComparer<TUpdate>();
-
         // Used to represent a state machine of authority changes. Valid state changes are:
         // authority lost -> authority lost temporarily
         // authority lost temporarily -> authority lost
@@ -26,10 +23,10 @@ namespace Improbable.Gdk.Core
         private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
 
         private readonly MessageList<ComponentUpdateReceived<TUpdate>> updateStorage =
-            new MessageList<ComponentUpdateReceived<TUpdate>>();
+            new MessageList<ComponentUpdateReceived<TUpdate>>(new UpdateComparer<TUpdate>());
 
         private readonly MessageList<AuthorityChangeReceived> authorityChanges =
-            new MessageList<AuthorityChangeReceived>();
+            new MessageList<AuthorityChangeReceived>(new AuthorityComparer());
 
         public abstract Type[] GetEventTypes();
 
@@ -79,7 +76,7 @@ namespace Improbable.Gdk.Core
         public void AddUpdate(ComponentUpdateReceived<TUpdate> update)
         {
             EntitiesUpdated.Add(update.EntityId);
-            updateStorage.InsertSorted(update, updateComparer);
+            updateStorage.Add(update);
         }
 
         public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
@@ -103,7 +100,7 @@ namespace Improbable.Gdk.Core
                 }
             }
 
-            authorityChanges.InsertSorted(authorityChange, authorityComparer);
+            authorityChanges.Add(authorityChange);
         }
 
         public List<EntityId> GetComponentsAdded()
@@ -118,24 +115,24 @@ namespace Improbable.Gdk.Core
 
         public MessagesSpan<ComponentUpdateReceived<TUpdate>> GetUpdates()
         {
+            updateStorage.Sort();
             return updateStorage.Slice();
         }
 
         public MessagesSpan<ComponentUpdateReceived<TUpdate>> GetUpdates(EntityId entityId)
         {
-            var (firstIndex, count) = updateStorage.GetEntityRange(entityId);
-            return updateStorage.Slice(firstIndex, count);
+            return updateStorage.GetEntityRange(entityId);
         }
 
         public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges()
         {
+            authorityChanges.Sort();
             return authorityChanges.Slice();
         }
 
         public MessagesSpan<AuthorityChangeReceived> GetAuthorityChanges(EntityId entityId)
         {
-            var (firstIndex, count) = authorityChanges.GetEntityRange(entityId);
-            return authorityChanges.Slice(firstIndex, count);
+            return authorityChanges.GetEntityRange(entityId);
         }
     }
 }

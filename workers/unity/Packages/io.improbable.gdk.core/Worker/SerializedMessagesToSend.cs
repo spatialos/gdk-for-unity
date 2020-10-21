@@ -37,6 +37,12 @@ namespace Improbable.Gdk.Core
         private readonly MessageList<EntityQueryRequestToSend> entityQueryRequests =
             new MessageList<EntityQueryRequestToSend>();
 
+        private readonly MessageList<AddComponentRequestToSend> addComponentRequests =
+            new MessageList<AddComponentRequestToSend>();
+
+        private readonly MessageList<RemoveComponentRequestToSend> removeComponentRequests =
+            new MessageList<RemoveComponentRequestToSend>();
+
         private readonly MessageList<LogMessageToSend> logMessages =
             new MessageList<LogMessageToSend>();
 
@@ -103,6 +109,9 @@ namespace Improbable.Gdk.Core
                 metricsToSend.Add(metrics);
             }
 
+            messages.GetAddComponentRequests().CopyTo(addComponentRequests);
+            messages.GetRemoveComponentRequests().CopyTo(removeComponentRequests);
+
             messages.GetLogMessages().CopyTo(logMessages);
 
             foreach (var serializer in componentSerializers)
@@ -121,6 +130,8 @@ namespace Improbable.Gdk.Core
             createEntityRequests.Clear();
             deleteEntityRequests.Clear();
             entityQueryRequests.Clear();
+            addComponentRequests.Clear();
+            removeComponentRequests.Clear();
             metricsToSend.Clear();
             logMessages.Clear();
             netFrameStats.Clear();
@@ -186,6 +197,18 @@ namespace Improbable.Gdk.Core
                 var rawRequestId = connection.SendEntityQueryRequest(request.Query, request.Timeout);
                 var requestId = new InternalCommandRequestId(rawRequestId);
                 commandMetaData.AddInternalRequestId(0, 0, request.RequestId, requestId);
+            }
+
+            for (var i = 0; i < addComponentRequests.Count; ++i)
+            {
+                ref readonly var request = ref addComponentRequests[i];
+                connection.SendAddComponent(request.EntityId.Id, request.ComponentData, request.Parameters);
+            }
+
+            for (var i = 0; i < removeComponentRequests.Count; ++i)
+            {
+                ref readonly var request = ref removeComponentRequests[i];
+                connection.SendRemoveComponent(request.EntityId.Id, request.ComponentId, request.Parameters);
             }
 
             for (var i = 0; i < metricsToSend.Count; ++i)
