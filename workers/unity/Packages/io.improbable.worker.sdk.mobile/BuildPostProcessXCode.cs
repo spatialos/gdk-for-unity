@@ -46,17 +46,12 @@ namespace Improbable.Gdk.Mobile
             InvokeMethod(xcodeObject, "ReadFromString", xcodeText);
 
             // Get Target GUIDs
-            var unityTargetName = InvokeStaticMethod<string>("GetUnityTargetName");
-            var unityTestTargetName = InvokeStaticMethod<string>("GetUnityTestTargetName");
-            var targetGUID = InvokeMethod<string>(xcodeObject, "GetUnityMainTargetGuid");
-            var targetTestingGUID = InvokeMethod<string>(xcodeObject, "TargetGuidByName", unityTestTargetName);
+            var targetGUID = InvokeMethod<string>(xcodeObject, "GetUnityFrameworkTargetGuid");
 
             // Enumerate configGUIDs that need library path patching
             var configNames = InvokeMethod<IEnumerable<string>>(xcodeObject, "BuildConfigNames");
             var configGUIDs = configNames
-                .Select(configName => InvokeMethod<string>(xcodeObject, "BuildConfigByName", targetGUID, configName))
-                .Concat(configNames.Select(configName =>
-                    InvokeMethod<string>(xcodeObject, "BuildConfigByName", targetTestingGUID, configName)));
+                .Select(configName => InvokeMethod<string>(xcodeObject, "BuildConfigByName", targetGUID, configName));
 
             // Update library paths for each config
             foreach (var configGUID in configGUIDs)
