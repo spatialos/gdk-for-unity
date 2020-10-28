@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Fixed an issue where XCode would link the wrong library when building for iOS Simulator. [#1484](https://github.com/spatialos/gdk-for-unity/pull/1484)
+
 ## `0.4.0` - 2020-09-14
 
 ### Breaking Changes
