@@ -9,7 +9,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
     [CustomEditor(typeof(EntityRepresentationMapping))]
     public class EntityRepresentationMappingEditor : UnityEditor.Editor
     {
-        private static TypeCache.TypeCollection entityRepresentationTypes;
+        private static UnityEditor.TypeCache.TypeCollection entityRepresentationTypes;
 
         private EntityRepresentationMapping targetDatabase => (EntityRepresentationMapping) target;
         private SerializedProperty listProperty;
@@ -20,7 +20,7 @@ namespace Improbable.Gdk.Core.Representation.Editor
 
         static EntityRepresentationMappingEditor()
         {
-            entityRepresentationTypes = TypeCache.GetTypesDerivedFrom<IEntityRepresentationResolver>();
+            entityRepresentationTypes = UnityEditor.TypeCache.GetTypesDerivedFrom<IEntityRepresentationResolver>();
         }
 
         private void OnEnable()

@@ -66,8 +66,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private void AutoRegisterManagers()
         {
-            var types = ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
-                typeof(AutoRegisterSubscriptionManagerAttribute));
+            var types = TypeCache.GetSubscriptionManagerTypes();
 
             foreach (var type in types)
             {
