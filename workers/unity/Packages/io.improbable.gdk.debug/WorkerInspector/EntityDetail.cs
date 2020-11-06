@@ -154,7 +154,7 @@ namespace Improbable.Gdk.Debug.WorkerInspector
         private static class Cache
         {
             private static readonly Dictionary<ComponentType, ComponentVisualElement> cache =
-                TypeCache.GetTypesDerivedFrom<ComponentVisualElement>()
+                UnityEditor.TypeCache.GetTypesDerivedFrom<ComponentVisualElement>()
                     .Select(type => (ComponentVisualElement) Activator.CreateInstance(type))
                     .ToDictionary(cve => cve.ComponentType, cve => cve);
 

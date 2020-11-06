@@ -21,14 +21,12 @@ namespace Improbable.Gdk.Core
             base.OnCreate();
 
             // Find all components with the RemoveAtEndOfTick attribute
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentData),
-                typeof(RemoveAtEndOfTickAttribute)))
+            foreach (var type in TypeCache.GetTemporaryComponentDataTypes())
             {
                 componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
             }
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ISharedComponentData),
-                typeof(RemoveAtEndOfTickAttribute)))
+            foreach (var type in TypeCache.GetTemporarySharedComponentDataTypes())
             {
                 componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
             }
