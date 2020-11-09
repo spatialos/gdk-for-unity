@@ -17,7 +17,6 @@ namespace Improbable.Gdk.Core
     ///    This is a temporary component and the <see cref="Improbable.Gdk.Core.CleanTemporaryComponentsSystem"/> will
     ///    remove it at the end of the frame.
     /// </remarks>
-    [RemoveAtEndOfTick]
     public struct OnConnected : IComponentData
     {
     }
@@ -27,7 +26,6 @@ namespace Improbable.Gdk.Core
     /// </summary>
     ///    This is a temporary component and the <see cref="Improbable.Gdk.Core.CleanTemporaryComponentsSystem"/> will
     ///    remove it at the end of the frame.
-    [RemoveAtEndOfTick]
     public struct OnDisconnected : ISharedComponentData, IEquatable<OnDisconnected>
     {
         /// <summary>
