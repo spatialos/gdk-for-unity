@@ -18,7 +18,6 @@ namespace Improbable.Gdk.Core
 
         protected override void OnCreate()
         {
-            // Find all components with the RemoveAtEndOfTick attribute
             var types = new List<Type>
             {
                 typeof(OnConnected),
@@ -26,6 +25,7 @@ namespace Improbable.Gdk.Core
                 typeof(NewlyAddedSpatialOSEntity),
             };
 
+            // Cache queries for temporary components
             foreach (var type in types)
             {
                 componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
