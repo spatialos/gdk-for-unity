@@ -75,7 +75,6 @@ namespace Improbable.Gdk.Core
 
         WorldCommands.CreateEntity.ReceivedResponse? IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            var responseIndex = createEntityResponses.GetResponseIndex(requestId);
             return createEntityResponses.GetResponseIndex(requestId);
         }
 
