@@ -7,9 +7,11 @@ namespace Improbable.Gdk.Core
     {
         // binary search for the command for given request ID
         // invariant: lower <= target <= upper
-        public static int? GetResponseIndex<T>(this MessageList<T> list, CommandRequestId requestId)
+        public static T? GetResponse<T>(this MessageList<T> list, CommandRequestId requestId)
             where T : struct, IReceivedCommandResponse
         {
+            list.Sort();
+
             var targetId = requestId;
             var lower = 0;
             var upper = list.Count - 1;
@@ -30,23 +32,26 @@ namespace Improbable.Gdk.Core
                 }
                 else
                 {
-                    return current;
+                    return list[current];
                 }
             }
 
             return default;
         }
 
-        public static (int FirstIndex, int Count) GetEntityRange<T>(this MessageList<T> list, EntityId entityId)
+        public static MessagesSpan<T> GetEntityRange<T>(this MessageList<T> list, EntityId entityId)
             where T : struct, IReceivedEntityMessage
         {
+            // Ensure list is sorted
+            list.Sort();
+
             var range = list.LimitEntityRangeUpper(entityId, 0, list.Count);
             if (range.Count > 1)
             {
-                return list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
+                range = list.LimitEntityRangeLower(entityId, range.FirstIndex, range.Count);
             }
 
-            return range;
+            return list.Slice(range.FirstIndex, range.Count);
         }
 
         // binary search for the first update for given entity ID

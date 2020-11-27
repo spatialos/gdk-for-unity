@@ -242,6 +242,14 @@ public Snapshot ToComponentSnapshot(global::Unity.Entities.World world)
                                 return fieldDetailsList.Select(fd => $"{fd.PascalCaseName} = {fd.CamelCaseName};");
                             });
                     }
+
+                    snapshot.Method("public ComponentData Serialize()", () => new[]
+                        {
+                            "var componentData = new ComponentData(ComponentId, SchemaComponentData.Create());",
+                            "Serialization.SerializeSnapshot(this, componentData.SchemaData.Value.GetFields());",
+                            "return componentData;"
+                        }
+                    );
                 });
         }
 

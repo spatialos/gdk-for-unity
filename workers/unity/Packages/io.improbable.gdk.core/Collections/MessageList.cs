@@ -20,12 +20,18 @@ namespace Improbable.Gdk.Core
 
         private T[] items;
 
+        private readonly IComparer<T> comparer;
+
         public int Count { get; private set; }
 
-        public MessageList()
+        private bool sorted;
+
+        public MessageList(IComparer<T> comparer = null)
         {
             Count = 0;
             items = EmptyArray;
+            this.comparer = comparer;
+            sorted = true;
         }
 
         public ref readonly T this[int index] => ref items[index];
@@ -56,6 +62,7 @@ namespace Improbable.Gdk.Core
 
             items[Count] = item;
             ++Count;
+            sorted = false;
         }
 
         public void Insert(int index, in T item)
@@ -76,9 +83,10 @@ namespace Improbable.Gdk.Core
             }
 
             ++Count;
+            sorted = false;
         }
 
-        public void InsertSorted(in T item, IComparer<T> comparer)
+        public void InsertSorted(in T item)
         {
             var index = Array.BinarySearch(items, 0, Count, item, comparer);
             if (index < 0)
@@ -131,16 +139,23 @@ namespace Improbable.Gdk.Core
 
             Array.Copy(items, other.items, Count);
             other.Count = Count;
+            other.sorted = sorted;
         }
 
         public void Clear()
         {
             Count = 0;
+            sorted = true;
         }
 
-        public void Sort(IComparer<T> comparer)
+        public void Sort()
         {
-            Array.Sort(items, 0, Count, comparer);
+            if (!sorted)
+            {
+                Array.Sort(items, 0, Count, comparer);
+            }
+
+            sorted = true;
         }
     }
 }
