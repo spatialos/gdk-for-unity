@@ -75,25 +75,25 @@ namespace Improbable.Gdk.Core
 
         WorldCommands.CreateEntity.ReceivedResponse? IDiffCommandResponseStorage<WorldCommands.CreateEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            return createEntityResponses.GetResponseIndex(requestId);
+            return createEntityResponses.GetResponse(requestId);
         }
 
         WorldCommands.DeleteEntity.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.DeleteEntity.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            return deleteEntityResponses.GetResponseIndex(requestId);
+            return deleteEntityResponses.GetResponse(requestId);
         }
 
         WorldCommands.ReserveEntityIds.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.ReserveEntityIds.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            return reserveEntityIdsResponses.GetResponseIndex(requestId);
+            return reserveEntityIdsResponses.GetResponse(requestId);
         }
 
         WorldCommands.EntityQuery.ReceivedResponse?
             IDiffCommandResponseStorage<WorldCommands.EntityQuery.ReceivedResponse>.GetResponse(CommandRequestId requestId)
         {
-            return entityQueryResponses.GetResponseIndex(requestId);
+            return entityQueryResponses.GetResponse(requestId);
         }
 
         private class Comparer : IComparer<WorldCommands.CreateEntity.ReceivedResponse>,

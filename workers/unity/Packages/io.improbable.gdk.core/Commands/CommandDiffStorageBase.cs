@@ -56,7 +56,7 @@ namespace Improbable.Gdk.Core.Commands
 
         public TResponse? GetResponse(CommandRequestId requestId)
         {
-            return responseStorage.GetResponseIndex(requestId);
+            return responseStorage.GetResponse(requestId);
         }
 
         private sealed class RequestComparer<T> : IComparer<T> where T : struct, IReceivedCommandRequest

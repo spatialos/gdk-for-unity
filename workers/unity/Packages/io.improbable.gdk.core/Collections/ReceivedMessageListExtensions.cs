@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
     {
         // binary search for the command for given request ID
         // invariant: lower <= target <= upper
-        public static T? GetResponseIndex<T>(this MessageList<T> list, CommandRequestId requestId)
+        public static T? GetResponse<T>(this MessageList<T> list, CommandRequestId requestId)
             where T : struct, IReceivedCommandResponse
         {
             list.Sort();
