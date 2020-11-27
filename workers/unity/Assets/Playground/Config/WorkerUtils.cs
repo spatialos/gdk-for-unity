@@ -41,7 +41,6 @@ namespace Playground
             world.GetOrCreateSystem<ProcessRechargeSystem>();
             world.GetOrCreateSystem<MetricSendSystem>();
             world.GetOrCreateSystem<ProcessScoresSystem>();
-            world.GetOrCreateSystem<CollisionProcessSystem>();
             world.GetOrCreateSystem<CubeMovementSystem>();
         }
 

@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine.Profiling;
 
 namespace Improbable.Gdk.Core
 {
@@ -18,17 +18,15 @@ namespace Improbable.Gdk.Core
 
         protected override void OnCreate()
         {
-            base.OnCreate();
-
-            // Find all components with the RemoveAtEndOfTick attribute
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(IComponentData),
-                typeof(RemoveAtEndOfTickAttribute)))
+            var types = new List<Type>
             {
-                componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
-            }
+                typeof(OnConnected),
+                typeof(OnDisconnected),
+                typeof(NewlyAddedSpatialOSEntity),
+            };
 
-            foreach (var type in ReflectionUtility.GetNonAbstractTypes(typeof(ISharedComponentData),
-                typeof(RemoveAtEndOfTickAttribute)))
+            // Cache queries for temporary components
+            foreach (var type in types)
             {
                 componentGroupsToRemove.Add((GetEntityQuery(ComponentType.ReadOnly(type)), type));
             }

@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
 
         static ComponentDatabase()
         {
-            Metaclasses = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass))
+            Metaclasses = TypeCache.GetComponentMetaClassTypes()
                 .Select(type => (IComponentMetaclass) Activator.CreateInstance(type))
                 .ToDictionary(metaclass => metaclass.ComponentId, metaclass => metaclass);
 
