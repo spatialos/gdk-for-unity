@@ -7,6 +7,7 @@ namespace Improbable.Gdk.Core
     public static class TypeCache
     {
         private static List<Type> subscriptionManagerTypes;
+        private static List<Type> componentMetaClassTypes;
 
         public static List<Type> GetSubscriptionManagerTypes()
         {
@@ -21,7 +22,12 @@ namespace Improbable.Gdk.Core
 
         public static List<Type> GetComponentMetaClassTypes()
         {
-            return ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass));
+            if (componentMetaClassTypes == null)
+            {
+                componentMetaClassTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass));
+            }
+
+            return componentMetaClassTypes;
         }
     }
 }
