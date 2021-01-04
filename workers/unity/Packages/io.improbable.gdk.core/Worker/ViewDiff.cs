@@ -171,11 +171,6 @@ namespace Improbable.Gdk.Core
                     "Unknown component ID");
             }
 
-            if (authority == Authority.AuthorityLossImminent)
-            {
-                return;
-            }
-
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
                 new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
 
