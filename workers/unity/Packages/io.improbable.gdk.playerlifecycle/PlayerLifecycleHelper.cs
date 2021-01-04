@@ -16,8 +16,9 @@ namespace Improbable.Gdk.PlayerLifecycle
             string clientWorkerId,
             string serverAccess)
         {
+            // TODO: Implement properly when ComponentSets are implemented.
             template.AddComponent(new PlayerHeartbeatClient.Snapshot(),
-                EntityTemplate.GetWorkerAccessAttribute(clientWorkerId));
+                clientWorkerId);
             template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
             template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
         }

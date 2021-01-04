@@ -12,9 +12,9 @@ namespace Playground
     {
         private const int CheckoutRadius = 25;
 
-        public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, string clientWorkerId, byte[] playerCreationArguments)
+        public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, EntityId clientWorkerEntityId, byte[] playerCreationArguments)
         {
-            var clientAttribute = EntityTemplate.GetWorkerAccessAttribute(clientWorkerId);
+            var clientAttribute = "TODO: Replace this when component sets are implemented";
 
             var template = new EntityTemplate();
 
@@ -26,7 +26,7 @@ namespace Playground
             template.AddComponent(new CubeSpawner.Snapshot(new List<EntityId>()), WorkerUtils.UnityGameLogic);
 
             TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, clientAttribute);
-            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerId, WorkerUtils.UnityGameLogic);
+            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, "TODO: Replace this when component sets are implemented.", WorkerUtils.UnityGameLogic);
 
             var clientSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
             {
