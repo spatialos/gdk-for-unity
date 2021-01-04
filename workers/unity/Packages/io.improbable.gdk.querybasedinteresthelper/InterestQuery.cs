@@ -6,11 +6,11 @@ using UnityEngine;
 namespace Improbable.Gdk.QueryBasedInterest
 {
     /// <summary>
-    ///     Utility class to help construct ComponentInterest.Query objects.
+    ///     Utility class to help construct ComponentSetInterest.Query objects.
     /// </summary>
     public class InterestQuery
     {
-        private ComponentInterest.Query query;
+        private ComponentSetInterest.Query query;
 
         private InterestQuery()
         {
@@ -115,9 +115,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Returns the underlying ComponentInterest.Query object from the <see cref="InterestQuery"/> class.
+        ///     Returns the underlying ComponentSetInterest.Query object from the <see cref="InterestQuery"/> class.
         /// </summary>
-        public ComponentInterest.Query AsComponentInterestQuery()
+        public ComponentSetInterest.Query AsComponentSetInterestQuery()
         {
             return query;
         }

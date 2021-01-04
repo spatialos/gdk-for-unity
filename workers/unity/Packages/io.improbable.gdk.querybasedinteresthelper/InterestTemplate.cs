@@ -10,11 +10,11 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class InterestTemplate
     {
-        private readonly Dictionary<uint, ComponentInterest> interest;
+        private readonly Dictionary<uint, ComponentSetInterest> interest;
 
-        private InterestTemplate(Dictionary<uint, ComponentInterest> interest = null)
+        private InterestTemplate(Dictionary<uint, ComponentSetInterest> interest = null)
         {
-            this.interest = interest ?? new Dictionary<uint, ComponentInterest>();
+            this.interest = interest ?? new Dictionary<uint, ComponentSetInterest>();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public static InterestTemplate Create(InterestTemplate interestTemplate)
         {
-            return Create(interestTemplate.AsComponentInterest());
+            return Create(interestTemplate.AsComponentSetInterest());
         }
 
         /// <summary>
@@ -57,18 +57,18 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public static InterestTemplate Create(Dictionary<uint, ComponentInterest> interest)
+        public static InterestTemplate Create(Dictionary<uint, ComponentSetInterest> interest)
         {
             return new InterestTemplate(DeepCopy(interest));
         }
 
-        private static Dictionary<uint, ComponentInterest> DeepCopy(Dictionary<uint, ComponentInterest> interest)
+        private static Dictionary<uint, ComponentSetInterest> DeepCopy(Dictionary<uint, ComponentSetInterest> interest)
         {
-            var clone = new Dictionary<uint, ComponentInterest>(interest.Count);
+            var clone = new Dictionary<uint, ComponentSetInterest>(interest.Count);
             foreach (var keyval in interest)
             {
                 var componentInterestQueries = keyval.Value.Queries;
-                var componentInterestClone = new List<ComponentInterest.Query>(componentInterestQueries.Count);
+                var componentInterestClone = new List<ComponentSetInterest.Query>(componentInterestQueries.Count);
                 foreach (var query in componentInterestQueries)
                 {
                     var queryClone = query;
@@ -76,7 +76,7 @@ namespace Improbable.Gdk.QueryBasedInterest
                     componentInterestClone.Add(queryClone);
                 }
 
-                clone.Add(keyval.Key, new ComponentInterest { Queries = componentInterestClone });
+                clone.Add(keyval.Key, new ComponentSetInterest { Queries = componentInterestClone });
             }
 
             return clone;
@@ -180,11 +180,11 @@ namespace Improbable.Gdk.QueryBasedInterest
             return AddQueries(componentId, InterestQueryEnumerableToQueries(interestQueries));
         }
 
-        private InterestTemplate AddQueries(uint componentId, List<ComponentInterest.Query> componentInterestQueries)
+        private InterestTemplate AddQueries(uint componentId, List<ComponentSetInterest.Query> componentInterestQueries)
         {
             if (!interest.TryGetValue(componentId, out var componentInterest))
             {
-                interest.Add(componentId, new ComponentInterest
+                interest.Add(componentId, new ComponentSetInterest
                 {
                     Queries = componentInterestQueries
                 });
@@ -294,11 +294,11 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         private InterestTemplate ReplaceQueries(uint componentId,
-            List<ComponentInterest.Query> componentInterestQueries)
+            List<ComponentSetInterest.Query> componentInterestQueries)
         {
             if (!interest.TryGetValue(componentId, out var componentInterest))
             {
-                interest.Add(componentId, new ComponentInterest
+                interest.Add(componentId, new ComponentSetInterest
                 {
                     Queries = componentInterestQueries
                 });
@@ -360,41 +360,41 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public Interest.Snapshot ToSnapshot()
         {
-            return new Interest.Snapshot { ComponentInterest = interest };
+            return new Interest.Snapshot { ComponentSetInterest = interest };
         }
 
         /// <summary>
         ///     Returns the underlying data of an Interest component.
         /// </summary>
         /// <returns>
-        ///     A Dictionary<uint, ComponentInterest>.
+        ///     A Dictionary<uint, ComponentSetInterest>.
         /// </returns>
-        public Dictionary<uint, ComponentInterest> AsComponentInterest()
+        public Dictionary<uint, ComponentSetInterest> AsComponentSetInterest()
         {
             return interest;
         }
 
-        private static List<ComponentInterest.Query> InterestQueryParamsToQueries(
+        private static List<ComponentSetInterest.Query> InterestQueryParamsToQueries(
             InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
-            var output = new List<ComponentInterest.Query>(interestQueries.Length + 1)
+            var output = new List<ComponentSetInterest.Query>(interestQueries.Length + 1)
             {
-                interestQuery.AsComponentInterestQuery()
+                interestQuery.AsComponentSetInterestQuery()
             };
 
             foreach (var constraintParam in interestQueries)
             {
-                output.Add(constraintParam.AsComponentInterestQuery());
+                output.Add(constraintParam.AsComponentSetInterestQuery());
             }
 
             return output;
         }
 
-        private static List<ComponentInterest.Query> InterestQueryEnumerableToQueries(
+        private static List<ComponentSetInterest.Query> InterestQueryEnumerableToQueries(
             IEnumerable<InterestQuery> interestQueries)
         {
-            return interestQueries.Select(interestQuery => interestQuery.AsComponentInterestQuery()).ToList();
+            return interestQueries.Select(interestQuery => interestQuery.AsComponentSetInterestQuery()).ToList();
         }
     }
 }
