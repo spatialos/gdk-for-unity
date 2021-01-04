@@ -36,7 +36,6 @@ namespace Improbable.Gdk.PlayerLifecycle
         private readonly EntityQuery playerCreatorQuery = new EntityQuery
         {
             Constraint = new ComponentConstraint(PlayerCreator.ComponentId),
-            ResultType = new SnapshotResultType()
         };
 
         protected override void OnCreate()
