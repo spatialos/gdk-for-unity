@@ -16,11 +16,6 @@ namespace Improbable.Gdk.Core
         /// <returns>The worker ID.</returns>
         string GetWorkerId();
 
-        /// <summary>
-        ///     Gets the worker attributes for this worker.
-        /// </summary>
-        /// <returns>The list of worker attributes.</returns>
-        List<string> GetWorkerAttributes();
 
         /// <summary>
         ///     Populates the <see cref="ViewDiff"/> object using the messages received since

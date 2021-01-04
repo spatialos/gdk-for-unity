@@ -35,11 +35,6 @@ namespace Improbable.Gdk.Core
             return connection.GetWorkerId();
         }
 
-        public List<string> GetWorkerAttributes()
-        {
-            return connection.GetWorkerAttributes();
-        }
-
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
             bool inCriticalSection = false;

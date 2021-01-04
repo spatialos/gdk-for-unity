@@ -26,11 +26,6 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerId;
 
         /// <summary>
-        ///     The worker attribute list
-        /// </summary>
-        public readonly List<string> Attributes;
-
-        /// <summary>
         ///     The logger for this worker.
         /// </summary>
         public ILogDispatcher LogDispatcher;
@@ -56,7 +51,6 @@ namespace Improbable.Gdk.Core
             ConnectionHandler = connectionHandler;
             WorkerType = workerType;
             WorkerId = connectionHandler.GetWorkerId();
-            Attributes = connectionHandler.GetWorkerAttributes();
 
             LogDispatcher = logDispatcher;
             logDispatcher.Worker = this;
