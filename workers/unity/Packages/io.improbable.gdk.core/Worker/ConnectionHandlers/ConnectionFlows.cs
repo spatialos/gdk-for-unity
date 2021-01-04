@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Improbable.Worker.CInterop;
-using Improbable.Worker.CInterop.Alpha;
 
 namespace Improbable.Gdk.Core
 {
@@ -134,7 +133,6 @@ namespace Improbable.Gdk.Core
                     PlayerIdentityToken = PlayerIdentityToken,
                     LoginToken = LoginToken
                 },
-                CredentialsType = LocatorCredentialsType.PlayerIdentity,
                 UseInsecureConnection = UseInsecureConnection
             };
 
