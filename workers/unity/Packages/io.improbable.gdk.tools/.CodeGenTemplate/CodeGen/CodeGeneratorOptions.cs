@@ -12,7 +12,6 @@ namespace Improbable.Gdk.CodeGenerator
         public static CodeGeneratorOptions Instance { get; private set; }
         public string WorkerJsonDirectory { get; private set; }
         public string JsonDirectory { get; private set; }
-        public string DescriptorDirectory { get; private set; }
         public string OutputDirectory { get; private set; }
 
         public string EditorOutputDirectory { get; private set; }
@@ -38,10 +37,6 @@ namespace Improbable.Gdk.CodeGenerator
                 {
                     "json-dir=", "REQUIRED: the directory that will contain the JSON representation of your schema",
                     j => options.JsonDirectory = j
-                },
-                {
-                    "descriptor-dir=", "REQUIRED: the directory that will contain the Schema Descriptor",
-                    j => options.DescriptorDirectory = j
                 },
                 {
                     "output-dir=", "REQUIRED: the directory to output generated components and structs to",

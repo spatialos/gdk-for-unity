@@ -490,7 +490,6 @@ namespace Improbable.Gdk.Tools
                 $"--schema-compiler-path=\"{schemaCompilerPath}\"",
                 $"--worker-json-dir=\"{WorkerJsonPath}\"",
                 $"--log-file=\"{logfilePath}\"",
-                $"--descriptor-dir=\"{toolsConfig.DescriptorOutputDir}\"",
                 $"--output-dir=\"{toolsConfig.FullCodegenOutputPath}\"",
                 $"--editor-output-dir=\"{toolsConfig.FullCodegenEditorOutputPath}\""
             };

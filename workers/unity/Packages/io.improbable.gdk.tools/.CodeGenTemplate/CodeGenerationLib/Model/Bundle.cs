@@ -298,6 +298,7 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public IReadOnlyList<Import> Imports;
         public Package Package;
         public IReadOnlyList<TypeDefinition> Types;
+        public IReadOnlyList<object> ComponentSets;
     }
 
     public class SchemaBundle
