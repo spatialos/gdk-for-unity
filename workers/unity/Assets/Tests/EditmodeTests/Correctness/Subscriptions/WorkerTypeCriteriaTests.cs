@@ -132,7 +132,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         private static EntityTemplate GetEntityTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
+            template.AddComponent(new Position.Snapshot());
             return template;
         }
 

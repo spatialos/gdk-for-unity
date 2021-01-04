@@ -14,8 +14,8 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         {
             // Note this tests the internal EntitySnapshot(Entity entity) constructor too!
             var entityTemplate = new EntityTemplate();
-            entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(10, 10, 10)), "worker");
-            entityTemplate.AddComponent(new PlayerHeartbeatClient.Snapshot(), "test");
+            entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(10, 10, 10)));
+            entityTemplate.AddComponent(new PlayerHeartbeatClient.Snapshot());
 
             var snapshot = entityTemplate.GetEntitySnapshot();
 
@@ -56,8 +56,8 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void AddComponent_overrides_preexisting_components()
         {
             var entityTemplate = new EntityTemplate();
-            entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(10, 10, 10)), "worker");
-            entityTemplate.AddComponent(new PlayerHeartbeatClient.Snapshot(), "test");
+            entityTemplate.AddComponent(new Position.Snapshot(new Coordinates(10, 10, 10)));
+            entityTemplate.AddComponent(new PlayerHeartbeatClient.Snapshot());
 
             var snapshot = entityTemplate.GetEntitySnapshot();
 

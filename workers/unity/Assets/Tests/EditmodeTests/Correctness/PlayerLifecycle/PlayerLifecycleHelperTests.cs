@@ -67,8 +67,8 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
         private EntityTemplate GetOwnedEntity(string workerId)
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new OwningWorker.Snapshot(workerId), "worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new OwningWorker.Snapshot(workerId));
             return template;
         }
     }

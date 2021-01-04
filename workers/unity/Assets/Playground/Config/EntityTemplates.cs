@@ -18,6 +18,8 @@ namespace Playground
 
             var template = new EntityTemplate();
 
+            // TODO: Keep this here until component sets are defined properly?
+            /*
             template.AddComponent(new Position.Snapshot(), clientAttribute);
             template.AddComponent(new Metadata.Snapshot("Character"), WorkerUtils.UnityGameLogic);
             template.AddComponent(new PlayerInput.Snapshot(), clientAttribute);
@@ -58,8 +60,7 @@ namespace Playground
                 .AddQueries<Position.Component>(clientSelfInterest, clientRangeInterest)
                 .AddQueries<Metadata.Component>(serverSelfInterest, serverRangeInterest);
             template.AddComponent(interest.ToSnapshot());
-
-            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
+            */
 
             return template;
         }
@@ -67,6 +68,9 @@ namespace Playground
         public static EntityTemplate CreateCubeEntityTemplate(Vector3 location)
         {
             var template = new EntityTemplate();
+
+            // TODO: Keep this here until component sets are defined properly?
+            /*
             template.AddComponent(new Position.Snapshot(location.ToCoordinates()), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Cube"), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Persistence.Snapshot());
@@ -85,8 +89,7 @@ namespace Playground
             var interest = InterestTemplate.Create()
                 .AddQueries<Position.Component>(query);
             template.AddComponent(interest.ToSnapshot());
-
-            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
+            */
 
             return template;
         }
@@ -95,7 +98,9 @@ namespace Playground
         {
             var transform = TransformUtils.CreateTransformSnapshot(coords.ToUnityVector(), Quaternion.identity);
 
+            // TODO: Keep this here until component sets are defined properly?
             var template = new EntityTemplate();
+            /*
             template.AddComponent(new Position.Snapshot(coords), WorkerUtils.UnityGameLogic);
             template.AddComponent(new Metadata.Snapshot("Spinner"), WorkerUtils.UnityGameLogic);
             template.AddComponent(transform, WorkerUtils.UnityGameLogic);
@@ -112,8 +117,7 @@ namespace Playground
             var interest = InterestTemplate.Create()
                 .AddQueries<Position.Component>(query);
             template.AddComponent(interest.ToSnapshot());
-
-            template.SetReadAccess(WorkerUtils.MobileClient, WorkerUtils.UnityClient, WorkerUtils.UnityGameLogic);
+            */
 
             return template;
         }
@@ -121,10 +125,13 @@ namespace Playground
         public static EntityTemplate CreatePlayerSpawnerEntityTemplate(Coordinates playerSpawnerLocation)
         {
             var template = new EntityTemplate();
+            // TODO: Keep this here until component sets are defined properly?
+            /*
             template.AddComponent(new Position.Snapshot(playerSpawnerLocation));
             template.AddComponent(new Metadata.Snapshot("PlayerCreator"));
             template.AddComponent(new Persistence.Snapshot());
             template.AddComponent(new PlayerCreator.Snapshot(), WorkerUtils.UnityGameLogic);
+            */
 
             return template;
         }

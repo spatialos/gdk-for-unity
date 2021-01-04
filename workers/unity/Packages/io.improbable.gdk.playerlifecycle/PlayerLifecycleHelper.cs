@@ -12,15 +12,13 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// <param name="template">The entity template to add player lifecycle components to.</param>
         /// <param name="clientWorkerId">The ID of the client-worker.</param>
         /// <param name="serverAccess">The server-worker write access attribute.</param>
-        public static void AddPlayerLifecycleComponents(EntityTemplate template,
-            string clientWorkerId,
-            string serverAccess)
+        public static void AddPlayerLifecycleComponents(EntityTemplate template, string clientWorkerId)
         {
-            // TODO: Implement properly when ComponentSets are implemented.
-            template.AddComponent(new PlayerHeartbeatClient.Snapshot(),
-                clientWorkerId);
-            template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
-            template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
+            // TODO: These need to be put in the right component sets for this to work.
+            // Should we implement this in schema that we ship?
+            template.AddComponent(new PlayerHeartbeatClient.Snapshot());
+            template.AddComponent(new PlayerHeartbeatServer.Snapshot());
+            template.AddComponent(new OwningWorker.Snapshot(clientWorkerId));
         }
 
         public static bool IsOwningWorker(EntityId entityId, World workerWorld)

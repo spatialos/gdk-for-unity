@@ -7,24 +7,22 @@ namespace Improbable.Gdk.TransformSynchronization
     public static class TransformSynchronizationHelper
     {
         public static void AddTransformSynchronizationComponents(EntityTemplate template,
-            string writeAccess,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
-            AddTransformSynchronizationComponents(template, writeAccess,
+            AddTransformSynchronizationComponents(template,
                 UnityEngine.Quaternion.identity,
                 location,
                 velocity);
         }
 
         public static void AddTransformSynchronizationComponents(EntityTemplate template,
-            string writeAccess,
             UnityEngine.Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
             var transformSnapshot = TransformUtils.CreateTransformSnapshot(location, rotation, velocity);
-            template.AddComponent(transformSnapshot, writeAccess);
+            template.AddComponent(transformSnapshot);
         }
 
         public static void AddClientSystems(World world)

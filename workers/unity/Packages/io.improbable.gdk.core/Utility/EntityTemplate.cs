@@ -10,13 +10,10 @@ namespace Improbable.Gdk.Core
     /// </summary>
     public class EntityTemplate
     {
-        private const uint EntityAclComponentId = 50;
         private const uint PositionComponentId = 54;
 
         private readonly Dictionary<uint, ISpatialComponentSnapshot> entityData =
             new Dictionary<uint, ISpatialComponentSnapshot>();
-
-        private readonly Acl acl = new Acl();
 
         /// <summary>
         ///     Adds a SpatialOS component to the Entity Template.
@@ -30,12 +27,6 @@ namespace Improbable.Gdk.Core
         /// </remarks>
         public void AddComponent(ISpatialComponentSnapshot snapshot)
         {
-            if (snapshot.ComponentId == EntityAclComponentId)
-            {
-                // ACL handled automatically.
-                return;
-            }
-
             if (entityData.ContainsKey(snapshot.ComponentId))
             {
                 throw new InvalidOperationException(
@@ -44,29 +35,6 @@ namespace Improbable.Gdk.Core
             }
 
             entityData.Add(snapshot.ComponentId, snapshot);
-        }
-
-        /// <summary>
-        ///     Adds a SpatialOS component to the EntityTemplate with write permissions specified.
-        /// </summary>
-        /// <param name="snapshot">The component snapshot to add.</param>
-        /// <param name="writeAccess">
-        ///     The worker attribute that should be granted write access over the given component.
-        /// </param>
-        /// <exception cref="InvalidOperationException">
-        ///     Thrown if the EntityTemplate already contains a component snapshot with the same component ID.
-        /// </exception>
-        /// <remarks>
-        ///     EntityACL is handled automatically by the EntityTemplate, so a EntityACL snapshot will be ignored.
-        /// </remarks>
-        public void AddComponent(ISpatialComponentSnapshot snapshot, string writeAccess)
-        {
-            AddComponent(snapshot);
-
-            if (snapshot.ComponentId != EntityAclComponentId)
-            {
-                acl.SetComponentWriteAccess(snapshot.ComponentId, writeAccess);
-            }
         }
 
         /// <summary>
@@ -170,7 +138,6 @@ namespace Improbable.Gdk.Core
         {
             var id = ComponentDatabase.GetSnapshotComponentId<TSnapshot>();
             entityData.Remove(id);
-            acl.RemoveComponentWriteAccess(id);
         }
 
         /// <summary>
@@ -180,60 +147,6 @@ namespace Improbable.Gdk.Core
         public void RemoveComponent(uint componentId)
         {
             entityData.Remove(componentId);
-            acl.RemoveComponentWriteAccess(componentId);
-        }
-
-        /// <summary>
-        ///     Retrieves the write access worker attribute for a given component.
-        /// </summary>
-        /// <param name="componentId">The component id for that component.</param>
-        /// <returns>The write access worker attribute, if it exists, null otherwise.</returns>
-        public string GetComponentWriteAccess(uint componentId)
-        {
-            return acl.GetComponentStringAccess(componentId);
-        }
-
-        /// <summary>
-        ///     Retrieves the write access worker attribute for a given component.
-        /// </summary>
-        /// <typeparam name="TSnapshot">The type of the component.</typeparam>
-        /// <returns>The write access worker attribute, if it exists, null otherwise.</returns>
-        public string GetComponentWriteAccess<TSnapshot>() where TSnapshot : struct, ISpatialComponentSnapshot
-        {
-            return GetComponentWriteAccess(ComponentDatabase.GetSnapshotComponentId<TSnapshot>());
-        }
-
-        /// <summary>
-        ///     Sets the write access worker attribute for a given component.
-        /// </summary>
-        /// <param name="componentId">The component id for that component.</param>
-        /// <param name="writeAccess">The write access worker attribute.</param>
-        public void SetComponentWriteAccess(uint componentId, string writeAccess)
-        {
-            acl.SetComponentWriteAccess(componentId, writeAccess);
-        }
-
-        /// <summary>
-        ///     Sets the write access worker attribute for a given component.
-        /// </summary>
-        /// <param name="writeAccess">The write access worker attribute.</param>
-        /// <typeparam name="TSnapshot">The type of the component.</typeparam>
-        public void SetComponentWriteAccess<TSnapshot>(string writeAccess)
-            where TSnapshot : struct, ISpatialComponentSnapshot
-        {
-            SetComponentWriteAccess(ComponentDatabase.GetSnapshotComponentId<TSnapshot>(), writeAccess);
-        }
-
-        /// <summary>
-        ///     Sets the worker attributes which should have read access over this entity.
-        /// </summary>
-        /// <param name="attributes">The worker attributes which should have read access.</param>
-        public void SetReadAccess(params string[] attributes)
-        {
-            foreach (var attr in attributes)
-            {
-                acl.AddReadAccess(attr);
-            }
         }
 
         /// <summary>
@@ -250,7 +163,6 @@ namespace Improbable.Gdk.Core
             var handler = new EntityTemplateDynamicHandler(entityData);
             Dynamic.ForEachComponent(handler);
             var entity = handler.Entity;
-            entity.Add(acl.Build());
             return entity;
         }
 
@@ -273,63 +185,10 @@ namespace Improbable.Gdk.Core
 
         private void ValidateEntity()
         {
+            // TODO: Ensure this has AuthorityDelegation component on it.
             if (!entityData.ContainsKey(PositionComponentId))
             {
                 throw new InvalidOperationException("Entity is invalid. No Position component was found");
-            }
-        }
-
-        private class Acl
-        {
-            private readonly Dictionary<uint, string> writePermissions = new Dictionary<uint, string>();
-            private readonly List<string> readPermissions = new List<string>();
-
-            public string GetComponentStringAccess(uint componentId)
-            {
-                writePermissions.TryGetValue(componentId, out var writeAccess);
-                return writeAccess;
-            }
-
-            public void SetComponentWriteAccess(uint componentId, string attribute)
-            {
-                writePermissions[componentId] = attribute;
-            }
-
-            public void AddReadAccess(string attribute)
-            {
-                readPermissions.Add(attribute);
-            }
-
-            public void RemoveComponentWriteAccess(uint componentId)
-            {
-                writePermissions.Remove(componentId);
-            }
-
-            public ComponentData Build()
-            {
-                var schemaComponentData = SchemaComponentData.Create();
-                var fields = schemaComponentData.GetFields();
-
-                // Write the read acl
-                var workerRequirementSet = fields.AddObject(1);
-                foreach (var attr in readPermissions)
-                {
-                    // Add another WorkerAttributeSet to the list
-                    var set = workerRequirementSet.AddObject(1);
-                    set.AddString(1, attr);
-                }
-
-                // Write the component write acl
-                foreach (var writePermission in writePermissions)
-                {
-                    var keyValuePair = fields.AddObject(2);
-                    keyValuePair.AddUint32(1, writePermission.Key);
-                    var containedRequirementSet = keyValuePair.AddObject(2);
-                    var containedAttributeSet = containedRequirementSet.AddObject(1);
-                    containedAttributeSet.AddString(1, writePermission.Value);
-                }
-
-                return new ComponentData(EntityAclComponentId, schemaComponentData);
             }
         }
 

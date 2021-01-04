@@ -8,7 +8,6 @@ namespace Improbable.Gdk.Core.SceneAuthoring
     {
         [SerializeField] internal bool UseSpecificEntityId;
         [SerializeField] internal long DesiredEntityId;
-        [SerializeField] internal string[] ReadAcl = { };
 
         public List<ConvertedEntity> Convert()
         {
@@ -19,8 +18,6 @@ namespace Improbable.Gdk.Core.SceneAuthoring
             {
                 component.WriteTo(template);
             }
-
-            template.SetReadAccess(ReadAcl);
 
             var entity = UseSpecificEntityId
                 ? new ConvertedEntity(new EntityId(DesiredEntityId), template)
