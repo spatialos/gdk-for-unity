@@ -1,5 +1,5 @@
 {
-  "template": "n1standard2_std40_r0500",
+  "template": "n1standard2_std40_action1g1",
   "world": {
     "chunkEdgeLengthMeters": 5,
     "snapshots": {
@@ -60,9 +60,7 @@
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]
@@ -73,9 +71,7 @@
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]
