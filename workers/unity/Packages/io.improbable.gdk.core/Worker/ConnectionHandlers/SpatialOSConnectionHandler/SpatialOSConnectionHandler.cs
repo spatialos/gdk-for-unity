@@ -35,6 +35,11 @@ namespace Improbable.Gdk.Core
             return connection.GetWorkerId();
         }
 
+        public EntityId GetWorkerEntityId()
+        {
+            return new EntityId(connection.GetWorkerEntityId());
+        }
+
         public void GetMessagesReceived(ref ViewDiff viewDiff)
         {
             bool inCriticalSection = false;

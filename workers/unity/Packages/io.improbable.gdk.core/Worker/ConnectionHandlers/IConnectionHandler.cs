@@ -16,6 +16,11 @@ namespace Improbable.Gdk.Core
         /// <returns>The worker ID.</returns>
         string GetWorkerId();
 
+        /// <summary>
+        ///     Gets the worker <see cref="EntityId"/> for this worker.
+        /// </summary>
+        /// <returns>The worker EntityId.</returns>
+        EntityId GetWorkerEntityId();
 
         /// <summary>
         ///     Populates the <see cref="ViewDiff"/> object using the messages received since
