@@ -20,15 +20,6 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void AddComponent_should_ignore_EntityAcl()
-        {
-            var template = GetBasicTemplate();
-            template.AddComponent(new EntityAcl.Snapshot(), "test");
-
-            Assert.IsFalse(template.HasComponent<EntityAcl.Snapshot>());
-        }
-
-        [Test]
         public void GetComponent_should_return_the_component_if_present()
         {
             var template = GetBasicTemplate();
