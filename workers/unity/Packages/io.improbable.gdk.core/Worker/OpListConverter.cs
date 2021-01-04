@@ -39,10 +39,6 @@ namespace Improbable.Gdk.Core
                         var flagOp = opList.GetFlagUpdateOp(i);
                         viewDiff.SetWorkerFlag(flagOp.Name, flagOp.Value);
                         break;
-                    case OpType.LogMessage:
-                        var logOp = opList.GetLogMessageOp(i);
-                        viewDiff.AddLogMessage(logOp.Message, logOp.Level);
-                        break;
                     case OpType.Metrics:
                         var metricsOp = opList.GetMetricsOp(i);
                         viewDiff.AddMetrics(metricsOp.Metrics);
@@ -85,10 +81,11 @@ namespace Improbable.Gdk.Core
                         var removeComponentOp = opList.GetRemoveComponentOp(i);
                         viewDiff.RemoveComponent(removeComponentOp.EntityId, removeComponentOp.ComponentId);
                         break;
-                    case OpType.AuthorityChange:
-                        var authorityOp = opList.GetAuthorityChangeOp(i);
-                        viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority,
-                            authorityChangeId);
+                    case OpType.ComponentSetAuthorityChange:
+                        var authorityOp = opList.GetComponentSetAuthorityChangeOp(i);
+                        // TODO: Implement this once we have component sets generated
+                        // viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority,
+                        //    authorityChangeId);
                         authorityChangeId++;
                         break;
                     case OpType.ComponentUpdate:
