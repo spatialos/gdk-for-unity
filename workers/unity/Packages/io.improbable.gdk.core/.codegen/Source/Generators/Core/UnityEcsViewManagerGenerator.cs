@@ -216,8 +216,6 @@ private void SetAuthority(EntityId entityId, Authority authority)
             entityManager.AddComponent<{componentNamespace}.HasAuthority>(entity);
             break;
         }}
-        case Authority.AuthorityLossImminent:
-            break;
     }}
 }}
 ");
