@@ -43,6 +43,7 @@ namespace Playground
             else
             {
                 builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)));
+                connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
             }
 
             await Connect(builder, new ForwardingDispatcher());

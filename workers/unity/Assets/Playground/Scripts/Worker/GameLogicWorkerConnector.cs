@@ -26,6 +26,7 @@ namespace Playground
             {
                 flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
                 connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
+                connectionParameters.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
             }
             else
             {
