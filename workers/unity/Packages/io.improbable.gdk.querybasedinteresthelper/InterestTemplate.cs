@@ -85,33 +85,8 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <summary>
         ///     Add InterestQueries to the Interest component.
         /// </summary>
-        /// <param name="interestQuery">
-        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
-        /// </param>
-        /// <param name="interestQueries">
-        ///     Further InterestQueries to add for a given authoritative component.
-        /// </param>
-        /// <typeparam name="T">
-        ///     Type of the authoritative component to add the InterestQueries to.
-        /// </typeparam>
-        /// <remarks>
-        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
-        /// </remarks>
-        /// <returns>
-        ///     An <see cref="InterestTemplate"/> object.
-        /// </returns>
-        public InterestTemplate AddQueries<T>(InterestQuery interestQuery,
-            params InterestQuery[] interestQueries)
-            where T : ISpatialComponentData
-        {
-            return AddQueries(ComponentDatabase.GetComponentId<T>(), interestQuery, interestQueries);
-        }
-
-        /// <summary>
-        ///     Add InterestQueries to the Interest component.
-        /// </summary>
-        /// <param name="componentId">
-        ///     Component ID of the authoritative component to add the InterestQueries to.
+        /// <param name="componentSet">
+        ///     Component Set ID of the authoritative component set to add the InterestQueries to.
         /// </param>
         /// <param name="interestQuery">
         ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
@@ -125,39 +100,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public InterestTemplate AddQueries(uint componentId,
+        public InterestTemplate AddQueries(ComponentSet componentSet,
             InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
-            return AddQueries(componentId, InterestQueryParamsToQueries(interestQuery, interestQueries));
+            return AddQueries(componentSet, InterestQueryParamsToQueries(interestQuery, interestQueries));
         }
+
 
         /// <summary>
         ///     Add InterestQueries to the Interest component.
         /// </summary>
-        /// <param name="interestQueries">
-        ///     Set of InterestQueries to add for a given authoritative component.
-        /// </param>
-        /// <typeparam name="T">
-        ///     Type of the authoritative component to add the InterestQueries to.
-        /// </typeparam>
-        /// <remarks>
-        ///     At least one <see cref="InterestQuery"/> must be provided to update the Interest component.
-        /// </remarks>
-        /// <returns>
-        ///     An <see cref="InterestTemplate"/> object.
-        /// </returns>
-        public InterestTemplate AddQueries<T>(IEnumerable<InterestQuery> interestQueries)
-            where T : ISpatialComponentData
-        {
-            return AddQueries(ComponentDatabase.GetComponentId<T>(), interestQueries);
-        }
-
-        /// <summary>
-        ///     Add InterestQueries to the Interest component.
-        /// </summary>
-        /// <param name="componentId">
-        ///     Component ID of the authoritative component to add the InterestQueries to.
+        /// <param name="componentSet">
+        ///     Component Set ID of the authoritative component set to add the InterestQueries to.
         /// </param>
         /// <param name="interestQueries">
         ///     Set of InterestQueries to add for a given authoritative component.
@@ -169,7 +124,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public InterestTemplate AddQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
+        public InterestTemplate AddQueries(ComponentSet componentSet, IEnumerable<InterestQuery> interestQueries)
         {
             if (!interestQueries.Any())
             {
@@ -177,14 +132,14 @@ namespace Improbable.Gdk.QueryBasedInterest
                 return this;
             }
 
-            return AddQueries(componentId, InterestQueryEnumerableToQueries(interestQueries));
+            return AddQueries(componentSet, InterestQueryEnumerableToQueries(interestQueries));
         }
 
-        private InterestTemplate AddQueries(uint componentId, List<ComponentSetInterest.Query> componentInterestQueries)
+        private InterestTemplate AddQueries(ComponentSet componentSet, List<ComponentSetInterest.Query> componentInterestQueries)
         {
-            if (!interest.TryGetValue(componentId, out var componentInterest))
+            if (!interest.TryGetValue(componentSet.ComponentSetId, out var componentInterest))
             {
-                interest.Add(componentId, new ComponentSetInterest
+                interest.Add(componentSet.ComponentSetId, new ComponentSetInterest
                 {
                     Queries = componentInterestQueries
                 });
@@ -193,31 +148,6 @@ namespace Improbable.Gdk.QueryBasedInterest
 
             componentInterest.Queries.AddRange(componentInterestQueries);
             return this;
-        }
-
-        /// <summary>
-        ///     Replaces a component's InterestQueries in the Interest component.
-        /// </summary>
-        /// <param name="interestQuery">
-        ///     First <see cref="InterestQuery"/> to add for a given authoritative component.
-        /// </param>
-        /// <param name="interestQueries">
-        ///     Further InterestQueries to add for a given authoritative component.
-        /// </param>
-        /// <typeparam name="T">
-        ///     Type of the authoritative component to replace InterestQueries of.
-        /// </typeparam>
-        /// <remarks>
-        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest.
-        /// </remarks>
-        /// <returns>
-        ///     An <see cref="InterestTemplate"/> object.
-        /// </returns>
-        public InterestTemplate ReplaceQueries<T>(InterestQuery interestQuery,
-            params InterestQuery[] interestQueries)
-            where T : ISpatialComponentData
-        {
-            return ReplaceQueries(ComponentDatabase.GetComponentId<T>(), interestQuery, interestQueries);
         }
 
         /// <summary>
@@ -238,33 +168,13 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public InterestTemplate ReplaceQueries(uint componentId,
+        public InterestTemplate ReplaceQueries(ComponentSet componentSet,
             InterestQuery interestQuery,
             params InterestQuery[] interestQueries)
         {
-            return ReplaceQueries(componentId, InterestQueryParamsToQueries(interestQuery, interestQueries));
+            return ReplaceQueries(componentSet, InterestQueryParamsToQueries(interestQuery, interestQueries));
         }
 
-        /// <summary>
-        ///     Replaces a component's InterestQueries in the Interest component.
-        /// </summary>
-        /// <param name="interestQueries">
-        ///     Set of InterestQueries to add for a given authoritative component.
-        /// </param>
-        /// <typeparam name="T">
-        ///     Type of the authoritative component to replace InterestQueries of.
-        /// </typeparam>
-        /// <remarks>
-        ///     At least one <see cref="InterestQuery"/> must be provided to replace a component's interest.
-        /// </remarks>
-        /// <returns>
-        ///     An <see cref="InterestTemplate"/> object.
-        /// </returns>
-        public InterestTemplate ReplaceQueries<T>(IEnumerable<InterestQuery> interestQueries)
-            where T : ISpatialComponentData
-        {
-            return ReplaceQueries(ComponentDatabase.GetComponentId<T>(), interestQueries);
-        }
 
         /// <summary>
         ///     Replaces a component's InterestQueries in the Interest component.
@@ -282,7 +192,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public InterestTemplate ReplaceQueries(uint componentId, IEnumerable<InterestQuery> interestQueries)
+        public InterestTemplate ReplaceQueries(ComponentSet componentSet, IEnumerable<InterestQuery> interestQueries)
         {
             if (!interestQueries.Any())
             {
@@ -290,15 +200,15 @@ namespace Improbable.Gdk.QueryBasedInterest
                 return this;
             }
 
-            return ReplaceQueries(componentId, InterestQueryEnumerableToQueries(interestQueries));
+            return ReplaceQueries(componentSet, InterestQueryEnumerableToQueries(interestQueries));
         }
 
-        private InterestTemplate ReplaceQueries(uint componentId,
+        private InterestTemplate ReplaceQueries(ComponentSet componentSet,
             List<ComponentSetInterest.Query> componentInterestQueries)
         {
-            if (!interest.TryGetValue(componentId, out var componentInterest))
+            if (!interest.TryGetValue(componentSet.ComponentSetId, out var componentInterest))
             {
-                interest.Add(componentId, new ComponentSetInterest
+                interest.Add(componentSet.ComponentSetId, new ComponentSetInterest
                 {
                     Queries = componentInterestQueries
                 });
@@ -313,30 +223,15 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <summary>
         ///     Clears all InterestQueries for a given authoritative component.
         /// </summary>
-        /// <typeparam name="T">
-        ///     Type of the authoritative component to clear InterestQueries from.
-        /// </typeparam>
-        /// <returns>
-        ///     An <see cref="InterestTemplate"/> object.
-        /// </returns>
-        public InterestTemplate ClearQueries<T>()
-            where T : ISpatialComponentData
-        {
-            return ClearQueries(ComponentDatabase.GetComponentId<T>());
-        }
-
-        /// <summary>
-        ///     Clears all InterestQueries for a given authoritative component.
-        /// </summary>
         /// <param name="componentId">
         ///     Component ID of the authoritative component to clear InterestQueries from.
         /// </param>
         /// <returns>
         ///     An <see cref="InterestTemplate"/> object.
         /// </returns>
-        public InterestTemplate ClearQueries(uint componentId)
+        public InterestTemplate ClearQueries(ComponentSet componentSet)
         {
-            interest.Remove(componentId);
+            interest.Remove(componentSet.ComponentSetId);
             return this;
         }
 

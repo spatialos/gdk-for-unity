@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Improbable.Gdk.QueryBasedInterest;
+using Improbable.Generated;
 using NUnit.Framework;
 
 namespace Improbable.Gdk.EditmodeTests.Utility
@@ -29,53 +30,53 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void AddQueries_can_be_called_multiple_times_on_same_component()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery, BasicQuery)
-                .AddQueries<Position.Component>(BasicQuery, BasicQuery));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery, BasicQuery)
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery, BasicQuery));
         }
 
         [Test]
         public void AddQueries_can_be_called_multiple_times_on_different_components()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery, BasicQuery)
-                .AddQueries<Metadata.Component>(BasicQuery, BasicQuery));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery, BasicQuery)
+                .AddQueries(ComponentSets.WellKnownComponentSet, BasicQuery, BasicQuery));
         }
 
         [Test]
         public void AddQueries_can_be_called_with_a_single_query()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery));
         }
 
         [Test]
         public void AddQueries_can_be_called_multiple_times_on_same_component_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery })
-                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery }));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { BasicQuery, BasicQuery })
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { BasicQuery, BasicQuery }));
         }
 
         [Test]
         public void AddQueries_can_be_called_multiple_times_on_different_components_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery, BasicQuery })
-                .AddQueries<Metadata.Component>(new List<InterestQuery> { BasicQuery, BasicQuery }));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { BasicQuery, BasicQuery })
+                .AddQueries(ComponentSets.WellKnownComponentSet, new List<InterestQuery> { BasicQuery, BasicQuery }));
         }
 
         [Test]
         public void AddQueries_can_be_called_with_a_single_query_with_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery> { BasicQuery }));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { BasicQuery }));
         }
 
         [Test]
         public void AddQueries_does_nothing_with_empty_enumerable()
         {
             Assert.False(EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery>())
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery>())
                 .AsComponentSetInterest()
                 .ContainsKey(Position.ComponentId));
         }
@@ -84,7 +85,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void AddQueries_does_not_throw_exception_with_empty_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(new List<InterestQuery>()));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery>()));
         }
 
         [Test]
@@ -99,10 +100,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var interest = EmptyInterest
-                .AddQueries<Position.Component>(initialQuery)
-                .ReplaceQueries<Position.Component>(differentBasicQuery);
+                .AddQueries(ComponentSets.AuthorityDelegationSet, initialQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, differentBasicQuery);
 
-            var queryExists = interest.AsComponentSetInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+            var queryExists = interest.AsComponentSetInterest().TryGetValue(ComponentSets.AuthorityDelegationSet.ComponentSetId, out var replacedQuery);
             var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
 
             Assert.True(queryExists);
@@ -115,10 +116,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void ReplaceQueries_clears_previous_queries_for_a_component()
         {
             var interest = EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
-                .ReplaceQueries<Position.Component>(DifferentBasicQuery);
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery, BasicQuery, BasicQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, DifferentBasicQuery);
 
-            var queryExists = interest.AsComponentSetInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+            var queryExists = interest.AsComponentSetInterest().TryGetValue(ComponentSets.AuthorityDelegationSet.ComponentSetId, out var replacedQuery);
 
             Assert.True(queryExists);
             Assert.AreEqual(1, replacedQuery.Queries.Count);
@@ -136,10 +137,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 .Constraint.RelativeSphereConstraint.Value.Radius;
 
             var interest = EmptyInterest
-                .AddQueries<Position.Component>(initialQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery> { differentBasicQuery });
+                .AddQueries(ComponentSets.AuthorityDelegationSet, initialQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { differentBasicQuery });
 
-            var queryExists = interest.AsComponentSetInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+            var queryExists = interest.AsComponentSetInterest().TryGetValue(ComponentSets.AuthorityDelegationSet.ComponentSetId, out var replacedQuery);
             var replacedQueryRadius = replacedQuery.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius;
 
             Assert.True(queryExists);
@@ -152,10 +153,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void ReplaceQueries_clears_previous_queries_for_a_component_with_enumerable()
         {
             var interest = EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery, BasicQuery, BasicQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery> { DifferentBasicQuery });
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery, BasicQuery, BasicQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery> { DifferentBasicQuery });
 
-            var queryExists = interest.AsComponentSetInterest().TryGetValue(Position.ComponentId, out var replacedQuery);
+            var queryExists = interest.AsComponentSetInterest().TryGetValue(ComponentSets.AuthorityDelegationSet.ComponentSetId, out var replacedQuery);
 
             Assert.True(queryExists);
             Assert.AreEqual(1, replacedQuery.Queries.Count);
@@ -166,10 +167,10 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         {
             var basicQuery = BasicQuery;
             var interest = EmptyInterest
-                .AddQueries<Position.Component>(basicQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery>());
+                .AddQueries(ComponentSets.AuthorityDelegationSet, basicQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery>());
 
-            Assert.True(interest.AsComponentSetInterest().TryGetValue(Position.ComponentId, out var queryValue));
+            Assert.True(interest.AsComponentSetInterest().TryGetValue(ComponentSets.AuthorityDelegationSet.ComponentSetId, out var queryValue));
             Assert.AreEqual(queryValue.Queries[0].Constraint.RelativeSphereConstraint.Value.Radius,
                 basicQuery.AsComponentSetInterestQuery().Constraint.RelativeSphereConstraint.Value.Radius);
         }
@@ -178,38 +179,38 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void ReplaceQueries_does_not_throw_exception_with_empty_enumerable()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery)
-                .ReplaceQueries<Position.Component>(new List<InterestQuery>()));
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery)
+                .ReplaceQueries(ComponentSets.AuthorityDelegationSet, new List<InterestQuery>()));
         }
 
         [Test]
         public void ClearQueries_clears_queries_for_a_single_component()
         {
             var interest = EmptyInterest
-                .AddQueries<Metadata.Component>(BasicQuery)
-                .AddQueries<Persistence.Component>(BasicQuery)
-                .AddQueries<Position.Component>(BasicQuery)
-                .ClearQueries<Metadata.Component>();
+                .AddQueries(ComponentSets.WellKnownComponentSet, BasicQuery)
+                .AddQueries(ComponentSets.DependentComponentSet, BasicQuery)
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery)
+                .ClearQueries(ComponentSets.WellKnownComponentSet);
 
             Assert.AreEqual(2, interest.AsComponentSetInterest().Keys.Count);
-            Assert.True(interest.AsComponentSetInterest().ContainsKey(Persistence.ComponentId));
-            Assert.True(interest.AsComponentSetInterest().ContainsKey(Position.ComponentId));
+            Assert.True(interest.AsComponentSetInterest().ContainsKey(ComponentSets.DependentComponentSet.ComponentSetId));
+            Assert.True(interest.AsComponentSetInterest().ContainsKey(ComponentSets.AuthorityDelegationSet.ComponentSetId));
         }
 
         [Test]
         public void ClearQueries_can_be_used_with_empty_interest()
         {
             Assert.DoesNotThrow(() => EmptyInterest
-                .ClearQueries<Metadata.Component>());
+                .ClearQueries(ComponentSets.WellKnownComponentSet));
         }
 
         [Test]
         public void ClearAllQueries_clears_queries_for_all_components()
         {
             var interest = EmptyInterest
-                .AddQueries<Metadata.Component>(BasicQuery)
-                .AddQueries<Persistence.Component>(BasicQuery)
-                .AddQueries<Position.Component>(BasicQuery)
+                .AddQueries(ComponentSets.WellKnownComponentSet, BasicQuery)
+                .AddQueries(ComponentSets.DependentComponentSet, BasicQuery)
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery)
                 .ClearAllQueries();
 
             Assert.AreEqual(0, interest.AsComponentSetInterest().Keys.Count);
@@ -247,12 +248,12 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Create_from_template_modifies_a_deep_copy()
         {
             var originalInterest = EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery)
-                .AddQueries<Metadata.Component>(BasicQuery);
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery)
+                .AddQueries(ComponentSets.WellKnownComponentSet, BasicQuery);
 
             var modifiedInterest = InterestTemplate
                 .Create(originalInterest)
-                .ClearQueries<Position.Component>()
+                .ClearQueries(ComponentSets.AuthorityDelegationSet)
                 .AsComponentSetInterest();
 
             Assert.AreEqual(2, originalInterest.AsComponentSetInterest().Keys.Count);
@@ -263,13 +264,13 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Create_from_dictionary_modifies_a_deep_copy()
         {
             var originalInterest = EmptyInterest
-                .AddQueries<Position.Component>(BasicQuery)
-                .AddQueries<Metadata.Component>(BasicQuery)
+                .AddQueries(ComponentSets.AuthorityDelegationSet, BasicQuery)
+                .AddQueries(ComponentSets.WellKnownComponentSet, BasicQuery)
                 .AsComponentSetInterest();
 
             var modifiedInterest = InterestTemplate
                 .Create(originalInterest)
-                .ClearQueries<Position.Component>()
+                .ClearQueries(ComponentSets.AuthorityDelegationSet)
                 .AsComponentSetInterest();
 
             Assert.AreEqual(2, originalInterest.Keys.Count);
