@@ -11,7 +11,7 @@ namespace Improbable.Gdk.PlayerLifecycle
         /// </summary>
         /// <param name="template">The entity template to add player lifecycle components to.</param>
         /// <param name="clientWorkerEntityId">The EntityID of the client-worker.</param>
-        public static void AddPlayerLifecycleComponents(EntityTemplate template, EntityId clientWorkerEntityId)
+        public static void AddPlayerLifecycleComponents(this EntityTemplate template, EntityId clientWorkerEntityId)
         {
             template.AddComponent(new PlayerHeartbeatClient.Snapshot());
             template.AddComponent(new PlayerHeartbeatServer.Snapshot());

@@ -24,9 +24,8 @@ namespace Playground
             template.AddComponent(new Launcher.Snapshot(100, 0));
             template.AddComponent(new Score.Snapshot());
             template.AddComponent(new CubeSpawner.Snapshot(new List<EntityId>()));
-
-            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template);
-            PlayerLifecycleHelper.AddPlayerLifecycleComponents(template, clientWorkerEntityId);
+            template.AddTransformSynchronizationComponents();
+            template.AddPlayerLifecycleComponents(clientWorkerEntityId);
 
             var clientSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
             {
@@ -44,7 +43,7 @@ namespace Playground
 
             var interest = InterestTemplate
                 .Create()
-                .AddQueries(ComponentSets.PlayerClientSet.ComponentSetId, clientSelfInterest, clientRangeInterest);
+                .AddQueries(ComponentSets.PlayerClientSet, clientSelfInterest, clientRangeInterest);
             template.AddComponent(interest.ToSnapshot());
 
 
@@ -61,17 +60,7 @@ namespace Playground
             template.AddComponent(new CubeColor.Snapshot());
             template.AddComponent(new CubeTargetVelocity.Snapshot(new Vector3f(-2.0f, 0, 0)));
             template.AddComponent(new Launchable.Snapshot());
-
-            TransformSynchronizationHelper.AddTransformSynchronizationComponents(template, Quaternion.identity, location);
-
-            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
-            {
-                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
-            });
-
-            var interest = InterestTemplate.Create()
-                .AddQueries<Position.Component>(query);
-            template.AddComponent(interest.ToSnapshot());
+            template.AddTransformSynchronizationComponents(Quaternion.identity, location);
 
             return template;
         }
@@ -88,15 +77,6 @@ namespace Playground
             template.AddComponent(new Collisions.Snapshot());
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE));
             template.AddComponent(new SpinnerRotation.Snapshot());
-
-            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
-            {
-                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
-            });
-
-            var interest = InterestTemplate.Create()
-                .AddQueries<Position.Component>(query);
-            template.AddComponent(interest.ToSnapshot());
 
             return template;
         }
@@ -119,7 +99,8 @@ namespace Playground
             template.AddComponent(new Metadata.Snapshot("LB Partition"));
 
             var query = InterestQuery.Query(Constraint.Component<Position.Component>());
-            template.AddComponent(InterestTemplate.Create().AddQueries(ComponentSets.AuthorityDelegationSet.ComponentSetId, query).ToSnapshot());
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.AuthorityDelegationSet, query);
+            template.AddComponent(interest.ToSnapshot());
             return template;
         }
 

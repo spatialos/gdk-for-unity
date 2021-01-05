@@ -6,7 +6,7 @@ namespace Improbable.Gdk.TransformSynchronization
 {
     public static class TransformSynchronizationHelper
     {
-        public static void AddTransformSynchronizationComponents(EntityTemplate template,
+        public static void AddTransformSynchronizationComponents(this EntityTemplate template,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
         {
@@ -16,7 +16,7 @@ namespace Improbable.Gdk.TransformSynchronization
                 velocity);
         }
 
-        public static void AddTransformSynchronizationComponents(EntityTemplate template,
+        public static void AddTransformSynchronizationComponents(this EntityTemplate template,
             UnityEngine.Quaternion rotation,
             Vector3 location = default(Vector3),
             Vector3 velocity = default(Vector3))
