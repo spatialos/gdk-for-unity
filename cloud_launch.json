@@ -1,5 +1,5 @@
 {
-  "template": "n1standard2_std40_r0500",
+  "template": "n1standard2_std40_action1g1",
   "world": {
     "chunkEdgeLengthMeters": 5,
     "snapshots": {
@@ -21,7 +21,7 @@
       {
         "layer": "UnityGameLogic",
         "rectangle_grid": {
-          "cols": 2,
+          "cols": 1,
           "rows": 1
         }
       }
@@ -42,9 +42,7 @@
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]
@@ -55,9 +53,7 @@
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]
