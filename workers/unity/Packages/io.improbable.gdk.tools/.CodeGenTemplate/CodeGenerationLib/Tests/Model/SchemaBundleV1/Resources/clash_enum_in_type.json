@@ -71,7 +71,8 @@
           ]
         }
       ],
-      "components": []
+      "components": [],
+      "componentSets": []
     }
   ]
 }
