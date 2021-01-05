@@ -56,7 +56,6 @@ namespace Playground.LoadBalancing
             {
                 if (worker.WorkerType == "UnityClient")
                 {
-                    Debug.Log("Creating partition for client");
                     var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity()));
                     var context = new PendingPartitionCreationContext { ClientWorkerEntityId = spatialEntityId.EntityId, ClientEcsEntity = entity };
                     pendingPartitionCreationContexts[requestId] = context;
@@ -73,13 +72,10 @@ namespace Playground.LoadBalancing
             for (var i = 0; i < responses.Count; i++)
             {
                 var response = responses[i];
-                Debug.Log($"{response.EntityId}");
                 if (!pendingPartitionCreationContexts.TryGetValue(response.RequestId, out var context))
                 {
                     continue;
                 }
-
-                Debug.Log("Got creation response.");
 
                 pendingPartitionCreationContexts.Remove(response.RequestId);
 
@@ -91,7 +87,8 @@ namespace Playground.LoadBalancing
 
                 var nextContext = new PendingAssignPartitionContext
                 {
-                    ClientWorkerEntityId = context.ClientWorkerEntityId, PartitionEntityId = response.EntityId.Value
+                    ClientWorkerEntityId = context.ClientWorkerEntityId,
+                    PartitionEntityId = response.EntityId.Value
                 };
 
                 AssignPartition(nextContext);
@@ -102,7 +99,6 @@ namespace Playground.LoadBalancing
         {
             var requestId = commandSystem.SendCommand(new Worker.AssignPartition.Request(
                 context.ClientWorkerEntityId, new AssignPartitionRequest(context.PartitionEntityId.Id)));
-            Debug.Log("Assigning partition to client");
             pendingAssignPartitionContexts[requestId] = context;
         }
 
@@ -117,8 +113,6 @@ namespace Playground.LoadBalancing
                 {
                     continue;
                 }
-
-                Debug.Log("Got response for assigning partition to client");
 
                 pendingAssignPartitionContexts.Remove(response.RequestId);
 
