@@ -175,24 +175,30 @@ namespace Improbable.Gdk.Core
 
             foreach (var componentId in componentSet.ComponentIds)
             {
-                if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
-                {
-                    throw new ArgumentException(
-                        $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
-                        "Unknown component ID");
-                }
+                SetComponentAuthority(entityId, componentId, authority, authorityChangeId);
+            }
+        }
 
-                ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
-                    new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
+        internal void SetComponentAuthority(long entityId, uint componentId, Authority authority,
+            uint authorityChangeId)
+        {
+            if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
+            {
+                throw new ArgumentException(
+                    $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
+                    "Unknown component ID");
+            }
 
-                // Remove received command requests if authority has been lost
-                if (authority == Authority.NotAuthoritative)
+            ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
+                new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
+
+            // Remove received command requests if authority has been lost
+            if (authority == Authority.NotAuthoritative)
+            {
+                var (firstIndex, count) = componentIdStorageRange[componentId];
+                for (var i = 0; i < count; i++)
                 {
-                    var (firstIndex, count) = componentIdStorageRange[componentId];
-                    for (var i = 0; i < count; i++)
-                    {
-                        commandStorageList[firstIndex + i].RemoveRequests(entityId);
-                    }
+                    commandStorageList[firstIndex + i].RemoveRequests(entityId);
                 }
             }
         }

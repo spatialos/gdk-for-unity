@@ -1,6 +1,7 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Test;
 using Improbable.Gdk.TestUtils;
+using Improbable.Generated;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
 
@@ -18,8 +19,8 @@ namespace Improbable.Gdk.EditmodeTests
                 .Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
                 .Step(world =>
                 {
-                    world.Connection.ChangeAuthority(EntityId, 54, Authority.Authoritative);
-                    world.Connection.ChangeAuthority(EntityId, 54, Authority.NotAuthoritative);
+                    world.Connection.ChangeAuthority(EntityId, ComponentSets.WellKnownComponentSet, Authority.Authoritative);
+                    world.Connection.ChangeAuthority(EntityId, ComponentSets.WellKnownComponentSet, Authority.NotAuthoritative);
                 })
                 .Step(world =>
                 {

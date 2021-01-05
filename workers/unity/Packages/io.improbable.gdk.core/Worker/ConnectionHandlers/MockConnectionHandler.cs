@@ -63,9 +63,14 @@ namespace Improbable.Gdk.Core
             Dynamic.ForEachComponent(handler);
         }
 
-        public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
+        public void ChangeAuthority(long entityId, ComponentSet componentSet, Authority newAuthority)
         {
-            CurrentDiff.SetAuthority(entityId, componentId, newAuthority, authorityChangeId++);
+            CurrentDiff.SetAuthority(entityId, componentSet.ComponentSetId, newAuthority, authorityChangeId++);
+        }
+
+        public void ChangeComponentAuthority(long entityId, uint componentId, Authority newAuthority)
+        {
+            CurrentDiff.SetComponentAuthority(entityId, componentId, newAuthority, authorityChangeId++);
         }
 
         public void UpdateComponent<T>(long entityId, uint componentId, T update) where T : ISpatialComponentUpdate
