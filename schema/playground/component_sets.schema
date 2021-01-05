@@ -1,0 +1,69 @@
+package playground;
+
+import "playground/player_input.schema";
+import "playground/launcher.schema";
+import "playground/score.schema";
+import "playground/cube_spawner.schema";
+import "playground/color.schema";
+import "playground/cube.schema";
+import "playground/spinner_rotation.schema";
+
+import "improbable/gdk/transform_synchronization/transform_internal.schema";
+import "improbable/gdk/player_lifecycle/player_heartbeat.schema";
+import "improbable/gdk/player_lifecycle/player_creator.schema";
+import "improbable/gdk/player_lifecycle/owning_worker.schema";
+import "improbable/standard_library.schema";
+
+component_set AuthorityDelegationSet {
+    id = 70000;
+
+    components = [
+        improbable.AuthorityDelegation
+    ];
+}
+
+component_set PlayerClientSet {
+    id = 70001;
+
+    components = [
+        improbable.Position,
+        playground.PlayerInput,
+        improbable.gdk.transform_synchronization.TransformInternal,
+        improbable.gdk.player_lifecycle.PlayerHeartbeatClient
+    ];
+}
+
+component_set PlayerServerSet {
+    id = 70002;
+
+    components = [
+        improbable.Metadata,
+        playground.Launcher,
+        playground.Score,
+        playground.CubeSpawner,
+        improbable.gdk.player_lifecycle.PlayerHeartbeatServer,
+        improbable.gdk.player_lifecycle.OwningWorker,
+        improbable.Interest,
+    ];
+}
+
+component_set DefaultServerSet {
+    id = 70003;
+
+    components = [
+        improbable.Position,
+        improbable.Metadata,
+        improbable.Interest,
+        improbable.gdk.transform_synchronization.TransformInternal,
+        improbable.gdk.player_lifecycle.PlayerCreator,
+        improbable.gdk.player_lifecycle.OwningWorker,
+        playground.CubeSpawner,
+        playground.Score,
+        playground.Launcher,
+        playground.Launchable,
+        playground.CubeColor,
+        playground.CubeTargetVelocity,
+        playground.SpinnerRotation,
+        playground.SpinnerColor
+    ];
+}
