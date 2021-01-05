@@ -6,29 +6,13 @@ namespace Improbable.Gdk.Core
 {
     public static class TypeCache
     {
-        private static List<Type> subscriptionManagerTypes;
-        private static List<Type> componentMetaClassTypes;
+        public static readonly Lazy<List<Type>> SubscriptionManagerTypes = new Lazy<List<Type>>(() =>
+            ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
+                typeof(AutoRegisterSubscriptionManagerAttribute)));
 
-        public static List<Type> GetSubscriptionManagerTypes()
-        {
-            if (subscriptionManagerTypes == null)
-            {
-                subscriptionManagerTypes = ReflectionUtility.GetNonAbstractTypes(typeof(SubscriptionManagerBase),
-                    typeof(AutoRegisterSubscriptionManagerAttribute));
-            }
+        public static readonly Lazy<List<Type>> ComponentMetaClassTypes =
+            new Lazy<List<Type>>(() => ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass)));
 
-            return subscriptionManagerTypes;
-        }
-
-        public static List<Type> GetComponentMetaClassTypes()
-        {
-            if (componentMetaClassTypes == null)
-            {
-                componentMetaClassTypes = ReflectionUtility.GetNonAbstractTypes(typeof(IComponentMetaclass));
-            }
-
-            return componentMetaClassTypes;
-        }
         public static readonly Lazy<Type> ComponentSetManager =
             new Lazy<Type>(() => ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSetManager))[0]);
     }

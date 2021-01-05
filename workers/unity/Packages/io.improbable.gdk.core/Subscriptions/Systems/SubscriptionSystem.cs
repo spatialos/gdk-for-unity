@@ -66,9 +66,7 @@ namespace Improbable.Gdk.Subscriptions
 
         private void AutoRegisterManagers()
         {
-            var types = TypeCache.GetSubscriptionManagerTypes();
-
-            foreach (var type in types)
+            foreach (var type in TypeCache.SubscriptionManagerTypes.Value)
             {
                 var instance = (SubscriptionManagerBase) Activator.CreateInstance(type, World);
                 RegisterSubscriptionManager(instance.SubscriptionType, instance);
