@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Playground
 {
-    [WorkerType(WorkerUtils.UnityGameLogic, WorkerUtils.MobileClient)]
+    [WorkerType(GameLogicWorkerConnector.UnityGameLogic, MobileClientWorkerConnector.MobileClient)]
     public class WorkerFlagTest : MonoBehaviour
     {
 #pragma warning disable 649

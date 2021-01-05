@@ -1,12 +1,18 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
+using Improbable.Gdk.GameObjectCreation;
+using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
+using Playground.LoadBalancing;
 using UnityEngine;
 
 namespace Playground
 {
     public class GameLogicWorkerConnector : WorkerConnector
     {
+        public const string UnityGameLogic = "UnityGameLogic";
+
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private bool UseExternalIp;
@@ -24,15 +30,15 @@ namespace Playground
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
+                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic));
+                connectionParameters = CreateConnectionParameters(UnityGameLogic);
                 connectionParameters.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
+                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic),
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                connectionParameters = CreateConnectionParameters(UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
             }
 
@@ -52,7 +58,23 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddGameLogicSystems(Worker.World, entityRepresentationMapping);
+            TransformSynchronizationHelper.AddServerSystems(Worker.World);
+            PlayerLifecycleHelper.AddServerSystems(Worker.World);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, entityRepresentationMapping, gameObject);
+
+            Worker.World.GetOrCreateSystem<DisconnectSystem>();
+
+            // Game logic systems
+            Worker.World.GetOrCreateSystem<TriggerColorChangeSystem>();
+            Worker.World.GetOrCreateSystem<ProcessLaunchCommandSystem>();
+            Worker.World.GetOrCreateSystem<ProcessRechargeSystem>();
+            Worker.World.GetOrCreateSystem<MetricSendSystem>();
+            Worker.World.GetOrCreateSystem<ProcessScoresSystem>();
+            Worker.World.GetOrCreateSystem<CubeMovementSystem>();
+
+            // Load balancing systems
+            Worker.World.GetOrCreateSystem<ClientPartitionsSystem>();
+            Worker.World.GetOrCreateSystem<AssignEntitiesSystem>();
         }
 
         public override void Dispose()

@@ -1,12 +1,18 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
+using Improbable.Gdk.GameObjectCreation;
+using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground
 {
     public class ClientWorkerConnector : WorkerConnector
     {
+        public const string UnityClient = "UnityClient";
+
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private bool UseExternalIp;
@@ -19,7 +25,7 @@ namespace Playground
         {
             Application.targetFrameRate = 60;
 
-            var connParams = CreateConnectionParameters(WorkerUtils.UnityClient);
+            var connParams = CreateConnectionParameters(UnityClient);
             connParams.Network.UseExternalIp = UseExternalIp;
 
             var builder = new SpatialOSConnectionHandlerBuilder()
@@ -31,7 +37,7 @@ namespace Playground
                 switch (initializer.GetConnectionService())
                 {
                     case ConnectionService.Receptionist:
-                        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient), initializer));
+                        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient), initializer));
                         break;
                     case ConnectionService.Locator:
                         builder.SetConnectionFlow(new LocatorFlow(initializer));
@@ -42,7 +48,7 @@ namespace Playground
             }
             else
             {
-                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityClient)));
+                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient)));
                 connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
             }
 
@@ -58,7 +64,20 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddClientSystems(Worker.World, entityRepresentationMapping);
+            TransformSynchronizationHelper.AddClientSystems(Worker.World);
+            PlayerLifecycleHelper.AddClientSystems(Worker.World);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, entityRepresentationMapping);
+
+            Worker.World.GetOrCreateSystem<DisconnectSystem>();
+
+            Worker.World.GetOrCreateSystem<ProcessColorChangeSystem>();
+            Worker.World.GetOrCreateSystem<LocalPlayerInputSync>();
+            Worker.World.GetOrCreateSystem<MoveLocalPlayerSystem>();
+            Worker.World.GetOrCreateSystem<InitCameraSystem>();
+            Worker.World.GetOrCreateSystem<FollowCameraSystem>();
+            Worker.World.GetOrCreateSystem<UpdateUISystem>();
+            Worker.World.GetOrCreateSystem<PlayerCommandsSystem>();
+            Worker.World.GetOrCreateSystem<MetricSendSystem>();
         }
 
         public override void Dispose()
