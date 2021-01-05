@@ -185,7 +185,6 @@ namespace Improbable.Gdk.Core
 
         private void ValidateEntity()
         {
-            // TODO: Ensure this has AuthorityDelegation component on it.
             if (!entityData.ContainsKey(PositionComponentId))
             {
                 throw new InvalidOperationException("Entity is invalid. No Position component was found");
