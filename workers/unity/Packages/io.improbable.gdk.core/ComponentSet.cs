@@ -16,4 +16,9 @@ namespace Improbable.Gdk.Core
             ComponentIds = componentIds;
         }
     }
+
+    internal interface IComponentSetManager
+    {
+        bool TryGetComponentSet(uint componentSetId, out ComponentSet componentSet);
+    }
 }

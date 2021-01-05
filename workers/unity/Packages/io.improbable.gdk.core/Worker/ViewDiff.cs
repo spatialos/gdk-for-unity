@@ -55,8 +55,12 @@ namespace Improbable.Gdk.Core
 
         private readonly NetFrameStats netFrameStats = new NetFrameStats();
 
+        private readonly IComponentSetManager componentSetManager;
+
         public ViewDiff()
         {
+            componentSetManager = (IComponentSetManager) Activator.CreateInstance(TypeCache.ComponentSetManager.Value);
+
             foreach (var (componentId, diffStorageType) in ViewDiffMetadata.ComponentStorageTypes)
             {
                 var instance = (IComponentDiffStorage) Activator.CreateInstance(diffStorageType);
@@ -162,25 +166,33 @@ namespace Improbable.Gdk.Core
             storage.RemoveEntityComponent(entityId);
         }
 
-        public void SetAuthority(long entityId, uint componentId, Authority authority, uint authorityChangeId)
+        public void SetAuthority(long entityId, uint componentSetId, Authority authority, uint authorityChangeId)
         {
-            if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
+            if (!componentSetManager.TryGetComponentSet(componentSetId, out var componentSet))
             {
-                throw new ArgumentException(
-                    $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
-                    "Unknown component ID");
+                return;
             }
 
-            ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
-                new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
-
-            // Remove received command requests if authority has been lost
-            if (authority == Authority.NotAuthoritative)
+            foreach (var componentId in componentSet.ComponentIds)
             {
-                var (firstIndex, count) = componentIdStorageRange[componentId];
-                for (var i = 0; i < count; i++)
+                if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
                 {
-                    commandStorageList[firstIndex + i].RemoveRequests(entityId);
+                    throw new ArgumentException(
+                        $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
+                        "Unknown component ID");
+                }
+
+                ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
+                    new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
+
+                // Remove received command requests if authority has been lost
+                if (authority == Authority.NotAuthoritative)
+                {
+                    var (firstIndex, count) = componentIdStorageRange[componentId];
+                    for (var i = 0; i < count; i++)
+                    {
+                        commandStorageList[firstIndex + i].RemoveRequests(entityId);
+                    }
                 }
             }
         }

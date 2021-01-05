@@ -21,7 +21,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                 cgw.Namespace("Improbable.Generated", ns =>
                 {
-                    ns.Type("public static class ComponentSets", tb =>
+                    ns.Type("public class ComponentSets : IComponentSetManager", tb =>
                     {
                         foreach (var set in componentSets)
                         {
@@ -31,7 +31,7 @@ namespace Improbable.Gdk.CodeGenerator
 
                         tb.Initializer("private static readonly IReadOnlyDictionary<uint, ComponentSet> keyedComponentSets = new Dictionary<uint, ComponentSet>", () => componentSets.Select(set => $"{{ {set.ComponentSetId}, {set.Name} }}"));
 
-                        tb.Method("public static bool TryGetComponentSet(uint componentSetId, out ComponentSet componentSet)",
+                        tb.Method("public bool TryGetComponentSet(uint componentSetId, out ComponentSet componentSet)",
                             mb =>
                             {
                                 mb.Line("return keyedComponentSets.TryGetValue(componentSetId, out componentSet);");
