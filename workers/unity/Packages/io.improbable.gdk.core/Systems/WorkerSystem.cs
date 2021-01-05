@@ -24,6 +24,7 @@ namespace Improbable.Gdk.Core
         public readonly string WorkerType;
         public readonly string WorkerId;
         public readonly Vector3 Origin;
+        public readonly EntityId WorkerEntityId;
 
         /// <summary>
         ///     Denotes whether the underlying worker is connected or not.
@@ -50,6 +51,7 @@ namespace Improbable.Gdk.Core
             WorkerType = worker.WorkerType;
             WorkerId = worker.WorkerId;
             Origin = worker.Origin;
+            WorkerEntityId = worker.WorkerEntityId;
         }
 
         /// <summary>
