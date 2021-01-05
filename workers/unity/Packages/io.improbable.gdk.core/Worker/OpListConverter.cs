@@ -2,6 +2,7 @@ using System;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -83,9 +84,7 @@ namespace Improbable.Gdk.Core
                         break;
                     case OpType.ComponentSetAuthorityChange:
                         var authorityOp = opList.GetComponentSetAuthorityChangeOp(i);
-                        // TODO: Implement this once we have component sets generated
-                        // viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentId, authorityOp.Authority,
-                        //    authorityChangeId);
+                        viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentSetId, authorityOp.Authority, authorityChangeId);
                         authorityChangeId++;
                         break;
                     case OpType.ComponentUpdate:
