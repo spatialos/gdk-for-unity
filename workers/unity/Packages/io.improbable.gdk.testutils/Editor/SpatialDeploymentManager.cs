@@ -87,9 +87,10 @@ Raw stderr:
         private static Task<Process> StartSpatial(string deploymentJsonPath, string snapshotPath)
         {
             var tcs = new TaskCompletionSource<Process>();
+            var toolsConfig = GdkToolsConfiguration.GetOrCreateInstance();
 
             var processInfo =
-                new ProcessStartInfo(Common.SpatialBinary, $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false")
+                new ProcessStartInfo(Common.SpatialBinary, $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false --experimental_runtime={toolsConfig.RuntimeVersion}")
                 {
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
