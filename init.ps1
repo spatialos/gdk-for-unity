@@ -52,9 +52,6 @@ UpdatePackage schema test_schema_library "schema"
 UpdatePackage tools schema_compiler-x86_64-win32 "$SdkPath/.schema_compiler"
 UpdatePackage tools schema_compiler-x86_64-macos "$SdkPath/.schema_compiler"
 
-UpdateSpot spot-win64 "$SdkPath/.spot/spot.exe"
-UpdateSpot spot-macos "$SdkPath/.spot/spot"
-
 UpdatePackage worker_sdk c-static-arm-clang-ios "$SdkMobilePath/Plugins/Improbable/Core/iOS/arm"
 UpdatePackage worker_sdk c-static-x86_64-clang-ios "$SdkMobilePath/Plugins/Improbable/Core/iOS/x86_64"
 

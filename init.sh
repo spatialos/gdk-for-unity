@@ -45,13 +45,6 @@ update_package() {
     done
 }
 
-update_spot() {
-    local identifer=$1
-    local path=$2
-
-    spatial package get spot "${identifer}" "${SPOT_VERSION}" "${path}" --force --json_output ${ENVIRONMENT_ARGS:-}
-}
-
 # Update Core SDK
 update_package worker_sdk c-dynamic-x86_64-clang1000-linux "${SDK_PATH}/Plugins/Improbable/Core/Linux/x86_64"
 update_package worker_sdk c-bundle-x86_64-clang-macos "${SDK_PATH}/Plugins/Improbable/Core/OSX"
@@ -64,9 +57,6 @@ update_package schema test_schema_library "schema"
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
-
-update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
-update_spot spot-macos "${SDK_PATH}/.spot/spot"
 
 chmod -R +x "${SDK_PATH}/.spot"
 
