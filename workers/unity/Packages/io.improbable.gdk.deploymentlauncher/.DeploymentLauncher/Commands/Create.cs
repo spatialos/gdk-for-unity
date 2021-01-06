@@ -56,17 +56,14 @@ namespace Improbable.Gdk.DeploymentLauncher.Commands
                     throw new ArgumentException("Expected either --region or --cluster to be provided, but found neither.");
                 }
 
-                if (options.SnapshotPath != null)
+                var snapshotId = UploadSnapshot(snapshotServiceClient, options);
+
+                if (string.IsNullOrEmpty(snapshotId))
                 {
-                    var snapshotId = UploadSnapshot(snapshotServiceClient, options);
-
-                    if (string.IsNullOrEmpty(snapshotId))
-                    {
-                        return Program.ErrorExitCode;
-                    }
-
-                    deployment.StartingSnapshotId = snapshotId;
+                    return Program.ErrorExitCode;
                 }
+
+                deployment.StartingSnapshotId = snapshotId;
 
                 if (options.Tags != null)
                 {
