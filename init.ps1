@@ -1,43 +1,35 @@
 param (
-    [switch]$china=$false
+    [switch]$china = $false
 )
 
 Set-Location $PSScriptRoot
 
 $EnvironmentArgs = ""
-if($china) {
+if ($china) {
     Write-Host "Downloading with cn-production environment"
-    $EnvironmentArgs="--environment=cn-production"
+    $EnvironmentArgs = "--environment=cn-production"
 }
 
 $PkgRoot = $PSScriptRoot + "/workers/unity/Packages"
 $SdkPath = $PkgRoot + "/io.improbable.worker.sdk"
 $SdkMobilePath = $PkgRoot + "/io.improbable.worker.sdk.mobile"
-$TestSdkPath="test-project/Packages/io.improbable.worker.sdk.testschema"
+$TestSdkPath = "test-project/Packages/io.improbable.worker.sdk.testschema"
 
 if (Test-Path env:WORKER_SDK_OVERRIDE) {
     $SdkVersion = $env:WORKER_SDK_OVERRIDE;
-} else {
+}
+else {
     $SdkVersion = Get-Content ($SdkPath + "/.sdk.version")
 }
 
-$SpotVersion = Get-Content ($SdkPath + "/.spot.version")
-
-function UpdatePackage($type, $identifier, $path, $removes)
-{
+function UpdatePackage($type, $identifier, $path, $removes) {
     spatial package get $type $identifier $SdkVersion "$path" --unzip --force --json_output $EnvironmentArgs
 
-    if ($null -ne $removes)
-    {
+    if ($null -ne $removes) {
         $removes.Split(";") | ForEach-Object {
             Remove-Item "$path/$_"
         }
     }
-}
-
-function UpdateSpot($identifier, $path)
-{
-    spatial package get spot $identifier $SpotVersion "$path" --force --json_output $EnvironmentArgs
 }
 
 UpdatePackage worker_sdk c-dynamic-x86_64-clang1000-linux "$SdkPath/Plugins/Improbable/Core/Linux/x86_64"

@@ -30,8 +30,6 @@ else
     SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
 fi
 
-SPOT_VERSION="$(cat "${SDK_PATH}"/.spot.version)"
-
 update_package() {
     local type=$1
     local identifier=$2
