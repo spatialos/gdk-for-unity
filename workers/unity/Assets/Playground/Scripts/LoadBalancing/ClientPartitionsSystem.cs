@@ -60,7 +60,7 @@ namespace Playground.LoadBalancing
         {
             Entities.With(newClients).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Improbable.Restricted.Worker.Component worker) =>
             {
-                if (worker.WorkerType == "UnityClient")
+                if (worker.WorkerType == "UnityClient" || worker.WorkerType == "MobileClient")
                 {
                     var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity()));
                     var context = new PendingPartitionCreationContext { ClientWorkerEntityId = spatialEntityId.EntityId, ClientEcsEntity = entity };
