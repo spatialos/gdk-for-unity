@@ -4,10 +4,8 @@ using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Restricted;
-using Improbable.TestSchema;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
-using UnityEngine;
 using Entity = Unity.Entities.Entity;
 using Worker = Improbable.Restricted.Worker;
 
