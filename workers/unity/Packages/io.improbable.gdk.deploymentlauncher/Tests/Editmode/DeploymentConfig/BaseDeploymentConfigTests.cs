@@ -61,8 +61,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             Assert.IsTrue(errors[0].Contains(errorType));
         }
 
-        [TestCase(null)]
-        [TestCase("")]
+
         [TestCase("snapshots/default.snapshot")]
         public void BaseDeploymentConfig_does_not_throw_error_for_valid_snapshot_path(string snapshotPath)
         {
@@ -72,8 +71,10 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
             Assert.IsEmpty(config.GetErrors());
         }
 
-        [TestCase("this/snapshot/path/does/not/exist.snapshot")]
-        public void BaseDeploymentConfig_throws_error_for_invalid_snapshot_path(string snapshotPath)
+        [TestCase(null, DeploymentConfigErrorTypes.NullOrEmpty)]
+        [TestCase("", DeploymentConfigErrorTypes.NullOrEmpty)]
+        [TestCase("this/snapshot/path/does/not/exist.snapshot", DeploymentConfigErrorTypes.NotFound)]
+        public void BaseDeploymentConfig_throws_error_for_invalid_snapshot_path(string snapshotPath, string errorType)
         {
             var config = DeploymentConfigTestUtils.GetValidBaseConfig();
             config.SnapshotPath = snapshotPath;
@@ -81,7 +82,7 @@ namespace Improbable.Gdk.DeploymentLauncher.EditmodeTests
 
             Assert.AreEqual(errors.Length, 1, "Failed: did not throw exactly one error.");
             Assert.IsTrue(errors[0].Contains("Snapshot"));
-            Assert.IsTrue(errors[0].Contains(DeploymentConfigErrorTypes.NotFound));
+            Assert.IsTrue(errors[0].Contains(errorType));
         }
 
         [TestCase("dev_login")]

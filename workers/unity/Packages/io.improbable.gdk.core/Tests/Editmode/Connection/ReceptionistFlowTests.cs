@@ -13,15 +13,17 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
         private SpatialDeploymentManager deploymentManager;
         private Improbable.Worker.CInterop.Connection connection;
 
-        private static string LaunchConfigPath = Path.Combine(Common.SpatialProjectRootDir, "default_launch.json");
+        private static readonly string LaunchConfigPath = Path.Combine(Common.SpatialProjectRootDir, "default_launch.json");
 
-        private static string SnapshotPath =
+        private static readonly string SnapshotPath =
             Path.Combine(Common.SpatialProjectRootDir, "snapshots", "default.snapshot");
+
+        private static readonly string RuntimeVersion = GdkToolsConfiguration.GetOrCreateInstance().RuntimeVersion;
 
         [SetUp]
         public void Setup()
         {
-            deploymentManager = SpatialDeploymentManager.Start(LaunchConfigPath, SnapshotPath).Result;
+            deploymentManager = SpatialDeploymentManager.Start(LaunchConfigPath, SnapshotPath, RuntimeVersion).Result;
         }
 
         [TearDown]
