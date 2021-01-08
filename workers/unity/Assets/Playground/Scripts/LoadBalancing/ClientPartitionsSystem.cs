@@ -18,22 +18,15 @@ namespace Playground.LoadBalancing
     [AlwaysUpdateSystem]
     public class ClientPartitionsSystem : ComponentSystem
     {
+        private readonly Dictionary<CommandRequestId, PartitionCreationContext> partitionCreationContexts =
+            new Dictionary<CommandRequestId, PartitionCreationContext>();
+
+        private readonly Dictionary<CommandRequestId, AssignPartitionContext> assignPartitionContexts =
+            new Dictionary<CommandRequestId, AssignPartitionContext>();
+
         private EntityQuery newClients;
         private EntityQuery removedClients;
         private CommandSystem commandSystem;
-
-        private readonly Dictionary<CommandRequestId, PendingPartitionCreationContext> pendingPartitionCreationContexts =
-            new Dictionary<CommandRequestId, PendingPartitionCreationContext>();
-
-        private readonly Dictionary<CommandRequestId, PendingAssignPartitionContext> pendingAssignPartitionContexts =
-            new Dictionary<CommandRequestId, PendingAssignPartitionContext>();
-
-        private readonly Dictionary<EntityId, EntityId> clientPartitionMap = new Dictionary<EntityId, EntityId>();
-
-        public bool TryGetPartitionEntityId(EntityId clientWorkerId, out EntityId partitionEntityId)
-        {
-            return clientPartitionMap.TryGetValue(clientWorkerId, out partitionEntityId);
-        }
 
         protected override void OnCreate()
         {
@@ -44,7 +37,7 @@ namespace Playground.LoadBalancing
                 ComponentType.Exclude<SeenWorker>());
 
             removedClients = GetEntityQuery(
-                ComponentType.ReadOnly<RegisteredWorker>(),
+                ComponentType.ReadOnly<RegisteredClientWorker>(),
                 ComponentType.Exclude<Improbable.Restricted.Worker.Component>());
         }
 
@@ -63,8 +56,8 @@ namespace Playground.LoadBalancing
                 if (worker.WorkerType == "UnityClient" || worker.WorkerType == "MobileClient")
                 {
                     var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity()));
-                    var context = new PendingPartitionCreationContext { ClientWorkerEntityId = spatialEntityId.EntityId, ClientEcsEntity = entity };
-                    pendingPartitionCreationContexts[requestId] = context;
+                    var context = new PartitionCreationContext(spatialEntityId.EntityId, entity);
+                    partitionCreationContexts[requestId] = context;
                 }
 
                 PostUpdateCommands.AddComponent<SeenWorker>(entity);
@@ -78,35 +71,28 @@ namespace Playground.LoadBalancing
             for (var i = 0; i < responses.Count; i++)
             {
                 var response = responses[i];
-                if (!pendingPartitionCreationContexts.TryGetValue(response.RequestId, out var context))
+                if (!partitionCreationContexts.TryGetValue(response.RequestId, out var context))
                 {
                     continue;
                 }
 
-                pendingPartitionCreationContexts.Remove(response.RequestId);
+                partitionCreationContexts.Remove(response.RequestId);
 
                 if (response.StatusCode != StatusCode.Success)
                 {
-                    PostUpdateCommands.RemoveComponent<SeenWorker>(context.ClientEcsEntity);
+                    PostUpdateCommands.RemoveComponent<SeenWorker>(context.WorkerEntity);
                     continue;
                 }
 
-                var nextContext = new PendingAssignPartitionContext
-                {
-                    ClientWorkerEntityId = context.ClientWorkerEntityId,
-                    PartitionEntityId = response.EntityId.Value,
-                    ClientEcsEntity = context.ClientEcsEntity
-                };
-
-                AssignPartition(nextContext);
+                AssignPartition(new AssignPartitionContext(context, response.EntityId.Value));
             }
         }
 
-        private void AssignPartition(PendingAssignPartitionContext context)
+        private void AssignPartition(AssignPartitionContext context)
         {
             var requestId = commandSystem.SendCommand(new Worker.AssignPartition.Request(
-                context.ClientWorkerEntityId, new AssignPartitionRequest(context.PartitionEntityId.Id)));
-            pendingAssignPartitionContexts[requestId] = context;
+                context.WorkerEntityId, new AssignPartitionRequest(context.PartitionEntityId.Id)));
+            assignPartitionContexts[requestId] = context;
         }
 
         private void StorePartitionInfo()
@@ -116,12 +102,12 @@ namespace Playground.LoadBalancing
             for (var i = 0; i < responses.Count; i++)
             {
                 var response = responses[i];
-                if (!pendingAssignPartitionContexts.TryGetValue(response.RequestId, out var context))
+                if (!assignPartitionContexts.TryGetValue(response.RequestId, out var context))
                 {
                     continue;
                 }
 
-                pendingAssignPartitionContexts.Remove(response.RequestId);
+                assignPartitionContexts.Remove(response.RequestId);
 
                 switch (response.StatusCode)
                 {
@@ -138,35 +124,36 @@ namespace Playground.LoadBalancing
                     case StatusCode.NotFound:
                         // In this case, the client entity no longer exists. We need to delete the partition
                         commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(context.PartitionEntityId));
-                        return;
+                        continue;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                clientPartitionMap[context.ClientWorkerEntityId] = context.PartitionEntityId;
-
-                if (EntityManager.Exists(context.ClientEcsEntity))
+                if (!EntityManager.Exists(context.WorkerEntity))
                 {
-                    PostUpdateCommands.AddComponent(context.ClientEcsEntity, new RegisteredWorker
-                    {
-                        PartitionEntityId = context.PartitionEntityId
-                    });
+                    commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(context.PartitionEntityId));
+                    continue;
                 }
+
+                PostUpdateCommands.AddComponent(context.WorkerEntity, new RegisteredClientWorker
+                {
+                    PartitionEntityId = context.PartitionEntityId
+                });
             }
         }
 
         private void CleanupOldPartitions()
         {
             // If the client has disconnected, we need to remove that partition.
-            Entities.With(removedClients).ForEach((Entity entity, ref RegisteredWorker registerWorker) =>
+            Entities.With(removedClients).ForEach((Entity entity, ref RegisteredClientWorker registeredClientWorker) =>
             {
-                commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(registerWorker.PartitionEntityId));
-                PostUpdateCommands.RemoveComponent<RegisteredWorker>(entity);
+                commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(registeredClientWorker.PartitionEntityId));
+                PostUpdateCommands.RemoveComponent<RegisteredClientWorker>(entity);
                 PostUpdateCommands.DestroyEntity(entity);
             });
         }
 
-        private EntityTemplate GetPartitionEntity()
+        private static EntityTemplate GetPartitionEntity()
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot());
@@ -174,26 +161,39 @@ namespace Playground.LoadBalancing
             return template;
         }
 
-        private struct PendingPartitionCreationContext
+        private readonly struct PartitionCreationContext
         {
-            public EntityId ClientWorkerEntityId;
-            public Entity ClientEcsEntity;
+            public readonly EntityId WorkerEntityId;
+            public readonly Entity WorkerEntity;
+
+            public PartitionCreationContext(EntityId workerEntityId, Entity workerEntity)
+            {
+                WorkerEntityId = workerEntityId;
+                WorkerEntity = workerEntity;
+            }
         }
 
-        private struct PendingAssignPartitionContext
+        private readonly struct AssignPartitionContext
         {
-            public EntityId ClientWorkerEntityId;
-            public EntityId PartitionEntityId;
-            public Entity ClientEcsEntity;
+            public readonly EntityId WorkerEntityId;
+            public readonly Entity WorkerEntity;
+            public readonly EntityId PartitionEntityId;
+
+            public AssignPartitionContext(PartitionCreationContext ctx, EntityId partitionEntityId)
+            {
+                WorkerEntityId = ctx.WorkerEntityId;
+                WorkerEntity = ctx.WorkerEntity;
+                PartitionEntityId = partitionEntityId;
+            }
         }
 
         private struct SeenWorker : IComponentData
         {
         }
+    }
 
-        private struct RegisteredWorker : ISystemStateComponentData
-        {
-            public EntityId PartitionEntityId;
-        }
+    public struct RegisteredClientWorker : ISystemStateComponentData
+    {
+        public EntityId PartitionEntityId;
     }
 }

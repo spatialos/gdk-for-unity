@@ -11,11 +11,12 @@ namespace Playground.LoadBalancing
     public class AssignEntitiesSystem : ComponentSystem
     {
         private EntityQuery unassignedEntities;
-        private ClientPartitionsSystem clientPartitionsSystem;
+        private WorkerSystem workerSystem;
 
         protected override void OnCreate()
         {
-            clientPartitionsSystem = World.GetOrCreateSystem<ClientPartitionsSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
+
             unassignedEntities = GetEntityQuery(
                 ComponentType.ReadOnly<Metadata.Component>(),
                 ComponentType.ReadWrite<AuthorityDelegation.Component>(),
@@ -24,13 +25,14 @@ namespace Playground.LoadBalancing
 
         protected override void OnUpdate()
         {
-            var owningWorkerData = GetComponentDataFromEntity<OwningWorker.Component>();
+            var owningWorkerData = GetComponentDataFromEntity<OwningWorker.Component>(isReadOnly: true);
+            var clientWorkerData = GetComponentDataFromEntity<RegisteredClientWorker>(isReadOnly: true);
+
             Entities.With(unassignedEntities).ForEach(
                 (Entity entity, ref Metadata.Component metadata, ref AuthorityDelegation.Component authorityDelegation) =>
                 {
                     if (metadata.EntityType == "Character")
                     {
-                        // Server component.
                         authorityDelegation.Delegations[ComponentSets.PlayerServerSet.ComponentSetId] = 1;
 
                         if (!owningWorkerData.HasComponent(entity))
@@ -40,12 +42,17 @@ namespace Playground.LoadBalancing
 
                         var owningWorkerEntityId = owningWorkerData[entity].WorkerEntityId;
 
-                        if (!clientPartitionsSystem.TryGetPartitionEntityId(owningWorkerEntityId, out var partitionEntityId))
+                        if (!workerSystem.TryGetEntity(owningWorkerEntityId, out var workerEntity))
                         {
                             return;
                         }
 
-                        authorityDelegation.Delegations[ComponentSets.PlayerClientSet.ComponentSetId] = partitionEntityId.Id;
+                        if (!clientWorkerData.HasComponent(workerEntity))
+                        {
+                            return;
+                        }
+
+                        authorityDelegation.Delegations[ComponentSets.PlayerClientSet.ComponentSetId] = clientWorkerData[workerEntity].PartitionEntityId.Id;
                     }
                     else
                     {
