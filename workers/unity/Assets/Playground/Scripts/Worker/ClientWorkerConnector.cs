@@ -37,6 +37,15 @@ namespace Playground
                 switch (initializer.GetConnectionService())
                 {
                     case ConnectionService.Receptionist:
+                        /*
+                         * If we are connecting via the Receptionist we are either:
+                         *      - connecting to a local deployment
+                         *      - connecting to a cloud deployment via `spatial cloud connect external`
+                         * in the first case, the security type must be Insecure.
+                         * in the second case, its okay for the security type to be Insecure.
+                        */
+                        connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
+                        connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
                         builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient), initializer));
                         break;
                     case ConnectionService.Locator:
@@ -48,8 +57,10 @@ namespace Playground
             }
             else
             {
-                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient)));
+                // We are in the Editor, so for the same reasons as above, the network security type should be Insecure.
                 connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
+                connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
+                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient)));
             }
 
             await Connect(builder, new ForwardingDispatcher());
