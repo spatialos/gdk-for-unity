@@ -37,6 +37,7 @@ namespace Playground
             switch (flowInitializer.GetConnectionService())
             {
                 case ConnectionService.Receptionist:
+                    connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
                     builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(MobileClient),
                         flowInitializer));
                     break;
