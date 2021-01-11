@@ -1,8 +1,10 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.GameObjectCreation;
+using Improbable.Gdk.LoadBalancing;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Generated;
 using Improbable.Worker.CInterop;
 using Playground.LoadBalancing;
 using UnityEngine;
@@ -80,11 +82,18 @@ namespace Playground
             Worker.World.GetOrCreateSystem<ProcessScoresSystem>();
             Worker.World.GetOrCreateSystem<CubeMovementSystem>();
 
-            // Load balancing systems
-            Worker.World.GetOrCreateSystem<ClientPartitionsSystem>();
-            Worker.World.GetOrCreateSystem<AssignEntitiesSystem>();
-        }
+            Worker.AddLoadBalancingSystems(configuration =>
+            {
+                configuration.AddPartitionManagement("UnityClient", "MobileClient");
+                configuration.AddClientLoadBalancing("Character", ComponentSets.PlayerClientSet);
 
+                var loadBalancingMap = new EntityLoadBalancingMap(ComponentSets.DefaultServerSet)
+                    .AddOverride("Character", ComponentSets.PlayerServerSet);
+
+                configuration.SetSingletonLoadBalancing(new EntityId(1), loadBalancingMap);
+            });
+        }
+        
         public override void Dispose()
         {
             if (levelInstance != null)
