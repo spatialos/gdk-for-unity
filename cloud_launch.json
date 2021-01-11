@@ -22,17 +22,9 @@
       },
       {
         "layer": "UnityLoadBalancer",
-        "points_of_interest": {
-          "num_workers": 1,
-          "points": [
-            {
-              "x": 0,
-              "z": 0
-            }
-          ]
-        },
-        "options": {
-          "manual_worker_connection_only": true
+        "rectangle_grid": {
+          "cols": 1,
+          "rows": 1
         }
       }
     ]
