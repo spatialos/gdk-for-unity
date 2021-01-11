@@ -9,12 +9,7 @@
       "xMeters": 500,
       "zMeters": 500
     },
-    "legacy_flags": [
-      {
-        "name": "interest_queries_components_are_filtered_by_component_delivery",
-        "value": "false"
-      }
-    ]
+    "legacy_flags": []
   },
   "load_balancing": {
     "layer_configurations": [
