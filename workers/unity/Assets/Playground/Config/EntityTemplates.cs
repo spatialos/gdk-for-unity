@@ -41,9 +41,23 @@ namespace Playground
                     Launchable.ComponentId
                 });
 
+            var serverSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
+            {
+                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Score.ComponentId
+            });
+
+            var serverRangeInterest = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius))
+                .FilterResults(new[]
+                {
+                    Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Collisions.ComponentId,
+                    SpinnerColor.ComponentId, SpinnerRotation.ComponentId, Score.ComponentId
+                });
+
             var interest = InterestTemplate
                 .Create()
-                .AddQueries(ComponentSets.PlayerClientSet, clientSelfInterest, clientRangeInterest);
+                .AddQueries(ComponentSets.PlayerClientSet, clientSelfInterest, clientRangeInterest)
+                .AddQueries(ComponentSets.PlayerServerSet, serverSelfInterest, serverRangeInterest);
+
             template.AddComponent(interest.ToSnapshot());
 
 
@@ -62,6 +76,14 @@ namespace Playground
             template.AddComponent(new Launchable.Snapshot());
             template.AddTransformSynchronizationComponents(Quaternion.identity, location);
 
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
+            {
+                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
+            });
+
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
+            template.AddComponent(interest.ToSnapshot());
+
             return template;
         }
 
@@ -77,6 +99,14 @@ namespace Playground
             template.AddComponent(new Collisions.Snapshot());
             template.AddComponent(new SpinnerColor.Snapshot(Color.BLUE));
             template.AddComponent(new SpinnerRotation.Snapshot());
+
+            var query = InterestQuery.Query(Constraint.RelativeCylinder(radius: CheckoutRadius)).FilterResults(new[]
+            {
+                Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
+            });
+
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
+            template.AddComponent(interest.ToSnapshot());
 
             return template;
         }
