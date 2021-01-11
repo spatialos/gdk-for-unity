@@ -16,6 +16,21 @@
       {
         "layer": "UnityGameLogic",
         "points_of_interest": {
+          "num_workers": 2,
+          "points": [
+            {
+              "x": 0,
+              "z": 0
+            }
+          ]
+        },
+        "options": {
+          "manual_worker_connection_only": true
+        }
+      },
+      {
+        "layer": "UnityLoadBalancer",
+        "points_of_interest": {
           "num_workers": 1,
           "points": [
             {
@@ -42,6 +57,14 @@
         {
           "name": "my_flag",
           "value": "has_a_value"
+        }
+      ]
+    },
+    {
+      "worker_type": "UnityLoadBalancer",
+      "permissions": [
+        {
+          "all": {}
         }
       ]
     },

@@ -16,8 +16,23 @@
       {
         "layer": "UnityGameLogic",
         "rectangle_grid": {
-          "cols": 1,
+          "cols": 2,
           "rows": 1
+        }
+      },
+      {
+        "layer": "UnityLoadBalancer",
+        "points_of_interest": {
+          "num_workers": 1,
+          "points": [
+            {
+              "x": 0,
+              "z": 0
+            }
+          ]
+        },
+        "options": {
+          "manual_worker_connection_only": true
         }
       }
     ]
@@ -31,6 +46,15 @@
         }
       ]
     },
+    {
+      "worker_type": "UnityLoadBalancer",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ]
+    },
+
     {
       "worker_type": "UnityClient",
       "permissions": [
