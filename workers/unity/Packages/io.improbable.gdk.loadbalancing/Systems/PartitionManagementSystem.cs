@@ -1,57 +1,72 @@
 using System;
 using System.Collections.Generic;
-using Improbable;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Restricted;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
-using Worker = Improbable.Restricted.Worker;
 
-namespace Playground.LoadBalancing
+namespace Improbable.Gdk.LoadBalancing
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
-    public class ClientPartitionsSystem : ComponentSystem
+    internal class PartitionManagementSystem : ComponentSystem
     {
+        public string[] WorkerTypes { get; internal set; } = { };
+
         private readonly Dictionary<CommandRequestId, PartitionCreationContext> partitionCreationContexts =
             new Dictionary<CommandRequestId, PartitionCreationContext>();
 
         private readonly Dictionary<CommandRequestId, AssignPartitionContext> assignPartitionContexts =
             new Dictionary<CommandRequestId, AssignPartitionContext>();
 
-        private EntityQuery newClients;
-        private EntityQuery removedClients;
         private CommandSystem commandSystem;
+
+        private EntityQuery newWorkers;
+        private EntityQuery workersWithoutPartitions;
+        private EntityQuery removedWorkers;
 
         protected override void OnCreate()
         {
             commandSystem = World.GetExistingSystem<CommandSystem>();
-            newClients = GetEntityQuery(
+
+            newWorkers = GetEntityQuery(ComponentType.ReadOnly<Improbable.Restricted.Worker.Component>(),
+                ComponentType.Exclude<WorkerClassification>());
+
+            workersWithoutPartitions = GetEntityQuery(
                 ComponentType.ReadOnly<Improbable.Restricted.Worker.Component>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
                 ComponentType.Exclude<SeenWorker>());
 
-            removedClients = GetEntityQuery(
-                ComponentType.ReadOnly<RegisteredClientWorker>(),
+            removedWorkers = GetEntityQuery(
+                ComponentType.ReadOnly<RegisteredWorker>(),
                 ComponentType.Exclude<Improbable.Restricted.Worker.Component>());
         }
 
         protected override void OnUpdate()
         {
+            ClassifyWorkers();
             CreateNewPartitions();
             AssignPartitions();
             StorePartitionInfo();
             CleanupOldPartitions();
         }
 
+        private void ClassifyWorkers()
+        {
+            Entities.With(newWorkers).ForEach((Entity entity, ref Improbable.Restricted.Worker.Component worker) =>
+            {
+                PostUpdateCommands.AddSharedComponent(entity, new WorkerClassification(worker.WorkerType));
+            });
+        }
+
         private void CreateNewPartitions()
         {
-            Entities.With(newClients).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Improbable.Restricted.Worker.Component worker) =>
+            Entities.With(workersWithoutPartitions).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Improbable.Restricted.Worker.Component worker) =>
             {
-                if (worker.WorkerType == "UnityClient" || worker.WorkerType == "MobileClient")
+                if (Array.IndexOf(WorkerTypes, worker.WorkerType) != -1)
                 {
                     var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity()));
                     var context = new PartitionCreationContext(spatialEntityId.EntityId, entity);
@@ -88,14 +103,14 @@ namespace Playground.LoadBalancing
 
         private void AssignPartition(AssignPartitionContext context)
         {
-            var requestId = commandSystem.SendCommand(new Worker.AssignPartition.Request(
+            var requestId = commandSystem.SendCommand(new Improbable.Restricted.Worker.AssignPartition.Request(
                 context.WorkerEntityId, new AssignPartitionRequest(context.PartitionEntityId.Id)));
             assignPartitionContexts[requestId] = context;
         }
 
         private void StorePartitionInfo()
         {
-            var responses = commandSystem.GetResponses<Worker.AssignPartition.ReceivedResponse>();
+            var responses = commandSystem.GetResponses<Improbable.Restricted.Worker.AssignPartition.ReceivedResponse>();
 
             for (var i = 0; i < responses.Count; i++)
             {
@@ -133,7 +148,7 @@ namespace Playground.LoadBalancing
                     continue;
                 }
 
-                PostUpdateCommands.AddComponent(context.WorkerEntity, new RegisteredClientWorker
+                PostUpdateCommands.AddComponent(context.WorkerEntity, new RegisteredWorker
                 {
                     PartitionEntityId = context.PartitionEntityId
                 });
@@ -143,10 +158,10 @@ namespace Playground.LoadBalancing
         private void CleanupOldPartitions()
         {
             // If the client has disconnected, we need to remove that partition.
-            Entities.With(removedClients).ForEach((Entity entity, ref RegisteredClientWorker registeredClientWorker) =>
+            Entities.With(removedWorkers).ForEach((Entity entity, ref RegisteredWorker registeredClientWorker) =>
             {
                 commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(registeredClientWorker.PartitionEntityId));
-                PostUpdateCommands.RemoveComponent<RegisteredClientWorker>(entity);
+                PostUpdateCommands.RemoveComponent<RegisteredWorker>(entity);
                 PostUpdateCommands.DestroyEntity(entity);
             });
         }
@@ -190,8 +205,68 @@ namespace Playground.LoadBalancing
         }
     }
 
-    public struct RegisteredClientWorker : ISystemStateComponentData
+    public struct RegisteredWorker : ISystemStateComponentData, IEquatable<RegisteredWorker>
     {
         public EntityId PartitionEntityId;
+
+        public bool Equals(RegisteredWorker other)
+        {
+            return PartitionEntityId.Equals(other.PartitionEntityId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is RegisteredWorker other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return PartitionEntityId.GetHashCode();
+        }
+
+        public static bool operator ==(RegisteredWorker left, RegisteredWorker right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(RegisteredWorker left, RegisteredWorker right)
+        {
+            return !left.Equals(right);
+        }
+    }
+
+    public struct WorkerClassification : ISharedComponentData, IEquatable<WorkerClassification>
+    {
+        public string WorkerType;
+
+        public WorkerClassification(string workerType)
+        {
+            WorkerType = workerType;
+        }
+
+        public bool Equals(WorkerClassification other)
+        {
+            return WorkerType == other.WorkerType;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is WorkerClassification other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return (WorkerType != null ? WorkerType.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(WorkerClassification left, WorkerClassification right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(WorkerClassification left, WorkerClassification right)
+        {
+            return !left.Equals(right);
+        }
     }
 }
