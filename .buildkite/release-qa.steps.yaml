@@ -13,7 +13,7 @@ windows: &windows
     - "environment=production"
     - "permission_set=builder"
     - "platform=windows"
-    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-20-11-23-191424-bk17773-5c3c31e2-d}"
+    - "queue=${WINDOWS_BUILDER_QUEUE:-v4-21-01-11-110431-bk18968-ef191ce7-d}"
     - "scaler_version=2"
     - "minimum_instances=1"
     - "agent_count=1"
@@ -24,7 +24,7 @@ windows: &windows
   timeout_in_minutes: 60 # TODO(ENG-548): reduce timeout once agent-cold-start is optimised.
   retry:
     automatic:
-        # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
+      # This is designed to trap and retry failures because agent lost connection. Agent exits with -1 in this case.
       - exit_status: -1
         limit: 3
         # This is designed to trap and retry failures because of a buildkite bug.
