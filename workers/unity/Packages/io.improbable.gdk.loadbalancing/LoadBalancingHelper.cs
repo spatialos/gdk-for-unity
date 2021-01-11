@@ -45,6 +45,11 @@ namespace Improbable.Gdk.LoadBalancing
             singletonSystem.LoadBalancingMap = loadBalancingMap;
         }
 
+        public void SetPointOfInterestLoadBalancing(string workerType, IEnumerable<Coordinates> pointsOfInterest,
+            EntityLoadBalancingMap loadBalancingMap)
+        {
+            world.AddSystem(new PointsOfInterestStrategySystem(workerType, pointsOfInterest, loadBalancingMap));
+        }
     }
 
     public class EntityLoadBalancingMap
