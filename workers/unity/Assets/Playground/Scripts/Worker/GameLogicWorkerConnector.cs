@@ -81,19 +81,8 @@ namespace Playground
             Worker.World.GetOrCreateSystem<MetricSendSystem>();
             Worker.World.GetOrCreateSystem<ProcessScoresSystem>();
             Worker.World.GetOrCreateSystem<CubeMovementSystem>();
-
-            Worker.AddLoadBalancingSystems(configuration =>
-            {
-                configuration.AddPartitionManagement("UnityClient", "MobileClient");
-                configuration.AddClientLoadBalancing("Character", ComponentSets.PlayerClientSet);
-
-                var loadBalancingMap = new EntityLoadBalancingMap(ComponentSets.DefaultServerSet)
-                    .AddOverride("Character", ComponentSets.PlayerServerSet);
-
-                configuration.SetSingletonLoadBalancing(new EntityId(1), loadBalancingMap);
-            });
         }
-        
+
         public override void Dispose()
         {
             if (levelInstance != null)
