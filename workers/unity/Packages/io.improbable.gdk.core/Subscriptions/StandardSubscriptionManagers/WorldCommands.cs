@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Subscriptions;
 using Unity.Entities;
@@ -8,182 +7,46 @@ using Entity = Unity.Entities.Entity;
 namespace Improbable.Gdk.Core
 {
     [AutoRegisterSubscriptionManager]
-    public class WorldCommandSenderSubscriptionManager : SubscriptionManager<WorldCommandSender>
+    public class WorldCommandSenderSubscriptionManager : CommandSenderSubscriptionManagerBase<WorldCommandSender>
     {
-        private Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>
-            entityIdToSenderSubscriptions =
-                new Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>();
-
         public WorldCommandSenderSubscriptionManager(World world) : base(world)
         {
-            var constraintsSystem = world.GetExistingSystem<ComponentConstraintsCallbackSystem>();
-
-            constraintsSystem.RegisterEntityAddedCallback(entityId =>
-            {
-                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
-                {
-                    return;
-                }
-
-                var entity = WorkerSystem.GetEntity(entityId);
-
-                foreach (var subscription in subscriptions)
-                {
-                    subscription.SetAvailable(new WorldCommandSender(entity, world));
-                }
-            });
-
-            constraintsSystem.RegisterEntityRemovedCallback(entityId =>
-            {
-                if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
-                {
-                    return;
-                }
-
-                foreach (var subscription in subscriptions)
-                {
-                    ResetValue(subscription);
-                    subscription.SetUnavailable();
-                }
-            });
         }
 
-        public override Subscription<WorldCommandSender> Subscribe(EntityId entityId)
+        protected override WorldCommandSender CreateSender(Entity entity, World world)
         {
-            if (entityIdToSenderSubscriptions == null)
-            {
-                entityIdToSenderSubscriptions = new Dictionary<EntityId, HashSet<Subscription<WorldCommandSender>>>();
-            }
-
-            var subscription = new Subscription<WorldCommandSender>(this, entityId);
-
-            if (!entityIdToSenderSubscriptions.TryGetValue(entityId, out var subscriptions))
-            {
-                subscriptions = new HashSet<Subscription<WorldCommandSender>>();
-                entityIdToSenderSubscriptions.Add(entityId, subscriptions);
-            }
-
-            if (WorkerSystem.TryGetEntity(entityId, out var entity))
-            {
-                subscription.SetAvailable(new WorldCommandSender(entity, World));
-            }
-
-            subscriptions.Add(subscription);
-            return subscription;
-        }
-
-        public override void Cancel(ISubscription subscription)
-        {
-            var sub = ((Subscription<WorldCommandSender>) subscription);
-            if (sub.HasValue)
-            {
-                sub.Value.IsValid = false;
-            }
-
-            var subscriptions = entityIdToSenderSubscriptions[sub.EntityId];
-            subscriptions.Remove(sub);
-            if (subscriptions.Count == 0)
-            {
-                entityIdToSenderSubscriptions.Remove(sub.EntityId);
-            }
-        }
-
-        public override void ResetValue(ISubscription subscription)
-        {
+            return new WorldCommandSender(entity, world);
         }
     }
 
-    public class WorldCommandSender
+    public class WorldCommandSender : CommandSender
     {
-        public bool IsValid;
-
-        private readonly Entity entity;
-        private readonly CommandSystem commandSystem;
-        private readonly CommandCallbackSystem callbackSystem;
-
-        public WorldCommandSender(Entity entity, World world)
+        public WorldCommandSender(Entity entity, World world) : base(entity, world)
         {
-            this.entity = entity;
-            IsValid = true;
-            callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
-            // todo check if this exists probably put getting this in a static function that does it in one place
-            commandSystem = world.GetExistingSystem<CommandSystem>();
         }
 
         public void SendCreateEntityCommand(WorldCommands.CreateEntity.Request request,
             Action<WorldCommands.CreateEntity.ReceivedResponse> callback = null)
         {
-            var requestId = commandSystem.SendCommand(request, entity);
-            if (callback == null)
-            {
-                return;
-            }
-
-            Action<WorldCommands.CreateEntity.ReceivedResponse> wrappedCallback = response =>
-            {
-                if (IsValid)
-                {
-                    callback(response);
-                }
-            };
-            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
+            SendCommand(request, callback);
         }
 
         public void SendDeleteEntityCommand(WorldCommands.DeleteEntity.Request request,
             Action<WorldCommands.DeleteEntity.ReceivedResponse> callback = null)
         {
-            var requestId = commandSystem.SendCommand(request, entity);
-            if (callback == null)
-            {
-                return;
-            }
-
-            Action<WorldCommands.DeleteEntity.ReceivedResponse> wrappedCallback = response =>
-            {
-                if (IsValid)
-                {
-                    callback(response);
-                }
-            };
-            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
+            SendCommand(request, callback);
         }
 
         public void SendReserveEntityIdsCommand(WorldCommands.ReserveEntityIds.Request request,
             Action<WorldCommands.ReserveEntityIds.ReceivedResponse> callback = null)
         {
-            var requestId = commandSystem.SendCommand(request, entity);
-            if (callback == null)
-            {
-                return;
-            }
-
-            Action<WorldCommands.ReserveEntityIds.ReceivedResponse> wrappedCallback = response =>
-            {
-                if (IsValid)
-                {
-                    callback(response);
-                }
-            };
-            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
+            SendCommand(request, callback);
         }
 
         public void SendEntityQueryCommand(WorldCommands.EntityQuery.Request request,
             Action<WorldCommands.EntityQuery.ReceivedResponse> callback = null)
         {
-            var requestId = commandSystem.SendCommand(request, entity);
-            if (callback == null)
-            {
-                return;
-            }
-
-            Action<WorldCommands.EntityQuery.ReceivedResponse> wrappedCallback = response =>
-            {
-                if (IsValid)
-                {
-                    callback(response);
-                }
-            };
-            callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
+            SendCommand(request, callback);
         }
     }
 }
