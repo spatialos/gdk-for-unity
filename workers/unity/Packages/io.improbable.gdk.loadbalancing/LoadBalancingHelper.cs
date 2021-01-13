@@ -38,11 +38,9 @@ namespace Improbable.Gdk.LoadBalancing
         }
 #endif
 
-        public void SetSingletonLoadBalancing(EntityId targetPartition, EntityLoadBalancingMap loadBalancingMap)
+        public void SetSingletonLoadBalancing(string workerType, EntityLoadBalancingMap loadBalancingMap)
         {
-            var singletonSystem = world.GetOrCreateSystem<SingletonStrategySystem>();
-            singletonSystem.TargetPartition = targetPartition;
-            singletonSystem.LoadBalancingMap = loadBalancingMap;
+            world.AddSystem(new SingletonStrategySystem(workerType, loadBalancingMap));
         }
 
         public void SetPointOfInterestLoadBalancing(string workerType, IEnumerable<Coordinates> pointsOfInterest,
