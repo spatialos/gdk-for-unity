@@ -17,7 +17,7 @@ namespace Improbable.Gdk.LoadBalancing
         private readonly string workerType;
         private readonly List<PointOfInterest> pointsOfInterest;
 
-        private ILogDispatcher logDispatcher;
+        private ILogDispatcher logger;
 
         private EntityQuery entities;
         private EntityQuery workers;
@@ -33,7 +33,7 @@ namespace Improbable.Gdk.LoadBalancing
 
         protected override void OnCreate()
         {
-            logDispatcher = World.GetExistingSystem<WorkerSystem>().LogDispatcher;
+            logger = World.GetExistingSystem<WorkerSystem>().LogDispatcher;
 
             entities = GetEntityQuery(ComponentType.ReadOnly<Position.Component>(),
                 ComponentType.ReadOnly<Metadata.Component>(),
@@ -58,11 +58,11 @@ namespace Improbable.Gdk.LoadBalancing
             // Warns if there aren't enough workers for the given POI.
             if (diff > 0)
             {
-                logDispatcher.HandleLog(LogType.Warning, new LogEvent("There are not enough workers to satisfy the current points of interest configuration."));
+                logger.Warn("There are not enough workers to satisfy the current points of interest configuration.");
             }
             else if (diff < 0)
             {
-                logDispatcher.HandleLog(LogType.Warning, new LogEvent("There are more workers than required to satisfy the current point of interest configuration."));
+                logger.Warn("There are more workers than required to satisfy the current point of interest configuration.");
             }
 
             int idx = 0;
