@@ -1,22 +1,19 @@
 using System;
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
+using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
 using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Subscriptions
 {
-    public interface ICommandSender : IRequireable
-    {
-    }
-
     public interface ICommandReceiver : IRequireable
     {
     }
 
     public abstract class CommandSenderSubscriptionManagerBase<T> : SubscriptionManager<T>
-        where T : ICommandSender
+        where T : CommandSender
     {
         private Dictionary<EntityId, HashSet<Subscription<T>>>
             entityIdToSenderSubscriptions =
