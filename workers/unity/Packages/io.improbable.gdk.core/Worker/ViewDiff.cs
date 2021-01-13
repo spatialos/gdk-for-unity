@@ -4,6 +4,7 @@ using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -139,6 +140,11 @@ namespace Improbable.Gdk.Core
             if (!entitiesAdded.Remove(new EntityId(entityId)))
             {
                 entitiesRemoved.Add(new EntityId(entityId));
+            }
+
+            foreach (var componentStorage in componentStorageList)
+            {
+                componentStorage.ClearEntity(entityId);
             }
         }
 

@@ -49,7 +49,6 @@ namespace Improbable.Gdk.Core
             if (EntitiesUpdated.Remove(id))
             {
                 updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
-                authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
 
                 ClearEventStorage(entityId);
             }
@@ -58,6 +57,21 @@ namespace Improbable.Gdk.Core
             {
                 componentsRemoved.Add(id);
             }
+        }
+
+        public void ClearEntity(long entityId)
+        {
+            var eid = new EntityId(entityId);
+            if (componentsAdded.Remove(eid))
+            {
+                // Addition and removal happened in the same frame, we need to remove _everything_.
+                ClearEventStorage(entityId);
+                EntitiesUpdated.Remove(eid);
+                updateStorage.RemoveAll(update => update.EntityId.Id == entityId);
+                componentsRemoved.Remove(eid);
+            }
+
+            authorityChanges.RemoveAll(change => change.EntityId == eid);
         }
 
         protected abstract void ClearEventStorage(long entityId);

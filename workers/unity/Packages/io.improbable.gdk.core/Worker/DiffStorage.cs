@@ -12,6 +12,8 @@ namespace Improbable.Gdk.Core
         void Clear();
         void RemoveEntityComponent(long entityId);
 
+        void ClearEntity(long entityId);
+
         List<EntityId> GetComponentsAdded();
         List<EntityId> GetComponentsRemoved();
     }
