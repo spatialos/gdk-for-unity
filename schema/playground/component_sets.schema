@@ -7,6 +7,7 @@ import "playground/cube_spawner.schema";
 import "playground/color.schema";
 import "playground/cube.schema";
 import "playground/spinner_rotation.schema";
+import "playground/collisions.schema";
 
 import "improbable/gdk/transform_synchronization/transform_internal.schema";
 import "improbable/gdk/player_lifecycle/player_heartbeat.schema";
@@ -64,6 +65,7 @@ component_set DefaultServerSet {
         playground.CubeColor,
         playground.CubeTargetVelocity,
         playground.SpinnerRotation,
-        playground.SpinnerColor
+        playground.SpinnerColor,
+        playground.Collisions
     ];
 }
