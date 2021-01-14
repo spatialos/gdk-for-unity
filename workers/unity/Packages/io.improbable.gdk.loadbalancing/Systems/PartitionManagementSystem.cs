@@ -68,7 +68,7 @@ namespace Improbable.Gdk.LoadBalancing
             {
                 if (Array.IndexOf(WorkerTypes, worker.WorkerType) != -1)
                 {
-                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity()));
+                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity(worker.WorkerType)));
                     var context = new PartitionCreationContext(spatialEntityId.EntityId, entity);
                     partitionCreationContexts[requestId] = context;
                 }
@@ -166,11 +166,11 @@ namespace Improbable.Gdk.LoadBalancing
             });
         }
 
-        private static EntityTemplate GetPartitionEntity()
+        private static EntityTemplate GetPartitionEntity(string workerType)
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot());
-            template.AddComponent(new Metadata.Snapshot("ClientPartition"));
+            template.AddComponent(new Metadata.Snapshot($"{workerType} Partition"));
             return template;
         }
 
