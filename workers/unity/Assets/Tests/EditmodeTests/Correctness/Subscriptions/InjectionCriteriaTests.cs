@@ -55,7 +55,11 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         public void Writer_is_not_injected_when_entity_component_is_not_checked_out()
         {
             World
-                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, BasicEntity());
+                    world.Connection.ChangeComponentAuthority(EntityId, ExhaustiveSingular.ComponentId, Authority.Authoritative);
+                })
                 .Step(world =>
                 {
                     var (_, writerBehaviour) = world.CreateGameObject<ExhaustiveSingularWriterBehaviour>(EntityId);

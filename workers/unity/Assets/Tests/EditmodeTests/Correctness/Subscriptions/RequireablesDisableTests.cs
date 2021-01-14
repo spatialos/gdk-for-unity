@@ -125,6 +125,32 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         }
 
         [Test]
+        public void Writer_is_disabled_if_loses_component()
+        {
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetTemplate()); })
+                .Step(world =>
+                {
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<PositionWriterBehaviour>(EntityId);
+                    return (writerBehaviour: writerBehaviour, writer: writerBehaviour.Writer);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
+                })
+                .Step((world, context) =>
+                {
+                    var (writerBehaviour, positionWriter) = context;
+                    Assert.IsNull(writerBehaviour.Writer);
+                    Assert.IsFalse(positionWriter.IsValid);
+                });
+        }
+
+        [Test]
         public void CommandSender_is_disabled_if_entity_removed()
         {
             World
