@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed an issue where XCode would link the wrong library when building for iOS Simulator. [#1484](https://github.com/spatialos/gdk-for-unity/pull/1484)
+- Fixed Command request `AllowShortCircuiting` property being ignored. [#1490](https://github.com/spatialos/gdk-for-unity/pull/1490)
 
 ## `0.4.0` - 2020-09-14
 
