@@ -117,7 +117,7 @@ private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
             {{
                 // Send a command failure if the string is non-null.
 
-                serializedMessages.AddFailure(ComponentId, {command.CommandIndex}, response.FailureMessage, (uint) response.RequestId);
+                serializedMessages.AddFailure(ComponentId, {command.CommandIndex}, response.FailureMessage, response.RequestId);
                 continue;
             }}
 
