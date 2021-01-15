@@ -149,7 +149,8 @@ namespace Improbable.Gdk.Core
             for (var i = 0; i < requests.Count; ++i)
             {
                 ref readonly var request = ref requests[i];
-                var rawRequestId = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout);
+                var commandParameters = new CommandParameters { AllowShortCircuit = request.AllowShortCircuit };
+                var rawRequestId = connection.SendCommandRequest(request.EntityId, request.Request, request.Timeout, commandParameters);
                 var requestId = new InternalCommandRequestId(rawRequestId);
                 commandMetaData.AddInternalRequestId(request.Request.ComponentId, request.CommandId, request.RequestId,
                     requestId);
@@ -232,13 +233,13 @@ namespace Improbable.Gdk.Core
             updates.Add(new UpdateToSend(update, entityId));
         }
 
-        public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, CommandRequestId requestId)
+        public void AddRequest(CommandRequest request, uint commandId, long entityId, uint? timeout, bool allowShortCircuit, CommandRequestId requestId)
         {
-            requests.Add(new RequestToSend(request, commandId, entityId, timeout, requestId));
+            requests.Add(new RequestToSend(request, commandId, entityId, timeout, allowShortCircuit, requestId));
             netFrameStats.AddCommandRequest(request);
         }
 
-        public void AddResponse(CommandResponse response, uint requestId)
+        public void AddResponse(CommandResponse response, long requestId)
         {
             responses.Add(new ResponseToSend(response, requestId));
             netFrameStats.AddCommandResponse(response, message: null);
@@ -315,14 +316,16 @@ namespace Improbable.Gdk.Core
             public readonly uint CommandId;
             public readonly long EntityId;
             public readonly uint? Timeout;
+            public readonly bool AllowShortCircuit;
             public readonly CommandRequestId RequestId;
 
-            public RequestToSend(CommandRequest request, uint commandId, long entityId, uint? timeout, CommandRequestId requestId)
+            public RequestToSend(CommandRequest request, uint commandId, long entityId, uint? timeout, bool allowShortCircuit, CommandRequestId requestId)
             {
                 Request = request;
                 CommandId = commandId;
                 EntityId = entityId;
                 Timeout = timeout;
+                AllowShortCircuit = allowShortCircuit;
                 RequestId = requestId;
             }
         }
@@ -330,9 +333,9 @@ namespace Improbable.Gdk.Core
         private readonly struct ResponseToSend
         {
             public readonly CommandResponse Response;
-            public readonly uint RequestId;
+            public readonly long RequestId;
 
-            public ResponseToSend(CommandResponse response, uint requestId)
+            public ResponseToSend(CommandResponse response, long requestId)
             {
                 Response = response;
                 RequestId = requestId;
@@ -342,9 +345,9 @@ namespace Improbable.Gdk.Core
         private readonly struct FailureToSend
         {
             public readonly string Reason;
-            public readonly uint RequestId;
+            public readonly long RequestId;
 
-            public FailureToSend(string reason, uint requestId)
+            public FailureToSend(string reason, long requestId)
             {
                 Reason = reason;
                 RequestId = requestId;
