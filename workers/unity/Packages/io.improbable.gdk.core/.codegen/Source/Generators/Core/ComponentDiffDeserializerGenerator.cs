@@ -81,10 +81,10 @@ if (eventCount > 0)
                         }
                     });
 
-                deserializer.Method("public void AddComponentToDiff(AddComponentOp op, ViewDiff diff)", () => new[]
+                deserializer.Method("public void AddComponentToDiff(AddComponentOp op, ViewDiff diff, uint updateId)", () => new[]
                 {
                     "var data = Serialization.DeserializeUpdate(op.Data.SchemaData.Value);",
-                    "diff.AddComponent(data, op.EntityId, op.Data.ComponentId);"
+                    "diff.AddComponent(data, op.EntityId, op.Data.ComponentId, updateId);"
                 });
             });
         }
