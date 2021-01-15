@@ -19,8 +19,8 @@ namespace Improbable.Gdk.EditmodeTests
                 .Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
                 .Step(world =>
                 {
-                    world.Connection.ChangeAuthority(EntityId, ComponentSets.WellKnownComponentSet, Authority.Authoritative);
-                    world.Connection.ChangeAuthority(EntityId, ComponentSets.WellKnownComponentSet, Authority.NotAuthoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, 54, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, 54, Authority.NotAuthoritative);
                 })
                 .Step(world =>
                 {

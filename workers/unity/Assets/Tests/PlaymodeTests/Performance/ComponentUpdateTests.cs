@@ -36,7 +36,7 @@ namespace Improbable.Gdk.PlaymodeTests
             var currentState = World.Step(world =>
             {
                 world.Connection.CreateEntity(EntityId, GetEntityTemplate());
-                world.Connection.ChangeAuthority(EntityId, ComponentSets.WellKnownComponentSet, Authority.Authoritative);
+                world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
             });
 
             ActionMeasurement.Measure(() =>
