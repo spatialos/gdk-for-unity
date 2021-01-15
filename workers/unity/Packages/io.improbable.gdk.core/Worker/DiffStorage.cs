@@ -12,8 +12,6 @@ namespace Improbable.Gdk.Core
         void Clear();
         void RemoveEntityComponent(long entityId);
 
-        void ClearEntity(long entityId);
-
         List<EntityId> GetComponentsAdded();
         List<EntityId> GetComponentsRemoved();
     }
@@ -36,7 +34,7 @@ namespace Improbable.Gdk.Core
 
     public interface IDiffComponentAddedStorage<T> where T : ISpatialComponentUpdate
     {
-        void AddEntityComponent(long entityId, T component);
+        void AddEntityComponent(long entityId, T component, uint updateId);
     }
 
     public interface IDiffAuthorityStorage : IComponentDiffStorage

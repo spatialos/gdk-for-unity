@@ -56,12 +56,8 @@ namespace Improbable.Gdk.Core
 
         private readonly NetFrameStats netFrameStats = new NetFrameStats();
 
-        private readonly IComponentSetManager componentSetManager;
-
         public ViewDiff()
         {
-            componentSetManager = (IComponentSetManager) Activator.CreateInstance(TypeCache.ComponentSetManager.Value);
-
             foreach (var (componentId, diffStorageType) in ViewDiffMetadata.ComponentStorageTypes)
             {
                 var instance = (IComponentDiffStorage) Activator.CreateInstance(diffStorageType);
@@ -141,14 +137,9 @@ namespace Improbable.Gdk.Core
             {
                 entitiesRemoved.Add(new EntityId(entityId));
             }
-
-            foreach (var componentStorage in componentStorageList)
-            {
-                componentStorage.ClearEntity(entityId);
-            }
         }
 
-        public void AddComponent<T>(T component, long entityId, uint componentId) where T : ISpatialComponentUpdate
+        public void AddComponent<T>(T component, long entityId, uint componentId, uint updateId) where T : ISpatialComponentUpdate
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
@@ -157,7 +148,7 @@ namespace Improbable.Gdk.Core
                     $"Unknown component ID");
             }
 
-            ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component);
+            ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component, updateId);
         }
 
         public void RemoveComponent(long entityId, uint componentId)
@@ -170,19 +161,6 @@ namespace Improbable.Gdk.Core
             }
 
             storage.RemoveEntityComponent(entityId);
-        }
-
-        public void SetAuthority(long entityId, uint componentSetId, Authority authority, uint authorityChangeId)
-        {
-            if (!componentSetManager.TryGetComponentSet(componentSetId, out var componentSet))
-            {
-                return;
-            }
-
-            foreach (var componentId in componentSet.ComponentIds)
-            {
-                SetComponentAuthority(entityId, componentId, authority, authorityChangeId);
-            }
         }
 
         internal void SetComponentAuthority(long entityId, uint componentId, Authority authority,

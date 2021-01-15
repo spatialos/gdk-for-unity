@@ -58,15 +58,9 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void ClearEntity(long entityId)
-        {
-            RemoveEntityComponent(entityId);
-            authorityChanges.RemoveAll(change => change.EntityId.Id == entityId);
-        }
-
         protected abstract void ClearEventStorage(long entityId);
 
-        public void AddEntityComponent(long entityId, TUpdate component)
+        public void AddEntityComponent(long entityId, TUpdate component, uint updateId)
         {
             var id = new EntityId(entityId);
             if (!componentsRemoved.Remove(id))
@@ -74,7 +68,7 @@ namespace Improbable.Gdk.Core
                 componentsAdded.Add(id);
             }
 
-            AddUpdate(new ComponentUpdateReceived<TUpdate>(component, id, 0));
+            AddUpdate(new ComponentUpdateReceived<TUpdate>(component, id, updateId));
         }
 
         public void AddUpdate(ComponentUpdateReceived<TUpdate> update)

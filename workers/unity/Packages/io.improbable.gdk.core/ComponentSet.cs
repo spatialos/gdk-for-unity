@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace Improbable.Gdk.Core
 {
     public class ComponentSet
@@ -13,7 +15,7 @@ namespace Improbable.Gdk.Core
         internal ComponentSet(uint componentSetId, uint[] componentIds)
         {
             ComponentSetId = componentSetId;
-            ComponentIds = componentIds;
+            ComponentIds = componentIds.OrderBy(id => id).ToArray();
         }
     }
 

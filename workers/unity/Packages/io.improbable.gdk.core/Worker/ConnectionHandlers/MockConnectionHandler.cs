@@ -59,13 +59,13 @@ namespace Improbable.Gdk.Core
 
         public void CreateEntity(long entityId, EntityTemplate template)
         {
-            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, CurrentDiff);
+            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, this);
             Dynamic.ForEachComponent(handler);
         }
 
-        public void ChangeAuthority(long entityId, ComponentSet componentSet, Authority newAuthority)
+        public void CreateEntity(long entityId)
         {
-            CurrentDiff.SetAuthority(entityId, componentSet.ComponentSetId, newAuthority, authorityChangeId++);
+            CurrentDiff.AddEntity(entityId);
         }
 
         public void ChangeComponentAuthority(long entityId, uint componentId, Authority newAuthority)
@@ -104,7 +104,7 @@ namespace Improbable.Gdk.Core
         public void AddComponent<T>(long entityId, uint componentId, T component)
             where T : ISpatialComponentUpdate
         {
-            CurrentDiff.AddComponent(component, entityId, componentId);
+            CurrentDiff.AddComponent(component, entityId, componentId, updateId++);
         }
 
         public void UpdateComponentAndAddEvents<TUpdate, TEvent>(long entityId, uint componentId, TUpdate update,
@@ -250,15 +250,15 @@ namespace Improbable.Gdk.Core
         {
             private readonly EntityTemplate template;
             private readonly long entityId;
-            private readonly ViewDiff viewDiff;
+            private readonly MockConnectionHandler mockConnectionHandler;
 
-            public CreateEntityTemplateDynamicHandler(EntityTemplate template, long entityId, ViewDiff viewDiff)
+            public CreateEntityTemplateDynamicHandler(EntityTemplate template, long entityId, MockConnectionHandler mockConnectionHandler)
             {
                 this.template = template;
-                this.viewDiff = viewDiff;
+                this.mockConnectionHandler = mockConnectionHandler;
                 this.entityId = entityId;
 
-                viewDiff.AddEntity(this.entityId);
+                mockConnectionHandler.CreateEntity(this.entityId);
             }
 
             public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
@@ -273,7 +273,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var snapshot = maybeSnapshot.Value;
-                viewDiff.AddComponent(vtable.ConvertSnapshotToUpdate(snapshot), entityId, componentId);
+                mockConnectionHandler.AddComponent(entityId, componentId, vtable.ConvertSnapshotToUpdate(snapshot));
             }
         }
 

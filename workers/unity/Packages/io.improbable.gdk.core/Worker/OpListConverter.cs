@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
@@ -9,11 +10,17 @@ namespace Improbable.Gdk.Core
     internal class OpListConverter
     {
         private readonly ViewDiff viewDiff = new ViewDiff();
+        private readonly IComponentSetManager componentSetManager;
 
         private uint componentUpdateId;
         private uint authorityChangeId;
 
         private bool shouldClear;
+
+        public OpListConverter()
+        {
+            componentSetManager = (IComponentSetManager) Activator.CreateInstance(TypeCache.ComponentSetManager.Value);
+        }
 
         /// <summary>
         ///     Iterate over the op list and populate a ViewDiff from the data contained.
@@ -76,15 +83,64 @@ namespace Improbable.Gdk.Core
                         netStats.AddWorldCommandResponse(WorldCommand.EntityQuery);
                         break;
                     case OpType.AddComponent:
-                        ComponentOpDeserializer.DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff);
+                        ComponentOpDeserializer.DeserializeAndAddComponent(opList.GetAddComponentOp(i), viewDiff, componentUpdateId);
+                        componentUpdateId++;
                         break;
                     case OpType.RemoveComponent:
                         var removeComponentOp = opList.GetRemoveComponentOp(i);
                         viewDiff.RemoveComponent(removeComponentOp.EntityId, removeComponentOp.ComponentId);
                         break;
                     case OpType.ComponentSetAuthorityChange:
-                        var authorityOp = opList.GetComponentSetAuthorityChangeOp(i);
-                        viewDiff.SetAuthority(authorityOp.EntityId, authorityOp.ComponentSetId, authorityOp.Authority, authorityChangeId);
+                        var authorityChangeOp = opList.GetComponentSetAuthorityChangeOp(i);
+
+                        if (!componentSetManager.TryGetComponentSet(authorityChangeOp.ComponentSetId, out var componentSet))
+                        {
+                            Debug.LogWarning($"Unknown component set ID: {authorityChangeOp.ComponentSetId}");
+                            continue;
+                        }
+
+                        // Set the authority for each.
+                        foreach (var componentId in componentSet.ComponentIds)
+                        {
+                            viewDiff.SetComponentAuthority(authorityChangeOp.EntityId, componentId, authorityChangeOp.Authority, authorityChangeId);
+                        }
+
+                        if (authorityChangeOp.CanonicalComponentSetData.Length == 0)
+                        {
+                            foreach (var componentId in componentSet.ComponentIds)
+                            {
+                                viewDiff.RemoveComponent(authorityChangeOp.EntityId, componentId);
+                            }
+                        }
+                        else
+                        {
+                            // Sort the canonical component data set.
+                            // Iterate through it and remove any components that are in the set,
+                            // but not the canonical component set data.
+                            using (var sortedComponentData = authorityChangeOp.CanonicalComponentSetData.OrderBy(cd => cd.ComponentId).GetEnumerator())
+                            {
+                                sortedComponentData.MoveNext();
+                                // Otherwise go through each list and remove the elements.
+                                foreach (var componentId in componentSet.ComponentIds)
+                                {
+                                    if (sortedComponentData.Current.ComponentId != componentId)
+                                    {
+                                        viewDiff.RemoveComponent(authorityChangeOp.EntityId, componentId);
+                                    }
+                                    else
+                                    {
+                                        ComponentOpDeserializer.DeserializeAndAddComponent(new AddComponentOp
+                                        {
+                                            EntityId = authorityChangeOp.EntityId,
+                                            Data = sortedComponentData.Current
+                                        }, viewDiff, componentUpdateId);
+                                        componentUpdateId++;
+                                        sortedComponentData.MoveNext();
+                                    }
+                                }
+                            }
+                        }
+
                         authorityChangeId++;
                         break;
                     case OpType.ComponentUpdate:
