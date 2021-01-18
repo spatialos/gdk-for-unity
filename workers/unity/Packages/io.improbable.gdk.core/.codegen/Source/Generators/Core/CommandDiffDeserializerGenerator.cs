@@ -106,7 +106,7 @@ private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
             var serializedRequest = new global::Improbable.Worker.CInterop.CommandRequest(ComponentId, {command.CommandIndex}, schemaCommandRequest);
 
             serializedMessages.AddRequest(serializedRequest, {command.CommandIndex},
-                request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.RequestId);
+                request.Request.TargetEntityId.Id, request.Request.TimeoutMillis, request.Request.AllowShortCircuiting, request.RequestId);
         }}
 
         var responses = storage.GetResponses();
@@ -117,7 +117,7 @@ private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
             {{
                 // Send a command failure if the string is non-null.
 
-                serializedMessages.AddFailure(ComponentId, {command.CommandIndex}, response.FailureMessage, (uint) response.RequestId);
+                serializedMessages.AddFailure(ComponentId, {command.CommandIndex}, response.FailureMessage, response.RequestId);
                 continue;
             }}
 
@@ -126,7 +126,7 @@ private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
 
             var serializedResponse = new global::Improbable.Worker.CInterop.CommandResponse(ComponentId, {command.CommandIndex}, schemaCommandResponse);
 
-            serializedMessages.AddResponse(serializedResponse, (uint) response.RequestId);
+            serializedMessages.AddResponse(serializedResponse, response.RequestId);
         }}
     }}
 }}
