@@ -21,6 +21,8 @@ namespace Improbable.Gdk.TestUtils
         public MockConnectionHandler Connection { get; private set; }
         public EntityGameObjectLinker Linker { get; private set; }
 
+        public EntityManager EntityManager => Worker.World.EntityManager;
+
         private readonly HashSet<GameObject> gameObjects = new HashSet<GameObject>();
 
         public static MockWorld Create(Options options)
