@@ -156,7 +156,7 @@ namespace Improbable.Gdk.LoadBalancing
 
         private void CleanupOldPartitions()
         {
-            // If the client has disconnected, we need to remove that partition.
+            // If the worker has disconnected, we need to remove that partition.
             Entities.With(removedWorkers).ForEach((Entity entity, ref RegisteredWorker registeredClientWorker) =>
             {
                 commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(registeredClientWorker.PartitionEntityId));
@@ -179,7 +179,7 @@ namespace Improbable.Gdk.LoadBalancing
                 });
         }
 
-        private static EntityTemplate GetPartitionEntity(string workerType, EntityId workerEntityId)
+        internal static EntityTemplate GetPartitionEntity(string workerType, EntityId workerEntityId)
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot());
