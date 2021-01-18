@@ -15,14 +15,6 @@ import "improbable/gdk/player_lifecycle/player_creator.schema";
 import "improbable/gdk/player_lifecycle/owning_worker.schema";
 import "improbable/standard_library.schema";
 
-component_set AuthorityDelegationSet {
-    id = 70000;
-
-    components = [
-        improbable.AuthorityDelegation
-    ];
-}
-
 component_set PlayerClientSet {
     id = 70001;
 
