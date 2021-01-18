@@ -23,14 +23,18 @@ namespace Improbable.Gdk.LoadBalancing
             new Dictionary<CommandRequestId, AssignPartitionContext>();
 
         private CommandSystem commandSystem;
+        private WorkerSystem workerSystem;
 
         private EntityQuery newWorkers;
         private EntityQuery workersWithoutPartitions;
+
         private EntityQuery removedWorkers;
+        private EntityQuery unknownPartitions;
 
         protected override void OnCreate()
         {
             commandSystem = World.GetExistingSystem<CommandSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
 
             newWorkers = GetEntityQuery(ComponentType.ReadOnly<Improbable.Restricted.Worker.Component>(),
                 ComponentType.Exclude<WorkerClassification>());
@@ -43,6 +47,11 @@ namespace Improbable.Gdk.LoadBalancing
             removedWorkers = GetEntityQuery(
                 ComponentType.ReadOnly<RegisteredWorker>(),
                 ComponentType.Exclude<Improbable.Restricted.Worker.Component>());
+
+            unknownPartitions = GetEntityQuery(
+                ComponentType.ReadOnly<Improbable.Gdk.Loadbalancing.Partition.Component>(),
+                ComponentType.ReadOnly<SpatialEntityId>(),
+                ComponentType.Exclude<KnownPartition>());
         }
 
         protected override void OnUpdate()
@@ -68,7 +77,7 @@ namespace Improbable.Gdk.LoadBalancing
             {
                 if (Array.IndexOf(WorkerTypes, worker.WorkerType) != -1)
                 {
-                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity(worker.WorkerType)));
+                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity(worker.WorkerType, spatialEntityId.EntityId)));
                     var context = new PartitionCreationContext(spatialEntityId.EntityId, entity);
                     partitionCreationContexts[requestId] = context;
                 }
@@ -164,13 +173,28 @@ namespace Improbable.Gdk.LoadBalancing
                 PostUpdateCommands.RemoveComponent<RegisteredWorker>(entity);
                 PostUpdateCommands.DestroyEntity(entity);
             });
+
+            // If the partition is checked out, but the worker entity isn't.. it must be an old one ==> delete it.
+            Entities.With(unknownPartitions).ForEach(
+                (Entity entity, ref SpatialEntityId spatialEntityId, ref Improbable.Gdk.Loadbalancing.Partition.Component partition) =>
+                {
+                    if (!workerSystem.TryGetEntity(partition.WorkerEntityId, out _))
+                    {
+                        commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(spatialEntityId.EntityId));
+                    }
+                    else
+                    {
+                        PostUpdateCommands.AddComponent<KnownPartition>(entity);
+                    }
+                });
         }
 
-        private static EntityTemplate GetPartitionEntity(string workerType)
+        private static EntityTemplate GetPartitionEntity(string workerType, EntityId workerEntityId)
         {
             var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot());
             template.AddComponent(new Metadata.Snapshot($"{workerType} Partition"));
+            template.AddComponent(new Improbable.Gdk.Loadbalancing.Partition.Snapshot(workerType, workerEntityId));
             return template;
         }
 
@@ -201,6 +225,10 @@ namespace Improbable.Gdk.LoadBalancing
         }
 
         private struct SeenWorker : IComponentData
+        {
+        }
+
+        private struct KnownPartition : IComponentData
         {
         }
     }
