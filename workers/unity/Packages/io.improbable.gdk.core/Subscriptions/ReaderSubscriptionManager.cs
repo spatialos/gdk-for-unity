@@ -37,7 +37,10 @@ namespace Improbable.Gdk.Subscriptions
                     return;
                 }
 
-                var entity = WorkerSystem.GetEntity(entityId);
+                if (!WorkerSystem.TryGetEntity(entityId, out var entity))
+                {
+                    return;
+                }
 
                 foreach (var subscription in entityIdToReaderSubscriptions[entityId])
                 {
