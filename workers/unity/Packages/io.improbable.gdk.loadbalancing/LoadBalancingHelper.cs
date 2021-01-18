@@ -21,6 +21,7 @@ namespace Improbable.Gdk.LoadBalancing
         internal LoadBalancerConfiguration(World world)
         {
             this.world = world;
+            world.GetOrCreateSystem<ClassifyWorkersSystem>();
         }
 
         public void AddPartitionManagement(params string[] workerTypes)

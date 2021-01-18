@@ -25,7 +25,7 @@ namespace Improbable.Gdk.LoadBalancing
         private CommandSystem commandSystem;
         private WorkerSystem workerSystem;
 
-        private EntityQuery newWorkers;
+
         private EntityQuery workersWithoutPartitions;
 
         private EntityQuery removedWorkers;
@@ -36,13 +36,10 @@ namespace Improbable.Gdk.LoadBalancing
             commandSystem = World.GetExistingSystem<CommandSystem>();
             workerSystem = World.GetExistingSystem<WorkerSystem>();
 
-            newWorkers = GetEntityQuery(ComponentType.ReadOnly<Improbable.Restricted.Worker.Component>(),
-                ComponentType.Exclude<WorkerClassification>());
-
             workersWithoutPartitions = GetEntityQuery(
-                ComponentType.ReadOnly<Improbable.Restricted.Worker.Component>(),
+                ComponentType.ReadOnly<WorkerClassification>(),
                 ComponentType.ReadOnly<SpatialEntityId>(),
-                ComponentType.Exclude<SeenWorker>());
+                ComponentType.Exclude<PartitionCreatedForWorker>());
 
             removedWorkers = GetEntityQuery(
                 ComponentType.ReadOnly<RegisteredWorker>(),
@@ -56,34 +53,27 @@ namespace Improbable.Gdk.LoadBalancing
 
         protected override void OnUpdate()
         {
-            ClassifyWorkers();
             CreateNewPartitions();
             AssignPartitions();
             StorePartitionInfo();
             CleanupOldPartitions();
         }
 
-        private void ClassifyWorkers()
-        {
-            Entities.With(newWorkers).ForEach((Entity entity, ref Improbable.Restricted.Worker.Component worker) =>
-            {
-                PostUpdateCommands.AddSharedComponent(entity, new WorkerClassification(worker.WorkerType));
-            });
-        }
-
         private void CreateNewPartitions()
         {
-            Entities.With(workersWithoutPartitions).ForEach((Entity entity, ref SpatialEntityId spatialEntityId, ref Improbable.Restricted.Worker.Component worker) =>
+            foreach (var workerType in WorkerTypes)
             {
-                if (Array.IndexOf(WorkerTypes, worker.WorkerType) != -1)
+                workersWithoutPartitions.SetSharedComponentFilter(new WorkerClassification(workerType));
+
+                Entities.With(workersWithoutPartitions).ForEach((Entity entity, ref SpatialEntityId spatialEntityId) =>
                 {
-                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity(worker.WorkerType, spatialEntityId.EntityId)));
+                    var requestId = commandSystem.SendCommand(new WorldCommands.CreateEntity.Request(GetPartitionEntity(workerType, spatialEntityId.EntityId)));
                     var context = new PartitionCreationContext(spatialEntityId.EntityId, entity);
                     partitionCreationContexts[requestId] = context;
-                }
 
-                PostUpdateCommands.AddComponent<SeenWorker>(entity);
-            });
+                    PostUpdateCommands.AddComponent<PartitionCreatedForWorker>(entity);
+                });
+            }
         }
 
         private void AssignPartitions()
@@ -102,7 +92,7 @@ namespace Improbable.Gdk.LoadBalancing
 
                 if (response.StatusCode != StatusCode.Success)
                 {
-                    PostUpdateCommands.RemoveComponent<SeenWorker>(context.WorkerEntity);
+                    PostUpdateCommands.RemoveComponent<PartitionCreatedForWorker>(context.WorkerEntity);
                     continue;
                 }
 
@@ -224,7 +214,7 @@ namespace Improbable.Gdk.LoadBalancing
             }
         }
 
-        private struct SeenWorker : IComponentData
+        private struct PartitionCreatedForWorker : IComponentData
         {
         }
 
@@ -258,41 +248,6 @@ namespace Improbable.Gdk.LoadBalancing
         }
 
         public static bool operator !=(RegisteredWorker left, RegisteredWorker right)
-        {
-            return !left.Equals(right);
-        }
-    }
-
-    public struct WorkerClassification : ISharedComponentData, IEquatable<WorkerClassification>
-    {
-        public string WorkerType;
-
-        public WorkerClassification(string workerType)
-        {
-            WorkerType = workerType;
-        }
-
-        public bool Equals(WorkerClassification other)
-        {
-            return WorkerType == other.WorkerType;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is WorkerClassification other && Equals(other);
-        }
-
-        public override int GetHashCode()
-        {
-            return (WorkerType != null ? WorkerType.GetHashCode() : 0);
-        }
-
-        public static bool operator ==(WorkerClassification left, WorkerClassification right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(WorkerClassification left, WorkerClassification right)
         {
             return !left.Equals(right);
         }
