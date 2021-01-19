@@ -90,11 +90,12 @@ steps:
       BUILD_ENVIRONMENT: "cloud"
       SCRIPTING_BACKEND: "mono"
 
-  - label: ":windows: ~ build UnityLoadBalancer mono"
+  - label: "build UnityLoadBalancer mono"
     command: bash -c .shared-ci/scripts/build-worker.sh
     <<: *windows
     artifact_paths:
       - logs/**/*
+      - build/assembly/**/*
     env:
       # <<: *windows-env
       WORKER_TYPE: "UnityLoadBalancer"
