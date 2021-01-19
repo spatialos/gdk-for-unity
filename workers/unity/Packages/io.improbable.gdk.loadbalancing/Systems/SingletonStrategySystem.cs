@@ -10,8 +10,8 @@ namespace Improbable.Gdk.LoadBalancing
     [AlwaysUpdateSystem]
     internal class SingletonStrategySystem : ComponentSystem
     {
-        private EntityLoadBalancingMap entityLoadBalancingMap;
-        private string workerType;
+        private readonly EntityLoadBalancingMap entityLoadBalancingMap;
+        private readonly string workerType;
 
         private ILogDispatcher logger;
         private EntityQuery unassignedEntities;

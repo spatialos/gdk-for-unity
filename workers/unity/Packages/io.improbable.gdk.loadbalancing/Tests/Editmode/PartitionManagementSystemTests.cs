@@ -5,7 +5,6 @@ using Improbable.Gdk.TestUtils;
 using Improbable.Restricted;
 using Improbable.Worker.CInterop;
 using NUnit.Framework;
-using Unity.Entities;
 using Connection = Improbable.Restricted.Connection;
 using Entity = Unity.Entities.Entity;
 
