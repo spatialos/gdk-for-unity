@@ -8,12 +8,8 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
     [TestFixture]
     public class CommandLineConnectionParametersInitializerTests
     {
-#pragma warning disable 612
-        [TestCase("RakNet", NetworkConnectionType.RakNet)]
         [TestCase("Tcp", NetworkConnectionType.Tcp)]
         [TestCase("Kcp", NetworkConnectionType.Kcp)]
-#pragma warning restore 612
-        [TestCase("ModularKcp", NetworkConnectionType.ModularKcp)]
         public void Initialize_should_set_network_protocol(string protocolStr, NetworkConnectionType connectionType)
         {
             var args = new Dictionary<string, string>

@@ -10,8 +10,8 @@ namespace Improbable.Gdk.Mobile
             connectionParameters.Network = new NetworkParameters
             {
                 UseExternalIp = true,
-                ConnectionType = NetworkConnectionType.ModularKcp,
-                ModularKcp = new ModularKcpNetworkParameters
+                ConnectionType = NetworkConnectionType.Kcp,
+                Kcp = new KcpNetworkParameters
                 {
                     DownstreamHeartbeat = new HeartbeatParameters
                     {

@@ -204,8 +204,8 @@ namespace Improbable.Gdk.Core
                 DefaultComponentVtable = new ComponentVtable(),
                 Network =
                 {
-                    ConnectionType = NetworkConnectionType.ModularKcp,
-                    ModularKcp =
+                    ConnectionType = NetworkConnectionType.Kcp,
+                    Kcp =
                     {
                         DownstreamCompression = new CompressionParameters(),
                         UpstreamCompression = new CompressionParameters(),
