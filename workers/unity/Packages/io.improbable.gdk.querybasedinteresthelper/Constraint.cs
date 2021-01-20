@@ -10,19 +10,19 @@ namespace Improbable.Gdk.QueryBasedInterest
     /// </summary>
     public class Constraint
     {
-        private ComponentInterest.QueryConstraint queryConstraint;
+        private ComponentSetInterest.QueryConstraint queryConstraint;
 
-        private Constraint(ComponentInterest.QueryConstraint queryConstraint)
+        private Constraint(ComponentSetInterest.QueryConstraint queryConstraint)
         {
             this.queryConstraint = queryConstraint;
         }
 
-        private static ComponentInterest.QueryConstraint Default()
+        private static ComponentSetInterest.QueryConstraint Default()
         {
-            return new ComponentInterest.QueryConstraint
+            return new ComponentSetInterest.QueryConstraint
             {
-                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
-                OrConstraint = new List<ComponentInterest.QueryConstraint>()
+                AndConstraint = new List<ComponentSetInterest.QueryConstraint>(),
+                OrConstraint = new List<ComponentSetInterest.QueryConstraint>()
             };
         }
 
@@ -41,7 +41,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint Sphere(double radius, Coordinates center)
         {
             var constraint = Default();
-            constraint.SphereConstraint = new ComponentInterest.SphereConstraint
+            constraint.SphereConstraint = new ComponentSetInterest.SphereConstraint
             {
                 Center = center,
                 Radius = radius
@@ -91,7 +91,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint Cylinder(double radius, Coordinates center)
         {
             var constraint = Default();
-            constraint.CylinderConstraint = new ComponentInterest.CylinderConstraint
+            constraint.CylinderConstraint = new ComponentSetInterest.CylinderConstraint
             {
                 Center = center,
                 Radius = radius
@@ -151,7 +151,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             Coordinates center)
         {
             var constraint = Default();
-            constraint.BoxConstraint = new ComponentInterest.BoxConstraint
+            constraint.BoxConstraint = new ComponentSetInterest.BoxConstraint
             {
                 Center = center,
                 EdgeLength = new EdgeLength(xWidth, yHeight, zDepth)
@@ -209,7 +209,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint RelativeSphere(double radius)
         {
             var constraint = Default();
-            constraint.RelativeSphereConstraint = new ComponentInterest.RelativeSphereConstraint
+            constraint.RelativeSphereConstraint = new ComponentSetInterest.RelativeSphereConstraint
             {
                 Radius = radius
             };
@@ -231,7 +231,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint RelativeCylinder(double radius)
         {
             var constraint = Default();
-            constraint.RelativeCylinderConstraint = new ComponentInterest.RelativeCylinderConstraint
+            constraint.RelativeCylinderConstraint = new ComponentSetInterest.RelativeCylinderConstraint
             {
                 Radius = radius
             };
@@ -259,7 +259,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint RelativeBox(double xWidth, double yHeight, double zDepth)
         {
             var constraint = Default();
-            constraint.RelativeBoxConstraint = new ComponentInterest.RelativeBoxConstraint
+            constraint.RelativeBoxConstraint = new ComponentSetInterest.RelativeBoxConstraint
             {
                 EdgeLength = new EdgeLength(xWidth, yHeight, zDepth)
             };
@@ -278,7 +278,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint EntityId(EntityId entityId)
         {
             var constraint = Default();
-            constraint.EntityIdConstraint = entityId.Id;
+            constraint.EntityIdConstraint = entityId;
             return new Constraint(constraint);
         }
 
@@ -331,10 +331,10 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public static Constraint All(Constraint constraint, params Constraint[] constraints)
         {
-            return new Constraint(new ComponentInterest.QueryConstraint
+            return new Constraint(new ComponentSetInterest.QueryConstraint
             {
                 AndConstraint = ConstraintParamsToQueryConstraints(constraint, constraints),
-                OrConstraint = new List<ComponentInterest.QueryConstraint>()
+                OrConstraint = new List<ComponentSetInterest.QueryConstraint>()
             });
         }
 
@@ -357,10 +357,10 @@ namespace Improbable.Gdk.QueryBasedInterest
                 throw new ArgumentException("At least one Constraint must be provided.");
             }
 
-            return new Constraint(new ComponentInterest.QueryConstraint
+            return new Constraint(new ComponentSetInterest.QueryConstraint
             {
                 AndConstraint = ConstraintEnumerableToQueryConstraints(constraints),
-                OrConstraint = new List<ComponentInterest.QueryConstraint>()
+                OrConstraint = new List<ComponentSetInterest.QueryConstraint>()
             });
         }
 
@@ -381,9 +381,9 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// </returns>
         public static Constraint Any(Constraint constraint, params Constraint[] constraints)
         {
-            return new Constraint(new ComponentInterest.QueryConstraint
+            return new Constraint(new ComponentSetInterest.QueryConstraint
             {
-                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
+                AndConstraint = new List<ComponentSetInterest.QueryConstraint>(),
                 OrConstraint = ConstraintParamsToQueryConstraints(constraint, constraints)
             });
         }
@@ -407,9 +407,9 @@ namespace Improbable.Gdk.QueryBasedInterest
                 throw new ArgumentException("At least one Constraint must be provided.");
             }
 
-            return new Constraint(new ComponentInterest.QueryConstraint
+            return new Constraint(new ComponentSetInterest.QueryConstraint
             {
-                AndConstraint = new List<ComponentInterest.QueryConstraint>(),
+                AndConstraint = new List<ComponentSetInterest.QueryConstraint>(),
                 OrConstraint = ConstraintEnumerableToQueryConstraints(constraints)
             });
         }
@@ -420,16 +420,16 @@ namespace Improbable.Gdk.QueryBasedInterest
         /// <returns>
         ///     A QueryConstraint object.
         /// </returns>
-        public ComponentInterest.QueryConstraint AsQueryConstraint()
+        public ComponentSetInterest.QueryConstraint AsQueryConstraint()
         {
             return queryConstraint;
         }
 
-        private static List<ComponentInterest.QueryConstraint> ConstraintParamsToQueryConstraints(
+        private static List<ComponentSetInterest.QueryConstraint> ConstraintParamsToQueryConstraints(
             Constraint constraint,
             params Constraint[] constraints)
         {
-            var output = new List<ComponentInterest.QueryConstraint>(constraints.Length + 1)
+            var output = new List<ComponentSetInterest.QueryConstraint>(constraints.Length + 1)
             {
                 constraint.queryConstraint
             };
@@ -442,7 +442,7 @@ namespace Improbable.Gdk.QueryBasedInterest
             return output;
         }
 
-        private static List<ComponentInterest.QueryConstraint> ConstraintEnumerableToQueryConstraints(
+        private static List<ComponentSetInterest.QueryConstraint> ConstraintEnumerableToQueryConstraints(
             IEnumerable<Constraint> constraints)
         {
             return constraints.Select(constraint => constraint.queryConstraint).ToList();
