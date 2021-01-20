@@ -58,14 +58,13 @@ namespace Improbable.Gdk.Core.Commands
 
                 /// <summary>
                 ///     A dictionary that represents the results of a <see cref="SnapshotResultType"/> entity query.
-                ///     This is null for <see cref="CountResultType"/> entity queries.
                 /// </summary>
                 public readonly Dictionary<EntityId, EntitySnapshot> Result;
 
                 /// <summary>
                 ///     The number of entities that matched the entity query constraints.
                 /// </summary>
-                public readonly int ResultCount;
+                public int ResultCount => Result.Count;
 
                 /// <summary>
                 ///     The request payload that was originally sent with this command.
@@ -87,16 +86,9 @@ namespace Improbable.Gdk.Core.Commands
                     SendingEntity = sendingEntity;
                     StatusCode = op.StatusCode;
                     Message = op.Message;
-                    ResultCount = op.ResultCount;
                     RequestPayload = req;
                     Context = req.Context;
                     RequestId = requestId;
-
-                    if (op.Result == null)
-                    {
-                        Result = null;
-                        return;
-                    }
 
                     Result = new Dictionary<EntityId, EntitySnapshot>();
                     foreach (var entityIdToEntity in op.Result)
