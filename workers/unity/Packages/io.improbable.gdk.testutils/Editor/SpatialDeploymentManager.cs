@@ -17,7 +17,7 @@ namespace Improbable.Gdk.TestUtils.Editor
     {
         private Process spatialProcess;
 
-        public static async Task<SpatialDeploymentManager> Start(string deploymentJsonPath, string snapshotPath)
+        public static async Task<SpatialDeploymentManager> Start(string deploymentJsonPath, string snapshotPath, string runtimeVersion)
         {
             if (!File.Exists(Path.Combine(Common.SpatialProjectRootDir, deploymentJsonPath)))
             {
@@ -30,7 +30,7 @@ namespace Improbable.Gdk.TestUtils.Editor
             }
 
             await BuildWorkerConfigs().ConfigureAwait(false);
-            var process = await StartSpatial(deploymentJsonPath, snapshotPath).ConfigureAwait(false);
+            var process = await StartSpatial(deploymentJsonPath, snapshotPath, runtimeVersion).ConfigureAwait(false);
 
             return new SpatialDeploymentManager
             {
@@ -84,12 +84,12 @@ Raw stderr:
             return tcs.Task;
         }
 
-        private static Task<Process> StartSpatial(string deploymentJsonPath, string snapshotPath)
+        private static Task<Process> StartSpatial(string deploymentJsonPath, string snapshotPath, string runtimeVersion)
         {
             var tcs = new TaskCompletionSource<Process>();
 
             var processInfo =
-                new ProcessStartInfo(Common.SpatialBinary, $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false")
+                new ProcessStartInfo(Common.SpatialBinary, $"local launch \"{deploymentJsonPath}\" --snapshot \"{snapshotPath}\" --enable_pre_run_check=false --experimental_runtime={runtimeVersion}")
                 {
                     CreateNoWindow = true,
                     RedirectStandardOutput = true,
