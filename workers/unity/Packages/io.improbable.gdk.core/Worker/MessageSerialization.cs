@@ -7,7 +7,7 @@ namespace Improbable.Gdk.Core
         uint GetComponentId();
 
         void AddUpdateToDiff(ComponentUpdateOp op, ViewDiff diff, uint updateId);
-        void AddComponentToDiff(AddComponentOp op, ViewDiff diff);
+        void AddComponentToDiff(AddComponentOp op, ViewDiff diff, uint updateId);
     }
 
     public interface IComponentSerializer

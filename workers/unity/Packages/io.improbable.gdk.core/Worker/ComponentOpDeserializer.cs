@@ -33,14 +33,14 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public static void DeserializeAndAddComponent(AddComponentOp op, ViewDiff viewDiff)
+        public static void DeserializeAndAddComponent(AddComponentOp op, ViewDiff viewDiff, uint updateId)
         {
             if (!ComponentIdToComponentDeserializer.TryGetValue(op.Data.ComponentId, out var deserializer))
             {
                 throw new ArgumentException($"Can not deserialize component with ID {op.Data.ComponentId}");
             }
 
-            deserializer.AddComponentToDiff(op, viewDiff);
+            deserializer.AddComponentToDiff(op, viewDiff, updateId);
         }
 
         public static void DeserializeAndApplyComponentUpdate(ComponentUpdateOp op, ViewDiff viewDiff, uint updateId)

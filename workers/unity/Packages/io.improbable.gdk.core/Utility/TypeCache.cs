@@ -29,5 +29,7 @@ namespace Improbable.Gdk.Core
 
             return componentMetaClassTypes;
         }
+        public static readonly Lazy<Type> ComponentSetManager =
+            new Lazy<Type>(() => ReflectionUtility.GetNonAbstractTypes(typeof(IComponentSetManager))[0]);
     }
 }
