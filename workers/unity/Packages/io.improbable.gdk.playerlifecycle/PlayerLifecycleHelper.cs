@@ -10,16 +10,12 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     Adds the SpatialOS components used by the player lifecycle module to an entity template.
         /// </summary>
         /// <param name="template">The entity template to add player lifecycle components to.</param>
-        /// <param name="clientWorkerId">The ID of the client-worker.</param>
-        /// <param name="serverAccess">The server-worker write access attribute.</param>
-        public static void AddPlayerLifecycleComponents(EntityTemplate template,
-            string clientWorkerId,
-            string serverAccess)
+        /// <param name="clientWorkerEntityId">The EntityID of the client-worker.</param>
+        public static void AddPlayerLifecycleComponents(this EntityTemplate template, EntityId clientWorkerEntityId)
         {
-            template.AddComponent(new PlayerHeartbeatClient.Snapshot(),
-                EntityTemplate.GetWorkerAccessAttribute(clientWorkerId));
-            template.AddComponent(new PlayerHeartbeatServer.Snapshot(), serverAccess);
-            template.AddComponent(new OwningWorker.Snapshot(clientWorkerId), serverAccess);
+            template.AddComponent(new PlayerHeartbeatClient.Snapshot());
+            template.AddComponent(new PlayerHeartbeatServer.Snapshot());
+            template.AddComponent(new OwningWorker.Snapshot(clientWorkerEntityId));
         }
 
         public static bool IsOwningWorker(EntityId entityId, World workerWorld)
@@ -42,8 +38,8 @@ namespace Improbable.Gdk.PlayerLifecycle
                 return false;
             }
 
-            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerId;
-            return worker.WorkerId == ownerId;
+            var ownerId = entityManager.GetComponentData<OwningWorker.Component>(entity).WorkerEntityId;
+            return worker.WorkerEntityId == ownerId;
         }
 
         /// <summary>

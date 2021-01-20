@@ -53,7 +53,7 @@ namespace Improbable.Gdk.PlayerLifecycle
 
             var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
                 entityId,
-                receivedRequest.CallerWorkerId,
+                receivedRequest.CallerWorkerEntityId,
                 receivedRequest.Payload.SerializedArguments
             );
 
