@@ -19,7 +19,7 @@ namespace Improbable.Gdk.Core
         }
     }
 
-    public class WorldCommandSender : CommandSender
+    public class WorldCommandSender : CommandSenderBase
     {
         public WorldCommandSender(Entity entity, World world) : base(entity, world)
         {

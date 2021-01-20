@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Subscriptions
     }
 
     public abstract class CommandSenderSubscriptionManagerBase<T> : SubscriptionManager<T>
-        where T : CommandSender
+        where T : CommandSenderBase
     {
         private Dictionary<EntityId, HashSet<Subscription<T>>>
             entityIdToSenderSubscriptions =

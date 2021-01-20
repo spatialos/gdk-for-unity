@@ -87,7 +87,7 @@ protected override {commandReceiverType} CreateReceiver(World world, Entity enti
 
             var commandSenderType = $"{componentDetails.Name}CommandSender";
 
-            return Scope.Type($"public class {commandSenderType} : CommandSender", c =>
+            return Scope.Type($"public class {commandSenderType} : CommandSenderBase", c =>
             {
                 c.Line($@"
 internal {commandSenderType}(Entity entity, World world) : base(entity, world)

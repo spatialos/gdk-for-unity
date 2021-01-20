@@ -4,7 +4,7 @@ using Unity.Entities;
 
 namespace Improbable.Gdk.Core.Commands
 {
-    public abstract class CommandSender : IRequireable
+    public abstract class CommandSenderBase : IRequireable
     {
         private readonly Entity entity;
         private readonly CommandSystem commandSystem;
@@ -13,7 +13,7 @@ namespace Improbable.Gdk.Core.Commands
 
         public bool IsValid { get; set; }
 
-        protected CommandSender(Entity entity, World world)
+        protected CommandSenderBase(Entity entity, World world)
         {
             this.entity = entity;
             commandSystem = world.GetOrCreateSystem<CommandSystem>();
