@@ -10,10 +10,16 @@
         "Unity.Entities.Hybrid",
         "Unity.Mathematics",
         "Improbable.Gdk.Generated",
-        "Improbable.Gdk.Mobile"
+        "Improbable.Gdk.Mobile",
+        "Improbable.Gdk.LoadBalancing"
     ],
-    "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],
-    "allowUnsafeCode": false
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
