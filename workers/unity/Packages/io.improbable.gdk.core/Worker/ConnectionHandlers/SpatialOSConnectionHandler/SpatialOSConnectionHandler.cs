@@ -35,9 +35,9 @@ namespace Improbable.Gdk.Core
             return connection.GetWorkerId();
         }
 
-        public List<string> GetWorkerAttributes()
+        public EntityId GetWorkerEntityId()
         {
-            return connection.GetWorkerAttributes();
+            return new EntityId(connection.GetWorkerEntityId());
         }
 
         public void GetMessagesReceived(ref ViewDiff viewDiff)

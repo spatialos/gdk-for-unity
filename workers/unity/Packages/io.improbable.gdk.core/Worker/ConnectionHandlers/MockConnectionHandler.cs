@@ -193,6 +193,11 @@ namespace Improbable.Gdk.Core
             return "TestWorker";
         }
 
+        public EntityId GetWorkerEntityId()
+        {
+            return new EntityId(0);
+        }
+
         public List<string> GetWorkerAttributes()
         {
             return new List<string> { "attribute_the_first", "attribute_the_second" };
