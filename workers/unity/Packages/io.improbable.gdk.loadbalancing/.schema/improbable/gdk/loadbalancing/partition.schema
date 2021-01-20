@@ -1,0 +1,19 @@
+package improbable.gdk.loadbalancing;
+
+import "improbable/standard_library.schema";
+
+component Partition {
+    id = 14000;
+
+    string worker_type = 1;
+    EntityId worker_entity_id = 2;
+}
+
+component_set AuthorityDelegationSet {
+    id = 70000;
+
+    components = [
+        improbable.AuthorityDelegation,
+        improbable.gdk.loadbalancing.Partition
+    ];
+}
