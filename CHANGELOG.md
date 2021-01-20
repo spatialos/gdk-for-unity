@@ -10,6 +10,7 @@
 
 - Fixed an issue where XCode would link the wrong library when building for iOS Simulator. [#1484](https://github.com/spatialos/gdk-for-unity/pull/1484)
 - The `AllowShortCircuiting` property is no longer ignored on command requests. [#1490](https://github.com/spatialos/gdk-for-unity/pull/1490)
+- The `WorldCommandSender` correctly has its callbacks removed when the containing Monobehaviour is disabled. [#1493](https://github.com/spatialos/gdk-for-unity/pull/1493)
 
 ## `0.4.0` - 2020-09-14
 
