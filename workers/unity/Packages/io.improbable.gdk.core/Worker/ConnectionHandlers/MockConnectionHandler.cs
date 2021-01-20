@@ -132,7 +132,7 @@ namespace Improbable.Gdk.Core
             outgoingRequests.Add(nextRequestId, request);
         }
 
-        public IEnumerable<CommandRequestId> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
+        public IEnumerable<CommandRequestId> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
         {
             if (!requestIds.TryGetValue(typeof(TRequest), out var ids))
             {
@@ -143,11 +143,17 @@ namespace Improbable.Gdk.Core
             return ids.Select(id => new CommandRequestId(id));
         }
 
+        public IEnumerable<(CommandRequestId, TRequest)> GetOutboundCommandRequests<TRequest>()
+            where TRequest : ICommandRequest
+        {
+            return GetOutboundCommandRequestIds<TRequest>().Select(id => (id, (TRequest) outgoingRequests[id.Raw]));
+        }
+
         public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
         {
-            var ids = GetOutboundCommandRequests<TRequest>();
+            var ids = GetOutboundCommandRequestIds<TRequest>();
             var commandClass = ComponentDatabase.GetCommandMetaclassFromRequest<TRequest>();
             if (typeof(TResponse) != commandClass.ReceivedResponse)
             {
@@ -181,6 +187,32 @@ namespace Improbable.Gdk.Core
 
             CurrentDiff.AddCommandResponse(creator(id, (TRequest) request), commandClass.ComponentId, commandClass.CommandIndex);
             requestIds[typeof(TRequest)].Remove(id.Raw);
+            outgoingRequests.Remove(id.Raw);
+        }
+
+        public void GenerateWorldCommandResponses(Func<CommandRequestId, WorldCommands.CreateEntity.Request, WorldCommands.CreateEntity.ReceivedResponse> creator)
+        {
+            var ids = GetOutboundCommandRequestIds<WorldCommands.CreateEntity.Request>();
+
+            foreach (var id in ids)
+            {
+                var request = (WorldCommands.CreateEntity.Request) outgoingRequests[id.Raw];
+                CurrentDiff.AddCreateEntityResponse(creator(id, request));
+                outgoingRequests.Remove(id.Raw);
+            }
+        }
+
+        public void GenerateWorldCommandResponse(CommandRequestId id,
+            Func<CommandRequestId, WorldCommands.CreateEntity.Request, WorldCommands.CreateEntity.ReceivedResponse>
+                creator)
+        {
+            if (!outgoingRequests.TryGetValue(id.Raw, out var request))
+            {
+                throw new ArgumentException($"Could not find a request with request id {id}");
+            }
+
+            CurrentDiff.AddCreateEntityResponse(creator(id, (WorldCommands.CreateEntity.Request) request));
+            requestIds[typeof(WorldCommands.CreateEntity.Request)].Remove(id.Raw);
             outgoingRequests.Remove(id.Raw);
         }
 
