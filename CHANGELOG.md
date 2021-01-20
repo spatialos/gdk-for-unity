@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Breaking Changes
+
+- `SpatialDeploymentManager` requires the runtime version to be specified. [#1494](https://github.com/spatialos/gdk-for-unity/pull/1494)
+
 ### Added
 
 - Added a set of extension methods for the `ILogDispatcher` for the common cases of `Info`/`Warn`/`Error`. [#1492](https://github.com/spatialos/gdk-for-unity/pull/1492)
