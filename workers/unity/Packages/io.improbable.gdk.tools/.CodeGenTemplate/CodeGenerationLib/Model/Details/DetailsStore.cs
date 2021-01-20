@@ -15,6 +15,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly IReadOnlyDictionary<string, UnityTypeDetails> Types;
         public readonly IReadOnlyDictionary<string, UnityEnumDetails> Enums;
         public readonly IReadOnlyDictionary<string, UnityComponentDetails> Components;
+        public readonly IReadOnlyList<ComponentSetDetails> ComponentSets;
 
         public readonly ImmutableHashSet<string> BlittableSet;
         public readonly IReadOnlyList<string> SchemaFiles;
@@ -92,6 +93,10 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             Enums = new ReadOnlyDictionary<string, UnityEnumDetails>(enums);
             Types = new ReadOnlyDictionary<string, UnityTypeDetails>(types);
             Components = new ReadOnlyDictionary<string, UnityComponentDetails>(components);
+            ComponentSets = bundle.SchemaFiles
+                .SelectMany(file => file.ComponentSets)
+                .Select(componentSet => new ComponentSetDetails(componentSet, this))
+                .ToList();
 
             SchemaFiles = bundle.SchemaFiles
                 .Select(file => file.CanonicalPath)

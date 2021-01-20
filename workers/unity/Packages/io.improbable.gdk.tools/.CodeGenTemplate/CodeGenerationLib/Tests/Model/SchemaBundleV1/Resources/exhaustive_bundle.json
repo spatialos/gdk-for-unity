@@ -38,7 +38,6 @@
        "annotations": [],
        "name": "a",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.test_schema.ExhaustiveRepeatedData"
@@ -53,7 +52,6 @@
        "annotations": [],
        "name": "b",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -68,7 +66,6 @@
        "annotations": [],
        "name": "c",
        "fieldId": 3,
-       "transient": false,
        "optionType": {
         "innerType": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -83,7 +80,6 @@
        "annotations": [],
        "name": "d",
        "fieldId": 4,
-       "transient": false,
        "listType": {
         "innerType": {
          "type": "improbable.test_schema.SomeType"
@@ -98,7 +94,6 @@
        "annotations": [],
        "name": "e",
        "fieldId": 5,
-       "transient": false,
        "mapType": {
         "keyType": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -163,6 +158,62 @@
       }
      ]
     }
+   ],
+   "componentSets": [
+    {
+     "sourceReference": {
+      "line": 25,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.dependent_schema.DependentComponentSet",
+     "name": "DependentComponentSet",
+     "componentSetId": 198372,
+     "componentList": {
+      "sourceReference": {
+       "line": 27,
+       "column": 3
+      },
+      "annotations": [],
+      "components": [
+       {
+        "sourceReference": {
+         "line": 28,
+         "column": 5
+        },
+        "component": "improbable.test_schema.ExhaustiveOptional"
+       },
+       {
+        "sourceReference": {
+         "line": 29,
+         "column": 5
+        },
+        "component": "improbable.test_schema.ExhaustiveRepeated"
+       },
+       {
+        "sourceReference": {
+         "line": 30,
+         "column": 5
+        },
+        "component": "improbable.test_schema.ExhaustiveMapValue"
+       },
+       {
+        "sourceReference": {
+         "line": 31,
+         "column": 5
+        },
+        "component": "improbable.test_schema.ExhaustiveMapKey"
+       },
+       {
+        "sourceReference": {
+         "line": 32,
+         "column": 5
+        },
+        "component": "improbable.test_schema.ExhaustiveEntity"
+       }
+      ]
+     }
+    }
    ]
   },
   {
@@ -189,7 +240,50 @@
      "fields": []
     }
    ],
-   "components": []
+   "components": [],
+   "componentSets": []
+  },
+  {
+   "canonicalPath": "improbable/gdk/editor/worker_inspector.schema",
+   "package": {
+    "sourceReference": {
+     "line": 1,
+     "column": 1
+    },
+    "name": "improbable.gdk.editor"
+   },
+   "imports": [],
+   "enums": [],
+   "types": [
+    {
+     "sourceReference": {
+      "line": 3,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.gdk.editor.ComponentIcon",
+     "name": "ComponentIcon",
+     "outerType": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 4,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "icon_name",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "primitive": "String"
+        }
+       }
+      }
+     ]
+    }
+   ],
+   "components": [],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/gdk/player_lifecycle/owning_worker.schema",
@@ -221,12 +315,11 @@
         "column": 5
        },
        "annotations": [],
-       "name": "worker_id",
+       "name": "worker_entity_id",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
-         "primitive": "String"
+         "primitive": "EntityId"
         }
        }
       }
@@ -234,7 +327,8 @@
      "events": [],
      "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/gdk/player_lifecycle/player_creator.schema",
@@ -266,7 +360,6 @@
        "annotations": [],
        "name": "serialized_arguments",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bytes"
@@ -293,7 +386,6 @@
        "annotations": [],
        "name": "created_entity_id",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "EntityId"
@@ -330,7 +422,8 @@
       }
      ]
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/gdk/player_lifecycle/player_heartbeat.schema",
@@ -393,7 +486,8 @@
      "events": [],
      "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/gdk/transform_synchronization/transform_internal.schema",
@@ -404,12 +498,20 @@
     },
     "name": "improbable.gdk.transform_synchronization"
    },
-   "imports": [],
+   "imports": [
+    {
+     "sourceReference": {
+      "line": 3,
+      "column": 1
+     },
+     "path": "improbable/gdk/editor/worker_inspector.schema"
+    }
+   ],
    "enums": [],
    "types": [
     {
      "sourceReference": {
-      "line": 3,
+      "line": 5,
       "column": 1
      },
      "annotations": [],
@@ -419,13 +521,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 4,
+        "line": 6,
         "column": 5
        },
        "annotations": [],
        "name": "x",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint32"
@@ -434,13 +535,12 @@
       },
       {
        "sourceReference": {
-        "line": 5,
+        "line": 7,
         "column": 5
        },
        "annotations": [],
        "name": "y",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint32"
@@ -449,13 +549,12 @@
       },
       {
        "sourceReference": {
-        "line": 6,
+        "line": 8,
         "column": 5
        },
        "annotations": [],
        "name": "z",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint32"
@@ -466,7 +565,7 @@
     },
     {
      "sourceReference": {
-      "line": 9,
+      "line": 11,
       "column": 1
      },
      "annotations": [],
@@ -476,13 +575,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 10,
+        "line": 12,
         "column": 5
        },
        "annotations": [],
        "name": "data",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Uint32"
@@ -495,10 +593,36 @@
    "components": [
     {
      "sourceReference": {
-      "line": 13,
+      "line": 16,
       "column": 1
      },
-     "annotations": [],
+     "annotations": [
+      {
+       "sourceReference": {
+        "line": 15,
+        "column": 1
+       },
+       "typeValue": {
+        "type": "improbable.gdk.editor.ComponentIcon",
+        "fields": [
+         {
+          "sourceReference": {
+           "line": 15,
+           "column": 38
+          },
+          "name": "icon_name",
+          "value": {
+           "sourceReference": {
+            "line": 15,
+            "column": 38
+           },
+           "stringValue": "Transform Icon"
+          }
+         }
+        ]
+       }
+      }
+     ],
      "qualifiedName": "improbable.gdk.transform_synchronization.TransformInternal",
      "name": "TransformInternal",
      "componentId": 11000,
@@ -506,61 +630,15 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 15,
+        "line": 18,
         "column": 5
        },
        "annotations": [],
        "name": "location",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.gdk.transform_synchronization.FixedPointVector3"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 16,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "rotation",
-       "fieldId": 2,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.gdk.transform_synchronization.CompressedQuaternion"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 17,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "velocity",
-       "fieldId": 3,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.gdk.transform_synchronization.FixedPointVector3"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 18,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "physics_tick",
-       "fieldId": 4,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Uint32"
         }
        }
       },
@@ -570,9 +648,50 @@
         "column": 5
        },
        "annotations": [],
+       "name": "rotation",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "type": "improbable.gdk.transform_synchronization.CompressedQuaternion"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 20,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "velocity",
+       "fieldId": 3,
+       "singularType": {
+        "type": {
+         "type": "improbable.gdk.transform_synchronization.FixedPointVector3"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 21,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "physics_tick",
+       "fieldId": 4,
+       "singularType": {
+        "type": {
+         "primitive": "Uint32"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 22,
+        "column": 5
+       },
+       "annotations": [],
        "name": "ticks_per_second",
        "fieldId": 5,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Float"
@@ -583,7 +702,8 @@
      "events": [],
      "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/restricted/system_components.schema",
@@ -595,56 +715,7 @@
     "name": "improbable.restricted"
    },
    "imports": [],
-   "enums": [
-    {
-     "sourceReference": {
-      "line": 22,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.restricted.Connection.ConnectionStatus",
-     "name": "ConnectionStatus",
-     "outerType": "improbable.restricted.Connection",
-     "values": [
-      {
-       "sourceReference": {
-        "line": 23,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "UNKNOWN",
-       "value": 0
-      },
-      {
-       "sourceReference": {
-        "line": 25,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "AWAITING_WORKER_CONNECTION",
-       "value": 1
-      },
-      {
-       "sourceReference": {
-        "line": 27,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "CONNECTED",
-       "value": 2
-      },
-      {
-       "sourceReference": {
-        "line": 29,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "DISCONNECTED",
-       "value": 3
-      }
-     ]
-    }
-   ],
+   "enums": [],
    "types": [
     {
      "sourceReference": {
@@ -658,43 +729,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 31,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "status",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "enum": "improbable.restricted.Connection.ConnectionStatus"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 39,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "data_latency_ms",
-       "fieldId": 2,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Uint32"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 42,
+        "line": 23,
         "column": 3
        },
        "annotations": [],
        "name": "connected_since_utc",
-       "fieldId": 3,
-       "transient": false,
+       "fieldId": 1,
        "singularType": {
         "type": {
          "primitive": "Uint64"
@@ -705,7 +745,7 @@
     },
     {
      "sourceReference": {
-      "line": 46,
+      "line": 27,
       "column": 1
      },
      "annotations": [],
@@ -716,7 +756,7 @@
     },
     {
      "sourceReference": {
-      "line": 48,
+      "line": 29,
       "column": 1
      },
      "annotations": [],
@@ -727,7 +767,44 @@
     },
     {
      "sourceReference": {
-      "line": 63,
+      "line": 32,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.restricted.AssignPartitionRequest",
+     "name": "AssignPartitionRequest",
+     "outerType": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 33,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "partition_id",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "primitive": "Int64"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 36,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.restricted.AssignPartitionResponse",
+     "name": "AssignPartitionResponse",
+     "outerType": "",
+     "fields": []
+    },
+    {
+     "sourceReference": {
+      "line": 59,
       "column": 1
      },
      "annotations": [],
@@ -737,13 +814,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 65,
+        "line": 61,
         "column": 3
        },
        "annotations": [],
        "name": "player_identifier",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -752,13 +828,12 @@
       },
       {
        "sourceReference": {
-        "line": 68,
+        "line": 64,
         "column": 3
        },
        "annotations": [],
        "name": "provider",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -767,13 +842,12 @@
       },
       {
        "sourceReference": {
-        "line": 73,
+        "line": 69,
         "column": 3
        },
        "annotations": [],
        "name": "metadata",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bytes"
@@ -800,7 +874,7 @@
     },
     {
      "sourceReference": {
-      "line": 53,
+      "line": 41,
       "column": 1
      },
      "annotations": [],
@@ -811,13 +885,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 55,
+        "line": 43,
         "column": 3
        },
        "annotations": [],
        "name": "worker_id",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -826,13 +899,12 @@
       },
       {
        "sourceReference": {
-        "line": 56,
+        "line": 44,
         "column": 3
        },
        "annotations": [],
        "name": "worker_type",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -841,13 +913,12 @@
       },
       {
        "sourceReference": {
-        "line": 57,
+        "line": 45,
         "column": 3
        },
        "annotations": [],
        "name": "connection",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.restricted.Connection"
@@ -859,7 +930,7 @@
      "commands": [
       {
        "sourceReference": {
-        "line": 53,
+        "line": 41,
         "column": 1
        },
        "annotations": [],
@@ -867,12 +938,23 @@
        "requestType": "improbable.restricted.DisconnectRequest",
        "responseType": "improbable.restricted.DisconnectResponse",
        "commandIndex": 1
+      },
+      {
+       "sourceReference": {
+        "line": 41,
+        "column": 1
+       },
+       "annotations": [],
+       "name": "assign_partition",
+       "requestType": "improbable.restricted.AssignPartitionRequest",
+       "responseType": "improbable.restricted.AssignPartitionResponse",
+       "commandIndex": 2
       }
      ]
     },
     {
      "sourceReference": {
-      "line": 79,
+      "line": 75,
       "column": 1
      },
      "annotations": [],
@@ -883,13 +965,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 81,
+        "line": 77,
         "column": 3
        },
        "annotations": [],
        "name": "player_identity",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.restricted.PlayerIdentity"
@@ -899,8 +980,38 @@
      ],
      "events": [],
      "commands": []
+    },
+    {
+     "sourceReference": {
+      "line": 83,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.restricted.Partition",
+     "name": "Partition",
+     "componentId": 66,
+     "dataDefinition": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 85,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "worker_connection_id",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "primitive": "Int64"
+        }
+       }
+      }
+     ],
+     "events": [],
+     "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "improbable/standard_library.schema",
@@ -916,61 +1027,7 @@
    "types": [
     {
      "sourceReference": {
-      "line": 6,
-      "column": 1
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.WorkerAttributeSet",
-     "name": "WorkerAttributeSet",
-     "outerType": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 9,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "attribute",
-       "fieldId": 1,
-       "transient": false,
-       "listType": {
-        "innerType": {
-         "primitive": "String"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 24,
-      "column": 1
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.WorkerRequirementSet",
-     "name": "WorkerRequirementSet",
-     "outerType": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 28,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "attribute_set",
-       "fieldId": 1,
-       "transient": false,
-       "listType": {
-        "innerType": {
-         "type": "improbable.WorkerAttributeSet"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 62,
+      "line": 16,
       "column": 1
      },
      "annotations": [],
@@ -980,13 +1037,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 63,
+        "line": 17,
         "column": 3
        },
        "annotations": [],
        "name": "x",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -995,13 +1051,12 @@
       },
       {
        "sourceReference": {
-        "line": 64,
+        "line": 18,
         "column": 3
        },
        "annotations": [],
        "name": "y",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -1010,13 +1065,12 @@
       },
       {
        "sourceReference": {
-        "line": 65,
+        "line": 19,
         "column": 3
        },
        "annotations": [],
        "name": "z",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -1027,7 +1081,7 @@
     },
     {
      "sourceReference": {
-      "line": 69,
+      "line": 23,
       "column": 1
      },
      "annotations": [],
@@ -1037,13 +1091,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 70,
+        "line": 24,
         "column": 3
        },
        "annotations": [],
        "name": "x",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -1052,13 +1105,12 @@
       },
       {
        "sourceReference": {
-        "line": 71,
+        "line": 25,
         "column": 3
        },
        "annotations": [],
        "name": "y",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -1067,13 +1119,12 @@
       },
       {
        "sourceReference": {
-        "line": 72,
+        "line": 26,
         "column": 3
        },
        "annotations": [],
        "name": "z",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -1084,26 +1135,25 @@
     },
     {
      "sourceReference": {
-      "line": 103,
+      "line": 57,
       "column": 1
      },
      "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest",
-     "name": "ComponentInterest",
+     "qualifiedName": "improbable.ComponentSetInterest",
+     "name": "ComponentSetInterest",
      "outerType": "",
      "fields": [
       {
        "sourceReference": {
-        "line": 171,
+        "line": 139,
         "column": 3
        },
        "annotations": [],
        "name": "queries",
        "fieldId": 1,
-       "transient": false,
        "listType": {
         "innerType": {
-         "type": "improbable.ComponentInterest.Query"
+         "type": "improbable.ComponentSetInterest.Query"
         }
        }
       }
@@ -1111,38 +1161,36 @@
     },
     {
      "sourceReference": {
-      "line": 104,
+      "line": 58,
       "column": 3
      },
      "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.Query",
+     "qualifiedName": "improbable.ComponentSetInterest.Query",
      "name": "Query",
-     "outerType": "improbable.ComponentInterest",
+     "outerType": "improbable.ComponentSetInterest",
      "fields": [
       {
        "sourceReference": {
-        "line": 105,
+        "line": 59,
         "column": 5
        },
        "annotations": [],
        "name": "constraint",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
-         "type": "improbable.ComponentInterest.QueryConstraint"
+         "type": "improbable.ComponentSetInterest.QueryConstraint"
         }
        }
       },
       {
        "sourceReference": {
-        "line": 108,
+        "line": 70,
         "column": 5
        },
        "annotations": [],
        "name": "full_snapshot_result",
        "fieldId": 2,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Bool"
@@ -1151,13 +1199,12 @@
       },
       {
        "sourceReference": {
-        "line": 109,
+        "line": 71,
         "column": 5
        },
        "annotations": [],
        "name": "result_component_id",
        "fieldId": 3,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Uint32"
@@ -1166,13 +1213,26 @@
       },
       {
        "sourceReference": {
-        "line": 126,
+        "line": 72,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "result_component_set_id",
+       "fieldId": 5,
+       "listType": {
+        "innerType": {
+         "primitive": "Uint32"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 89,
         "column": 5
        },
        "annotations": [],
        "name": "frequency",
        "fieldId": 4,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Float"
@@ -1183,284 +1243,360 @@
     },
     {
      "sourceReference": {
-      "line": 129,
+      "line": 92,
       "column": 3
      },
      "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.QueryConstraint",
+     "qualifiedName": "improbable.ComponentSetInterest.QueryConstraint",
      "name": "QueryConstraint",
-     "outerType": "improbable.ComponentInterest",
+     "outerType": "improbable.ComponentSetInterest",
      "fields": [
       {
        "sourceReference": {
-        "line": 132,
+        "line": 95,
         "column": 5
        },
        "annotations": [],
        "name": "sphere_constraint",
        "fieldId": 1,
-       "transient": false,
        "optionType": {
         "innerType": {
-         "type": "improbable.ComponentInterest.SphereConstraint"
+         "type": "improbable.ComponentSetInterest.SphereConstraint"
         }
        }
       },
+      {
+       "sourceReference": {
+        "line": 96,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "cylinder_constraint",
+       "fieldId": 2,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.CylinderConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 97,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "box_constraint",
+       "fieldId": 3,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.BoxConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 98,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "relative_sphere_constraint",
+       "fieldId": 4,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.RelativeSphereConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 99,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "relative_cylinder_constraint",
+       "fieldId": 5,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.RelativeCylinderConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 100,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "relative_box_constraint",
+       "fieldId": 6,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.RelativeBoxConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 101,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "entity_id_constraint",
+       "fieldId": 7,
+       "optionType": {
+        "innerType": {
+         "primitive": "EntityId"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 102,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "component_constraint",
+       "fieldId": 8,
+       "optionType": {
+        "innerType": {
+         "primitive": "Uint32"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 103,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "and_constraint",
+       "fieldId": 9,
+       "listType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.QueryConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 104,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "or_constraint",
+       "fieldId": 10,
+       "listType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.QueryConstraint"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 106,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "self_constraint",
+       "fieldId": 12,
+       "optionType": {
+        "innerType": {
+         "type": "improbable.ComponentSetInterest.SelfConstraint"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 109,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.SphereConstraint",
+     "name": "SphereConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 110,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "center",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.Coordinates"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 111,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "radius",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "primitive": "Double"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 114,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.CylinderConstraint",
+     "name": "CylinderConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 115,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "center",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.Coordinates"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 116,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "radius",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "primitive": "Double"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 119,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.BoxConstraint",
+     "name": "BoxConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 120,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "center",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.Coordinates"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 121,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "edge_length",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "type": "improbable.EdgeLength"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 124,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.RelativeSphereConstraint",
+     "name": "RelativeSphereConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 125,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "radius",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "primitive": "Double"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 128,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.RelativeCylinderConstraint",
+     "name": "RelativeCylinderConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 129,
+        "column": 5
+       },
+       "annotations": [],
+       "name": "radius",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "primitive": "Double"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 132,
+      "column": 3
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.ComponentSetInterest.RelativeBoxConstraint",
+     "name": "RelativeBoxConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": [
       {
        "sourceReference": {
         "line": 133,
         "column": 5
        },
        "annotations": [],
-       "name": "cylinder_constraint",
-       "fieldId": 2,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.CylinderConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 134,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "box_constraint",
-       "fieldId": 3,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.BoxConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 135,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "relative_sphere_constraint",
-       "fieldId": 4,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.RelativeSphereConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 136,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "relative_cylinder_constraint",
-       "fieldId": 5,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.RelativeCylinderConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 137,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "relative_box_constraint",
-       "fieldId": 6,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.RelativeBoxConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 138,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "entity_id_constraint",
-       "fieldId": 7,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "primitive": "Int64"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 139,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "component_constraint",
-       "fieldId": 8,
-       "transient": false,
-       "optionType": {
-        "innerType": {
-         "primitive": "Uint32"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 140,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "and_constraint",
-       "fieldId": 9,
-       "transient": false,
-       "listType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.QueryConstraint"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 141,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "or_constraint",
-       "fieldId": 10,
-       "transient": false,
-       "listType": {
-        "innerType": {
-         "type": "improbable.ComponentInterest.QueryConstraint"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 144,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.SphereConstraint",
-     "name": "SphereConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 145,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "center",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.Coordinates"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 146,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "radius",
-       "fieldId": 2,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Double"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 149,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.CylinderConstraint",
-     "name": "CylinderConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 150,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "center",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.Coordinates"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 151,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "radius",
-       "fieldId": 2,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Double"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 154,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.BoxConstraint",
-     "name": "BoxConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 155,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "center",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.Coordinates"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 156,
-        "column": 5
-       },
-       "annotations": [],
        "name": "edge_length",
-       "fieldId": 2,
-       "transient": false,
+       "fieldId": 1,
        "singularType": {
         "type": {
          "type": "improbable.EdgeLength"
@@ -1471,138 +1607,20 @@
     },
     {
      "sourceReference": {
-      "line": 159,
+      "line": 137,
       "column": 3
      },
      "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.RelativeSphereConstraint",
-     "name": "RelativeSphereConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 160,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "radius",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Double"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 163,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.RelativeCylinderConstraint",
-     "name": "RelativeCylinderConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 164,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "radius",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Double"
-        }
-       }
-      }
-     ]
-    },
-    {
-     "sourceReference": {
-      "line": 167,
-      "column": 3
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.ComponentInterest.RelativeBoxConstraint",
-     "name": "RelativeBoxConstraint",
-     "outerType": "improbable.ComponentInterest",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 168,
-        "column": 5
-       },
-       "annotations": [],
-       "name": "edge_length",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.EdgeLength"
-        }
-       }
-      }
-     ]
+     "qualifiedName": "improbable.ComponentSetInterest.SelfConstraint",
+     "name": "SelfConstraint",
+     "outerType": "improbable.ComponentSetInterest",
+     "fields": []
     }
    ],
    "components": [
     {
      "sourceReference": {
-      "line": 33,
-      "column": 1
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.EntityAcl",
-     "name": "EntityAcl",
-     "componentId": 50,
-     "dataDefinition": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 40,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "read_acl",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "type": "improbable.WorkerRequirementSet"
-        }
-       }
-      },
-      {
-       "sourceReference": {
-        "line": 46,
-        "column": 3
-       },
-       "annotations": [],
-       "name": "component_write_acl",
-       "fieldId": 2,
-       "transient": false,
-       "mapType": {
-        "keyType": {
-         "primitive": "Uint32"
-        },
-        "valueType": {
-         "type": "improbable.WorkerRequirementSet"
-        }
-       }
-      }
-     ],
-     "events": [],
-     "commands": []
-    },
-    {
-     "sourceReference": {
-      "line": 51,
+      "line": 5,
       "column": 1
      },
      "annotations": [],
@@ -1613,13 +1631,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 57,
+        "line": 11,
         "column": 3
        },
        "annotations": [],
        "name": "entity_type",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -1632,7 +1649,7 @@
     },
     {
      "sourceReference": {
-      "line": 81,
+      "line": 35,
       "column": 1
      },
      "annotations": [],
@@ -1643,13 +1660,12 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 83,
+        "line": 37,
         "column": 3
        },
        "annotations": [],
        "name": "coords",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.Coordinates"
@@ -1662,7 +1678,7 @@
     },
     {
      "sourceReference": {
-      "line": 89,
+      "line": 43,
       "column": 1
      },
      "annotations": [],
@@ -1676,7 +1692,7 @@
     },
     {
      "sourceReference": {
-      "line": 98,
+      "line": 52,
       "column": 1
      },
      "annotations": [],
@@ -1687,19 +1703,50 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 100,
+        "line": 54,
         "column": 3
        },
        "annotations": [],
-       "name": "component_interest",
+       "name": "component_set_interest",
        "fieldId": 1,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Uint32"
         },
         "valueType": {
-         "type": "improbable.ComponentInterest"
+         "type": "improbable.ComponentSetInterest"
+        }
+       }
+      }
+     ],
+     "events": [],
+     "commands": []
+    },
+    {
+     "sourceReference": {
+      "line": 142,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.AuthorityDelegation",
+     "name": "AuthorityDelegation",
+     "componentId": 65,
+     "dataDefinition": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 146,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "delegations",
+       "fieldId": 1,
+       "mapType": {
+        "keyType": {
+         "primitive": "Uint32"
+        },
+        "valueType": {
+         "primitive": "Int64"
         }
        }
       }
@@ -1707,140 +1754,61 @@
      "events": [],
      "commands": []
     }
-   ]
-  },
-  {
-   "canonicalPath": "improbable/tests/dependency_test.schema",
-   "package": {
-    "sourceReference": {
-     "line": 1,
-     "column": 1
-    },
-    "name": "improbable.tests"
-   },
-   "imports": [],
-   "enums": [],
-   "types": [],
-   "components": [
+   ],
+   "componentSets": [
     {
      "sourceReference": {
-      "line": 3,
+      "line": 151,
       "column": 1
      },
      "annotations": [],
-     "qualifiedName": "improbable.tests.DependencyTest",
-     "name": "DependencyTest",
-     "componentId": 11111,
-     "dataDefinition": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 5,
-        "column": 5
+     "qualifiedName": "improbable.WellKnownComponentSet",
+     "name": "WellKnownComponentSet",
+     "componentSetId": 50,
+     "componentList": {
+      "sourceReference": {
+       "line": 153,
+       "column": 3
+      },
+      "annotations": [],
+      "components": [
+       {
+        "sourceReference": {
+         "line": 157,
+         "column": 5
+        },
+        "component": "improbable.Metadata"
        },
-       "annotations": [],
-       "name": "root",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Uint32"
-        }
-       }
-      }
-     ],
-     "events": [],
-     "commands": []
-    }
-   ]
-  },
-  {
-   "canonicalPath": "improbable/tests/dependency_test_child.schema",
-   "package": {
-    "sourceReference": {
-     "line": 1,
-     "column": 1
-    },
-    "name": "improbable.tests"
-   },
-   "imports": [],
-   "enums": [],
-   "types": [],
-   "components": [
-    {
-     "sourceReference": {
-      "line": 3,
-      "column": 1
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.tests.DependencyTestChild",
-     "name": "DependencyTestChild",
-     "componentId": 11112,
-     "dataDefinition": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 5,
-        "column": 5
+       {
+        "sourceReference": {
+         "line": 154,
+         "column": 5
+        },
+        "component": "improbable.Position"
        },
-       "annotations": [],
-       "name": "child",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Uint32"
-        }
-       }
-      }
-     ],
-     "events": [],
-     "commands": []
-    }
-   ]
-  },
-  {
-   "canonicalPath": "improbable/tests/dependency_test_grandchild.schema",
-   "package": {
-    "sourceReference": {
-     "line": 1,
-     "column": 1
-    },
-    "name": "improbable.tests"
-   },
-   "imports": [],
-   "enums": [],
-   "types": [],
-   "components": [
-    {
-     "sourceReference": {
-      "line": 3,
-      "column": 1
-     },
-     "annotations": [],
-     "qualifiedName": "improbable.tests.DependencyTestGrandchild",
-     "name": "DependencyTestGrandchild",
-     "componentId": 11113,
-     "dataDefinition": "",
-     "fields": [
-      {
-       "sourceReference": {
-        "line": 5,
-        "column": 5
+       {
+        "sourceReference": {
+         "line": 158,
+         "column": 5
+        },
+        "component": "improbable.Persistence"
        },
-       "annotations": [],
-       "name": "grandchild",
-       "fieldId": 1,
-       "transient": false,
-       "singularType": {
-        "type": {
-         "primitive": "Uint32"
-        }
+       {
+        "sourceReference": {
+         "line": 155,
+         "column": 5
+        },
+        "component": "improbable.Interest"
+       },
+       {
+        "sourceReference": {
+         "line": 156,
+         "column": 5
+        },
+        "component": "improbable.AuthorityDelegation"
        }
-      }
-     ],
-     "events": [],
-     "commands": []
+      ]
+     }
     }
    ]
   },
@@ -1907,7 +1875,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -1951,7 +1918,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bool"
@@ -1966,7 +1932,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Float"
@@ -1981,7 +1946,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Int32"
@@ -1996,7 +1960,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Int64"
@@ -2011,7 +1974,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -2026,7 +1988,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Uint32"
@@ -2041,7 +2002,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Uint64"
@@ -2056,7 +2016,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint32"
@@ -2071,7 +2030,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint64"
@@ -2086,7 +2044,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Fixed32"
@@ -2101,7 +2058,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Fixed64"
@@ -2116,7 +2072,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sfixed32"
@@ -2131,7 +2086,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sfixed64"
@@ -2146,7 +2100,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "EntityId"
@@ -2161,7 +2114,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.gdk.test.SomeType"
@@ -2176,7 +2128,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "singularType": {
         "type": {
          "enum": "improbable.gdk.test.SomeEnum"
@@ -2206,7 +2157,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -2221,7 +2171,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bytes"
@@ -2236,7 +2185,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Int32"
@@ -2251,7 +2199,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Int32"
@@ -2269,7 +2216,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.gdk.test.SomeNonBlittableType"
@@ -2280,7 +2226,8 @@
      "events": [],
      "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "test_schema/exhaustive_test.schema",
@@ -2615,7 +2562,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bool"
@@ -2630,7 +2576,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Float"
@@ -2645,7 +2590,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Bytes"
@@ -2660,7 +2604,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Int32"
@@ -2675,7 +2618,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Int64"
@@ -2690,7 +2632,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Double"
@@ -2705,7 +2646,6 @@
        "annotations": [],
        "name": "field7",
        "fieldId": 7,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "String"
@@ -2720,7 +2660,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Uint32"
@@ -2735,7 +2674,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Uint64"
@@ -2750,7 +2688,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint32"
@@ -2765,7 +2702,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sint64"
@@ -2780,7 +2716,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Fixed32"
@@ -2795,7 +2730,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Fixed64"
@@ -2810,7 +2744,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sfixed32"
@@ -2825,7 +2758,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Sfixed64"
@@ -2840,7 +2772,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "EntityId"
@@ -2855,7 +2786,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "singularType": {
         "type": {
          "type": "improbable.test_schema.SomeType"
@@ -2870,7 +2800,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "singularType": {
         "type": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -2907,8 +2836,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 38,
+              "column": 5
              },
              "boolValue": true
             }
@@ -2929,8 +2858,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 38,
+              "column": 20
              },
              "floatValue": 10.5
             }
@@ -2951,8 +2880,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 38,
+              "column": 35
              },
              "bytesValue": "Zm9v"
             }
@@ -2973,8 +2902,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 38,
+              "column": 51
              },
              "int32Value": -2
             }
@@ -2995,8 +2924,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 38,
+              "column": 64
              },
              "int64Value": "3"
             }
@@ -3017,8 +2946,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 39,
+              "column": 5
              },
              "doubleValue": -15.5
             }
@@ -3039,8 +2968,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 39,
+              "column": 21
              },
              "stringValue": "bar"
             }
@@ -3061,8 +2990,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 39,
+              "column": 37
              },
              "uint32Value": 0
             }
@@ -3083,8 +3012,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 39,
+              "column": 49
              },
              "uint64Value": "1"
             }
@@ -3105,8 +3034,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 39,
+              "column": 61
              },
              "int32Value": 4
             }
@@ -3127,8 +3056,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 40,
+              "column": 5
              },
              "int64Value": "5"
             }
@@ -3149,8 +3078,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 40,
+              "column": 18
              },
              "uint32Value": 6
             }
@@ -3171,8 +3100,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 40,
+              "column": 31
              },
              "uint64Value": "7"
             }
@@ -3193,8 +3122,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 40,
+              "column": 44
              },
              "int32Value": -8
             }
@@ -3215,8 +3144,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 40,
+              "column": 58
              },
              "int64Value": "-9"
             }
@@ -3237,8 +3166,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 41,
+              "column": 5
              },
              "entityIdValue": "10"
             }
@@ -3259,8 +3188,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 41,
+              "column": 19
              },
              "typeValue": {
               "type": "improbable.test_schema.SomeType",
@@ -3284,8 +3213,8 @@
            "optionValue": {
             "value": {
              "sourceReference": {
-              "line": 0,
-              "column": 0
+              "line": 41,
+              "column": 39
              },
              "enumValue": {
               "enum": "improbable.test_schema.SomeEnum",
@@ -3311,7 +3240,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Bool"
@@ -3326,7 +3254,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Float"
@@ -3341,7 +3268,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Bytes"
@@ -3356,7 +3282,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Int32"
@@ -3371,7 +3296,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Int64"
@@ -3386,7 +3310,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Double"
@@ -3401,7 +3324,6 @@
        "annotations": [],
        "name": "field7",
        "fieldId": 7,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "String"
@@ -3416,7 +3338,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Uint32"
@@ -3431,7 +3352,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Uint64"
@@ -3446,7 +3366,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Sint32"
@@ -3461,7 +3380,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Sint64"
@@ -3476,7 +3394,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Fixed32"
@@ -3491,7 +3408,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Fixed64"
@@ -3506,7 +3422,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Sfixed32"
@@ -3521,7 +3436,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Sfixed64"
@@ -3536,7 +3450,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "EntityId"
@@ -3551,7 +3464,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "optionType": {
         "innerType": {
          "type": "improbable.test_schema.SomeType"
@@ -3566,7 +3478,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "optionType": {
         "innerType": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -4043,7 +3954,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Bool"
@@ -4058,7 +3968,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Float"
@@ -4073,7 +3982,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Bytes"
@@ -4088,7 +3996,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Int32"
@@ -4103,7 +4010,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Int64"
@@ -4118,7 +4024,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Double"
@@ -4133,7 +4038,6 @@
        "annotations": [],
        "name": "field7",
        "fieldId": 7,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "String"
@@ -4148,7 +4052,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Uint32"
@@ -4163,7 +4066,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Uint64"
@@ -4178,7 +4080,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Sint32"
@@ -4193,7 +4094,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Sint64"
@@ -4208,7 +4108,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Fixed32"
@@ -4223,7 +4122,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Fixed64"
@@ -4238,7 +4136,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Sfixed32"
@@ -4253,7 +4150,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Sfixed64"
@@ -4268,7 +4164,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "EntityId"
@@ -4283,7 +4178,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "listType": {
         "innerType": {
          "type": "improbable.test_schema.SomeType"
@@ -4298,7 +4192,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "listType": {
         "innerType": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -4937,7 +4830,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -4955,7 +4847,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -4973,7 +4864,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -4991,7 +4881,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5009,7 +4898,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5027,7 +4915,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5045,7 +4932,6 @@
        "annotations": [],
        "name": "field7",
        "fieldId": 7,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5063,7 +4949,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5081,7 +4966,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5099,7 +4983,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5117,7 +5000,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5135,7 +5017,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5153,7 +5034,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5171,7 +5051,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5189,7 +5068,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5207,7 +5085,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5225,7 +5102,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5243,7 +5119,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -5885,7 +5760,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Bool"
@@ -5903,7 +5777,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Float"
@@ -5921,7 +5794,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Bytes"
@@ -5939,7 +5811,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Int32"
@@ -5957,7 +5828,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Int64"
@@ -5975,7 +5845,6 @@
        "annotations": [],
        "name": "field6",
        "fieldId": 6,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Double"
@@ -5993,7 +5862,6 @@
        "annotations": [],
        "name": "field7",
        "fieldId": 7,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -6011,7 +5879,6 @@
        "annotations": [],
        "name": "field8",
        "fieldId": 8,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Uint32"
@@ -6029,7 +5896,6 @@
        "annotations": [],
        "name": "field9",
        "fieldId": 9,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Uint64"
@@ -6047,7 +5913,6 @@
        "annotations": [],
        "name": "field10",
        "fieldId": 10,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Sint32"
@@ -6065,7 +5930,6 @@
        "annotations": [],
        "name": "field11",
        "fieldId": 11,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Sint64"
@@ -6083,7 +5947,6 @@
        "annotations": [],
        "name": "field12",
        "fieldId": 12,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Fixed32"
@@ -6101,7 +5964,6 @@
        "annotations": [],
        "name": "field13",
        "fieldId": 13,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Fixed64"
@@ -6119,7 +5981,6 @@
        "annotations": [],
        "name": "field14",
        "fieldId": 14,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Sfixed32"
@@ -6137,7 +5998,6 @@
        "annotations": [],
        "name": "field15",
        "fieldId": 15,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Sfixed64"
@@ -6155,7 +6015,6 @@
        "annotations": [],
        "name": "field16",
        "fieldId": 16,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "EntityId"
@@ -6173,7 +6032,6 @@
        "annotations": [],
        "name": "field17",
        "fieldId": 17,
-       "transient": false,
        "mapType": {
         "keyType": {
          "type": "improbable.test_schema.SomeType"
@@ -6191,7 +6049,6 @@
        "annotations": [],
        "name": "field18",
        "fieldId": 18,
-       "transient": false,
        "mapType": {
         "keyType": {
          "enum": "improbable.test_schema.SomeEnum"
@@ -6221,7 +6078,6 @@
        "annotations": [],
        "name": "field1",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Entity"
@@ -6236,7 +6092,6 @@
        "annotations": [],
        "name": "field2",
        "fieldId": 2,
-       "transient": false,
        "optionType": {
         "innerType": {
          "primitive": "Entity"
@@ -6251,7 +6106,6 @@
        "annotations": [],
        "name": "field3",
        "fieldId": 3,
-       "transient": false,
        "listType": {
         "innerType": {
          "primitive": "Entity"
@@ -6266,7 +6120,6 @@
        "annotations": [],
        "name": "field4",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Entity"
@@ -6284,7 +6137,6 @@
        "annotations": [],
        "name": "field5",
        "fieldId": 5,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -6382,7 +6234,8 @@
      "events": [],
      "commands": []
     }
-   ]
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "test_schema/nested_typenames.schema",
@@ -6397,7 +6250,7 @@
    "enums": [
     {
      "sourceReference": {
-      "line": 12,
+      "line": 17,
       "column": 9
      },
      "annotations": [],
@@ -6407,7 +6260,7 @@
      "values": [
       {
        "sourceReference": {
-        "line": 13,
+        "line": 18,
         "column": 11
        },
        "annotations": [],
@@ -6418,7 +6271,7 @@
     },
     {
      "sourceReference": {
-      "line": 15,
+      "line": 20,
       "column": 9
      },
      "annotations": [],
@@ -6428,7 +6281,7 @@
      "values": [
       {
        "sourceReference": {
-        "line": 16,
+        "line": 21,
         "column": 11
        },
        "annotations": [],
@@ -6448,11 +6301,40 @@
      "qualifiedName": "improbable.test_schema.NestedTypeSameName",
      "name": "NestedTypeSameName",
      "outerType": "",
-     "fields": []
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 5,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "other0_field",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 6,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "other1_field",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "enum": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName"
+        }
+       }
+      }
+     ]
     },
     {
      "sourceReference": {
-      "line": 5,
+      "line": 7,
       "column": 3
      },
      "annotations": [],
@@ -6463,7 +6345,7 @@
     },
     {
      "sourceReference": {
-      "line": 6,
+      "line": 8,
       "column": 5
      },
      "annotations": [],
@@ -6473,16 +6355,43 @@
      "fields": [
       {
        "sourceReference": {
-        "line": 7,
+        "line": 9,
         "column": 7
        },
        "annotations": [],
        "name": "nested_field",
        "fieldId": 1,
-       "transient": false,
        "singularType": {
         "type": {
          "primitive": "Int32"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 10,
+        "column": 7
+       },
+       "annotations": [],
+       "name": "other0_field",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 11,
+        "column": 7
+       },
+       "annotations": [],
+       "name": "other1_field",
+       "fieldId": 3,
+       "singularType": {
+        "type": {
+         "enum": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName"
         }
        }
       }
@@ -6490,18 +6399,33 @@
     },
     {
      "sourceReference": {
-      "line": 8,
+      "line": 12,
       "column": 7
      },
      "annotations": [],
      "qualifiedName": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0",
      "name": "Other0",
      "outerType": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName",
-     "fields": []
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 14,
+        "column": 9
+       },
+       "annotations": [],
+       "name": "field",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName"
+        }
+       }
+      }
+     ]
     },
     {
      "sourceReference": {
-      "line": 9,
+      "line": 13,
       "column": 9
      },
      "annotations": [],
@@ -6512,17 +6436,102 @@
     },
     {
      "sourceReference": {
-      "line": 11,
+      "line": 16,
       "column": 7
      },
      "annotations": [],
      "qualifiedName": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other1",
      "name": "Other1",
      "outerType": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName",
-     "fields": []
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 23,
+        "column": 9
+       },
+       "annotations": [],
+       "name": "field",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "enum": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other1.NestedTypeSameName"
+        }
+       }
+      }
+     ]
+    },
+    {
+     "sourceReference": {
+      "line": 29,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.test_schema.TypeUsingNestedTypeSameName",
+     "name": "TypeUsingNestedTypeSameName",
+     "outerType": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 30,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "field1",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 31,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "field2",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 32,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "field3",
+       "fieldId": 3,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName.Other0.NestedTypeSameName"
+        }
+       }
+      }
+     ]
     }
    ],
-   "components": []
+   "components": [
+    {
+     "sourceReference": {
+      "line": 35,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.test_schema.ComponentUsingNestedTypeSameName",
+     "name": "ComponentUsingNestedTypeSameName",
+     "componentId": 198730,
+     "dataDefinition": "improbable.test_schema.NestedTypeSameName.Other.NestedTypeSameName",
+     "fields": [],
+     "events": [],
+     "commands": []
+    }
+   ],
+   "componentSets": []
   },
   {
    "canonicalPath": "test_schema/recursion.schema",
@@ -6554,7 +6563,6 @@
        "annotations": [],
        "name": "a_option",
        "fieldId": 1,
-       "transient": false,
        "optionType": {
         "innerType": {
          "type": "improbable.test_schema.TypeA"
@@ -6569,7 +6577,6 @@
        "annotations": [],
        "name": "a_list",
        "fieldId": 2,
-       "transient": false,
        "listType": {
         "innerType": {
          "type": "improbable.test_schema.TypeA"
@@ -6584,7 +6591,6 @@
        "annotations": [],
        "name": "a_map_value",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Int32"
@@ -6614,7 +6620,6 @@
        "annotations": [],
        "name": "c_option",
        "fieldId": 1,
-       "transient": false,
        "optionType": {
         "innerType": {
          "type": "improbable.test_schema.TypeC"
@@ -6629,7 +6634,6 @@
        "annotations": [],
        "name": "c_list",
        "fieldId": 2,
-       "transient": false,
        "listType": {
         "innerType": {
          "type": "improbable.test_schema.TypeC"
@@ -6644,7 +6648,6 @@
        "annotations": [],
        "name": "c_map_value",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "Int32"
@@ -6674,7 +6677,6 @@
        "annotations": [],
        "name": "b_option",
        "fieldId": 1,
-       "transient": false,
        "optionType": {
         "innerType": {
          "type": "improbable.test_schema.TypeB"
@@ -6689,7 +6691,6 @@
        "annotations": [],
        "name": "b_list",
        "fieldId": 2,
-       "transient": false,
        "listType": {
         "innerType": {
          "type": "improbable.test_schema.TypeB"
@@ -6704,7 +6705,6 @@
        "annotations": [],
        "name": "b_map",
        "fieldId": 4,
-       "transient": false,
        "mapType": {
         "keyType": {
          "primitive": "String"
@@ -6717,7 +6717,66 @@
      ]
     }
    ],
-   "components": []
+   "components": [
+    {
+     "sourceReference": {
+      "line": 21,
+      "column": 1
+     },
+     "annotations": [],
+     "qualifiedName": "improbable.test_schema.RecursiveComponent",
+     "name": "RecursiveComponent",
+     "componentId": 18800,
+     "dataDefinition": "",
+     "fields": [
+      {
+       "sourceReference": {
+        "line": 23,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "a",
+       "fieldId": 1,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.TypeA"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 24,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "b",
+       "fieldId": 2,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.TypeB"
+        }
+       }
+      },
+      {
+       "sourceReference": {
+        "line": 25,
+        "column": 3
+       },
+       "annotations": [],
+       "name": "c",
+       "fieldId": 3,
+       "singularType": {
+        "type": {
+         "type": "improbable.test_schema.TypeC"
+        }
+       }
+      }
+     ],
+     "events": [],
+     "commands": []
+    }
+   ],
+   "componentSets": []
   }
  ]
 }

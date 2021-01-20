@@ -290,6 +290,25 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public SourceReference SourceReference;
     }
 
+    public class ComponentSetDefinition : QualifiedDefinition
+    {
+        public uint ComponentSetId;
+        public List ComponentList;
+
+        public class List
+        {
+            public SourceReference SourceReference;
+            public IReadOnlyList<Annotation> Annotations;
+            public IReadOnlyList<Element> Components;
+
+            public class Element
+            {
+                public SourceReference SourceReference;
+                public string Component;
+            }
+        }
+    }
+
     public class SchemaFile
     {
         public string CanonicalPath;
@@ -298,6 +317,7 @@ namespace Improbable.Gdk.CodeGeneration.Model
         public IReadOnlyList<Import> Imports;
         public Package Package;
         public IReadOnlyList<TypeDefinition> Types;
+        public IReadOnlyList<ComponentSetDefinition> ComponentSets;
     }
 
     public class SchemaBundle
