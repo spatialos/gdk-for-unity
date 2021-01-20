@@ -1,13 +1,19 @@
 using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
+using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.Mobile;
+using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
+using Improbable.Worker.CInterop;
 using UnityEngine;
 
 namespace Playground
 {
     public class MobileClientWorkerConnector : WorkerConnector, MobileConnectionFlowInitializer.IMobileSettingsProvider
     {
+        public const string MobileClient = "MobileClient";
+
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private GameObject level;
@@ -18,7 +24,7 @@ namespace Playground
 
         public async void Start()
         {
-            var connParams = CreateConnectionParameters(WorkerUtils.MobileClient, new MobileConnectionParametersInitializer());
+            var connParams = CreateConnectionParameters(MobileClient, new MobileConnectionParametersInitializer());
 
             var flowInitializer = new MobileConnectionFlowInitializer(
                 new MobileConnectionFlowInitializer.CommandLineSettingsProvider(),
@@ -31,7 +37,16 @@ namespace Playground
             switch (flowInitializer.GetConnectionService())
             {
                 case ConnectionService.Receptionist:
-                    builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.MobileClient),
+                    /*
+                     * If we are connecting via the Receptionist we are either:
+                     *      - connecting to a local deployment
+                     *      - connecting to a cloud deployment via `spatial cloud connect external`
+                     * in the first case, the security type must be Insecure.
+                     * in the second case, its okay for the security type to be Insecure.
+                    */
+                    connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
+                    connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
+                    builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(MobileClient),
                         flowInitializer));
                     break;
                 case ConnectionService.Locator:
@@ -53,7 +68,20 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddClientSystems(Worker.World, entityRepresentationMapping);
+            TransformSynchronizationHelper.AddClientSystems(Worker.World);
+            PlayerLifecycleHelper.AddClientSystems(Worker.World);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, entityRepresentationMapping);
+
+            Worker.World.GetOrCreateSystem<DisconnectSystem>();
+
+            Worker.World.GetOrCreateSystem<ProcessColorChangeSystem>();
+            Worker.World.GetOrCreateSystem<LocalPlayerInputSync>();
+            Worker.World.GetOrCreateSystem<MoveLocalPlayerSystem>();
+            Worker.World.GetOrCreateSystem<InitCameraSystem>();
+            Worker.World.GetOrCreateSystem<FollowCameraSystem>();
+            Worker.World.GetOrCreateSystem<UpdateUISystem>();
+            Worker.World.GetOrCreateSystem<PlayerCommandsSystem>();
+            Worker.World.GetOrCreateSystem<MetricSendSystem>();
         }
 
         public override void Dispose()
