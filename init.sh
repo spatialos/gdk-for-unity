@@ -30,8 +30,6 @@ else
     SDK_VERSION="$(cat "${SDK_PATH}"/.sdk.version)"
 fi
 
-SPOT_VERSION="$(cat "${SDK_PATH}"/.spot.version)"
-
 update_package() {
     local type=$1
     local identifier=$2
@@ -43,13 +41,6 @@ update_package() {
     for file in $(echo $files | tr ";" "\n"); do
         rm "${path}/${file}"
     done
-}
-
-update_spot() {
-    local identifer=$1
-    local path=$2
-
-    spatial package get spot "${identifer}" "${SPOT_VERSION}" "${path}" --force --json_output ${ENVIRONMENT_ARGS:-}
 }
 
 # Update Core SDK
@@ -64,11 +55,6 @@ update_package schema test_schema_library "schema"
 
 update_package tools schema_compiler-x86_64-win32 "${SDK_PATH}/.schema_compiler"
 update_package tools schema_compiler-x86_64-macos "${SDK_PATH}/.schema_compiler"
-
-update_spot spot-win64 "${SDK_PATH}/.spot/spot.exe"
-update_spot spot-macos "${SDK_PATH}/.spot/spot"
-
-chmod -R +x "${SDK_PATH}/.spot"
 
 #Update Mobile SDK
 update_package worker_sdk c-static-arm-clang-ios "${SDK_MOBILE_PATH}/Plugins/Improbable/Core/iOS/arm"
