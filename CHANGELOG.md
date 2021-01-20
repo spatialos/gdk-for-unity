@@ -27,6 +27,8 @@ This version upgrades the GDK for Unity to SpatialOS v15. This brings significan
 
 - Added a set of extension methods for the `ILogDispatcher` for the common cases of `Info`/`Warn`/`Error`. [#1492](https://github.com/spatialos/gdk-for-unity/pull/1492)
 - Exposed the `EntityId WorkerEntityId` property on the `WorkerSystem`. This allows you to access your current worker's `EntityId`.
+- Added a new feature module (`io.improbable.gdk.loadbalancing`) which contains a simple implementation of user space load balancing.
+  - This is accessible through `Worker.AddLoadBalancingSystems()` in your `WorkerConnector.HandleWorkerConnectionEstablished()` implementation.
 - The `InterestQuery` class now supports filtering based on `ComponentSets` in addition to specific components.
 - The helper methods for adding feature module components to `EntityTemplate`s are now additionally extension methods.
 
