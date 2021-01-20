@@ -50,8 +50,8 @@ namespace Improbable.Gdk.EditmodeTests.Collections
         private EntityTemplate GetTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "some-worker");
-            template.AddComponent(new Metadata.Snapshot("AReferenceType"), "some-worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new Metadata.Snapshot("AReferenceType"));
             return template;
         }
     }

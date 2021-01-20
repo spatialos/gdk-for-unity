@@ -75,8 +75,8 @@ namespace Improbable.Gdk.EditmodeTests.Core
         private static EntityTemplate GetTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new Launcher.Snapshot(), "worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new Launcher.Snapshot());
             return template;
         }
 

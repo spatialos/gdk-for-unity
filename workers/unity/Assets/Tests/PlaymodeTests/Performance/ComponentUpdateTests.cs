@@ -59,7 +59,7 @@ namespace Improbable.Gdk.PlaymodeTests
         private static EntityTemplate GetEntityTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), WorkerType);
+            template.AddComponent(new Position.Snapshot());
             return template;
         }
     }
