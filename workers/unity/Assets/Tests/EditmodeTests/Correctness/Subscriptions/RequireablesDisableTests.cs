@@ -105,7 +105,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world => { world.Connection.CreateEntity(EntityId, GetTemplate()); })
                 .Step(world =>
                 {
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -114,7 +114,33 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 })
                 .Step(world =>
                 {
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.NotAuthoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.NotAuthoritative);
+                })
+                .Step((world, context) =>
+                {
+                    var (writerBehaviour, positionWriter) = context;
+                    Assert.IsNull(writerBehaviour.Writer);
+                    Assert.IsFalse(positionWriter.IsValid);
+                });
+        }
+
+        [Test]
+        public void Writer_is_disabled_if_loses_component()
+        {
+            World
+                .Step(world => { world.Connection.CreateEntity(EntityId, GetTemplate()); })
+                .Step(world =>
+                {
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                })
+                .Step(world =>
+                {
+                    var (_, writerBehaviour) = world.CreateGameObject<PositionWriterBehaviour>(EntityId);
+                    return (writerBehaviour: writerBehaviour, writer: writerBehaviour.Writer);
+                })
+                .Step(world =>
+                {
+                    world.Connection.RemoveComponent(EntityId, Position.ComponentId);
                 })
                 .Step((world, context) =>
                 {
@@ -155,7 +181,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -164,7 +190,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 })
                 .Step(world =>
                 {
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId,
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId,
                         Authority.NotAuthoritative);
                 })
                 .Step((world, context) =>

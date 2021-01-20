@@ -21,7 +21,7 @@ namespace Improbable.Gdk.EditmodeTests
             World
                 .Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step(world =>
                 {
                     var (_, behaviour) = world.CreateGameObject<CommandSenderReceiverTestBehaviour>(EntityId);
@@ -35,14 +35,14 @@ namespace Improbable.Gdk.EditmodeTests
                     Assert.IsTrue(behaviour.CommandSender.IsValid);
                 })
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.NotAuthoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.NotAuthoritative))
                 .Step((world, behaviour) =>
                 {
                     Assert.IsNull(behaviour.CommandReceiver);
                     Assert.IsNull(behaviour.CommandSender);
                 })
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step((world, behaviour) =>
                 {
                     Assert.IsNotNull(behaviour.CommandReceiver);
@@ -58,7 +58,7 @@ namespace Improbable.Gdk.EditmodeTests
             World
                 .Step(world => world.Connection.CreateEntity(EntityId, GetTemplate()))
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step(world =>
                 {
                     var (_, behaviour) = world.CreateGameObject<ReaderWriterTestBehaviour>(EntityId);
@@ -72,14 +72,14 @@ namespace Improbable.Gdk.EditmodeTests
                     Assert.IsTrue(behaviour.Reader.IsValid);
                 })
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.NotAuthoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.NotAuthoritative))
                 .Step((world, behaviour) =>
                 {
                     Assert.IsNull(behaviour.Writer);
                     Assert.IsNull(behaviour.Reader);
                 })
                 .Step(world =>
-                    world.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
+                    world.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative))
                 .Step((world, behaviour) =>
                 {
                     Assert.IsNotNull(behaviour.Writer);

@@ -77,7 +77,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetEntityTemplate());
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -115,7 +115,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetEntityTemplate());
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
