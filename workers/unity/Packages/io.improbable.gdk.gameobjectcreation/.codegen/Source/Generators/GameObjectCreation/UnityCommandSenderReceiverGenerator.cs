@@ -20,6 +20,7 @@ namespace Improbable.Gdk.CodeGenerator
                     "System.Collections.Generic",
                     "Unity.Entities",
                     "Improbable.Gdk.Core",
+                    "Improbable.Gdk.Core.Commands",
                     "Improbable.Gdk.Subscriptions",
                     "Entity = Unity.Entities.Entity"
                 );
@@ -86,25 +87,11 @@ protected override {commandReceiverType} CreateReceiver(World world, Entity enti
 
             var commandSenderType = $"{componentDetails.Name}CommandSender";
 
-            return Scope.Type($"public class {commandSenderType} : ICommandSender", c =>
+            return Scope.Type($"public class {commandSenderType} : CommandSenderBase", c =>
             {
                 c.Line($@"
-private readonly Entity entity;
-private readonly CommandSystem commandSender;
-private readonly CommandCallbackSystem callbackSystem;
-private int callbackEpoch;
-
-public bool IsValid {{ get; set; }}
-");
-                c.Line($@"
-internal {commandSenderType}(Entity entity, World world)
+internal {commandSenderType}(Entity entity, World world) : base(entity, world)
 {{
-    this.entity = entity;
-    callbackSystem = world.GetOrCreateSystem<CommandCallbackSystem>();
-    // todo check that this exists
-    commandSender = world.GetExistingSystem<CommandSystem>();
-
-    IsValid = true;
 }}
 ");
                 foreach (var commandDetails in componentDetails.CommandDetails)
@@ -116,36 +103,15 @@ internal {commandSenderType}(Entity entity, World world)
 public void Send{commandDetails.PascalCaseName}Command(EntityId targetEntityId, {commandDetails.FqnRequestType} request, Action<{receivedCommandResponseType}> callback = null)
 {{
     var commandRequest = new {commandRequest}(targetEntityId, request);
-    Send{commandDetails.PascalCaseName}Command(commandRequest, callback);
+    SendCommand(commandRequest, callback);
 }}
 
 public void Send{commandDetails.PascalCaseName}Command({fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.Request request, Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> callback = null)
 {{
-    int validCallbackEpoch = callbackEpoch;
-    var requestId = commandSender.SendCommand(request, entity);
-    if (callback != null)
-    {{
-        Action<{fullyQualifiedNamespace}.{commandDetails.PascalCaseName}.ReceivedResponse> wrappedCallback = response =>
-        {{
-            if (!this.IsValid || validCallbackEpoch != this.callbackEpoch)
-            {{
-                return;
-            }}
-
-            callback(response);
-        }};
-        callbackSystem.RegisterCommandResponseCallback(requestId, wrappedCallback);
-    }}
+    SendCommand(request, callback);
 }}
 ");
                 }
-
-                c.Line(@"
-public void RemoveAllCallbacks()
-{
-    ++callbackEpoch;
-}
-");
             });
         }
 
