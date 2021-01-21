@@ -87,9 +87,7 @@ namespace Improbable.Gdk.Core
 
         private void AddComponent(EntityId entityId)
         {
-            var entity = workerSystem.GetEntity(entityId);
-
-            if (EntityManager.HasComponent<TComponent>(entity))
+            if (!workerSystem.TryGetEntity(entityId, out var entity) || EntityManager.HasComponent<TComponent>(entity))
             {
                 return;
             }
