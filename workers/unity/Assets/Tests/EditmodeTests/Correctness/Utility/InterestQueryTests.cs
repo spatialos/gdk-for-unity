@@ -12,28 +12,28 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         public void Query_sets_FullSnapshotResult_to_true()
         {
             InterestQuery query = BasicQuery;
-            Assert.True(query.AsComponentInterestQuery().FullSnapshotResult);
+            Assert.True(query.AsComponentSetInterestQuery().FullSnapshotResult);
         }
 
         [Test]
         public void Query_sets_ResultComponentId_to_empty_list()
         {
             InterestQuery query = BasicQuery;
-            Assert.AreEqual(0, query.AsComponentInterestQuery().ResultComponentId.Count);
+            Assert.AreEqual(0, query.AsComponentSetInterestQuery().ResultComponentId.Count);
         }
 
         [Test]
         public void Frequency_null_if_MaxFrequencyHz_never_called()
         {
             InterestQuery query = BasicQuery;
-            Assert.IsNull(query.AsComponentInterestQuery().Frequency);
+            Assert.IsNull(query.AsComponentSetInterestQuery().Frequency);
         }
 
         [Test]
         public void Filter_with_components_implies_FullSnapshotResult_is_null()
         {
             var query = BasicQuery.FilterResults(Position.ComponentId);
-            Assert.IsNull(query.AsComponentInterestQuery().FullSnapshotResult);
+            Assert.IsNull(query.AsComponentSetInterestQuery().FullSnapshotResult);
         }
     }
 }

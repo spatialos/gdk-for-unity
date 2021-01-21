@@ -128,8 +128,8 @@ namespace Improbable.Gdk.EditmodeTests.Core
         private void CreateEntity()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new DependentDataComponent.Snapshot(), "worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new DependentDataComponent.Snapshot());
             connectionHandler.CreateEntity(EntityId, template);
         }
 

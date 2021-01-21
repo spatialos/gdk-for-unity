@@ -55,7 +55,11 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         public void Writer_is_not_injected_when_entity_component_is_not_checked_out()
         {
             World
-                .Step(world => { world.Connection.CreateEntity(EntityId, BasicEntity()); })
+                .Step(world =>
+                {
+                    world.Connection.CreateEntity(EntityId, BasicEntity());
+                    world.Connection.ChangeComponentAuthority(EntityId, ExhaustiveSingular.ComponentId, Authority.Authoritative);
+                })
                 .Step(world =>
                 {
                     var (_, writerBehaviour) = world.CreateGameObject<ExhaustiveSingularWriterBehaviour>(EntityId);
@@ -92,7 +96,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, BasicEntity());
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -131,7 +135,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, BasicEntity());
-                    world.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    world.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -166,7 +170,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         private static EntityTemplate BasicEntity()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
+            template.AddComponent(new Position.Snapshot());
             return template;
         }
 

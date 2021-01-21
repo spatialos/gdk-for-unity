@@ -59,13 +59,18 @@ namespace Improbable.Gdk.Core
 
         public void CreateEntity(long entityId, EntityTemplate template)
         {
-            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, CurrentDiff);
+            var handler = new CreateEntityTemplateDynamicHandler(template, entityId, this);
             Dynamic.ForEachComponent(handler);
         }
 
-        public void ChangeAuthority(long entityId, uint componentId, Authority newAuthority)
+        public void CreateEntity(long entityId)
         {
-            CurrentDiff.SetAuthority(entityId, componentId, newAuthority, authorityChangeId++);
+            CurrentDiff.AddEntity(entityId);
+        }
+
+        public void ChangeComponentAuthority(long entityId, uint componentId, Authority newAuthority)
+        {
+            CurrentDiff.SetComponentAuthority(entityId, componentId, newAuthority, authorityChangeId++);
         }
 
         public void UpdateComponent<T>(long entityId, uint componentId, T update) where T : ISpatialComponentUpdate
@@ -99,7 +104,7 @@ namespace Improbable.Gdk.Core
         public void AddComponent<T>(long entityId, uint componentId, T component)
             where T : ISpatialComponentUpdate
         {
-            CurrentDiff.AddComponent(component, entityId, componentId);
+            CurrentDiff.AddComponent(component, entityId, componentId, updateId++);
         }
 
         public void UpdateComponentAndAddEvents<TUpdate, TEvent>(long entityId, uint componentId, TUpdate update,
@@ -127,7 +132,7 @@ namespace Improbable.Gdk.Core
             outgoingRequests.Add(nextRequestId, request);
         }
 
-        public IEnumerable<CommandRequestId> GetOutboundCommandRequests<TRequest>() where TRequest : ICommandRequest
+        public IEnumerable<CommandRequestId> GetOutboundCommandRequestIds<TRequest>() where TRequest : ICommandRequest
         {
             if (!requestIds.TryGetValue(typeof(TRequest), out var ids))
             {
@@ -138,11 +143,17 @@ namespace Improbable.Gdk.Core
             return ids.Select(id => new CommandRequestId(id));
         }
 
+        public IEnumerable<(CommandRequestId, TRequest)> GetOutboundCommandRequests<TRequest>()
+            where TRequest : ICommandRequest
+        {
+            return GetOutboundCommandRequestIds<TRequest>().Select(id => (id, (TRequest) outgoingRequests[id.Raw]));
+        }
+
         public void GenerateResponses<TRequest, TResponse>(Func<CommandRequestId, TRequest, TResponse> creator)
             where TRequest : ICommandRequest
             where TResponse : struct, IReceivedCommandResponse
         {
-            var ids = GetOutboundCommandRequests<TRequest>();
+            var ids = GetOutboundCommandRequestIds<TRequest>();
             var commandClass = ComponentDatabase.GetCommandMetaclassFromRequest<TRequest>();
             if (typeof(TResponse) != commandClass.ReceivedResponse)
             {
@@ -179,6 +190,32 @@ namespace Improbable.Gdk.Core
             outgoingRequests.Remove(id.Raw);
         }
 
+        public void GenerateWorldCommandResponses(Func<CommandRequestId, WorldCommands.CreateEntity.Request, WorldCommands.CreateEntity.ReceivedResponse> creator)
+        {
+            var requests = GetOutboundCommandRequests<WorldCommands.CreateEntity.Request>();
+
+            foreach (var tuple in requests)
+            {
+                var (id, request) = tuple;
+                CurrentDiff.AddCreateEntityResponse(creator(id, request));
+                outgoingRequests.Remove(id.Raw);
+            }
+        }
+
+        public void GenerateWorldCommandResponse(CommandRequestId id,
+            Func<CommandRequestId, WorldCommands.CreateEntity.Request, WorldCommands.CreateEntity.ReceivedResponse>
+                creator)
+        {
+            if (!outgoingRequests.TryGetValue(id.Raw, out var request))
+            {
+                throw new ArgumentException($"Could not find a request with request id {id}");
+            }
+
+            CurrentDiff.AddCreateEntityResponse(creator(id, (WorldCommands.CreateEntity.Request) request));
+            requestIds[typeof(WorldCommands.CreateEntity.Request)].Remove(id.Raw);
+            outgoingRequests.Remove(id.Raw);
+        }
+
         public void AddCommandRequest<TRequest>(TRequest receivedRequest)
             where TRequest : struct, IReceivedCommandRequest
         {
@@ -191,6 +228,11 @@ namespace Improbable.Gdk.Core
         public string GetWorkerId()
         {
             return "TestWorker";
+        }
+
+        public EntityId GetWorkerEntityId()
+        {
+            return new EntityId(0);
         }
 
         public List<string> GetWorkerAttributes()
@@ -240,15 +282,15 @@ namespace Improbable.Gdk.Core
         {
             private readonly EntityTemplate template;
             private readonly long entityId;
-            private readonly ViewDiff viewDiff;
+            private readonly MockConnectionHandler mockConnectionHandler;
 
-            public CreateEntityTemplateDynamicHandler(EntityTemplate template, long entityId, ViewDiff viewDiff)
+            public CreateEntityTemplateDynamicHandler(EntityTemplate template, long entityId, MockConnectionHandler mockConnectionHandler)
             {
                 this.template = template;
-                this.viewDiff = viewDiff;
+                this.mockConnectionHandler = mockConnectionHandler;
                 this.entityId = entityId;
 
-                viewDiff.AddEntity(this.entityId);
+                mockConnectionHandler.CreateEntity(this.entityId);
             }
 
             public void Accept<TUpdate, TSnapshot>(uint componentId, Dynamic.VTable<TUpdate, TSnapshot> vtable)
@@ -263,7 +305,7 @@ namespace Improbable.Gdk.Core
                 }
 
                 var snapshot = maybeSnapshot.Value;
-                viewDiff.AddComponent(vtable.ConvertSnapshotToUpdate(snapshot), entityId, componentId);
+                mockConnectionHandler.AddComponent(entityId, componentId, vtable.ConvertSnapshotToUpdate(snapshot));
             }
         }
 

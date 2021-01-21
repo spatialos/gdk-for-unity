@@ -1,5 +1,5 @@
 {
-  "template": "n1standard2_std40_r0500",
+  "template": "n1standard2_std40_action1g1",
   "world": {
     "chunkEdgeLengthMeters": 5,
     "snapshots": {
@@ -9,12 +9,7 @@
       "xMeters": 500,
       "zMeters": 500
     },
-    "legacy_flags": [
-      {
-        "name": "interest_queries_components_are_filtered_by_component_delivery",
-        "value": "false"
-      }
-    ]
+    "legacy_flags": []
   },
   "load_balancing": {
     "layer_configurations": [
@@ -22,6 +17,13 @@
         "layer": "UnityGameLogic",
         "rectangle_grid": {
           "cols": 2,
+          "rows": 1
+        }
+      },
+      {
+        "layer": "UnityLoadBalancer",
+        "rectangle_grid": {
+          "cols": 1,
           "rows": 1
         }
       }
@@ -37,14 +39,21 @@
       ]
     },
     {
+      "worker_type": "UnityLoadBalancer",
+      "permissions": [
+        {
+          "all": {}
+        }
+      ]
+    },
+
+    {
       "worker_type": "UnityClient",
       "permissions": [
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]
@@ -55,9 +64,7 @@
         {
           "entity_query": {
             "allow": true,
-            "components": [
-              "*"
-            ]
+            "components": ["*"]
           }
         }
       ]

@@ -8,13 +8,11 @@ namespace Improbable.Gdk.Core.Editor.SceneAuthoring
     {
         private SerializedProperty useSpecificEntityIdProperty;
         private SerializedProperty desiredEntityIdProperty;
-        private SerializedProperty readAclProperty;
 
         private void OnEnable()
         {
             useSpecificEntityIdProperty = serializedObject.FindProperty(nameof(ConvertToSingleEntity.UseSpecificEntityId));
             desiredEntityIdProperty = serializedObject.FindProperty(nameof(ConvertToSingleEntity.DesiredEntityId));
-            readAclProperty = serializedObject.FindProperty(nameof(ConvertToSingleEntity.ReadAcl));
         }
 
         public override void OnInspectorGUI()
@@ -27,8 +25,6 @@ namespace Improbable.Gdk.Core.Editor.SceneAuthoring
             {
                 EditorGUILayout.PropertyField(desiredEntityIdProperty);
             }
-
-            EditorGUILayout.PropertyField(readAclProperty);
 
             serializedObject.ApplyModifiedProperties();
         }

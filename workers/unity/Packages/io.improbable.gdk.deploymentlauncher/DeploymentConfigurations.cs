@@ -305,7 +305,8 @@ namespace Improbable.Gdk.DeploymentLauncher
                 "create",
                 $"--deployment_name={Name}",
                 $"--launch_json_path=\"{Path.Combine(Common.SpatialProjectRootDir, LaunchJson)}\"",
-                $"--runtime_version={toolsConfig.RuntimeVersion}"
+                $"--runtime_version={toolsConfig.RuntimeVersion}",
+                $"--snapshot_path=\"{Path.Combine(Common.SpatialProjectRootDir, SnapshotPath)}\""
             };
 
             switch (DeploymentLocationType)
@@ -318,11 +319,6 @@ namespace Improbable.Gdk.DeploymentLauncher
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
-            }
-
-            if (!string.IsNullOrEmpty(SnapshotPath))
-            {
-                args.Add($"--snapshot_path=\"{Path.Combine(Common.SpatialProjectRootDir, SnapshotPath)}\"");
             }
 
             if (Tags.Count > 0)
@@ -428,8 +424,8 @@ namespace Improbable.Gdk.DeploymentLauncher
         {
             if (string.IsNullOrEmpty(SnapshotPath))
             {
-                message = null;
-                return true;
+                message = "Snapshot path cannot be empty.";
+                return false;
             }
 
             var filePath = Path.Combine(Tools.Common.SpatialProjectRootDir, SnapshotPath);

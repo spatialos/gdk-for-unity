@@ -57,21 +57,18 @@ public partial class {commandDetails.PascalCaseName}
     {{
         public readonly EntityId EntityId;
         public readonly long RequestId;
-        public readonly string CallerWorkerId;
-        public readonly List<string> CallerAttributeSet;
+        public readonly EntityId CallerWorkerEntityId;
         public readonly {commandDetails.FqnRequestType} Payload;
 
         public ReceivedRequest(
             EntityId entityId,
             long requestId,
-            string callerWorkerId,
-            List<string> callerAttributeSet,
+            EntityId callerWorkerEntityId,
             {commandDetails.FqnRequestType} request)
         {{
             EntityId = entityId;
             RequestId = requestId;
-            CallerWorkerId = callerWorkerId;
-            CallerAttributeSet = callerAttributeSet;
+            CallerWorkerEntityId = callerWorkerEntityId;
             Payload = request;
         }}
 

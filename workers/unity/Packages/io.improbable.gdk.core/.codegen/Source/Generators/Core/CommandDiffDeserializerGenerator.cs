@@ -46,8 +46,7 @@ private class {command.PascalCaseName}DiffCommandDeserializer : ICommandDiffDese
         var request = new {command.PascalCaseName}.ReceivedRequest(
             new EntityId(op.EntityId),
             op.RequestId,
-            op.CallerWorkerId,
-            op.CallerAttributeSet,
+            new EntityId(op.CallerWorkerEntityId),
             deserializedRequest);
 
         diff.AddCommandRequest(request, ComponentId, {command.CommandIndex});

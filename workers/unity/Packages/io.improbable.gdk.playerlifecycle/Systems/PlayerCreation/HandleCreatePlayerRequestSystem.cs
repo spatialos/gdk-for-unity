@@ -3,6 +3,7 @@ using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
+using Entity = Improbable.Worker.CInterop.Entity;
 
 namespace Improbable.Gdk.PlayerLifecycle
 {
@@ -10,6 +11,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     public class HandleCreatePlayerRequestSystem : ComponentSystem
     {
+        private WorkerSystem workerSystem;
         private CommandSystem commandSystem;
         private EntityReservationSystem entityReservationSystem;
 
@@ -18,11 +20,12 @@ namespace Improbable.Gdk.PlayerLifecycle
             base.OnCreate();
             commandSystem = World.GetExistingSystem<CommandSystem>();
             entityReservationSystem = World.GetExistingSystem<EntityReservationSystem>();
+            workerSystem = World.GetExistingSystem<WorkerSystem>();
         }
 
         private class PlayerCreationRequestContext
         {
-            public PlayerCreator.CreatePlayer.ReceivedRequest createPlayerRequest;
+            public PlayerCreator.CreatePlayer.ReceivedRequest CreatePlayerRequest;
         }
 
         protected override void OnUpdate()
@@ -51,9 +54,16 @@ namespace Improbable.Gdk.PlayerLifecycle
         {
             var entityId = await entityReservationSystem.GetAsync();
 
+            var context = new PlayerCreationRequestContext { CreatePlayerRequest = receivedRequest };
+
+            if (!IsContextValid(context))
+            {
+                return;
+            }
+
             var playerEntityTemplate = PlayerLifecycleConfig.CreatePlayerEntityTemplate(
                 entityId,
-                receivedRequest.CallerWorkerId,
+                receivedRequest.CallerWorkerEntityId,
                 receivedRequest.Payload.SerializedArguments
             );
 
@@ -61,10 +71,7 @@ namespace Improbable.Gdk.PlayerLifecycle
             (
                 playerEntityTemplate,
                 entityId,
-                context: new PlayerCreationRequestContext
-                {
-                    createPlayerRequest = receivedRequest
-                }
+                context: context
             );
 
             commandSystem.SendCommand(entityRequest);
@@ -85,7 +92,7 @@ namespace Improbable.Gdk.PlayerLifecycle
                 if (response.StatusCode != StatusCode.Success)
                 {
                     var responseFailed = new PlayerCreator.CreatePlayer.Response(
-                        requestContext.createPlayerRequest.RequestId,
+                        requestContext.CreatePlayerRequest.RequestId,
                         $"Failed to create player: \"{response.Message}\""
                     );
 
@@ -93,17 +100,32 @@ namespace Improbable.Gdk.PlayerLifecycle
                 }
                 else
                 {
-                    var responseSuccess = new PlayerCreator.CreatePlayer.Response(
-                        requestContext.createPlayerRequest.RequestId,
-                        new CreatePlayerResponse(response.EntityId.Value)
-                    );
+                    // Need to check if the player creator has migrated, the client will have received an `AuthorityLost`
+                    // response so will try again. This will result in 2 players. So we should delete this one.
+                    if (!IsContextValid(requestContext))
+                    {
+                        commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(response.EntityId.Value));
+                    }
+                    else
+                    {
+                        var responseSuccess = new PlayerCreator.CreatePlayer.Response(
+                            requestContext.CreatePlayerRequest.RequestId,
+                            new CreatePlayerResponse(response.EntityId.Value)
+                        );
 
-                    commandSystem.SendResponse(responseSuccess);
+                        commandSystem.SendResponse(responseSuccess);
+                    }
                 }
             }
         }
 
-        internal static class Errors
+        private bool IsContextValid(PlayerCreationRequestContext ctx)
+        {
+            return workerSystem.TryGetEntity(ctx.CreatePlayerRequest.EntityId, out var entity) &&
+                EntityManager.HasComponent<PlayerCreator.HasAuthority>(entity);
+        }
+
+        private static class Errors
         {
             public const string PlayerEntityTemplateNotFound =
                 "PlayerLifecycleConfig.CreatePlayerEntityTemplate is not set.";

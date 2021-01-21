@@ -15,17 +15,8 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             var template = GetBasicTemplate();
             Assert.Throws<InvalidOperationException>(() =>
             {
-                template.AddComponent(new Position.Snapshot(), "write-acesss");
+                template.AddComponent(new Position.Snapshot());
             });
-        }
-
-        [Test]
-        public void AddComponent_should_ignore_EntityAcl()
-        {
-            var template = GetBasicTemplate();
-            template.AddComponent(new EntityAcl.Snapshot(), "test");
-
-            Assert.IsFalse(template.HasComponent<EntityAcl.Snapshot>());
         }
 
         [Test]
@@ -38,7 +29,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
                 Field2 = 100 // Field to test equality for.
             };
 
-            template.AddComponent(exhaustiveSingular, "");
+            template.AddComponent(exhaustiveSingular);
             var returned = template.GetComponent<ExhaustiveSingular.Snapshot>();
             Assert.IsTrue(returned.HasValue);
             Assert.AreEqual(exhaustiveSingular.Field2, returned.Value.Field2);
@@ -130,7 +121,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(exhaustiveSingular, "write-access");
+            template.AddComponent(exhaustiveSingular);
 
             Assert.IsTrue(template.HasComponent<ExhaustiveSingular.Snapshot>());
         }
@@ -145,7 +136,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(exhaustiveSingular, "write-access");
+            template.AddComponent(exhaustiveSingular);
 
             Assert.IsTrue(template.HasComponent(ExhaustiveSingular.ComponentId));
         }
@@ -160,7 +151,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(originalSnapshot, "");
+            template.AddComponent(originalSnapshot);
 
             var snapshotToReplace = new ExhaustiveSingular.Snapshot
             {
@@ -183,7 +174,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(originalSnapshot, "");
+            template.AddComponent(originalSnapshot);
 
             var snapshotToReplace = (ISpatialComponentSnapshot) new ExhaustiveSingular.Snapshot
             {
@@ -206,7 +197,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(exhaustiveSingular, "");
+            template.AddComponent(exhaustiveSingular);
             template.RemoveComponent<ExhaustiveSingular.Snapshot>();
 
             Assert.IsFalse(template.GetComponent<ExhaustiveSingular.Snapshot>().HasValue);
@@ -222,7 +213,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(exhaustiveSingular, "");
+            template.AddComponent(exhaustiveSingular);
             template.RemoveComponent(ExhaustiveSingular.ComponentId);
 
             Assert.IsFalse(template.GetComponent<ExhaustiveSingular.Snapshot>().HasValue);
@@ -243,7 +234,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         }
 
         [Test]
-        public void GetEntity_should_not_throw_with_arbritrary_components()
+        public void GetEntity_should_not_throw_with_arbitrary_components()
         {
             var exhaustiveSingular = new ExhaustiveSingular.Snapshot
             {
@@ -252,7 +243,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             };
 
             var template = GetBasicTemplate();
-            template.AddComponent(exhaustiveSingular, "write-access");
+            template.AddComponent(exhaustiveSingular);
 
             Assert.IsFalse(DidGetEntityThrow(template));
         }
@@ -287,7 +278,7 @@ namespace Improbable.Gdk.EditmodeTests.Utility
         private EntityTemplate GetBasicTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "write-acesss");
+            template.AddComponent(new Position.Snapshot());
             return template;
         }
     }

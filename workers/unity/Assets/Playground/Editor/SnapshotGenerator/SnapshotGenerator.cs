@@ -30,6 +30,8 @@ namespace Playground.Editor.SnapshotGenerator
         {
             var snapshot = new Snapshot();
 
+            snapshot.AddEntity(new EntityId(1), EntityTemplates.CreateLoadBalancingPartition());
+
             AddPlayerSpawner(snapshot, new Coordinates(200, 0, 200));
             AddPlayerSpawner(snapshot, new Coordinates(200, 0, -200));
             AddPlayerSpawner(snapshot, new Coordinates(-200, 0, -200));

@@ -1,5 +1,8 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Core.Representation;
+using Improbable.Gdk.GameObjectCreation;
+using Improbable.Gdk.PlayerLifecycle;
+using Improbable.Gdk.TransformSynchronization;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -7,9 +10,10 @@ namespace Playground
 {
     public class GameLogicWorkerConnector : WorkerConnector
     {
+        public const string UnityGameLogic = "UnityGameLogic";
+
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
-        [SerializeField] private bool UseExternalIp;
         [SerializeField] private GameObject level;
 #pragma warning restore 649
 
@@ -24,14 +28,24 @@ namespace Playground
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic);
+                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic));
+                connectionParameters = CreateConnectionParameters(UnityGameLogic);
+
+                /*
+                 * If we are in the Editor, it means we are either:
+                 *      - connecting to a local deployment
+                 *      - connecting to a cloud deployment via `spatial cloud connect external`
+                 * in the first case, the security type must be Insecure.
+                 * in the second case, its okay for the security type to be Insecure.
+                */
+                connectionParameters.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
+                connectionParameters.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerUtils.UnityGameLogic),
+                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic),
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(WorkerUtils.UnityGameLogic,
+                connectionParameters = CreateConnectionParameters(UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
             }
 
@@ -51,7 +65,19 @@ namespace Playground
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            WorkerUtils.AddGameLogicSystems(Worker.World, entityRepresentationMapping);
+            TransformSynchronizationHelper.AddServerSystems(Worker.World);
+            PlayerLifecycleHelper.AddServerSystems(Worker.World);
+            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, entityRepresentationMapping, gameObject);
+
+            Worker.World.GetOrCreateSystem<DisconnectSystem>();
+
+            // Game logic systems
+            Worker.World.GetOrCreateSystem<TriggerColorChangeSystem>();
+            Worker.World.GetOrCreateSystem<ProcessLaunchCommandSystem>();
+            Worker.World.GetOrCreateSystem<ProcessRechargeSystem>();
+            Worker.World.GetOrCreateSystem<MetricSendSystem>();
+            Worker.World.GetOrCreateSystem<ProcessScoresSystem>();
+            Worker.World.GetOrCreateSystem<CubeMovementSystem>();
         }
 
         public override void Dispose()

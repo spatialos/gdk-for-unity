@@ -5,8 +5,8 @@ namespace Improbable.Gdk.PlayerLifecycle
     /// <summary>
     ///     Signature of the function called to get a player <see cref="EntityTemplate"/> instance.
     /// </summary>
-    /// <param name="clientWorkerId">
-    ///     The worker ID of a client-worker that sent a player creation request.
+    /// <param name="clientWorkerEntityId">
+    ///     The worker entity ID of a client-worker that sent a player creation request.
     /// </param>
     /// <param name="serializedArguments">
     ///     A serialized byte array of arbitrary data. By default this is null unless you provided
@@ -21,7 +21,7 @@ namespace Improbable.Gdk.PlayerLifecycle
     /// </returns>
     public delegate EntityTemplate GetPlayerEntityTemplateDelegate(
         EntityId entityId,
-        string clientWorkerId,
+        EntityId clientWorkerEntityId,
         byte[] serializedArguments);
 
     public static class PlayerLifecycleConfig

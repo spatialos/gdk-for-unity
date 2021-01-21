@@ -1,4 +1,3 @@
-using System;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using NUnit.Framework;
@@ -16,6 +15,7 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
         [SetUp]
         public void Setup()
         {
+            // TODO: The WorkerEntityId for this worker is '0'. Probably should refactor this in the future.
             var builder = new MockConnectionHandlerBuilder();
             connectionHandler = builder.ConnectionHandler;
 
@@ -43,7 +43,7 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
         [Test]
         public void IsOwningWorker_should_return_false_if_entity_isnt_owned_by_this_worker()
         {
-            connectionHandler.CreateEntity(1, GetOwnedEntity("other-worker"));
+            connectionHandler.CreateEntity(1, GetOwnedEntity(new EntityId(1)));
             receiveSystem.Update();
 
             Assert.IsFalse(PlayerLifecycleHelper.IsOwningWorker(new EntityId(1), worker.World));
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
         [Test]
         public void IsOwningWorker_should_return_true_if_OwningWorker_component_has_my_worker_id()
         {
-            connectionHandler.CreateEntity(1, GetOwnedEntity(worker.WorkerId));
+            connectionHandler.CreateEntity(1, GetOwnedEntity(worker.WorkerEntityId));
             receiveSystem.Update();
 
             Assert.IsTrue(PlayerLifecycleHelper.IsOwningWorker(new EntityId(1), worker.World));
@@ -64,11 +64,11 @@ namespace Improbable.Gdk.EditmodeTests.PlayerLifecycle
             worker.Dispose();
         }
 
-        private EntityTemplate GetOwnedEntity(string workerId)
+        private static EntityTemplate GetOwnedEntity(EntityId workerEntityId)
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new OwningWorker.Snapshot(workerId), "worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new OwningWorker.Snapshot(workerEntityId));
             return template;
         }
     }

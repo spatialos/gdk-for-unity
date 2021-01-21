@@ -34,7 +34,7 @@ namespace Improbable.Gdk.Core
 
     public interface IDiffComponentAddedStorage<T> where T : ISpatialComponentUpdate
     {
-        void AddEntityComponent(long entityId, T component);
+        void AddEntityComponent(long entityId, T component, uint updateId);
     }
 
     public interface IDiffAuthorityStorage : IComponentDiffStorage

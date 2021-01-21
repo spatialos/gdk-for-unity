@@ -15,8 +15,8 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
         private static EntityTemplate GetTemplate()
         {
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "worker");
-            template.AddComponent(new TestCommands.Snapshot(), "worker");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new TestCommands.Snapshot());
             return template;
         }
 
@@ -52,7 +52,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
-                    World.Connection.ChangeAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
+                    World.Connection.ChangeComponentAuthority(EntityId, Position.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {
@@ -103,7 +103,7 @@ namespace Improbable.Gdk.EditmodeTests.Subscriptions
                 .Step(world =>
                 {
                     world.Connection.CreateEntity(EntityId, GetTemplate());
-                    World.Connection.ChangeAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
+                    World.Connection.ChangeComponentAuthority(EntityId, TestCommands.ComponentId, Authority.Authoritative);
                 })
                 .Step(world =>
                 {

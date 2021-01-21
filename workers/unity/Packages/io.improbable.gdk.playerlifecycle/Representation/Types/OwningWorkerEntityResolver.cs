@@ -23,10 +23,10 @@ namespace Improbable.Gdk.PlayerLifecycle.Representation.Types
 
         public GameObject Resolve(SpatialOSEntityInfo entityInfo, EntityManager manager)
         {
-            var owningWorkerId = manager.GetComponentData<OwningWorker.Component>(entityInfo.Entity).WorkerId;
-            var myWorkerId = manager.World.GetExistingSystem<WorkerSystem>().WorkerId;
+            var owningWorkerEntityId = manager.GetComponentData<OwningWorker.Component>(entityInfo.Entity).WorkerEntityId;
+            var myWorkerEntityId = manager.World.GetExistingSystem<WorkerSystem>().WorkerEntityId;
 
-            return owningWorkerId == myWorkerId
+            return owningWorkerEntityId == myWorkerEntityId
                 ? ownedPrefab
                 : unownedPrefab;
         }

@@ -12,24 +12,11 @@ namespace Improbable.Gdk.Core
     {
         private readonly List<IEcsViewManager> managers = new List<IEcsViewManager>();
 
-        private readonly Dictionary<uint, IEcsViewManager> componentIdToManager =
-            new Dictionary<uint, IEcsViewManager>();
-
         private WorkerSystem worker;
 
         private ProfilerMarker applyDiffMarker = new ProfilerMarker("EcsViewSystem.ApplyDiff");
         private ProfilerMarker addEntityMarker = new ProfilerMarker("EcsViewSystem.OnAddEntity");
         private ProfilerMarker removeEntityMarker = new ProfilerMarker("EcsViewSystem.OnRemoveEntity");
-
-        internal ComponentType[] GetInitialComponentsToAdd(uint componentId)
-        {
-            if (!componentIdToManager.TryGetValue(componentId, out var manager))
-            {
-                throw new ArgumentException($"Can not get initial component for unknown component ID {componentId}");
-            }
-
-            return manager.GetInitialComponents();
-        }
 
         internal void ApplyDiff(ViewDiff diff)
         {
@@ -68,8 +55,6 @@ namespace Improbable.Gdk.Core
             {
                 var instance = (IEcsViewManager) Activator.CreateInstance(type);
                 instance.Init(World);
-
-                componentIdToManager.Add(instance.GetComponentId(), instance);
                 managers.Add(instance);
             }
 

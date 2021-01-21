@@ -2,19 +2,48 @@
 
 ## Unreleased
 
+This version upgrades the GDK for Unity to SpatialOS v15. This brings significant breaking changes, the ones listed here are those which appear in GDK code. There may be semantic & configuration changes required beyond those listed here.
+
 ### Breaking Changes
 
+- `CallerWorkerId` and `CallerAttributeSet` have been replaced with `CallerWorkerEntityId` on all received command requests.
+- `EntityQuery` no longer supports the `Count` result type.
+- `ModularKcp` and `ModularTcp` have been renamed to `Kcp` and `Tcp`. `RakNet` and the previous `Tcp` implementations have been removed as available network connection types.
+- Read and write acl have been removed from the `EntityTemplate` class & the helper methods for adding feature module components to an entity:
+  - `EntityTemplate.GetWorkerAccessAttribute()`, `EntityTemplate.GetComponentWriteAccess()`, `EntityTemplate.SetComponentWriteAccess()`, `EntityTemplate.SetComponentWriteAccess()`, `EntityTemplate.SetReadAccess()` have all been removed.
+  - The remaining function signatures on the `EntityTemplate` class have been adjusted to remove references to ACL.
+  - The function signatures on the feature module helper functions (e.g., `TransformSynchronizationHelper.AddTransformSynchronizationComponents`) have also been adjusted.
+- `CredentialsType` has been removed from the `LocatorParameters` class.
+- `Authority.AuthorityLossImminent` has been removed.
+- The `List<string> Attributes` property has been removed from the `Worker` class. This has been replaced with `EntityId WorkerEntityId`.
+- A valid snapshot is now always required when launching a deployment through the Deployment Launcher window.
+- The `OwningWorker` component now contains an `EntityId WorkerEntityId` identifier rather than a `string WorkerId` identifier.
+  - Accordingly, the signatures of the `GetPlayerEntityTemplateDelegate` and `PlayerLifecycleHelper.AddPlayerLifecycleComponents` have been changed.
+- Query-based interest is now key-ed off of a `ComponentSet` rather than a `ComponentId`. The signatures of the `InterestTemplate` class have been adjusted accordingly.
+- Removed the `SpatialdDeploymentManager` class.
 - `SpatialDeploymentManager` requires the runtime version to be specified. [#1494](https://github.com/spatialos/gdk-for-unity/pull/1494)
 
 ### Added
 
 - Added a set of extension methods for the `ILogDispatcher` for the common cases of `Info`/`Warn`/`Error`. [#1492](https://github.com/spatialos/gdk-for-unity/pull/1492)
+- Exposed the `EntityId WorkerEntityId` property on the `WorkerSystem`. This allows you to access your current worker's `EntityId`.
+- Added a new feature module (`io.improbable.gdk.loadbalancing`) which contains a simple implementation of user space load balancing.
+  - This is accessible through `Worker.AddLoadBalancingSystems()` in your `WorkerConnector.HandleWorkerConnectionEstablished()` implementation.
+- The `InterestQuery` class now supports filtering based on `ComponentSets` in addition to specific components.
+- The helper methods for adding feature module components to `EntityTemplate`s are now additionally extension methods.
 
 ### Fixed
 
 - Fixed an issue where XCode would link the wrong library when building for iOS Simulator. [#1484](https://github.com/spatialos/gdk-for-unity/pull/1484)
 - The `AllowShortCircuiting` property is no longer ignored on command requests. [#1490](https://github.com/spatialos/gdk-for-unity/pull/1490)
 - The `WorldCommandSender` correctly has its callbacks removed when the containing Monobehaviour is disabled. [#1493](https://github.com/spatialos/gdk-for-unity/pull/1493)
+- Fixed a bug where the Player Lifecycle feature module could create more than one player for a client if the `PlayerCreator` entity migrated during the command request chain.
+  - The chance of this occuring is lessened, but not eliminated.
+  - There is also a self-healing mechanism, whereby duplicate players will be removed.
+
+### Internal
+
+- Removed the `SpotShim` project.
 
 ## `0.4.0` - 2020-09-14
 

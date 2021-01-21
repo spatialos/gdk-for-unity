@@ -9,14 +9,18 @@ namespace Improbable.Gdk.Subscriptions
     public abstract class WriterSubscriptionManager<TComponent, TWriter> : SubscriptionManager<TWriter>
         where TWriter : IRequireable where TComponent : ISpatialComponentData
     {
-        private readonly EntityManager entityManager;
-        private Dictionary<EntityId, HashSet<Subscription<TWriter>>> entityIdToWriterSubscriptions;
-
-        private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
-        private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
-
         private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
+        private static readonly ComponentType ComponentDataType = ComponentDatabase.GetMetaclass<TComponent>().Data;
         private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass<TComponent>().Authority;
+
+        private readonly EntityManager entityManager;
+
+        private readonly Dictionary<EntityId, WriterRequirements> entityRequirements =
+            new Dictionary<EntityId, WriterRequirements>();
+
+        private readonly Dictionary<EntityId, HashSet<Subscription<TWriter>>> entityIdToWriterSubscriptions =
+            new Dictionary<EntityId, HashSet<Subscription<TWriter>>>();
+
 
         protected WriterSubscriptionManager(World world) : base(world)
         {
@@ -33,49 +37,89 @@ namespace Improbable.Gdk.Subscriptions
 
             constraintCallbackSystem.RegisterAuthorityCallback(ComponentId, authorityChange =>
             {
-                if (authorityChange.Authority == Authority.Authoritative)
+                if (!entityRequirements.TryGetValue(authorityChange.EntityId, out var requirements))
                 {
-                    if (!entitiesNotMatchingRequirements.Contains(authorityChange.EntityId))
+                    return;
+                }
+
+                var wasSatisfied = requirements.IsSatisfied;
+                requirements.IsAuthoritative = authorityChange.Authority == Authority.Authoritative;
+
+                if (requirements.IsSatisfied && !wasSatisfied)
+                {
+                    if (!WorkerSystem.TryGetEntity(authorityChange.EntityId, out var entity))
                     {
                         return;
                     }
-
-                    var entity = WorkerSystem.GetEntity(authorityChange.EntityId);
 
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
                         subscription.SetAvailable(CreateWriter(entity, authorityChange.EntityId));
                     }
-
-                    entitiesMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesNotMatchingRequirements.Remove(authorityChange.EntityId);
                 }
-                else if (authorityChange.Authority == Authority.NotAuthoritative)
+                else if (wasSatisfied && !requirements.IsSatisfied)
                 {
-                    if (!entitiesMatchingRequirements.Contains(authorityChange.EntityId))
-                    {
-                        return;
-                    }
-
                     foreach (var subscription in entityIdToWriterSubscriptions[authorityChange.EntityId])
                     {
                         ResetValue(subscription);
                         subscription.SetUnavailable();
                     }
-
-                    entitiesNotMatchingRequirements.Add(authorityChange.EntityId);
-                    entitiesMatchingRequirements.Remove(authorityChange.EntityId);
                 }
+
+                entityRequirements[authorityChange.EntityId] = requirements;
+            });
+
+            constraintCallbackSystem.RegisterComponentAddedCallback(ComponentId, entityId =>
+            {
+                if (!entityRequirements.TryGetValue(entityId, out var requirements))
+                {
+                    return;
+                }
+
+                var wasSatisfied = requirements.IsSatisfied;
+                requirements.IsComponentPresent = true;
+
+                if (requirements.IsSatisfied && !wasSatisfied)
+                {
+                    if (!WorkerSystem.TryGetEntity(entityId, out var entity))
+                    {
+                        return;
+                    }
+
+                    foreach (var subscription in entityIdToWriterSubscriptions[entityId])
+                    {
+                        subscription.SetAvailable(CreateWriter(entity, entityId));
+                    }
+                }
+
+                entityRequirements[entityId] = requirements;
+            });
+
+            constraintCallbackSystem.RegisterComponentRemovedCallback(ComponentId, entityId =>
+            {
+                if (!entityRequirements.TryGetValue(entityId, out var requirements))
+                {
+                    return;
+                }
+
+                var wasSatisfied = requirements.IsSatisfied;
+                requirements.IsComponentPresent = false;
+
+                if (wasSatisfied && !requirements.IsSatisfied)
+                {
+                    foreach (var subscription in entityIdToWriterSubscriptions[entityId])
+                    {
+                        ResetValue(subscription);
+                        subscription.SetUnavailable();
+                    }
+                }
+
+                entityRequirements[entityId] = requirements;
             });
         }
 
         public override Subscription<TWriter> Subscribe(EntityId entityId)
         {
-            if (entityIdToWriterSubscriptions == null)
-            {
-                entityIdToWriterSubscriptions = new Dictionary<EntityId, HashSet<Subscription<TWriter>>>();
-            }
-
             var subscription = new Subscription<TWriter>(this, entityId);
 
             if (!entityIdToWriterSubscriptions.TryGetValue(entityId, out var subscriptions))
@@ -84,17 +128,27 @@ namespace Improbable.Gdk.Subscriptions
                 entityIdToWriterSubscriptions.Add(entityId, subscriptions);
             }
 
-            if (WorkerSystem.TryGetEntity(entityId, out var entity)
-                && entityManager.HasComponent(entity, ComponentAuthType))
+            var requirements = new WriterRequirements();
+
+            if (WorkerSystem.TryGetEntity(entityId, out var entity))
             {
-                entitiesMatchingRequirements.Add(entityId);
-                subscription.SetAvailable(CreateWriter(entity, entityId));
-            }
-            else
-            {
-                entitiesNotMatchingRequirements.Add(entityId);
+                if (entityManager.HasComponent(entity, ComponentAuthType))
+                {
+                    requirements.IsAuthoritative = true;
+                }
+
+                if (entityManager.HasComponent(entity, ComponentDataType))
+                {
+                    requirements.IsComponentPresent = true;
+                }
             }
 
+            if (requirements.IsSatisfied)
+            {
+                subscription.SetAvailable(CreateWriter(entity, entityId));
+            }
+
+            entityRequirements[entityId] = requirements;
             subscriptions.Add(subscription);
             return subscription;
         }
@@ -106,23 +160,34 @@ namespace Improbable.Gdk.Subscriptions
 
             var subscriptions = entityIdToWriterSubscriptions[sub.EntityId];
             subscriptions.Remove(sub);
+
             if (subscriptions.Count == 0)
             {
                 entityIdToWriterSubscriptions.Remove(sub.EntityId);
-                entitiesMatchingRequirements.Remove(sub.EntityId);
-                entitiesNotMatchingRequirements.Remove(sub.EntityId);
+                entityRequirements.Remove(sub.EntityId);
             }
         }
 
         public override void ResetValue(ISubscription subscription)
         {
             var sub = (Subscription<TWriter>) subscription;
-            if (sub.HasValue)
+
+            if (!sub.HasValue)
             {
-                var reader = sub.Value;
-                reader.IsValid = false;
-                reader.RemoveAllCallbacks();
+                return;
             }
+
+            var reader = sub.Value;
+            reader.IsValid = false;
+            reader.RemoveAllCallbacks();
+        }
+
+        private struct WriterRequirements
+        {
+            public bool IsComponentPresent;
+            public bool IsAuthoritative;
+
+            public bool IsSatisfied => IsAuthoritative && IsComponentPresent;
         }
     }
 }

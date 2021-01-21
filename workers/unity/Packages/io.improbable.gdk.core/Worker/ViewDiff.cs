@@ -4,6 +4,7 @@ using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -138,7 +139,7 @@ namespace Improbable.Gdk.Core
             }
         }
 
-        public void AddComponent<T>(T component, long entityId, uint componentId) where T : ISpatialComponentUpdate
+        public void AddComponent<T>(T component, long entityId, uint componentId, uint updateId) where T : ISpatialComponentUpdate
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
@@ -147,7 +148,7 @@ namespace Improbable.Gdk.Core
                     $"Unknown component ID");
             }
 
-            ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component);
+            ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component, updateId);
         }
 
         public void RemoveComponent(long entityId, uint componentId)
@@ -162,18 +163,14 @@ namespace Improbable.Gdk.Core
             storage.RemoveEntityComponent(entityId);
         }
 
-        public void SetAuthority(long entityId, uint componentId, Authority authority, uint authorityChangeId)
+        internal void SetComponentAuthority(long entityId, uint componentId, Authority authority,
+            uint authorityChangeId)
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var authorityStorage))
             {
                 throw new ArgumentException(
                     $"Can not set authority over component with ID {componentId} for entity with ID {entityId}. " +
                     "Unknown component ID");
-            }
-
-            if (authority == Authority.AuthorityLossImminent)
-            {
-                return;
             }
 
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(

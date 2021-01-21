@@ -81,7 +81,15 @@ namespace Improbable.Gdk.Core.EditmodeTests.Connection
             return new ConnectionParameters
             {
                 WorkerType = "UnityClient",
-                DefaultComponentVtable = new ComponentVtable()
+                DefaultComponentVtable = new ComponentVtable(),
+                Network =
+                {
+                    ConnectionType = NetworkConnectionType.Kcp,
+                    Kcp =
+                    {
+                        SecurityType = NetworkSecurityType.Insecure
+                    }
+                }
             };
         }
     }

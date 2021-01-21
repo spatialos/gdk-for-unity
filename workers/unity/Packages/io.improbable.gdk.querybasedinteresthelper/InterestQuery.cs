@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Improbable.Gdk.Core;
 using UnityEngine;
 
 namespace Improbable.Gdk.QueryBasedInterest
 {
     /// <summary>
-    ///     Utility class to help construct ComponentInterest.Query objects.
+    ///     Utility class to help construct ComponentSetInterest.Query objects.
     /// </summary>
     public class InterestQuery
     {
-        private ComponentInterest.Query query;
+        private ComponentSetInterest.Query query;
 
         private InterestQuery()
         {
@@ -36,7 +37,8 @@ namespace Improbable.Gdk.QueryBasedInterest
                 {
                     Constraint = constraint.AsQueryConstraint(),
                     FullSnapshotResult = true,
-                    ResultComponentId = new List<uint>()
+                    ResultComponentId = new List<uint>(),
+                    ResultComponentSetId = new List<uint>()
                 }
             };
             return interest;
@@ -115,9 +117,55 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
-        ///     Returns the underlying ComponentInterest.Query object from the <see cref="InterestQuery"/> class.
+        ///     Defines what components to return in the query results.
         /// </summary>
-        public ComponentInterest.Query AsComponentInterestQuery()
+        /// <param name="resultComponentSet">
+        ///     First component set to return from the query results.
+        /// </param>
+        /// <param name="resultComponentSets">
+        ///     Further component sets to return from the query results.
+        /// </param>
+        /// <returns>
+        ///     An updated <see cref="InterestQuery"/> object.
+        /// </returns>
+        public InterestQuery FilterResults(ComponentSet resultComponentSet, params ComponentSet[] resultComponentSets)
+        {
+            var componentSetResultIds = new List<ComponentSet>(resultComponentSets.Length + 1) { resultComponentSet };
+            componentSetResultIds.AddRange(resultComponentSets);
+
+            return FilterResults(componentSetResultIds);
+        }
+
+        /// <summary>
+        ///     Defines what components to return in the query results.
+        /// </summary>
+        /// <param name="resultComponentSets">
+        ///     Set of component sets to return from the query results.
+        /// </param>
+        /// <remarks>
+        ///     At least one component set must be provided. Query results are not filtered
+        ///     if resultComponentSets is empty.
+        /// </remarks>
+        /// <returns>
+        ///     An updated <see cref="InterestQuery"/> object.
+        /// </returns>
+        public InterestQuery FilterResults(IEnumerable<ComponentSet> resultComponentSets)
+        {
+            if (!resultComponentSets.Any())
+            {
+                UnityEngine.Debug.LogWarning("At least one component set must be provided to filter a query's results.");
+                return this;
+            }
+
+            query.FullSnapshotResult = null;
+            query.ResultComponentSetId.AddRange(resultComponentSets.Select(set => set.ComponentSetId));
+            return this;
+        }
+
+        /// <summary>
+        ///     Returns the underlying ComponentSetInterest.Query object from the <see cref="InterestQuery"/> class.
+        /// </summary>
+        public ComponentSetInterest.Query AsComponentSetInterestQuery()
         {
             return query;
         }

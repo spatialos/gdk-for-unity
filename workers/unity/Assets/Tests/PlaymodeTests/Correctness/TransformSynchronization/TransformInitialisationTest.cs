@@ -25,8 +25,8 @@ namespace Improbable.Gdk.PlaymodeTests.TransformSynchronization
             base.Setup();
 
             var template = new EntityTemplate();
-            template.AddComponent(new Position.Snapshot(), "TestWorkerType");
-            template.AddComponent(new TransformInternal.Snapshot(), "TestWorkerType");
+            template.AddComponent(new Position.Snapshot());
+            template.AddComponent(new TransformInternal.Snapshot());
             ConnectionHandler.CreateEntity(EntityId, template);
             ReceiveSystem.Update();
         }

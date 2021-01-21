@@ -181,14 +181,13 @@ namespace Improbable.Gdk.CodeGenerator
             SystemTools.EnsureDirectoryEmpty(options.JsonDirectory);
 
             var bundlePath = Path.Join(options.JsonDirectory, "bundle.json");
-
-            var descriptorPath = Path.Join(options.DescriptorDirectory, "schema.descriptor");
+            var schemaBundlePath = Path.Join(options.BundleDirectory, "schema.sb");
 
             var arguments = new[]
             {
                 "--load_all_schema_on_schema_path",
                 $"--bundle_json_out=\"{bundlePath}\"",
-                $"--descriptor_set_out=\"{descriptorPath}\""
+                $"--bundle_out=\"{schemaBundlePath}\""
             }.Union(inputPaths).ToList();
 
             logger.Trace("Generating schema bundle and descriptor.");

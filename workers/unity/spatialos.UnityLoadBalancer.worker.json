@@ -1,0 +1,119 @@
+{
+  "build": {
+    "tasks": [
+      {
+        "name": "Codegen",
+        "steps": [{ "name": "** Load Unity to generate code **", "command": "echo", "arguments": ["No-op."] }]
+      },
+      {
+        "name": "build",
+        "steps": [{ "name": "** Run ci/build-gamelogic.sh instead **", "command": "echo", "arguments": ["No-op."] }]
+      },
+      {
+        "name": "clean",
+        "steps": [{ "name": "No-op", "command": "echo", "arguments": ["No-op."] }]
+      }
+    ]
+  },
+  "bridge": {
+    "worker_attribute_set": {
+      "attributes": ["UnityLoadBalancer"]
+    },
+    "component_delivery": {
+      "default": "RELIABLE_ORDERED",
+      "checkoutAllInitially": false
+    }
+  },
+  "external": {
+    "default": {
+      "run_type": "EXECUTABLE",
+      "windows": {
+        "command": "build/worker/UnityLoadBalancer@Windows/UnityLoadBalancer@Windows.exe",
+        "arguments": [
+          "+workerType",
+          "UnityLoadBalancer",
+          "-batchmode",
+          "-nographics",
+          "-logfile",
+          "../../logs/external-default-unityloadbalancer.log"
+        ]
+      },
+      "macos": {
+        "command": "open",
+        "arguments": [
+          "-n",
+          "./build/worker/UnityLoadBalancer@Mac/UnityLoadBalancer@Mac.app",
+          "--args",
+          "+workerType",
+          "UnityLoadBalancer",
+          "-batchmode",
+          "-nographics",
+          "-logfile",
+          "../../logs/external-default-unityloadbalancer.log"
+        ]
+      }
+    }
+  },
+  "managed": {
+    "windows": {
+      "artifact_name": "UnityLoadBalancer@Windows.zip",
+      "command": "UnityLoadBalancer@Windows.exe",
+      "arguments": [
+        "+workerType",
+        "UnityLoadBalancer",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "Tcp",
+        "-batchmode",
+        "-nographics",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    },
+    "macos": {
+      "artifact_name": "UnityLoadBalancer@Mac.zip",
+      "command": "UnityLoadBalancer@Mac.app/Contents/MacOS/UnityLoadBalancer@Mac",
+      "arguments": [
+        "+workerType",
+        "UnityLoadBalancer",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "Tcp",
+        "-batchmode",
+        "-nographics",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    },
+    "linux": {
+      "artifact_name": "UnityLoadBalancer@Linux.zip",
+      "command": "UnityLoadBalancer@Linux",
+      "arguments": [
+        "+workerType",
+        "UnityLoadBalancer",
+        "+workerId",
+        "${IMPROBABLE_WORKER_ID}",
+        "+receptionistHost",
+        "${IMPROBABLE_RECEPTIONIST_HOST}",
+        "+receptionistPort",
+        "${IMPROBABLE_RECEPTIONIST_PORT}",
+        "+linkProtocol",
+        "Tcp",
+        "-batchmode",
+        "-nographics",
+        "-logfile",
+        "${IMPROBABLE_LOG_FILE}"
+      ]
+    }
+  }
+}
