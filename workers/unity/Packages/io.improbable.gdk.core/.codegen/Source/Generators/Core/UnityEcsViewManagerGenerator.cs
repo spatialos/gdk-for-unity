@@ -40,8 +40,7 @@ namespace Improbable.Gdk.CodeGenerator
                                 {
                                     mb.Line($"var component = new {componentNamespace}.Component();");
 
-                                    foreach (var fieldDetails in componentDetails.FieldDetails.Where(fd =>
-                                        !fd.IsBlittable))
+                                    foreach (var fieldDetails in nonBlittableFields)
                                     {
                                         mb.Line(
                                             $"component.{fieldDetails.CamelCaseName}Handle = global::Improbable.Gdk.Core.ReferenceProvider<{fieldDetails.Type}>.Create();");

@@ -64,13 +64,11 @@ namespace Improbable.Gdk.Core
             {
                 ref readonly var update = ref updates[i];
 
-                if (!workerSystem.TryGetEntity(update.EntityId, out var entity) || !dataFromEntity.HasComponent(entity))
-                {
-                    return;
-                }
-
+                var entity = workerSystem.GetEntity(update.EntityId);
                 var data = dataFromEntity[entity];
+
                 ApplyUpdate(ref data, in update.Update);
+
                 dataFromEntity[entity] = data;
             }
 
@@ -89,7 +87,9 @@ namespace Improbable.Gdk.Core
 
         private void AddComponent(EntityId entityId)
         {
-            if (!workerSystem.TryGetEntity(entityId, out var entity) || EntityManager.HasComponent<TComponent>(entity))
+            var entity = workerSystem.GetEntity(entityId);
+
+            if (EntityManager.HasComponent<TComponent>(entity))
             {
                 return;
             }
