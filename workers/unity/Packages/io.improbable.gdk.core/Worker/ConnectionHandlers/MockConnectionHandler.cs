@@ -192,11 +192,11 @@ namespace Improbable.Gdk.Core
 
         public void GenerateWorldCommandResponses(Func<CommandRequestId, WorldCommands.CreateEntity.Request, WorldCommands.CreateEntity.ReceivedResponse> creator)
         {
-            var ids = GetOutboundCommandRequestIds<WorldCommands.CreateEntity.Request>();
+            var requests = GetOutboundCommandRequests<WorldCommands.CreateEntity.Request>();
 
-            foreach (var id in ids)
+            foreach (var tuple in requests)
             {
-                var request = (WorldCommands.CreateEntity.Request) outgoingRequests[id.Raw];
+                var (id, request) = tuple;
                 CurrentDiff.AddCreateEntityResponse(creator(id, request));
                 outgoingRequests.Remove(id.Raw);
             }

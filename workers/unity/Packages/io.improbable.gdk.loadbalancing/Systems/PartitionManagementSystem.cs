@@ -25,9 +25,7 @@ namespace Improbable.Gdk.LoadBalancing
         private CommandSystem commandSystem;
         private WorkerSystem workerSystem;
 
-
         private EntityQuery workersWithoutPartitions;
-
         private EntityQuery removedWorkers;
         private EntityQuery unknownPartitions;
 
@@ -82,7 +80,7 @@ namespace Improbable.Gdk.LoadBalancing
 
             for (var i = 0; i < responses.Count; i++)
             {
-                var response = responses[i];
+                ref readonly var response = ref responses[i];
                 if (!partitionCreationContexts.TryGetValue(response.RequestId, out var context))
                 {
                     continue;
@@ -113,7 +111,7 @@ namespace Improbable.Gdk.LoadBalancing
 
             for (var i = 0; i < responses.Count; i++)
             {
-                var response = responses[i];
+                ref readonly var response = ref responses[i];
                 if (!assignPartitionContexts.TryGetValue(response.RequestId, out var context))
                 {
                     continue;
