@@ -169,4 +169,56 @@ MonoBehaviour:
         Enabled: 1
         Required: 0
         scriptingImplementation: 1
+  - WorkerType: UnityLoadBalancer
+    ScenesForWorker:
+    - {fileID: 102900000, guid: 4fa3d4a591fcc5b4680042418966b387, type: 3}
+    LocalBuildConfig:
+      BuildTargets:
+      - Options: 0
+        Deprecated: 0
+        Enabled: 1
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 1
+    CloudBuildConfig:
+      BuildTargets:
+      - Options: 0
+        Deprecated: 1
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 16384
+        Deprecated: 0
+        Enabled: 1
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 0
+      - Options: 0
+        Deprecated: 0
+        Enabled: 0
+        Required: 0
+        scriptingImplementation: 1
   isInitialised: 1

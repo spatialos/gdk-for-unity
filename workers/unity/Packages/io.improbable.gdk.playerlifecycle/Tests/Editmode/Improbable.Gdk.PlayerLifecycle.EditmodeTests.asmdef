@@ -1,0 +1,35 @@
+{
+    "name": "Improbable.Gdk.PlayerLifecycle.EditmodeTests",
+    "references": [
+        "Improbable.Gdk.LoadBalancing",
+        "Improbable.Gdk.Core",
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.TestUtils",
+        "UnityEditor.TestRunner",
+        "UnityEngine.TestRunner",
+        "Unity.Entities",
+        "Improbable.Gdk.PlayerLifecycle"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll",
+        "Improbable.Worker.CInterop.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [
+        {
+            "name": "io.improbable.gdk.loadbalancing",
+            "expression": "0.0",
+            "define": "GDK_LOAD_BALANCING"
+        }
+    ],
+    "noEngineReferences": false
+}

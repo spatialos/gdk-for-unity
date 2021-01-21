@@ -1,0 +1,17 @@
+{
+    "name": "Improbable.Gdk.LoadBalancing",
+    "references": [
+        "Improbable.Gdk.Generated",
+        "Improbable.Gdk.Core",
+        "Unity.Entities"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
