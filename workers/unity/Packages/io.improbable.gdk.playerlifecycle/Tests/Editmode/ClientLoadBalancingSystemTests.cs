@@ -23,7 +23,6 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
             return opts;
         }
 
-
         [Test]
         public void Only_specified_set_is_delegated_to_client()
         {
