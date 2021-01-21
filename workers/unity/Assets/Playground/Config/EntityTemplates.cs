@@ -52,8 +52,6 @@ namespace Playground
                     Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Collisions.ComponentId,
                     SpinnerColor.ComponentId, SpinnerRotation.ComponentId, Score.ComponentId
                 });
-            /*
-            TODO: Uncomment in future PR
 
             var interest = InterestTemplate
                 .Create()
@@ -61,7 +59,6 @@ namespace Playground
                 .AddQueries(ComponentSets.PlayerServerSet, serverSelfInterest, serverRangeInterest);
 
             template.AddComponent(interest.ToSnapshot());
-            */
 
             return template;
         }
@@ -83,10 +80,8 @@ namespace Playground
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
             });
 
-            /*
             var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
             template.AddComponent(interest.ToSnapshot());
-            */
 
             return template;
         }
@@ -109,10 +104,8 @@ namespace Playground
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
             });
 
-            /*
             var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
             template.AddComponent(interest.ToSnapshot());
-            */
 
             return template;
         }
@@ -134,23 +127,19 @@ namespace Playground
             template.AddComponent(new Position.Snapshot());
             template.AddComponent(new Metadata.Snapshot("LB Partition"));
 
-            /*
             var query = InterestQuery.Query(Constraint.Component<Position.Component>());
             var interest = InterestTemplate.Create().AddQueries(ComponentSets.AuthorityDelegationSet, query);
             template.AddComponent(interest.ToSnapshot());
-            */
             return template;
         }
 
         private static EntityTemplate BaseTemplate()
         {
             var template = new EntityTemplate();
-            /*
             template.AddComponent(new AuthorityDelegation.Snapshot(new Dictionary<uint, long>
             {
                 { ComponentSets.AuthorityDelegationSet.ComponentSetId, 1 }
             }));
-            */
             return template;
         }
     }
