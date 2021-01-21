@@ -17,7 +17,6 @@ namespace Improbable.Gdk.CodeGenerator
                 .Where(fd => !fd.IsBlittable)
                 .ToList();
 
-
             return CodeWriter.Populate(cgw =>
             {
                 cgw.UsingDirectives(

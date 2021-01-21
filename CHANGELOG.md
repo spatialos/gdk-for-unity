@@ -13,7 +13,7 @@ This version upgrades the GDK for Unity to SpatialOS v15. This brings significan
   - `EntityTemplate.GetWorkerAccessAttribute()`, `EntityTemplate.GetComponentWriteAccess()`, `EntityTemplate.SetComponentWriteAccess()`, `EntityTemplate.SetComponentWriteAccess()`, `EntityTemplate.SetReadAccess()` have all been removed.
   - The remaining function signatures on the `EntityTemplate` class have been adjusted to remove references to ACL.
   - The function signatures on the feature module helper functions (e.g., `TransformSynchronizationHelper.AddTransformSynchronizationComponents`) have also been adjusted.
-- `CredentialsType` has been removed from the `LocatorParamters` class.
+- `CredentialsType` has been removed from the `LocatorParameters` class.
 - `Authority.AuthorityLossImminent` has been removed.
 - The `List<string> Attributes` property has been removed from the `Worker` class. This has been replaced with `EntityId WorkerEntityId`.
 - A valid snapshot is now always required when launching a deployment through the Deployment Launcher window.

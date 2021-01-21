@@ -57,7 +57,6 @@ namespace Playground.Editor.SnapshotGenerator
             snapshot.AddEntity(template);
         }
 
-
         private static void AddCubeGrid(Snapshot snapshot, int cubeCount)
         {
             // Calculate grid size
