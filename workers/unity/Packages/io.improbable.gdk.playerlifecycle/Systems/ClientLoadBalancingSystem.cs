@@ -1,4 +1,4 @@
-#if GDK_PLAYER_LIFECYCLE
+#if GDK_LOAD_BALANCING
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Unity.Entities;
@@ -7,7 +7,6 @@ namespace Improbable.Gdk.LoadBalancing
 {
     [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
     [DisableAutoCreation]
-    [AlwaysUpdateSystem]
     internal class ClientLoadBalancingSystem : ComponentSystem
     {
         public string PlayerEntityType { get; internal set; }
@@ -58,6 +57,16 @@ namespace Improbable.Gdk.LoadBalancing
 
         private struct LoadBalancedClient : IComponentData
         {
+        }
+    }
+
+    public static class LoadBalancingConfigurationExtensions
+    {
+        public static void AddClientLoadBalancing(this LoadBalancerConfiguration configuration, string clientEntityType, ComponentSet clientComponentSet)
+        {
+            var clientLbSystem = configuration.World.GetOrCreateSystem<ClientLoadBalancingSystem>();
+            clientLbSystem.PlayerEntityType = clientEntityType;
+            clientLbSystem.ClientComponentSet = clientComponentSet;
         }
     }
 }

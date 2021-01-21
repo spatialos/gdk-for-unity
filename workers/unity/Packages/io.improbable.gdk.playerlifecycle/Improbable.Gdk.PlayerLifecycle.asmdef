@@ -5,7 +5,8 @@
         "Improbable.Gdk.Generated",
         "Unity.Entities",
         "Unity.Entities.Hybrid",
-        "Unity.Mathematics"
+        "Unity.Mathematics",
+        "Improbable.Gdk.LoadBalancing"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -14,5 +15,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [
+        {
+            "name": "io.improbable.gdk.loadbalancing",
+            "expression": "0.0",
+            "define": "GDK_LOAD_BALANCING"
+        }
+    ],
+    "noEngineReferences": false
 }

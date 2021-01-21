@@ -12,12 +12,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [
-        {
-            "name": "io.improbable.gdk.playerlifecycle",
-            "expression": "",
-            "define": "GDK_PLAYER_LIFECYCLE"
-        }
-    ],
+    "versionDefines": [],
     "noEngineReferences": false
 }

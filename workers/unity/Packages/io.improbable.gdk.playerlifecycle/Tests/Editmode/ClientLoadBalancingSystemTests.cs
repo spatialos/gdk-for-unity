@@ -1,10 +1,10 @@
+#if GDK_LOAD_BALANCING
 using System.Collections.Generic;
 using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TestUtils;
 using Improbable.Generated;
 using NUnit.Framework;
-using Unity.Entities;
 
 namespace Improbable.Gdk.LoadBalancing.EditmodeTests
 {
@@ -94,3 +94,4 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
         }
     }
 }
+#endif

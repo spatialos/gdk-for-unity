@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Entities;
 
@@ -16,38 +17,29 @@ namespace Improbable.Gdk.LoadBalancing
 
     public class LoadBalancerConfiguration
     {
-        private readonly World world;
+        public readonly World World;
 
         internal LoadBalancerConfiguration(World world)
         {
-            this.world = world;
-            world.GetOrCreateSystem<ClassifyWorkersSystem>();
+            World = world;
+            World.GetOrCreateSystem<ClassifyWorkersSystem>();
         }
 
-        public void AddPartitionManagement(params string[] workerTypes)
+        public void AddPartitionManagement(string workerType, params string[] workerTypes)
         {
-            var partitionManagementSystem = world.GetOrCreateSystem<PartitionManagementSystem>();
-            partitionManagementSystem.WorkerTypes = workerTypes;
+            var partitionManagementSystem = World.GetOrCreateSystem<PartitionManagementSystem>();
+            partitionManagementSystem.WorkerTypes = workerTypes.Append(workerType).ToArray();
         }
-
-#if GDK_PLAYER_LIFECYCLE
-        public void AddClientLoadBalancing(string clientEntityType, ComponentSet clientComponentSet)
-        {
-            var clientLbSystem = world.GetOrCreateSystem<ClientLoadBalancingSystem>();
-            clientLbSystem.PlayerEntityType = clientEntityType;
-            clientLbSystem.ClientComponentSet = clientComponentSet;
-        }
-#endif
 
         public void SetSingletonLoadBalancing(string workerType, EntityLoadBalancingMap loadBalancingMap)
         {
-            world.AddSystem(new SingletonStrategySystem(workerType, loadBalancingMap));
+            World.AddSystem(new SingletonStrategySystem(workerType, loadBalancingMap));
         }
 
         public void SetPointOfInterestLoadBalancing(string workerType, IEnumerable<Coordinates> pointsOfInterest,
             EntityLoadBalancingMap loadBalancingMap)
         {
-            world.AddSystem(new PointsOfInterestStrategySystem(workerType, pointsOfInterest, loadBalancingMap));
+            World.AddSystem(new PointsOfInterestStrategySystem(workerType, pointsOfInterest, loadBalancingMap));
         }
     }
 
