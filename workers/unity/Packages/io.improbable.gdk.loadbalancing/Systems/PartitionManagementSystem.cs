@@ -136,7 +136,7 @@ namespace Improbable.Gdk.LoadBalancing
                         commandSystem.SendCommand(new WorldCommands.DeleteEntity.Request(context.PartitionEntityId));
                         continue;
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        throw new ArgumentOutOfRangeException(nameof(response.StatusCode), response.StatusCode, "Unknown status code");
                 }
 
                 if (!EntityManager.Exists(context.WorkerEntity))

@@ -114,7 +114,10 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
                         (reqId, request) => new WorldCommands.CreateEntity.ReceivedResponse(
                             new CreateEntityResponseOp
                             {
-                                RequestId = reqId.Raw, StatusCode = StatusCode.Success, Message = null, EntityId = 2,
+                                RequestId = reqId.Raw,
+                                StatusCode = StatusCode.Success,
+                                Message = null,
+                                EntityId = 2,
                             }, Entity.Null, request, reqId));
                 })
                 .Step(world =>
@@ -159,7 +162,10 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
                         (reqId, request) => new WorldCommands.CreateEntity.ReceivedResponse(
                             new CreateEntityResponseOp
                             {
-                                RequestId = reqId.Raw, StatusCode = StatusCode.Success, Message = null, EntityId = 2,
+                                RequestId = reqId.Raw,
+                                StatusCode = StatusCode.Success,
+                                Message = null,
+                                EntityId = 2,
                             }, Entity.Null, request, reqId));
                 })
                 .Step(world =>
@@ -212,7 +218,10 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
                         (reqId, request) => new WorldCommands.CreateEntity.ReceivedResponse(
                             new CreateEntityResponseOp
                             {
-                                RequestId = reqId.Raw, StatusCode = StatusCode.Success, Message = null, EntityId = 2,
+                                RequestId = reqId.Raw,
+                                StatusCode = StatusCode.Success,
+                                Message = null,
+                                EntityId = 2,
                             }, Entity.Null, request, reqId));
                 })
                 .Step(world =>
@@ -262,7 +271,10 @@ namespace Improbable.Gdk.LoadBalancing.EditmodeTests
                         (reqId, request) => new WorldCommands.CreateEntity.ReceivedResponse(
                             new CreateEntityResponseOp
                             {
-                                RequestId = reqId.Raw, StatusCode = StatusCode.Success, Message = null, EntityId = 2,
+                                RequestId = reqId.Raw,
+                                StatusCode = StatusCode.Success,
+                                Message = null,
+                                EntityId = 2,
                             }, Entity.Null, request, reqId));
                 })
                 .Step(world =>
