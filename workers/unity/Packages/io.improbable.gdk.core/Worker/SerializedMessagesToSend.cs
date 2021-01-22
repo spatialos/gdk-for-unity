@@ -10,8 +10,6 @@ namespace Improbable.Gdk.Core
 {
     public class SerializedMessagesToSend
     {
-        private const uint PositionComponentId = 54;
-
         private static readonly UpdateParameters UpdateParams = new UpdateParameters
         {
             Loopback = ComponentUpdateLoopback.ShortCircuited
