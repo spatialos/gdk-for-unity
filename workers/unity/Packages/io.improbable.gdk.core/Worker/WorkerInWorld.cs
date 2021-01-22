@@ -86,7 +86,10 @@ namespace Improbable.Gdk.Core
 
             foreach (var component in ComponentDatabase.Metaclasses.Values)
             {
-                World.CreateSystem(component.ReplicationSystem);
+                if (component.ReplicationSystem != null)
+                {
+                    World.CreateSystem(component.ReplicationSystem);
+                }
             }
         }
 
