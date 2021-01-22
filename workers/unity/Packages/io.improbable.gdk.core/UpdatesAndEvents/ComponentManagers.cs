@@ -18,8 +18,10 @@ namespace Improbable.Gdk.Core
         where TAuthority : struct, IComponentData
     {
         protected EntityManager EntityManager;
+        protected SpatialOSReplicationGroup ReplicationGroupSystem;
         private WorkerSystem workerSystem;
         private SpatialOSReceiveSystem spatialOSReceiveSystem;
+        private bool replicationSystemAdded = false;
         private readonly uint componentId;
 
         protected EcsViewManager()
@@ -31,6 +33,7 @@ namespace Improbable.Gdk.Core
         {
             EntityManager = world.EntityManager;
             workerSystem = world.GetExistingSystem<WorkerSystem>();
+            ReplicationGroupSystem = world.GetOrCreateSystem<SpatialOSReplicationGroup>();
 
             if (workerSystem == null)
             {
@@ -106,6 +109,11 @@ namespace Improbable.Gdk.Core
             {
                 case Authority.Authoritative:
                     EntityManager.AddComponent<TAuthority>(entity);
+                    if (!replicationSystemAdded)
+                    {
+                        AddReplicationSystem();
+                    }
+
                     break;
                 case Authority.NotAuthoritative:
                     EntityManager.RemoveComponent<TAuthority>(entity);
@@ -129,6 +137,11 @@ namespace Improbable.Gdk.Core
 
         protected virtual void DisposeData(TComponent data)
         {
+        }
+
+        protected virtual void AddReplicationSystem()
+        {
+            replicationSystemAdded = true;
         }
 
         protected abstract TComponent CreateEmptyComponent();

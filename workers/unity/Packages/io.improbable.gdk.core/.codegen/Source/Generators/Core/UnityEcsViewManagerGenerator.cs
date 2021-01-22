@@ -94,6 +94,20 @@ namespace Improbable.Gdk.CodeGenerator
                                             }
                                         });
                                 }
+
+                                if (componentDetails.FieldDetails.Count > 0)
+                                {
+                                    evm.Method($"protected override void AddReplicationSystem()",
+                                        mb =>
+                                        {
+                                            mb.Line(new[]
+                                            {
+                                                "base.AddReplicationSystem();",
+                                                $"var replicationSystem = ReplicationGroupSystem.World.GetOrCreateSystem<{componentNamespace}.ReplicationSystem>();",
+                                                "ReplicationGroupSystem.AddSystemToUpdateList(replicationSystem);"
+                                            });
+                                        });
+                                }
                             });
                     });
                 });

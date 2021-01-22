@@ -84,10 +84,8 @@ namespace Improbable.Gdk.Core
             World.GetOrCreateSystem<RequireLifecycleSystem>();
             World.GetOrCreateSystem<SubscriptionSystem>();
 
-            foreach (var component in ComponentDatabase.Metaclasses.Values)
-            {
-                World.CreateSystem(component.ReplicationSystem);
-            }
+            // Replication
+            World.GetOrCreateSystem<SpatialOSReplicationGroup>();
         }
 
         public override void Dispose()

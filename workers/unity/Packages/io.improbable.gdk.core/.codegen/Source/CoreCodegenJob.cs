@@ -52,11 +52,15 @@ namespace Improbable.Gdk.CodeGenerator.Core
             Logger.Trace("Adding job targets for components.");
             AddGenerators(componentsToGenerate,
                 c => ($"{c.Name}.cs", UnityComponentDataGenerator.Generate),
-                c => ($"{c.Name}ReplicationSystem.cs", UnityComponentReplicationSystemGenerator.Generate),
                 c => ($"{c.Name}EcsViewManager.cs", UnityEcsViewManagerGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffStorage.cs", ComponentDiffStorageGenerator.Generate),
                 c => ($"{c.Name}ComponentDiffDeserializer.cs", ComponentDiffDeserializerGenerator.Generate),
                 c => ($"{c.Name}Metaclass.cs", MetaclassGenerator.Generate));
+
+            Logger.Trace("Adding job targets for component replicators.");
+            AddGenerators(componentsToGenerate
+                    .Where(c => c.FieldDetails.Count > 0),
+                c => ($"{c.Name}ReplicationSystem.cs", UnityComponentReplicationSystemGenerator.Generate));
 
             Logger.Trace("Adding job targets for commands.");
             AddGenerators(componentsToGenerate.Where(c => c.CommandDetails.Count > 0),

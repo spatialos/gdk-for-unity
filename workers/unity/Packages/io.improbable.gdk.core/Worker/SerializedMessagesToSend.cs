@@ -10,14 +10,12 @@ namespace Improbable.Gdk.Core
 {
     public class SerializedMessagesToSend
     {
-        private const uint PositionComponentId = 54;
-
         private static readonly UpdateParameters UpdateParams = new UpdateParameters
         {
             Loopback = ComponentUpdateLoopback.ShortCircuited
         };
 
-        private static readonly List<Type> ComponentTypes;
+        private static readonly List<Type> ComponentEventTypes;
         private static readonly List<Type> CommandTypes;
 
         private readonly MessageList<UpdateToSend> updates = new MessageList<UpdateToSend>();
@@ -48,15 +46,16 @@ namespace Improbable.Gdk.Core
 
         private readonly List<Metrics> metricsToSend = new List<Metrics>();
 
-        private readonly List<IComponentSerializer> componentSerializers = new List<IComponentSerializer>();
+        private readonly List<IComponentEventSerializer> componentEventSerializers = new List<IComponentEventSerializer>();
         private readonly List<ICommandSerializer> commandSerializers = new List<ICommandSerializer>();
 
         private NetFrameStats netFrameStats = new NetFrameStats();
 
         static SerializedMessagesToSend()
         {
-            ComponentTypes = ComponentDatabase.Metaclasses
-                .Select(pair => pair.Value.Serializer)
+            ComponentEventTypes = ComponentDatabase.Metaclasses
+                .Select(pair => pair.Value.EventSerializer)
+                .Where(type => type != null)
                 .ToList();
 
             CommandTypes = ComponentDatabase.Metaclasses
@@ -67,10 +66,10 @@ namespace Improbable.Gdk.Core
 
         public SerializedMessagesToSend()
         {
-            foreach (var type in ComponentTypes)
+            foreach (var type in ComponentEventTypes)
             {
-                var instance = (IComponentSerializer) Activator.CreateInstance(type);
-                componentSerializers.Add(instance);
+                var instance = (IComponentEventSerializer) Activator.CreateInstance(type);
+                componentEventSerializers.Add(instance);
             }
 
             foreach (var type in CommandTypes)
@@ -80,19 +79,6 @@ namespace Improbable.Gdk.Core
             }
 
             commandSerializers.Add(new WorldCommandSerializer());
-
-            // Move the position serializer to the end of the queue so that the updates get sent last
-            // This is to prevent an authority change before other updates have been applied from the same frame
-            for (var i = 0; i < componentSerializers.Count; ++i)
-            {
-                if (componentSerializers[i].GetComponentId() == PositionComponentId)
-                {
-                    var positionSerializer = componentSerializers[i];
-                    componentSerializers.RemoveAt(i);
-                    componentSerializers.Add(positionSerializer);
-                    break;
-                }
-            }
         }
 
         public void SerializeFrom(MessagesToSend messages, CommandMetaData commandMetaData)
@@ -114,7 +100,7 @@ namespace Improbable.Gdk.Core
 
             messages.GetLogMessages().CopyTo(logMessages);
 
-            foreach (var serializer in componentSerializers)
+            foreach (var serializer in componentEventSerializers)
             {
                 serializer.Serialize(messages, this);
             }

@@ -39,7 +39,7 @@ private ProfilerMarker foreachMarker = new ProfilerMarker(""{componentDetails.Na
 
 protected override void OnCreate()
 {{
-    spatialOsSendSystem = World.GetExistingSystem<SpatialOSSendSystem>();
+    spatialOsSendSystem = World.GetOrCreateSystem<SpatialOSSendSystem>();
 }}
 ");
                                 system.Method("protected override void OnUpdate()", m =>
