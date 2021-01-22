@@ -41,7 +41,7 @@ public Type Snapshot {{ get; }} = typeof({rootNamespace}.Snapshot);
 public Type Update {{ get; }} = typeof({rootNamespace}.Update);
 
 public Type ReplicationSystem {{ get; }} = {(componentDetails.FieldDetails.Count > 0 ? $"typeof({rootNamespace}.ReplicationSystem)" : "null")};
-public Type Serializer {{ get; }} = typeof({rootNamespace}.ComponentSerializer);
+public Type EventSerializer {{ get; }} = {(componentDetails.EventDetails.Count > 0 ? $"typeof({rootNamespace}.ComponentEventSerializer)" : "null")};
 public Type DiffDeserializer {{ get; }} = typeof({rootNamespace}.DiffComponentDeserializer);
 
 public Type DiffStorage {{ get; }} = typeof({rootNamespace}.DiffComponentStorage);

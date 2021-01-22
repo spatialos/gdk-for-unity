@@ -24,7 +24,10 @@ namespace Improbable.Gdk.CodeGenerator
                     ns.Type($"public partial class {componentDetails.Name}", partial =>
                     {
                         partial.Type(GenerateComponentDeserializer(componentDetails));
-                        partial.Type(GenerateComponentSerializer(componentDetails));
+                        if (componentDetails.EventDetails.Count > 0)
+                        {
+                            partial.Type(GenerateComponentEventSerializer(componentDetails));
+                        }
                     });
                 });
             });
@@ -89,11 +92,11 @@ if (eventCount > 0)
             });
         }
 
-        private static TypeBlock GenerateComponentSerializer(UnityComponentDetails componentDetails)
+        private static TypeBlock GenerateComponentEventSerializer(UnityComponentDetails componentDetails)
         {
             var eventDetailsList = componentDetails.EventDetails;
 
-            return Scope.Type("public class ComponentSerializer : IComponentSerializer", serializer =>
+            return Scope.Type("public class ComponentEventSerializer : IComponentEventSerializer", serializer =>
             {
                 serializer.Line($@"
 private ProfilerMarker serializeMarker = new ProfilerMarker(""{componentDetails.Name}.ComponentSerializer.Serialize"");
