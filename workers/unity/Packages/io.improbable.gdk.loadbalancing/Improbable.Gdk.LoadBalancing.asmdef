@@ -3,7 +3,8 @@
     "references": [
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
-        "Unity.Entities"
+        "Unity.Entities",
+        "Unity.Collections"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
