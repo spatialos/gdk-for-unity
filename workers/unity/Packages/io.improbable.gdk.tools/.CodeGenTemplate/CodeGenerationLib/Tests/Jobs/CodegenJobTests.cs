@@ -98,7 +98,8 @@ namespace CodeGeneration.Tests.Jobs
             public static CodegenStub GetCleanInstance()
             {
                 var json = JsonParsingTests.GetBundleContents();
-                return new CodegenStub(new CodegenJobOptions("", "", false), new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree()));
+                var testDirectory = TestContext.CurrentContext.TestDirectory;
+                return new CodegenStub(new CodegenJobOptions("", "", false), new MockFileSystem(), new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), new MockFileTree(), testDirectory));
             }
 
             internal readonly MockFileSystem MyFileSystem;

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Utils;
+using Newtonsoft.Json.Linq;
 using NLog;
 
 namespace Improbable.Gdk.CodeGeneration.Model.Details
@@ -16,6 +18,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         public readonly IReadOnlyDictionary<string, UnityEnumDetails> Enums;
         public readonly IReadOnlyDictionary<string, UnityComponentDetails> Components;
         public readonly IReadOnlyList<ComponentSetDetails> ComponentSets;
+        public readonly IReadOnlyList<string> WorkerTypes;
 
         public readonly ImmutableHashSet<string> BlittableSet;
         public readonly IReadOnlyList<string> SchemaFiles;
@@ -27,7 +30,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public DetailsStore(SchemaBundle bundle, IEnumerable<string> serializationOverrides, IFileTree fileTree)
+        public DetailsStore(SchemaBundle bundle, IEnumerable<string> serializationOverrides, IFileTree fileTree,
+            string workerJsonDirectory)
         {
             this.bundle = bundle;
             FileTree = fileTree;
@@ -125,6 +129,8 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             {
                 Logger.Trace($"Removed {numFieldsRemoved} recursive options.");
             }
+
+            WorkerTypes = ExtractWorkerTypes(workerJsonDirectory);
         }
 
         public HashSet<string> GetNestedTypes(string qualifiedName)
@@ -285,6 +291,51 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
             }
 
             return numFieldsRemoved;
+        }
+
+        private static List<string> ExtractWorkerTypes(string path)
+        {
+            Logger.Trace($"Extracting worker types from {path}.");
+
+            const string workerTypeFlag = "+workerType";
+            var workerTypes = new List<string>();
+
+            var fileNames = Directory.EnumerateFiles(path, "*.json").ToList();
+            Logger.Trace($"Found {fileNames.Count} worker json files:\n - {string.Join("\n - ", fileNames)}");
+
+            foreach (var fileName in fileNames)
+            {
+                Logger.Trace($"Extracting worker type from {fileName}.");
+                var text = File.ReadAllText(fileName);
+                if (!text.Contains(workerTypeFlag))
+                {
+                    Logger.Warn($"{fileName} does not contain the '{workerTypeFlag}' flag.");
+                    continue;
+                }
+
+                var jsonRep = JObject.Parse(text);
+                var arguments = jsonRep.SelectToken("external.default.windows.arguments");
+                if (arguments == null)
+                {
+                    Logger.Warn($"Could not navigate to external > default > windows > arguments in {fileName}.");
+                    continue;
+                }
+
+                for (var i = 0; i < arguments.Count() - 1; i++)
+                {
+                    if (!workerTypeFlag.Equals(arguments[i].ToString()))
+                    {
+                        continue;
+                    }
+
+                    var workerType = arguments[i + 1].ToString();
+                    Logger.Trace($"Adding {workerType} to list of worker types.");
+                    workerTypes.Add(workerType);
+                }
+            }
+
+            Logger.Trace($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
+            return workerTypes;
         }
     }
 }

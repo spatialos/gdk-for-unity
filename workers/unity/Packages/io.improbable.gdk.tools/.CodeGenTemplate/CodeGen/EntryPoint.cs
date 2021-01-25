@@ -127,7 +127,7 @@ namespace Improbable.Gdk.CodeGenerator
             var fileTree = new FileTree(options.SchemaInputDirs);
 
             logger.Info("Initialising DetailsStore.");
-            var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree);
+            var store = new DetailsStore(schemaBundle, options.SerializationOverrides, fileTree, options.WorkerJsonDirectory);
 
             var codegenOptions = new CodegenJobOptions(options.OutputDirectory, options.EditorOutputDirectory, options.Force);
 

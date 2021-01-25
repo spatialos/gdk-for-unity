@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using Improbable.Gdk.CodeGeneration.Model;
 using Improbable.Gdk.CodeGeneration.Model.Details;
 using Improbable.Gdk.CodeGeneration.Tests.Model.SchemaBundleV1;
@@ -20,7 +21,9 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
                 "global::Improbable.TestSchema.SomeType;global::UserCode.SerializationExtensions.Type"
             };
 
-            store = new DetailsStore(SchemaBundle.LoadBundle(json), overrides, null);
+            var testDirectory = TestContext.CurrentContext.TestDirectory;
+
+            store = new DetailsStore(SchemaBundle.LoadBundle(json), overrides, null, testDirectory);
         }
 
         [Test]
