@@ -45,7 +45,7 @@ This version upgrades the GDK for Unity to SpatialOS v15. This brings significan
 ### Internal
 
 - Removed the `SpotShim` project.
-- Remove ability to receive internal metrics from Worker SDK. [#1503](https://github.com/spatialos/gdk-for-unity/pull/1503)
+- Removed ability to receive internal metrics from Worker SDK. [#1503](https://github.com/spatialos/gdk-for-unity/pull/1503)
 
 ## `0.4.0` - 2020-09-14
 
