@@ -30,7 +30,6 @@ namespace Improbable.Gdk.Core
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
 
         private readonly List<LogMessageReceived> logsReceived = new List<LogMessageReceived>();
-        private Metrics metricsReceived;
         private readonly List<(string, string)> workerFlagsChanged = new List<(string, string)>();
 
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
@@ -115,7 +114,6 @@ namespace Improbable.Gdk.Core
             entitiesRemoved.Clear();
             logsReceived.Clear();
             workerFlagsChanged.Clear();
-            metricsReceived = null;
             InCriticalSection = false;
             Disconnected = false;
             DisconnectMessage = null;
@@ -254,18 +252,6 @@ namespace Improbable.Gdk.Core
             logsReceived.Add(new LogMessageReceived(message, level));
         }
 
-        public void AddMetrics(Metrics metrics)
-        {
-            if (metricsReceived == null)
-            {
-                metricsReceived = metrics;
-            }
-            else
-            {
-                metricsReceived.Merge(metrics);
-            }
-        }
-
         public void SetWorkerFlag(string flag, string value)
         {
             workerFlagsChanged.Add((flag, value));
@@ -280,11 +266,6 @@ namespace Improbable.Gdk.Core
         public void SetCriticalSection(bool inCriticalSection)
         {
             InCriticalSection = inCriticalSection;
-        }
-
-        internal Metrics GetMetrics()
-        {
-            return metricsReceived;
         }
 
         internal List<LogMessageReceived> GetLogsMessages()

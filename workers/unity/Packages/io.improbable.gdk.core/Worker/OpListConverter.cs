@@ -48,8 +48,7 @@ namespace Improbable.Gdk.Core
                         viewDiff.SetWorkerFlag(flagOp.Name, flagOp.Value);
                         break;
                     case OpType.Metrics:
-                        var metricsOp = opList.GetMetricsOp(i);
-                        viewDiff.AddMetrics(metricsOp.Metrics);
+                        // Metrics op not supported, but expected to still be received
                         break;
                     case OpType.CriticalSection:
                         var criticalSectionOp = opList.GetCriticalSectionOp(i);
