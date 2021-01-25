@@ -4,6 +4,7 @@ using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Generated;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -11,8 +12,6 @@ namespace Playground
 {
     public class ClientWorkerConnector : WorkerConnector
     {
-        public const string UnityClient = "UnityClient";
-
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private bool UseExternalIp;
@@ -25,7 +24,7 @@ namespace Playground
         {
             Application.targetFrameRate = 60;
 
-            var connParams = CreateConnectionParameters(UnityClient);
+            var connParams = CreateConnectionParameters(WorkerTypes.UnityClient);
             connParams.Network.UseExternalIp = UseExternalIp;
 
             var builder = new SpatialOSConnectionHandlerBuilder()
@@ -46,7 +45,7 @@ namespace Playground
                         */
                         connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
                         connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
-                        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient), initializer));
+                        builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityClient), initializer));
                         break;
                     case ConnectionService.Locator:
                         builder.SetConnectionFlow(new LocatorFlow(initializer));
@@ -60,7 +59,7 @@ namespace Playground
                 // We are in the Editor, so for the same reasons as above, the network security type should be Insecure.
                 connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
                 connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
-                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(UnityClient)));
+                builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityClient)));
             }
 
             await Connect(builder, new ForwardingDispatcher());

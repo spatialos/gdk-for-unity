@@ -1,10 +1,11 @@
 using Improbable.Gdk.Core;
 using Improbable.Gdk.Subscriptions;
+using Improbable.Generated;
 using UnityEngine;
 
 namespace Playground
 {
-    [WorkerType(GameLogicWorkerConnector.UnityGameLogic, MobileClientWorkerConnector.MobileClient)]
+    [WorkerType(WorkerTypes.UnityGameLogic, WorkerTypes.MobileClient)]
     public class WorkerFlagTest : MonoBehaviour
     {
 #pragma warning disable 649

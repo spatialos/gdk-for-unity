@@ -5,6 +5,7 @@ using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.Mobile;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Generated;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -12,8 +13,6 @@ namespace Playground
 {
     public class MobileClientWorkerConnector : WorkerConnector, MobileConnectionFlowInitializer.IMobileSettingsProvider
     {
-        public const string MobileClient = "MobileClient";
-
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private GameObject level;
@@ -24,7 +23,7 @@ namespace Playground
 
         public async void Start()
         {
-            var connParams = CreateConnectionParameters(MobileClient, new MobileConnectionParametersInitializer());
+            var connParams = CreateConnectionParameters(WorkerTypes.MobileClient, new MobileConnectionParametersInitializer());
 
             var flowInitializer = new MobileConnectionFlowInitializer(
                 new MobileConnectionFlowInitializer.CommandLineSettingsProvider(),
@@ -46,7 +45,7 @@ namespace Playground
                     */
                     connParams.Network.Kcp.SecurityType = NetworkSecurityType.Insecure;
                     connParams.Network.Tcp.SecurityType = NetworkSecurityType.Insecure;
-                    builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(MobileClient),
+                    builder.SetConnectionFlow(new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.MobileClient),
                         flowInitializer));
                     break;
                 case ConnectionService.Locator:

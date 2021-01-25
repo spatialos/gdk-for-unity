@@ -11,8 +11,6 @@ namespace Playground
 {
     public class LoadBalancerWorkerConnector : WorkerConnector
     {
-        public const string LoadBalancer = "UnityLoadBalancer";
-
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
 #pragma warning restore 649
@@ -26,8 +24,8 @@ namespace Playground
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(LoadBalancer));
-                connectionParameters = CreateConnectionParameters(LoadBalancer);
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityLoadBalancer));
+                connectionParameters = CreateConnectionParameters(WorkerTypes.UnityLoadBalancer);
 
                 /*
                  * If we are in the Editor, it means we are either:
@@ -41,9 +39,9 @@ namespace Playground
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(LoadBalancer),
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityLoadBalancer),
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(LoadBalancer,
+                connectionParameters = CreateConnectionParameters(WorkerTypes.UnityLoadBalancer,
                     new CommandLineConnectionParameterInitializer());
             }
 
@@ -62,13 +60,13 @@ namespace Playground
 
             Worker.AddLoadBalancingSystems(configuration =>
             {
-                configuration.AddPartitionManagement(ClientWorkerConnector.UnityClient, MobileClientWorkerConnector.MobileClient, GameLogicWorkerConnector.UnityGameLogic);
+                configuration.AddPartitionManagement(WorkerTypes.UnityClient, WorkerTypes.MobileClient, WorkerTypes.UnityGameLogic);
                 configuration.AddClientLoadBalancing("Character", ComponentSets.PlayerClientSet);
 
                 var loadBalancingMap = new EntityLoadBalancingMap(ComponentSets.DefaultServerSet)
                     .AddOverride("Character", ComponentSets.PlayerServerSet);
 
-                configuration.SetPointOfInterestLoadBalancing(GameLogicWorkerConnector.UnityGameLogic, new[] { new Coordinates(-1, 0, 0), new Coordinates(1, 0, 0) }, loadBalancingMap);
+                configuration.SetPointOfInterestLoadBalancing(WorkerTypes.UnityGameLogic, new[] { new Coordinates(-1, 0, 0), new Coordinates(1, 0, 0) }, loadBalancingMap);
             });
         }
     }

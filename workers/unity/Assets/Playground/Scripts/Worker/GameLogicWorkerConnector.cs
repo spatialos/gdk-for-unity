@@ -3,6 +3,7 @@ using Improbable.Gdk.Core.Representation;
 using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.PlayerLifecycle;
 using Improbable.Gdk.TransformSynchronization;
+using Improbable.Generated;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -10,8 +11,6 @@ namespace Playground
 {
     public class GameLogicWorkerConnector : WorkerConnector
     {
-        public const string UnityGameLogic = "UnityGameLogic";
-
 #pragma warning disable 649
         [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
         [SerializeField] private GameObject level;
@@ -28,8 +27,8 @@ namespace Playground
 
             if (Application.isEditor)
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic));
-                connectionParameters = CreateConnectionParameters(UnityGameLogic);
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityGameLogic));
+                connectionParameters = CreateConnectionParameters(WorkerTypes.UnityGameLogic);
 
                 /*
                  * If we are in the Editor, it means we are either:
@@ -43,9 +42,9 @@ namespace Playground
             }
             else
             {
-                flow = new ReceptionistFlow(CreateNewWorkerId(UnityGameLogic),
+                flow = new ReceptionistFlow(CreateNewWorkerId(WorkerTypes.UnityGameLogic),
                     new CommandLineConnectionFlowInitializer());
-                connectionParameters = CreateConnectionParameters(UnityGameLogic,
+                connectionParameters = CreateConnectionParameters(WorkerTypes.UnityGameLogic,
                     new CommandLineConnectionParameterInitializer());
             }
 
