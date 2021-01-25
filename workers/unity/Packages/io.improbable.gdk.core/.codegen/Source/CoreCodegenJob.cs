@@ -79,6 +79,10 @@ namespace Improbable.Gdk.CodeGenerator.Core
             Logger.Trace("Adding job targets for component sets");
             AddJobTarget("ComponentSets.cs", () => ComponentSetGenerator.Generate(store.ComponentSets));
 
+            // Worker types
+            Logger.Trace("Adding job targets for worker types");
+            AddJobTarget("WorkerTypes.cs", () => WorkerTypesGenerator.Generate(store.WorkerTypes));
+
             Logger.Trace($"Finished initialising {jobName}.");
         }
     }
