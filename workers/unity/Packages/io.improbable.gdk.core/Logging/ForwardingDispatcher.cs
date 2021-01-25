@@ -12,7 +12,7 @@ namespace Improbable.Gdk.Core
     {
         private readonly LogLevel minimumLogLevel;
 
-        private bool inHandleLog;
+        private static bool inHandleLog;
 
         public Worker Worker { get; set; }
         public string WorkerType { get; set; }
