@@ -315,6 +315,19 @@ namespace Improbable.Gdk.QueryBasedInterest
         }
 
         /// <summary>
+        ///     Creates a <see cref="Constraint"/> object with a Self QueryConstraint.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="Constraint"/> object.
+        /// </returns>
+        public static Constraint Self()
+        {
+            var constraint = Default();
+            constraint.SelfConstraint = new ComponentSetInterest.SelfConstraint();
+            return new Constraint(constraint);
+        }
+
+        /// <summary>
         ///     Creates a <see cref="Constraint"/> object with an And QueryConstraint.
         /// </summary>
         /// <param name="constraint">

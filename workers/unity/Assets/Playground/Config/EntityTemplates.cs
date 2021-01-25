@@ -27,7 +27,7 @@ namespace Playground
             template.AddTransformSynchronizationComponents();
             template.AddPlayerLifecycleComponents(clientWorkerEntityId);
 
-            var clientSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
+            var clientSelfInterest = InterestQuery.Query(Constraint.Self()).FilterResults(new[]
             {
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, CubeSpawner.ComponentId,
                 Score.ComponentId, Launcher.ComponentId
@@ -41,7 +41,7 @@ namespace Playground
                     Launchable.ComponentId
                 });
 
-            var serverSelfInterest = InterestQuery.Query(Constraint.EntityId(entityId)).FilterResults(new[]
+            var serverSelfInterest = InterestQuery.Query(Constraint.Self()).FilterResults(new[]
             {
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId, Score.ComponentId
             });

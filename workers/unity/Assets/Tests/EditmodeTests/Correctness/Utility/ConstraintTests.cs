@@ -168,5 +168,13 @@ namespace Improbable.Gdk.EditmodeTests.Utility
             Assert.AreEqual(0, constraint.AsQueryConstraint().AndConstraint.Count);
             Assert.AreEqual(0, constraint.AsQueryConstraint().OrConstraint.Count);
         }
+
+        [Test]
+        public void Self_constraint_sets_AndOr_constraints_to_empty_list()
+        {
+            var constraint = Constraint.Self();
+            Assert.AreEqual(0, constraint.AsQueryConstraint().AndConstraint.Count);
+            Assert.AreEqual(0, constraint.AsQueryConstraint().OrConstraint.Count);
+        }
     }
 }
