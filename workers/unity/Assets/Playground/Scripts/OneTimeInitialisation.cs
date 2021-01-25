@@ -1,3 +1,4 @@
+using Improbable.Gdk.Core;
 using Improbable.Gdk.PlayerLifecycle;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace Playground
 
             // Setup template to use for player on connecting client
             PlayerLifecycleConfig.CreatePlayerEntityTemplate = EntityTemplates.CreatePlayerEntityTemplate;
+            PlayerLifecycleConfig.PlayerCreatorEntityId = new EntityId(2);
         }
     }
 }

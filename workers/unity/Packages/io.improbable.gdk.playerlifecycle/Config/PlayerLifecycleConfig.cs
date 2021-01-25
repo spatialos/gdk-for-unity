@@ -54,16 +54,6 @@ namespace Improbable.Gdk.PlayerLifecycle
         public static int MaxPlayerCreationRetries = 5;
 
         /// <summary>
-        ///     The maximum number of retries for finding player creator entities, before any player creation occurs.
-        /// </summary>
-        /// <remarks>
-        ///     All player creation requests must be sent to a player creator entity, which are initially queried for when
-        ///     the <see cref="SendCreatePlayerRequestSystem"/> starts. This field indicates the maximum number of retries for the
-        //      initial entity query to find the player creator entities.
-        /// </remarks>
-        public static int MaxPlayerCreatorQueryRetries = 5;
-
-        /// <summary>
         ///     This indicates whether a player should be created automatically upon a worker connecting to SpatialOS.
         /// </summary>
         /// <remarks>
@@ -81,5 +71,10 @@ namespace Improbable.Gdk.PlayerLifecycle
         ///     The system uses this delegate to request a new player entity based on the returned <see cref="EntityTemplate"/>.
         /// </remarks>
         public static GetPlayerEntityTemplateDelegate CreatePlayerEntityTemplate;
+
+        /// <summary>
+        ///     The <see cref="EntityId"/> of the player creator that clients send player creation requests to.
+        /// </summary>
+        public static EntityId PlayerCreatorEntityId;
     }
 }

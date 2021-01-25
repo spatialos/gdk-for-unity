@@ -31,11 +31,7 @@ namespace Playground.Editor.SnapshotGenerator
             var snapshot = new Snapshot();
 
             snapshot.AddEntity(new EntityId(1), EntityTemplates.CreateLoadBalancingPartition());
-
-            AddPlayerSpawner(snapshot, new Coordinates(200, 0, 200));
-            AddPlayerSpawner(snapshot, new Coordinates(200, 0, -200));
-            AddPlayerSpawner(snapshot, new Coordinates(-200, 0, -200));
-            AddPlayerSpawner(snapshot, new Coordinates(-200, 0, 200));
+            snapshot.AddEntity(new EntityId(2), EntityTemplates.CreatePlayerSpawnerEntityTemplate(new Coordinates()));
 
             AddCubeGrid(snapshot, cubeCount);
 
@@ -43,12 +39,6 @@ namespace Playground.Editor.SnapshotGenerator
             CreateSpinner(snapshot, new Coordinates { X = -5.5, Y = 0.5f, Z = 0.0 });
 
             return snapshot;
-        }
-
-        private static void AddPlayerSpawner(Snapshot snapshot, Coordinates playerSpawnerLocation)
-        {
-            var template = EntityTemplates.CreatePlayerSpawnerEntityTemplate(playerSpawnerLocation);
-            snapshot.AddEntity(template);
         }
 
         private static void CreateSpinner(Snapshot snapshot, Coordinates coords)
