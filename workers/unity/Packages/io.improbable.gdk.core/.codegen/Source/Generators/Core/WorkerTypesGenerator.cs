@@ -10,10 +10,6 @@ namespace Improbable.Gdk.CodeGenerator
         {
             return CodeWriter.Populate(cgw =>
             {
-                cgw.UsingDirectives(
-                    "System.Collections.Generic"
-                );
-
                 cgw.Namespace("Improbable.Generated", ns =>
                 {
                     ns.Type("public static class WorkerTypes", tb =>
@@ -23,7 +19,7 @@ namespace Improbable.Gdk.CodeGenerator
                             tb.Line($"public const string {workerType} = \"{workerType}\";");
                         }
 
-                        tb.Initializer("public static readonly IReadOnlyList<string> AllWorkerTypes = new List<string>",
+                        tb.Initializer("public static readonly string[] AllWorkerTypes = new string[]",
                             () => workerTypes.Select(workerType => $"\"{workerType}\""));
                     });
                 });

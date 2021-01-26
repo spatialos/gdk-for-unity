@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Improbable.Gdk.CodeGeneration.FileHandling;
 using Improbable.Gdk.CodeGeneration.Utils;
 using Newtonsoft.Json.Linq;
@@ -297,41 +298,25 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
         {
             Logger.Trace($"Extracting worker types from {path}.");
 
-            const string workerTypeFlag = "+workerType";
             var workerTypes = new List<string>();
 
-            var fileNames = Directory.EnumerateFiles(path, "*.json").ToList();
+            var fileNames = Directory.EnumerateFiles(path, "spatialos.*.worker.json").ToList();
             Logger.Trace($"Found {fileNames.Count} worker json files:\n - {string.Join("\n - ", fileNames)}");
 
             foreach (var fileName in fileNames)
             {
                 Logger.Trace($"Extracting worker type from {fileName}.");
-                var text = File.ReadAllText(fileName);
-                if (!text.Contains(workerTypeFlag))
+                var match = Regex.Match(fileName, @"spatialos\.(.*)\.worker\.json");
+
+                if (!match.Success)
                 {
-                    Logger.Warn($"{fileName} does not contain the '{workerTypeFlag}' flag.");
                     continue;
                 }
 
-                var jsonRep = JObject.Parse(text);
-                var arguments = jsonRep.SelectToken("external.default.windows.arguments");
-                if (arguments == null)
-                {
-                    Logger.Warn($"Could not navigate to external > default > windows > arguments in {fileName}.");
-                    continue;
-                }
+                var workerType = match.Groups[1].Value;
 
-                for (var i = 0; i < arguments.Count() - 1; i++)
-                {
-                    if (!workerTypeFlag.Equals(arguments[i].ToString()))
-                    {
-                        continue;
-                    }
-
-                    var workerType = arguments[i + 1].ToString();
-                    Logger.Trace($"Adding {workerType} to list of worker types.");
-                    workerTypes.Add(workerType);
-                }
+                Logger.Trace($"Adding {workerType} to list of worker types.");
+                workerTypes.Add(workerType);
             }
 
             Logger.Trace($"Found {workerTypes.Count} worker types:\n - {string.Join("\n - ", workerTypes)}");
