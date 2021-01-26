@@ -32,6 +32,7 @@ This version upgrades the GDK for Unity to SpatialOS v15. This brings significan
 - The `InterestQuery` class now supports filtering based on `ComponentSets` in addition to specific components.
 - The helper methods for adding feature module components to `EntityTemplate`s are now additionally extension methods.
 - Added support for the `Self` constraint in the QBI Helper module. [#1500](https://github.com/spatialos/gdk-for-unity/pull/1500)
+- Added a generated static class `WorkerTypes`, which contains definitions of all worker types in the project. [#1504](https://github.com/spatialos/gdk-for-unity/pull/1504)
 
 ### Fixed
 

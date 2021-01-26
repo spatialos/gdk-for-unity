@@ -96,8 +96,9 @@ namespace Improbable.Gdk.CodeGeneration.Tests.Model
             var assembly = Assembly.GetExecutingAssembly();
             var resource = assembly.GetManifestResourceStream(bundleResourceName);
             var json = new StreamReader(resource).ReadToEnd();
+            var testDirectory = TestContext.CurrentContext.TestDirectory;
 
-            return new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), null);
+            return new DetailsStore(SchemaBundle.LoadBundle(json), new List<string>(), null, testDirectory);
         }
     }
 }

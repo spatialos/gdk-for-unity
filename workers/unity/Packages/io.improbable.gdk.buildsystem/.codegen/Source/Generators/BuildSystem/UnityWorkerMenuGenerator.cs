@@ -6,7 +6,7 @@ namespace Improbable.Gdk.CodeGenerator
 {
     public static class UnityWorkerMenuGenerator
     {
-        public static CodeWriter Generate(List<string> workerTypes)
+        public static CodeWriter Generate(IReadOnlyList<string> workerTypes)
         {
             return CodeWriter.Populate(cgw =>
             {
