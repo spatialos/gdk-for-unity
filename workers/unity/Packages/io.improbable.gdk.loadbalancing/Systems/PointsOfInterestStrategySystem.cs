@@ -106,7 +106,7 @@ namespace Improbable.Gdk.LoadBalancing
                 entities.AddChangedVersionFilter(ComponentType.ReadOnly<Position.Component>());
             }
 
-            Entities.With(entities).ForEach((ref AuthorityDelegation.Component authorityDelegation, ref Position.Component position, ref Metadata.Component component) =>
+            Entities.With(entities).ForEach((ref AuthorityDelegation.Component authorityDelegation, ref Position.Component position, ref Metadata.Component metadata) =>
             {
                 var closestDist = double.MaxValue;
                 RegisteredWorker? closestWorker = null;
@@ -127,10 +127,17 @@ namespace Improbable.Gdk.LoadBalancing
                     }
                 }
 
-                if (closestWorker.HasValue)
+                if (!closestWorker.HasValue)
                 {
-                    authorityDelegation.Delegations[entityLoadBalancingMap.Resolve(component.EntityType).ComponentSetId]
-                        = closestWorker.Value.PartitionEntityId.Id;
+                    return;
+                }
+
+                var componentSetId = entityLoadBalancingMap.Resolve(metadata.EntityType).ComponentSetId;
+
+                if (!authorityDelegation.Delegations.TryGetValue(componentSetId, out var oldPartitionId) ||
+                    oldPartitionId != closestWorker.Value.PartitionEntityId.Id)
+                {
+                    authorityDelegation.Delegations[componentSetId] = closestWorker.Value.PartitionEntityId.Id;
                     authorityDelegation.Delegations = authorityDelegation.Delegations;
                 }
             });
