@@ -310,6 +310,7 @@ namespace Improbable.Gdk.CodeGeneration.Model.Details
 
                 if (!match.Success)
                 {
+                    Logger.Warn($"Unable to extract worker type from \"{fileName}\".");
                     continue;
                 }
 
