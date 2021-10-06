@@ -13,7 +13,7 @@ This is the repository for the last version of the GDK plugin that is compatible
 
 ## Documentation
 
-Find high-level documentation about SpatialOS and the GDKs at  [networking.docs.improbable.io](networking.docs.improbable.io). If you wish to get full access to the documentation please contact us at [ims.improbable.io/contact](ims.improbable.io/contac) with details about your project.
+Find high-level documentation about SpatialOS and the GDKs at  [networking.docs.improbable.io](https://networking.docs.improbable.io). If you wish to get full access to the documentation please contact us at [ims.improbable.io/contact](https://ims.improbable.io/contact) with details about your project.
 
 ---
 
