@@ -8,7 +8,7 @@ This is the repository for the last version of the GDK plugin that is compatible
 
 * If you have a current project using SpatialOS GDK for Unity and would like to discuss migrating your project to SpatialOS running on zeuz, please contact us at migration@improbable.io before 30th December 2021. 
 
-* If you would like to start development of your game on SpatialOS and would like access to the latest version of the GDK for Unity and are not currently using SpatialOS please contact us at [ims.improbable.io/contact](ims.improbable.io/contact) with details about your project.
+* If you would like to start development of your game on SpatialOS and would like access to the latest version of the GDK for Unity and are not currently using SpatialOS please contact us at [ims.improbable.io/contact](https://ims.improbable.io/contact) with details about your project.
 
 
 ## Documentation
