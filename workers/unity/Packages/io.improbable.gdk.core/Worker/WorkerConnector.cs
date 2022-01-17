@@ -209,19 +209,6 @@ namespace Improbable.Gdk.Core
                     {
                         DownstreamCompression = new CompressionParameters(),
                         UpstreamCompression = new CompressionParameters(),
-                        FlowControl =
-                        {
-                            DownstreamWindowSizeBytes = 16777216 * 2, //32MB
-                            UpstreamWindowSizeBytes = 16777216 * 2, //32MB
-                        }
-                    },
-                    Tcp = 
-                    {
-                        FlowControl =
-                        {
-                            DownstreamWindowSizeBytes = 16777216 * 2, //32MB
-                            UpstreamWindowSizeBytes = 16777216 * 2, //32MB
-                        }
                     }
                 }
             };
