@@ -13,15 +13,6 @@ namespace Improbable.Gdk.Core
         private readonly HashSet<EntityId> componentsAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> componentsRemoved = new HashSet<EntityId>();
 
-        // Used to represent a state machine of authority changes. Valid state changes are:
-        // authority lost -> authority lost temporarily
-        // authority lost temporarily -> authority lost
-        // authority gained -> authority gained
-        // Creating the authority lost temporarily set is the aim as it signifies authority epoch changes
-        private readonly HashSet<EntityId> authorityLost = new HashSet<EntityId>();
-        private readonly HashSet<EntityId> authorityGained = new HashSet<EntityId>();
-        private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
-
         private readonly MessageList<ComponentUpdateReceived<TUpdate>> updateStorage =
             new MessageList<ComponentUpdateReceived<TUpdate>>(new UpdateComparer<TUpdate>());
 
@@ -31,7 +22,7 @@ namespace Improbable.Gdk.Core
         public abstract Type[] GetEventTypes();
 
         public Type GetUpdateType() => typeof(TUpdate);
-        
+
         public bool Dirty { get; protected set; }
 
         public virtual void Clear()
@@ -86,25 +77,6 @@ namespace Improbable.Gdk.Core
 
         public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
         {
-            if (authorityChange.Authority == Authority.NotAuthoritative)
-            {
-                if (authorityLostTemporary.Remove(authorityChange.EntityId) || !authorityGained.Contains(authorityChange.EntityId))
-                {
-                    authorityLost.Add(authorityChange.EntityId);
-                }
-            }
-            else if (authorityChange.Authority == Authority.Authoritative)
-            {
-                if (authorityLost.Remove(authorityChange.EntityId))
-                {
-                    authorityLostTemporary.Add(authorityChange.EntityId);
-                }
-                else
-                {
-                    authorityGained.Add(authorityChange.EntityId);
-                }
-            }
-
             authorityChanges.Add(authorityChange);
             Dirty = true;
         }
