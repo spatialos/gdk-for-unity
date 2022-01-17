@@ -13,6 +13,7 @@ namespace Improbable.Gdk.CodeGenerator
         public static CodeWriter Generate(UnityComponentDetails componentDetails)
         {
             var commandDetailsList = componentDetails.CommandDetails;
+            var eventDetailsList = componentDetails.EventDetails;
             var rootNamespace = $"global::{componentDetails.Namespace}.{componentDetails.Name}";
 
             return CodeWriter.Populate(cgw =>
@@ -53,6 +54,12 @@ public Type DynamicInvokable {{ get; }} = typeof({rootNamespace}.{componentDetai
                                 () =>
                                 {
                                     return commandDetailsList.Select(command => $"new {command.PascalCaseName}Metaclass()");
+                                });
+                            
+                            componentMetaclass.Initializer("public Type[] Events { get; } = new Type[]",
+                                () =>
+                                {
+                                    return eventDetailsList.Select(e => $"typeof({e.PascalCaseName}.Event)");
                                 });
                         });
 

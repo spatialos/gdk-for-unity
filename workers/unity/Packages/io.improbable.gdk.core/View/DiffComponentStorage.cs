@@ -10,17 +10,8 @@ namespace Improbable.Gdk.Core
         protected readonly HashSet<EntityId> EntitiesUpdated = new HashSet<EntityId>();
         private readonly uint componentId;
 
-        private readonly List<EntityId> componentsAdded = new List<EntityId>();
-        private readonly List<EntityId> componentsRemoved = new List<EntityId>();
-
-        // Used to represent a state machine of authority changes. Valid state changes are:
-        // authority lost -> authority lost temporarily
-        // authority lost temporarily -> authority lost
-        // authority gained -> authority gained
-        // Creating the authority lost temporarily set is the aim as it signifies authority epoch changes
-        private readonly HashSet<EntityId> authorityLost = new HashSet<EntityId>();
-        private readonly HashSet<EntityId> authorityGained = new HashSet<EntityId>();
-        private readonly HashSet<EntityId> authorityLostTemporary = new HashSet<EntityId>();
+        private readonly HashSet<EntityId> componentsAdded = new HashSet<EntityId>();
+        private readonly HashSet<EntityId> componentsRemoved = new HashSet<EntityId>();
 
         private readonly MessageList<ComponentUpdateReceived<TUpdate>> updateStorage =
             new MessageList<ComponentUpdateReceived<TUpdate>>(new UpdateComparer<TUpdate>());
@@ -32,6 +23,8 @@ namespace Improbable.Gdk.Core
 
         public Type GetUpdateType() => typeof(TUpdate);
 
+        public bool Dirty { get; protected set; }
+
         public virtual void Clear()
         {
             EntitiesUpdated.Clear();
@@ -39,6 +32,7 @@ namespace Improbable.Gdk.Core
             authorityChanges.Clear();
             componentsAdded.Clear();
             componentsRemoved.Clear();
+            Dirty = false;
         }
 
         public void RemoveEntityComponent(long entityId)
@@ -56,6 +50,8 @@ namespace Improbable.Gdk.Core
             {
                 componentsRemoved.Add(id);
             }
+
+            Dirty = true;
         }
 
         protected abstract void ClearEventStorage(long entityId);
@@ -68,6 +64,7 @@ namespace Improbable.Gdk.Core
                 componentsAdded.Add(id);
             }
 
+            // This marks dirty
             AddUpdate(new ComponentUpdateReceived<TUpdate>(component, id, updateId));
         }
 
@@ -75,38 +72,21 @@ namespace Improbable.Gdk.Core
         {
             EntitiesUpdated.Add(update.EntityId);
             updateStorage.Add(update);
+            Dirty = true;
         }
 
         public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
         {
-            if (authorityChange.Authority == Authority.NotAuthoritative)
-            {
-                if (authorityLostTemporary.Remove(authorityChange.EntityId) || !authorityGained.Contains(authorityChange.EntityId))
-                {
-                    authorityLost.Add(authorityChange.EntityId);
-                }
-            }
-            else if (authorityChange.Authority == Authority.Authoritative)
-            {
-                if (authorityLost.Remove(authorityChange.EntityId))
-                {
-                    authorityLostTemporary.Add(authorityChange.EntityId);
-                }
-                else
-                {
-                    authorityGained.Add(authorityChange.EntityId);
-                }
-            }
-
             authorityChanges.Add(authorityChange);
+            Dirty = true;
         }
 
-        public List<EntityId> GetComponentsAdded()
+        public HashSet<EntityId> GetComponentsAdded()
         {
             return componentsAdded;
         }
 
-        public List<EntityId> GetComponentsRemoved()
+        public HashSet<EntityId> GetComponentsRemoved()
         {
             return componentsRemoved;
         }

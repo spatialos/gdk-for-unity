@@ -9,9 +9,9 @@ namespace Improbable.Gdk.Subscriptions
     public abstract class WriterSubscriptionManager<TComponent, TWriter> : SubscriptionManager<TWriter>
         where TWriter : IRequireable where TComponent : ISpatialComponentData
     {
-        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
-        private static readonly ComponentType ComponentDataType = ComponentDatabase.GetMetaclass<TComponent>().Data;
-        private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass<TComponent>().Authority;
+        private static readonly uint ComponentId = ComponentDatabase.ComponentType<TComponent>.ComponentId;
+        private static readonly ComponentType ComponentDataType = ComponentDatabase.ComponentType<TComponent>.Metaclass.Data;
+        private static readonly ComponentType ComponentAuthType = ComponentDatabase.ComponentType<TComponent>.Metaclass.Authority;
 
         private readonly EntityManager entityManager;
 

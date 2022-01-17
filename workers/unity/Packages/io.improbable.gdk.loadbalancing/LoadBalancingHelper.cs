@@ -37,9 +37,9 @@ namespace Improbable.Gdk.LoadBalancing
         }
 
         public void SetPointOfInterestLoadBalancing(string workerType, IEnumerable<Coordinates> pointsOfInterest,
-            EntityLoadBalancingMap loadBalancingMap)
+            ICollection<uint> componentSetIds)
         {
-            World.AddSystem(new PointsOfInterestStrategySystem(workerType, pointsOfInterest, loadBalancingMap));
+            World.AddSystem(new PointsOfInterestStrategySystem(workerType, pointsOfInterest, componentSetIds));
         }
     }
 

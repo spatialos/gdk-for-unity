@@ -21,12 +21,15 @@ namespace Improbable.Gdk.Core
         private readonly MessageList<CommandRequestWithMetaData<WorldCommands.EntityQuery.Request>> entityQueryResponses =
             new MessageList<CommandRequestWithMetaData<WorldCommands.EntityQuery.Request>>();
 
+        public bool Dirty { get; private set; }
+
         public void Clear()
         {
             createEntityResponses.Clear();
             deleteEntityResponses.Clear();
             reserveEntityIdsResponses.Clear();
             entityQueryResponses.Clear();
+            Dirty = false;
         }
 
         public void AddRequest(WorldCommands.CreateEntity.Request request, Entity sendingEntity, CommandRequestId requestId)
@@ -34,6 +37,7 @@ namespace Improbable.Gdk.Core
             createEntityResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.CreateEntity.Request>(request, sendingEntity,
                     requestId));
+            Dirty = true;
         }
 
         public void AddRequest(WorldCommands.DeleteEntity.Request request, Entity sendingEntity, CommandRequestId requestId)
@@ -41,6 +45,7 @@ namespace Improbable.Gdk.Core
             deleteEntityResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.DeleteEntity.Request>(request, sendingEntity,
                     requestId));
+            Dirty = true;
         }
 
         public void AddRequest(WorldCommands.ReserveEntityIds.Request request, Entity sendingEntity, CommandRequestId requestId)
@@ -48,6 +53,7 @@ namespace Improbable.Gdk.Core
             reserveEntityIdsResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.ReserveEntityIds.Request>(request, sendingEntity,
                     requestId));
+            Dirty = true;
         }
 
         public void AddRequest(WorldCommands.EntityQuery.Request request, Entity sendingEntity, CommandRequestId requestId)
@@ -55,6 +61,7 @@ namespace Improbable.Gdk.Core
             entityQueryResponses.Add(
                 new CommandRequestWithMetaData<WorldCommands.EntityQuery.Request>(request, sendingEntity,
                     requestId));
+            Dirty = true;
         }
 
         internal MessageList<CommandRequestWithMetaData<WorldCommands.CreateEntity.Request>> GetCreateEntityResponses()

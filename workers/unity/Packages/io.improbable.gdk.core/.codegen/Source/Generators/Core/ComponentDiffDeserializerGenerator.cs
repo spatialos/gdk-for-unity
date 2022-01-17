@@ -101,6 +101,8 @@ if (eventCount > 0)
                 serializer.Line($@"
 private ProfilerMarker serializeMarker = new ProfilerMarker(""{componentDetails.Name}.ComponentSerializer.Serialize"");
 
+public bool HasEvents {{ get; }} = {(eventDetailsList.Count > 0).ToString().ToLower()};
+
 public uint GetComponentId()
 {{
     return ComponentId;
@@ -112,7 +114,13 @@ public uint GetComponentId()
                     {
                         m.ProfileScope("serializeMarker", s =>
                         {
-                            s.Line("var storage = messages.GetComponentDiffStorage(ComponentId);");
+                            s.Line(@"
+var storage = messages.GetComponentDiffStorage(ComponentId);
+if (!storage.Dirty)
+{
+    return;
+}
+");
 
                             foreach (var ev in eventDetailsList)
                             {

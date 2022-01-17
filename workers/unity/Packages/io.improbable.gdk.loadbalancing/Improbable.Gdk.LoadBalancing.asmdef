@@ -1,10 +1,12 @@
 {
     "name": "Improbable.Gdk.LoadBalancing",
+    "rootNamespace": "",
     "references": [
         "Improbable.Gdk.Generated",
         "Improbable.Gdk.Core",
         "Unity.Entities",
-        "Unity.Collections"
+        "Unity.Collections",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

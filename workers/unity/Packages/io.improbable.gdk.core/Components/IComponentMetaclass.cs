@@ -12,6 +12,7 @@ namespace Improbable.Gdk.Core
         Type Authority { get; }
         Type Snapshot { get; }
         Type Update { get; }
+        Type[] Events { get; }
 
         Type ReplicationSystem { get; }
         Type EventSerializer { get; }

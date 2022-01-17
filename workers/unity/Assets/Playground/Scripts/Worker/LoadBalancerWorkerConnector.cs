@@ -1,9 +1,8 @@
 using Improbable;
 using Improbable.Gdk.Core;
-using Improbable.Gdk.Core.Representation;
-using Improbable.Gdk.GameObjectCreation;
 using Improbable.Gdk.LoadBalancing;
 using Improbable.Generated;
+using Improbable.Restricted;
 using Improbable.Worker.CInterop;
 using UnityEngine;
 
@@ -11,10 +10,6 @@ namespace Playground
 {
     public class LoadBalancerWorkerConnector : WorkerConnector
     {
-#pragma warning disable 649
-        [SerializeField] private EntityRepresentationMapping entityRepresentationMapping;
-#pragma warning restore 649
-
         private async void Start()
         {
             Application.targetFrameRate = 60;
@@ -50,24 +45,38 @@ namespace Playground
                 .SetConnectionParameters(connectionParameters);
 
             await Connect(builder, new ForwardingDispatcher());
+
+            BootstrapLoadbalacingPartition();
         }
 
         protected override void HandleWorkerConnectionEstablished()
         {
-            GameObjectCreationHelper.EnableStandardGameObjectCreation(Worker.World, entityRepresentationMapping, gameObject);
-
             Worker.World.GetOrCreateSystem<DisconnectSystem>();
 
             Worker.AddLoadBalancingSystems(configuration =>
             {
                 configuration.AddPartitionManagement(WorkerTypes.UnityClient, WorkerTypes.MobileClient, WorkerTypes.UnityGameLogic);
-                configuration.AddClientLoadBalancing("Character", ComponentSets.PlayerClientSet);
 
-                var loadBalancingMap = new EntityLoadBalancingMap(ComponentSets.DefaultServerSet)
-                    .AddOverride("Character", ComponentSets.PlayerServerSet);
+                var pointsOfInterest = new[]
+                {
+                    Coordinates.Zero
+                };
 
-                configuration.SetPointOfInterestLoadBalancing(WorkerTypes.UnityGameLogic, new[] { new Coordinates(-1, 0, 0), new Coordinates(1, 0, 0) }, loadBalancingMap);
+                configuration.SetPointOfInterestLoadBalancing(WorkerTypes.UnityGameLogic, pointsOfInterest, new[]
+                {
+                    ComponentSets.SpinnerServerSet.ComponentSetId,
+                    ComponentSets.CubeServerSet.ComponentSetId,
+                    ComponentSets.PlayerCreatorServerSet.ComponentSetId,
+                    ComponentSets.PlayerServerSet.ComponentSetId,
+                });
             });
+        }
+
+        private void BootstrapLoadbalacingPartition()
+        {
+            Worker.World.GetExistingSystem<CommandSystem>()
+                .SendCommand(new Improbable.Restricted.Worker.AssignPartition.Request(Worker.WorkerEntityId, new AssignPartitionRequest(EntityTemplates.LoadBalancerPartitionEntityId.Id
+                )));
         }
     }
 }

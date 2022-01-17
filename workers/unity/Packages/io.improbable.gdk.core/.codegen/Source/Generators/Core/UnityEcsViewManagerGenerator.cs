@@ -21,7 +21,8 @@ namespace Improbable.Gdk.CodeGenerator
             {
                 cgw.UsingDirectives(
                     "Improbable.Gdk.Core",
-                    "Unity.Collections"
+                    "Unity.Collections",
+                    "Unity.Entities"
                 );
 
                 cgw.Namespace(componentDetails.Namespace, ns =>
@@ -76,14 +77,23 @@ namespace Improbable.Gdk.CodeGenerator
 
                                         m.Loop("foreach (var component in componentDataArray)", loop =>
                                         {
-                                            foreach (var fieldDetails in nonBlittableFields)
-                                            {
-                                                loop.Line($"component.{fieldDetails.CamelCaseName}Handle.Dispose();");
-                                            }
+                                            loop.Line("DisposeData(component);");
                                         });
 
                                         m.Line("componentDataArray.Dispose();");
                                     });
+
+                                    evm.Method(
+                                        "public override void DisposeForEntity(Entity entity)",
+                                        mb =>
+                                        {
+                                            mb.If($"!EntityManager.HasComponent<{componentNamespace}.Component>(entity)", (bd) =>
+                                            {
+                                                bd.Line("return;");
+                                            });
+
+                                            mb.Line($"DisposeData(EntityManager.GetComponentData<{componentNamespace}.Component>(entity));");
+                                        });
 
                                     evm.Method($"protected override void DisposeData({componentNamespace}.Component data)",
                                         mb =>

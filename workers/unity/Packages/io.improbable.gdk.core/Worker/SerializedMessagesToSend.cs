@@ -69,7 +69,10 @@ namespace Improbable.Gdk.Core
             foreach (var type in ComponentEventTypes)
             {
                 var instance = (IComponentEventSerializer) Activator.CreateInstance(type);
-                componentEventSerializers.Add(instance);
+                if (instance.HasEvents)
+                {
+                    componentEventSerializers.Add(instance);
+                }
             }
 
             foreach (var type in CommandTypes)

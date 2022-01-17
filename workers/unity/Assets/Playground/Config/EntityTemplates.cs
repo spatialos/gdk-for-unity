@@ -14,9 +14,12 @@ namespace Playground
     {
         private const int CheckoutRadius = 25;
 
+        public static readonly EntityId PlayerCreatorEntityId = new EntityId(1);
+        public static readonly EntityId LoadBalancerPartitionEntityId = new EntityId(2);
+
         public static EntityTemplate CreatePlayerEntityTemplate(EntityId entityId, EntityId clientWorkerEntityId, byte[] playerCreationArguments)
         {
-            var template = BaseTemplate();
+            var template = new EntityTemplate();
 
             template.AddComponent(new Position.Snapshot());
             template.AddComponent(new Metadata.Snapshot("Character"));
@@ -60,12 +63,15 @@ namespace Playground
 
             template.AddComponent(interest.ToSnapshot());
 
+            AddComponentSets(template, ComponentSets.PlayerServerSet);
+            AddClientComponentSets(template, clientWorkerEntityId, ComponentSets.PlayerClientSet);
+
             return template;
         }
 
         public static EntityTemplate CreateCubeEntityTemplate(Vector3 location)
         {
-            var template = BaseTemplate();
+            var template = new EntityTemplate();
 
             template.AddComponent(new Position.Snapshot(location.ToCoordinates()));
             template.AddComponent(new Metadata.Snapshot("Cube"));
@@ -80,8 +86,10 @@ namespace Playground
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
             });
 
-            var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.CubeServerSet, query);
             template.AddComponent(interest.ToSnapshot());
+
+            AddComponentSets(template, ComponentSets.CubeServerSet);
 
             return template;
         }
@@ -90,7 +98,7 @@ namespace Playground
         {
             var transform = TransformUtils.CreateTransformSnapshot(coords.ToUnityVector(), Quaternion.identity);
 
-            var template = BaseTemplate();
+            var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(coords));
             template.AddComponent(new Metadata.Snapshot("Spinner"));
             template.AddComponent(transform);
@@ -104,43 +112,89 @@ namespace Playground
                 Position.ComponentId, Metadata.ComponentId, TransformInternal.ComponentId
             });
 
-            var interest = InterestTemplate.Create().AddQueries(ComponentSets.DefaultServerSet, query);
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.SpinnerServerSet, query);
             template.AddComponent(interest.ToSnapshot());
+
+            AddComponentSets(template, ComponentSets.SpinnerServerSet);
 
             return template;
         }
 
         public static EntityTemplate CreatePlayerSpawnerEntityTemplate(Coordinates playerSpawnerLocation)
         {
-            var template = BaseTemplate();
+            var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot(playerSpawnerLocation));
             template.AddComponent(new Metadata.Snapshot("PlayerCreator"));
             template.AddComponent(new Persistence.Snapshot());
             template.AddComponent(new PlayerCreator.Snapshot());
+
+            AddComponentSets(template, ComponentSets.PlayerCreatorServerSet);
 
             return template;
         }
 
         public static EntityTemplate CreateLoadBalancingPartition()
         {
-            var template = BaseTemplate();
+            var template = new EntityTemplate();
             template.AddComponent(new Position.Snapshot());
             template.AddComponent(new Metadata.Snapshot("LB Partition"));
 
-            var query = InterestQuery.Query(Constraint.Component<Position.Component>());
-            var interest = InterestTemplate.Create().AddQueries(ComponentSets.AuthorityDelegationSet, query);
+            var entityQuery = InterestQuery.Query(Constraint.Component<Position.Component>()).FilterResults(new[]
+            {
+                Position.ComponentId, AuthorityDelegation.ComponentId
+            });
+            var workerQuery = InterestQuery.Query(Constraint.Component<Improbable.Restricted.Worker.Component>()).FilterResults(new[]
+            {
+                Improbable.Restricted.Worker.ComponentId
+            });
+            var interest = InterestTemplate.Create().AddQueries(ComponentSets.AuthorityDelegationSet, entityQuery, workerQuery);
             template.AddComponent(interest.ToSnapshot());
+
+            template.AddComponent(new AuthorityDelegation.Snapshot(new Dictionary<uint, long>
+            {
+                { ComponentSets.AuthorityDelegationSet.ComponentSetId, LoadBalancerPartitionEntityId.Id }
+            }));
+
             return template;
         }
 
-        private static EntityTemplate BaseTemplate()
+        private static void AddComponentSets(EntityTemplate template, params ComponentSet[] componentSets)
         {
-            var template = new EntityTemplate();
-            template.AddComponent(new AuthorityDelegation.Snapshot(new Dictionary<uint, long>
+            var authorityDelegation = GetOrCreateAuthorityDelegationSnapshot(template);
+
+            foreach (var componentSet in componentSets)
             {
-                { ComponentSets.AuthorityDelegationSet.ComponentSetId, 1 }
-            }));
-            return template;
+                // Add component sets, assign to invalid partition id
+                authorityDelegation.Delegations.Add(componentSet.ComponentSetId, 0);
+            }
+        }
+
+        private static void AddClientComponentSets(EntityTemplate template, EntityId ClientWorkerId, params ComponentSet[] componentSets)
+        {
+            var authorityDelegation = GetOrCreateAuthorityDelegationSnapshot(template);
+
+            foreach (var componentSet in componentSets)
+            {
+                // Add component sets, assign to client
+                authorityDelegation.Delegations.Add(componentSet.ComponentSetId, ClientWorkerId.Id);
+            }
+        }
+
+        private static AuthorityDelegation.Snapshot GetOrCreateAuthorityDelegationSnapshot(EntityTemplate template)
+        {
+            if (!template.TryGetComponent<AuthorityDelegation.Snapshot>(out var authorityDelegation))
+            {
+                var delegations = new Dictionary<uint, long>
+                {
+                    // Default component set for Authority delegations, pre assigned to the load balancer
+                    { ComponentSets.AuthorityDelegationSet.ComponentSetId, LoadBalancerPartitionEntityId.Id }
+                };
+
+                authorityDelegation = new AuthorityDelegation.Snapshot(delegations);
+                template.AddComponent(authorityDelegation);
+            }
+
+            return authorityDelegation;
         }
     }
 }

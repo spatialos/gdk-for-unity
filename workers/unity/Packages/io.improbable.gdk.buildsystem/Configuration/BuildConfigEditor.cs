@@ -795,6 +795,7 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 // When the `Development flag` is disabled, we also disable the 'Allow Debug' flag to
                 // ensure consistency between UI and BuildOptions flags
                 options &= ~(BuildOptions.Development | BuildOptions.AllowDebugging);
+                options &= ~(BuildOptions.Development | BuildOptions.EnableDeepProfilingSupport);
             }
 
             options = ConfigureDebug(options);
@@ -827,6 +828,21 @@ namespace Improbable.Gdk.BuildSystem.Configuration
                 else
                 {
                     options &= ~BuildOptions.AllowDebugging;
+                }
+            }
+
+            var isDeepProfilingEnabled = options.HasFlag(BuildOptions.Development)
+                && options.HasFlag(BuildOptions.EnableDeepProfilingSupport);
+
+            using (new EditorGUI.DisabledScope(!options.HasFlag(BuildOptions.Development)))
+            {
+                if (EditorGUILayout.Toggle("Deep Profiling", isDeepProfilingEnabled))
+                {
+                    options |= BuildOptions.EnableDeepProfilingSupport;
+                }
+                else
+                {
+                    options &= ~BuildOptions.EnableDeepProfilingSupport;
                 }
             }
 

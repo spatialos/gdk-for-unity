@@ -9,15 +9,18 @@ namespace Improbable.Gdk.Core
         Type[] GetEventTypes();
         Type GetUpdateType();
 
+        bool Dirty { get; }
+
         void Clear();
         void RemoveEntityComponent(long entityId);
 
-        List<EntityId> GetComponentsAdded();
-        List<EntityId> GetComponentsRemoved();
+        HashSet<EntityId> GetComponentsAdded();
+        HashSet<EntityId> GetComponentsRemoved();
     }
 
     public interface ICommandDiffStorage
     {
+        bool Dirty { get; }
         void Clear();
     }
 

@@ -43,7 +43,12 @@ namespace Improbable.Gdk.Debug
             disabledContent = EditorGUIUtility.IconContent("sv_icon_dot0_pix16_gizmo");
 
             // Get type info
-            script = (MonoBehaviour) target;
+            script = target as MonoBehaviour;
+            if (script == null)
+            {
+                return;
+            }
+
             scriptType = script.GetType();
             isSpatialBehaviour = RequiredSubscriptionsDatabase.HasWorkerTypeRequirement(scriptType) ||
                 RequiredSubscriptionsDatabase.HasRequiredSubscriptions(scriptType);

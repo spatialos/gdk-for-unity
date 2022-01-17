@@ -15,6 +15,8 @@ namespace Improbable.Gdk.Core.Commands
         public abstract uint ComponentId { get; }
         public abstract uint CommandId { get; }
 
+        public bool Dirty { get; private set; }
+
         public Type RequestType => typeof(TRequest);
         public Type ResponseType => typeof(TResponse);
 
@@ -22,21 +24,25 @@ namespace Improbable.Gdk.Core.Commands
         {
             requestStorage.Clear();
             responseStorage.Clear();
+            Dirty = false;
         }
 
         public void RemoveRequests(long entityId)
         {
             requestStorage.RemoveAll(request => request.EntityId.Id == entityId);
+            Dirty = true;
         }
 
         public void AddRequest(TRequest request)
         {
             requestStorage.Add(request);
+            Dirty = true;
         }
 
         public void AddResponse(TResponse response)
         {
             responseStorage.Add(response);
+            Dirty = true;
         }
 
         public MessagesSpan<TRequest> GetRequests()

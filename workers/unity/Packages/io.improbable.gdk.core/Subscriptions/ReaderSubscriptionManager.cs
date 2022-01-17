@@ -15,7 +15,7 @@ namespace Improbable.Gdk.Subscriptions
         private readonly HashSet<EntityId> entitiesMatchingRequirements = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesNotMatchingRequirements = new HashSet<EntityId>();
 
-        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
+        private static readonly uint ComponentId = ComponentDatabase.ComponentType<TComponent>.ComponentId;
 
         protected ReaderSubscriptionManager(World world) : base(world)
         {
