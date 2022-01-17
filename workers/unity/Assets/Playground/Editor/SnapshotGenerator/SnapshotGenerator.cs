@@ -30,8 +30,8 @@ namespace Playground.Editor.SnapshotGenerator
         {
             var snapshot = new Snapshot();
 
-            snapshot.AddEntity(new EntityId(1), EntityTemplates.CreateLoadBalancingPartition());
-            snapshot.AddEntity(new EntityId(2), EntityTemplates.CreatePlayerSpawnerEntityTemplate(new Coordinates()));
+            snapshot.AddEntity(EntityTemplates.LoadBalancerPartitionEntityId, EntityTemplates.CreateLoadBalancingPartition());
+            snapshot.AddEntity(EntityTemplates.PlayerCreatorEntityId, EntityTemplates.CreatePlayerSpawnerEntityTemplate(new Coordinates()));
 
             AddCubeGrid(snapshot, cubeCount);
 

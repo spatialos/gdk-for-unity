@@ -34,6 +34,7 @@ namespace Improbable.Gdk.CodeGenerator
                                 system.Line($@"
 private NativeQueue<SerializedMessagesToSend.UpdateToSend> dirtyComponents;
 private SpatialOSSendSystem spatialOsSendSystem;
+private EntityQuery query;
 
 private ProfilerMarker foreachMarker = new ProfilerMarker(""{componentDetails.Name}SerializationJob"");
 
@@ -46,6 +47,10 @@ protected override void OnCreate()
                                 {
                                     m.Line(new[]
                                     {
+                                        "if (query.CalculateChunkCount() == 0)",
+                                        "{",
+                                        "    return;",
+                                        "}",
                                         "dirtyComponents = new NativeQueue<SerializedMessagesToSend.UpdateToSend>(Allocator.TempJob);",
                                         "var dirtyComponentsWriter = dirtyComponents.AsParallelWriter();",
                                         "var marker = foreachMarker;",
@@ -62,6 +67,7 @@ Dependency = Entities.WithName(""{componentDetails.Name}Replication"")");
                                     m.Line(@"
     .WithAll<HasAuthority>()
     .WithChangeFilter<Component>()
+    .WithStoreEntityQueryInField(ref query)
     .ForEach((ref Component component, in SpatialEntityId entity) =>
     {
         marker.Begin();

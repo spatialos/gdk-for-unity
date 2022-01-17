@@ -4,7 +4,6 @@ using System.Linq;
 using Improbable.Gdk.Core.Commands;
 using Improbable.Gdk.Core.NetworkStats;
 using Improbable.Worker.CInterop;
-using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -28,15 +27,13 @@ namespace Improbable.Gdk.Core
 
         private readonly HashSet<EntityId> entitiesAdded = new HashSet<EntityId>();
         private readonly HashSet<EntityId> entitiesRemoved = new HashSet<EntityId>();
+        private readonly HashSet<uint> componentsChanged = new HashSet<uint>();
 
         private readonly List<LogMessageReceived> logsReceived = new List<LogMessageReceived>();
         private readonly List<(string, string)> workerFlagsChanged = new List<(string, string)>();
 
         private readonly Dictionary<uint, IComponentDiffStorage> componentIdToComponentStorage =
             new Dictionary<uint, IComponentDiffStorage>();
-
-        private readonly Dictionary<Type, IComponentDiffStorage> typeToComponentStorage =
-            new Dictionary<Type, IComponentDiffStorage>();
 
         private readonly List<IComponentDiffStorage> componentStorageList = new List<IComponentDiffStorage>();
 
@@ -63,12 +60,6 @@ namespace Improbable.Gdk.Core
 
                 componentStorageList.Add(instance);
                 componentIdToComponentStorage.Add(componentId, instance);
-
-                typeToComponentStorage.Add(instance.GetUpdateType(), instance);
-                foreach (var eventType in instance.GetEventTypes())
-                {
-                    typeToComponentStorage.Add(eventType, instance);
-                }
             }
 
             var storageIndex = 0;
@@ -100,18 +91,25 @@ namespace Improbable.Gdk.Core
         {
             foreach (var storage in componentStorageList)
             {
-                storage.Clear();
+                if (storage.Dirty)
+                {
+                    storage.Clear();
+                }
             }
 
             foreach (var storage in commandStorageList)
             {
-                storage.Clear();
+                if (storage.Dirty)
+                {
+                    storage.Clear();
+                }
             }
 
             worldCommandsReceivedStorage.Clear();
 
             entitiesAdded.Clear();
             entitiesRemoved.Clear();
+            componentsChanged.Clear();
             logsReceived.Clear();
             workerFlagsChanged.Clear();
             InCriticalSection = false;
@@ -147,6 +145,7 @@ namespace Improbable.Gdk.Core
             }
 
             ((IDiffComponentAddedStorage<T>) storage).AddEntityComponent(entityId, component, updateId);
+            componentsChanged.Add(componentId);
         }
 
         public void RemoveComponent(long entityId, uint componentId)
@@ -159,6 +158,7 @@ namespace Improbable.Gdk.Core
             }
 
             storage.RemoveEntityComponent(entityId);
+            componentsChanged.Add(componentId);
         }
 
         internal void SetComponentAuthority(long entityId, uint componentId, Authority authority,
@@ -173,6 +173,7 @@ namespace Improbable.Gdk.Core
 
             ((IDiffAuthorityStorage) authorityStorage).AddAuthorityChange(
                 new AuthorityChangeReceived(authority, new EntityId(entityId), authorityChangeId));
+            componentsChanged.Add(componentId);
 
             // Remove received command requests if authority has been lost
             if (authority == Authority.NotAuthoritative)
@@ -197,6 +198,7 @@ namespace Improbable.Gdk.Core
 
             ((IDiffUpdateStorage<T>) storage).AddUpdate(new ComponentUpdateReceived<T>(update, new EntityId(entityId),
                 updateId));
+            componentsChanged.Add(componentId);
         }
 
         public void AddEvent<T>(T ev, long entityId, uint componentId, uint updateId) where T : IEvent
@@ -210,6 +212,7 @@ namespace Improbable.Gdk.Core
 
             ((IDiffEventStorage<T>) storage).AddEvent(new ComponentEventReceived<T>(ev, new EntityId(entityId),
                 updateId));
+            componentsChanged.Add(componentId);
         }
 
         public void AddCommandRequest<T>(T request, uint componentId, uint commandId) where T : struct, IReceivedCommandRequest
@@ -278,6 +281,11 @@ namespace Improbable.Gdk.Core
             return workerFlagsChanged;
         }
 
+        public bool IsComponentChanged(uint componentId)
+        {
+            return componentsChanged.Contains(componentId);
+        }
+
         internal IComponentDiffStorage GetComponentDiffStorage(uint componentId)
         {
             if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
@@ -288,11 +296,12 @@ namespace Improbable.Gdk.Core
             return storage;
         }
 
-        internal IComponentDiffStorage GetComponentDiffStorage(Type type)
+        internal IComponentDiffStorage GetComponentDiffStorageForEvent<T>()  where T : IEvent
         {
-            if (!typeToComponentStorage.TryGetValue(type, out var storage))
+            var componentId = ComponentDatabase.ComponentEventType<T>.ComponentId;
+            if (!componentIdToComponentStorage.TryGetValue(componentId, out var storage))
             {
-                throw new ArgumentException($"Can not find component diff storage. Unknown component type {type.FullName}");
+                throw new ArgumentException($"Can not find component diff storage. Unknown event type {typeof(T).FullName}");
             }
 
             return storage;
@@ -308,11 +317,21 @@ namespace Improbable.Gdk.Core
             return storage;
         }
 
-        internal ICommandDiffStorage GetCommandDiffStorage(Type type)
+        internal ICommandDiffStorage GetCommandDiffStorageForRequest<T>() where T : IReceivedCommandRequest
         {
-            if (!typeToCommandStorage.TryGetValue(type, out var storage))
+            if (!typeToCommandStorage.TryGetValue(typeof(T), out var storage))
             {
-                throw new ArgumentException($"Can not find command diff storage. Unknown command type {type.FullName}");
+                throw new ArgumentException($"Can not find command diff storage. Unknown command type {typeof(T).FullName}");
+            }
+
+            return storage;
+        }
+        
+        internal ICommandDiffStorage GetCommandDiffStorageForResponse<T>() where T : IReceivedCommandResponse
+        {
+            if (!typeToCommandStorage.TryGetValue(typeof(T), out var storage))
+            {
+                throw new ArgumentException($"Can not find command diff storage. Unknown command type {typeof(T).FullName}");
             }
 
             return storage;

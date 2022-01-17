@@ -5,7 +5,8 @@ using Unity.Entities;
 namespace Improbable.Gdk.GameObjectCreation
 {
     [UpdateInGroup(typeof(SpatialOSReceiveGroup))]
-    [UpdateAfter(typeof(RequireLifecycleGroup))]
+    [UpdateBefore(typeof(RequireLifecycleGroup))]
+    [UpdateAfter(typeof(SpatialOSReceiveGroup.InternalSpatialOSReceiveGroup))]
     [DisableAutoCreation]
     public class GameObjectInitializationGroup : ComponentSystemGroup
     {

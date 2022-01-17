@@ -18,8 +18,8 @@ namespace Improbable.Gdk.Subscriptions
         protected readonly Entity Entity;
         protected readonly EntityId EntityId;
 
-        private static readonly uint ComponentId = ComponentDatabase.GetComponentId<TComponent>();
-        private static readonly ComponentType ComponentAuthType = ComponentDatabase.GetMetaclass<TComponent>().Authority;
+        private static readonly uint ComponentId = ComponentDatabase.ComponentType<TComponent>.ComponentId;
+        private static readonly ComponentType ComponentAuthType = ComponentDatabase.ComponentType<TComponent>.Metaclass.Authority;
 
         private Dictionary<Action<Authority>, ulong> authorityCallbackToCallbackKey;
         private Dictionary<Action<TUpdate>, ulong> updateCallbackToCallbackKey;

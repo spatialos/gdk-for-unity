@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
 using Unity.Profiling;
+using UnityEngine;
 
 namespace Improbable.Gdk.Core
 {
@@ -10,7 +10,7 @@ namespace Improbable.Gdk.Core
     [AlwaysUpdateSystem]
     public class EcsViewSystem : ComponentSystem
     {
-        private readonly List<IEcsViewManager> managers = new List<IEcsViewManager>();
+        private readonly IEcsViewManager[] managers = new IEcsViewManager[ComponentDatabase.Metaclasses.Count];
 
         private WorkerSystem worker;
 
@@ -51,11 +51,13 @@ namespace Improbable.Gdk.Core
 
             worker = World.GetExistingSystem<WorkerSystem>();
 
+            var i = 0;
             foreach (var type in ComponentDatabase.Metaclasses.Select(type => type.Value.EcsViewManager))
             {
                 var instance = (IEcsViewManager) Activator.CreateInstance(type);
                 instance.Init(World);
-                managers.Add(instance);
+                managers[i] = instance;
+                i++;
             }
 
             Enabled = false;
@@ -106,6 +108,13 @@ namespace Improbable.Gdk.Core
                 {
                     throw new InvalidSpatialEntityStateException(
                         string.Format(Errors.EntityNotFoundForDeleteError, entityId.Id));
+                }
+
+                // Dispose of ReferenceProviders in left over components
+                // This is only required for entities removed through a World Command.
+                foreach (var manager in managers)
+                {
+                    manager.DisposeForEntity(entity);
                 }
 
                 EntityManager.DestroyEntity(entity);

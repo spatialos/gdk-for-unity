@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Entities;
 using UnityEngine;
@@ -53,6 +54,7 @@ namespace Improbable.Gdk.Subscriptions
                         continue;
                     }
 
+                    // This has an implicit try/catch
                     behaviour.enabled = true;
                 }
 

@@ -21,32 +21,39 @@ namespace Improbable.Gdk.Core
         private readonly MessageList<WorldCommands.EntityQuery.ReceivedResponse> entityQueryResponses =
             new MessageList<WorldCommands.EntityQuery.ReceivedResponse>(new Comparer());
 
+        public bool Dirty { get; private set; }
+
         public void Clear()
         {
             createEntityResponses.Clear();
             deleteEntityResponses.Clear();
             reserveEntityIdsResponses.Clear();
             entityQueryResponses.Clear();
+            Dirty = false;
         }
 
         public void AddResponse(WorldCommands.CreateEntity.ReceivedResponse response)
         {
             createEntityResponses.Add(response);
+            Dirty = true;
         }
 
         public void AddResponse(WorldCommands.DeleteEntity.ReceivedResponse response)
         {
             deleteEntityResponses.Add(response);
+            Dirty = true;
         }
 
         public void AddResponse(WorldCommands.ReserveEntityIds.ReceivedResponse response)
         {
             reserveEntityIdsResponses.Add(response);
+            Dirty = true;
         }
 
         public void AddResponse(WorldCommands.EntityQuery.ReceivedResponse response)
         {
             entityQueryResponses.Add(response);
+            Dirty = true;
         }
 
         MessagesSpan<WorldCommands.CreateEntity.ReceivedResponse>

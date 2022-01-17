@@ -11,6 +11,7 @@ namespace Improbable.Gdk.Core.Commands
         /// </summary>
         /// <returns> The request ID associated with the request </returns>
         long RequestId { get; }
+        EntityId CallerWorkerEntityId { get; }
     }
 
     public interface ICommandResponse

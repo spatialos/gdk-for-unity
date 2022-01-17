@@ -10,8 +10,8 @@ namespace Improbable.Gdk.Core
         protected readonly HashSet<EntityId> EntitiesUpdated = new HashSet<EntityId>();
         private readonly uint componentId;
 
-        private readonly List<EntityId> componentsAdded = new List<EntityId>();
-        private readonly List<EntityId> componentsRemoved = new List<EntityId>();
+        private readonly HashSet<EntityId> componentsAdded = new HashSet<EntityId>();
+        private readonly HashSet<EntityId> componentsRemoved = new HashSet<EntityId>();
 
         // Used to represent a state machine of authority changes. Valid state changes are:
         // authority lost -> authority lost temporarily
@@ -31,6 +31,8 @@ namespace Improbable.Gdk.Core
         public abstract Type[] GetEventTypes();
 
         public Type GetUpdateType() => typeof(TUpdate);
+        
+        public bool Dirty { get; protected set; }
 
         public virtual void Clear()
         {
@@ -39,6 +41,7 @@ namespace Improbable.Gdk.Core
             authorityChanges.Clear();
             componentsAdded.Clear();
             componentsRemoved.Clear();
+            Dirty = false;
         }
 
         public void RemoveEntityComponent(long entityId)
@@ -56,6 +59,8 @@ namespace Improbable.Gdk.Core
             {
                 componentsRemoved.Add(id);
             }
+
+            Dirty = true;
         }
 
         protected abstract void ClearEventStorage(long entityId);
@@ -68,6 +73,7 @@ namespace Improbable.Gdk.Core
                 componentsAdded.Add(id);
             }
 
+            // This marks dirty
             AddUpdate(new ComponentUpdateReceived<TUpdate>(component, id, updateId));
         }
 
@@ -75,6 +81,7 @@ namespace Improbable.Gdk.Core
         {
             EntitiesUpdated.Add(update.EntityId);
             updateStorage.Add(update);
+            Dirty = true;
         }
 
         public void AddAuthorityChange(AuthorityChangeReceived authorityChange)
@@ -99,14 +106,15 @@ namespace Improbable.Gdk.Core
             }
 
             authorityChanges.Add(authorityChange);
+            Dirty = true;
         }
 
-        public List<EntityId> GetComponentsAdded()
+        public HashSet<EntityId> GetComponentsAdded()
         {
             return componentsAdded;
         }
 
-        public List<EntityId> GetComponentsRemoved()
+        public HashSet<EntityId> GetComponentsRemoved()
         {
             return componentsRemoved;
         }

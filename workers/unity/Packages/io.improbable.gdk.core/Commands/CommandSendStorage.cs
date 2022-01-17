@@ -17,20 +17,25 @@ namespace Improbable.Gdk.Core.Commands
         public Type RequestType => typeof(TRequest);
         public Type ResponseType => typeof(TResponse);
 
+        public bool Dirty { get; private set; }
+
         public void Clear()
         {
             requestStorage.Clear();
             responseStorage.Clear();
+            Dirty = false;
         }
 
         public void AddRequest(TRequest request, Entity entity, CommandRequestId requestId)
         {
             requestStorage.Add(new CommandRequestWithMetaData<TRequest>(request, entity, requestId));
+            Dirty = true;
         }
 
         public void AddResponse(TResponse response)
         {
             responseStorage.Add(response);
+            Dirty = true;
         }
 
         internal MessageList<CommandRequestWithMetaData<TRequest>> GetRequests()

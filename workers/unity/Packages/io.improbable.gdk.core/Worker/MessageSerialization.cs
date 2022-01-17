@@ -14,6 +14,8 @@ namespace Improbable.Gdk.Core
     {
         uint GetComponentId();
 
+        bool HasEvents { get; }
+
         void Serialize(MessagesToSend messages, SerializedMessagesToSend serializedMessages);
     }
 }

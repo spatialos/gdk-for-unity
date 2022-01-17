@@ -21,25 +21,41 @@ namespace Improbable.Gdk.Core
 
         public MessagesSpan<T> GetRequests<T>() where T : struct, IReceivedCommandRequest
         {
-            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorageForRequest<T>();
+            if (!manager.Dirty)
+            {
+                return MessagesSpan<T>.Empty();
+            }
             return manager.GetRequests();
         }
 
         public MessagesSpan<T> GetRequests<T>(EntityId targetEntityId) where T : struct, IReceivedCommandRequest
         {
-            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            var manager = (IDiffCommandRequestStorage<T>) worker.Diff.GetCommandDiffStorageForRequest<T>();
+            if (!manager.Dirty)
+            {
+                return MessagesSpan<T>.Empty();
+            }
             return manager.GetRequests(targetEntityId);
         }
 
         public MessagesSpan<T> GetResponses<T>() where T : struct, IReceivedCommandResponse
         {
-            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorageForResponse<T>();
+            if (!manager.Dirty)
+            {
+                return MessagesSpan<T>.Empty();
+            }
             return manager.GetResponses();
         }
 
         public T? GetResponse<T>(CommandRequestId requestId) where T : struct, IReceivedCommandResponse
         {
-            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorage(typeof(T));
+            var manager = (IDiffCommandResponseStorage<T>) worker.Diff.GetCommandDiffStorageForResponse<T>();
+            if (!manager.Dirty)
+            {
+                return null;
+            }
             return manager.GetResponse(requestId);
         }
 

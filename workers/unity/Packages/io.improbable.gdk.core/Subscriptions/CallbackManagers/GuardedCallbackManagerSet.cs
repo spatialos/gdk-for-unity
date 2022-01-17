@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace Improbable.Gdk.Subscriptions
@@ -36,12 +35,12 @@ namespace Improbable.Gdk.Subscriptions
             }
         }
 
-        public void InvokeEach(Action<TManager> callback)
+        public void InvokeCallbacks()
         {
             UpdateManagers();
             foreach (var manager in callbackManagers)
             {
-                callback(manager);
+                manager.InvokeCallbacks();
             }
         }
     }

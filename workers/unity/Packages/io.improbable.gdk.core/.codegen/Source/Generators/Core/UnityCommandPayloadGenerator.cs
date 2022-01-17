@@ -73,6 +73,7 @@ public partial class {commandDetails.PascalCaseName}
         }}
 
         long IReceivedCommandRequest.RequestId => RequestId;
+        EntityId IReceivedCommandRequest.CallerWorkerEntityId => CallerWorkerEntityId;
 
         EntityId IReceivedEntityMessage.EntityId => EntityId;
     }}

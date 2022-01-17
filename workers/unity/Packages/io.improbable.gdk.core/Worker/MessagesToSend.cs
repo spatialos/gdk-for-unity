@@ -89,12 +89,18 @@ namespace Improbable.Gdk.Core
         {
             foreach (var storage in componentStorageList)
             {
-                storage.Clear();
+                if (storage.Dirty)
+                {
+                    storage.Clear();
+                }
             }
 
             foreach (var storage in commandStorageList)
             {
-                storage.Clear();
+                if (storage.Dirty)
+                {
+                    storage.Clear();
+                }
             }
 
             addComponentRequests.Clear();

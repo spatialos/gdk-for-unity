@@ -40,24 +40,34 @@ component_set PlayerServerSet {
     ];
 }
 
-component_set DefaultServerSet {
+component_set CubeServerSet {
     id = 70003;
 
     components = [
         improbable.Position,
-        improbable.Metadata,
-        improbable.Interest,
         improbable.gdk.transform_synchronization.TransformInternal,
-        improbable.gdk.player_lifecycle.PlayerCreator,
-        improbable.gdk.player_lifecycle.OwningWorker,
-        playground.CubeSpawner,
-        playground.Score,
-        playground.Launcher,
         playground.Launchable,
         playground.CubeColor,
-        playground.CubeTargetVelocity,
+        playground.CubeTargetVelocity
+    ];
+}
+
+component_set SpinnerServerSet {
+    id = 70004;
+
+    components = [
+        improbable.Position,
+        improbable.gdk.transform_synchronization.TransformInternal,
         playground.SpinnerRotation,
         playground.SpinnerColor,
         playground.Collisions
+    ];
+}
+
+component_set PlayerCreatorServerSet {
+    id = 70005;
+
+    components = [
+        improbable.gdk.player_lifecycle.PlayerCreator
     ];
 }

@@ -160,7 +160,8 @@ namespace Improbable.Gdk.BuildSystem
                 options = buildContext.BuildTargetConfig.Options,
                 target = buildContext.BuildTargetConfig.Target,
                 scenes = scenes,
-                locationPathName = workerBuildData.BuildScratchDirectory
+                locationPathName = workerBuildData.BuildScratchDirectory,
+                extraScriptingDefines = new[] { $"WORKERTYPE_{buildContext.WorkerType}".ToUpper() }
             };
 
             var buildTargetGroup = BuildPipeline.GetBuildTargetGroup(buildContext.BuildTargetConfig.Target);

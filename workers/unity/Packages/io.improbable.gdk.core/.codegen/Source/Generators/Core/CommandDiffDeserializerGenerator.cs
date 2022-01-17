@@ -92,6 +92,11 @@ private class {command.PascalCaseName}CommandSerializer : ICommandSerializer
     {{
         var storage = ({command.PascalCaseName}CommandsToSendStorage) messages.GetCommandSendStorage(ComponentId, {command.CommandIndex});
 
+        if (!storage.Dirty)
+        {{
+            return;
+        }}
+
         var requests = storage.GetRequests();
 
         for (int i = 0; i < requests.Count; ++i)

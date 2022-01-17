@@ -97,7 +97,7 @@ namespace Improbable.Gdk.Core
 
         public void SendRemoveComponentRequest<T>(EntityId entityId, UpdateParameters? parameters = null) where T : ISpatialComponentData
         {
-            var componentId = ComponentDatabase.GetComponentId<T>();
+            var componentId = ComponentDatabase.ComponentType<T>.ComponentId;
             SendRemoveComponentRequest(entityId, componentId, parameters);
         }
 

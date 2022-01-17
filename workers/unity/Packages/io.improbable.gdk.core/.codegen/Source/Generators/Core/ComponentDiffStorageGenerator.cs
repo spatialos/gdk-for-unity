@@ -87,7 +87,8 @@ private MessageList<ComponentEventReceived<{eventType}>> {ev.CamelCaseName}Event
                                 storage.Method($"void IDiffEventStorage<{eventType}>.AddEvent(ComponentEventReceived<{eventType}> ev)", () => new[]
                                 {
                                     $"{ev.CamelCaseName}EventStorage.Add(ev);",
-                                    "EntitiesUpdated.Add(ev.EntityId);"
+                                    "EntitiesUpdated.Add(ev.EntityId);",
+                                    "Dirty = true;"
                                 });
                             }
                         });

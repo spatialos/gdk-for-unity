@@ -294,7 +294,7 @@ namespace Improbable.Gdk.QueryBasedInterest
         public static Constraint Component<T>() where T : ISpatialComponentData
         {
             var constraint = Default();
-            constraint.ComponentConstraint = ComponentDatabase.GetComponentId<T>();
+            constraint.ComponentConstraint = ComponentDatabase.ComponentType<T>.ComponentId;
             return new Constraint(constraint);
         }
 

@@ -1,6 +1,7 @@
 using System;
 using Improbable.Worker.CInterop;
 using Unity.Entities;
+using Entity = Unity.Entities.Entity;
 
 namespace Improbable.Gdk.Core
 {
@@ -8,6 +9,7 @@ namespace Improbable.Gdk.Core
     {
         void Init(World world);
         void Clean();
+        void DisposeForEntity(Entity entity);
 
         void ApplyDiff(ViewDiff diff);
     }
@@ -26,7 +28,7 @@ namespace Improbable.Gdk.Core
 
         protected EcsViewManager()
         {
-            componentId = ComponentDatabase.GetComponentId<TComponent>();
+            componentId = ComponentDatabase.ComponentType<TComponent>.ComponentId;
         }
 
         public void Init(World world)
@@ -54,6 +56,11 @@ namespace Improbable.Gdk.Core
 
         public void ApplyDiff(ViewDiff diff)
         {
+            if (!diff.IsComponentChanged(componentId))
+            {
+                return;
+            }
+            
             var diffStorage = (DiffComponentStorage<TUpdate>) diff.GetComponentDiffStorage(componentId);
 
             foreach (var entityId in diffStorage.GetComponentsAdded())
@@ -62,17 +69,20 @@ namespace Improbable.Gdk.Core
             }
 
             var updates = diffStorage.GetUpdates();
-            var dataFromEntity = spatialOSReceiveSystem.GetComponentDataFromEntity<TComponent>();
-            for (var i = 0; i < updates.Count; ++i)
+            if (updates.Count > 0)
             {
-                ref readonly var update = ref updates[i];
+                var dataFromEntity = spatialOSReceiveSystem.GetComponentDataFromEntity<TComponent>();
+                for (var i = 0; i < updates.Count; ++i)
+                {
+                    ref readonly var update = ref updates[i];
 
-                var entity = workerSystem.GetEntity(update.EntityId);
-                var data = dataFromEntity[entity];
+                    var entity = workerSystem.GetEntity(update.EntityId);
+                    var data = dataFromEntity[entity];
 
-                ApplyUpdate(ref data, in update.Update);
+                    ApplyUpdate(ref data, in update.Update);
 
-                dataFromEntity[entity] = data;
+                    dataFromEntity[entity] = data;
+                }
             }
 
             var authChanges = diffStorage.GetAuthorityChanges();
@@ -133,6 +143,10 @@ namespace Improbable.Gdk.Core
             var data = EntityManager.GetComponentData<TComponent>(entity);
             DisposeData(data);
             EntityManager.RemoveComponent<TComponent>(entity);
+        }
+
+        public virtual void DisposeForEntity(Entity entity)
+        {
         }
 
         protected virtual void DisposeData(TComponent data)

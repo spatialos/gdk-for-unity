@@ -1,11 +1,10 @@
-using System.Linq;
 using Improbable.Gdk.Core;
 using Unity.Collections;
 using Unity.Entities;
 
 namespace Improbable.Gdk.LoadBalancing
 {
-    [UpdateInGroup(typeof(SpatialOSUpdateGroup))]
+    [UpdateInGroup(typeof(LoadBalanceStrategySystemGroup))]
     [DisableAutoCreation]
     [AlwaysUpdateSystem]
     internal class SingletonStrategySystem : ComponentSystem
